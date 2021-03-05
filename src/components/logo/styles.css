@@ -1,0 +1,15 @@
+.logo {
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo  img {
+    height: 3em;
+    content:url("./logo.svg");
+}
+
+[data-theme="dark"] .logo img {
+    content:url("./logo-dark.svg");
+}

@@ -1,0 +1,9 @@
+.dark-mode-switcher {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+}
+
+.dark-mode-switcher > button {
+    outline: none;
+}

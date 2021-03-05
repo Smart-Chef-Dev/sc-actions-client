@@ -1,20 +1,21 @@
 .button {
-    background-color: #FF2D55;
-    border: 1px solid #FF2D55;
-    color: #fff;
+    background-color: var(--main-color);
+    border: 1px solid var(--main-color);
+    color: var(--white);
     width: 200px;
     height: 40px;
     padding: 6px 20px;
     font-size: 16px;
     border-radius: 40px;
-    outline: 0;
+    outline: none;
     cursor: pointer;
     font-weight: 400;
     white-space: nowrap;
     text-align: center;
+    user-select: none;
+    font-family: sans-serif;
 }
 
-.button:hover {
-    opacity: 0.6;
-    transition: opacity 600ms ease;
+.button:focus {
+    outline: none;
 }
