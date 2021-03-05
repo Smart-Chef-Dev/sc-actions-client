@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { lazy, Suspense } from "react";
+import { Route, Switch } from "wouter";
+
+import { Routes } from "./constants/routes";
+
+import logo from "./logo.svg";
+
+const Actions = lazy(() => import("./pages/actions"));
+const Tables = lazy(() => import("./pages/tables"));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="container">
+      <div className="logo">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      </div>
+      <div className="actions">
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
+            <Route path={Routes.ACTIONS} component={Actions} />
+            <Route path={Routes.TABLES} component={Tables} />
+          </Switch>
+        </Suspense>
+      </div>
     </div>
   );
 }
