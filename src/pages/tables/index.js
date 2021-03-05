@@ -3,21 +3,30 @@ import { useRoute } from "wouter";
 import QRCode from "qrcode.react";
 
 import { Routes } from "../../constants/routes";
+import { useErrorContext } from "../error-boundary";
 
 const Tables = () => {
   const [, { tableId }] = useRoute(Routes.TABLES);
   const [isLoading, setLoading] = useState(true);
   const [tables, setTables] = useState([]);
+  const { handleError } = useErrorContext();
 
   useEffect(() => {
+    if (!tableId) {
+      return handleError(new Error("tableId not provided"));
+    }
+
     setLoading(true);
     (async () => {
       const resp = await fetch(`/api/restaurant/${tableId}/table`);
+      if (!resp.ok) {
+        return handleError(new Error("Can't fetch tables"));
+      }
       const data = await resp.json();
       setTables(data);
       setLoading(false);
     })();
-  }, [tableId]);
+  }, [handleError, tableId]);
 
   return !isLoading ? (
     <>
