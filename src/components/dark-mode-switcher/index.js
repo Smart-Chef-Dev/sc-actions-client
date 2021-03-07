@@ -1,17 +1,13 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect } from "react";
 
 import { ReactComponent as DarkModeIcon } from "./dark-mode-symbol.svg";
 import { ReactComponent as LightModeIcon } from "./light-mode-symbol.svg";
+import { useDarkMode } from "../../contexts/dark-mode-context";
 
 import "./styles.css";
-import { isDarkModeTheme } from "../../utils/is-dark-mode";
 
 const DarkModeSwitcher = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    setIsDarkMode(isDarkModeTheme);
-  }, []);
+  const { isDarkMode, setIsDarkMode } = useDarkMode();
 
   useEffect(() => {
     const theme = isDarkMode ? "dark" : "light";
@@ -22,7 +18,7 @@ const DarkModeSwitcher = () => {
 
   const handleIconClick = useCallback(() => {
     setIsDarkMode(!isDarkMode);
-  }, [isDarkMode]);
+  }, [isDarkMode, setIsDarkMode]);
 
   return (
     <div className="dark-mode-switcher" onClick={handleIconClick}>
