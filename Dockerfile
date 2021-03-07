@@ -9,7 +9,7 @@ COPY . ./
 RUN yarn build
 
 # production environment
-FROM fholzer/nginx-brotli:latest
+FROM fholzer/nginx-brotli
 COPY --from=development /app/build /usr/share/nginx/html
 COPY --from=development /app/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
