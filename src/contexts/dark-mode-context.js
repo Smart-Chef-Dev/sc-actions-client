@@ -1,11 +1,4 @@
-import {
-  memo,
-  createContext,
-  useState,
-  useContext,
-  useEffect,
-  useMemo,
-} from "react";
+import { memo, createContext, useState, useContext, useMemo } from "react";
 
 const Context = createContext({ isDarkMode: false });
 
