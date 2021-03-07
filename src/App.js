@@ -7,7 +7,6 @@ import { Routes } from "./constants/routes";
 import ErrorBoundary from "./pages/error-boundary";
 
 const Actions = lazy(() => import("./pages/actions"));
-const Tables = lazy(() => import("./pages/tables"));
 
 function App() {
   return (
@@ -19,7 +18,6 @@ function App() {
           <ErrorBoundary>
             <Switch>
               <Route path={Routes.ACTIONS} component={Actions} />
-              <Route path={Routes.TABLES} component={Tables} />
             </Switch>
           </ErrorBoundary>
         </Suspense>
