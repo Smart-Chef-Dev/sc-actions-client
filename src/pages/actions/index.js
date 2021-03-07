@@ -4,12 +4,17 @@ import { useRoute } from "wouter";
 import { Routes } from "../../constants/routes";
 import Button from "../../components/button";
 import { useErrorContext } from "../error-boundary";
+import { useNotifications } from "../../hooks/useNotifications";
+import { ReactComponent as DoneIcon } from "./done-icon.svg";
 
 const Actions = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.ACTIONS);
   const [isLoading, setLoading] = useState(true);
   const [actions, setActions] = useState([]);
   const { handleError } = useErrorContext();
+  const { renderNotification, showNotification } = useNotifications(
+    <DoneIcon />
+  );
 
   useEffect(() => {
     if (!restaurantId) {
@@ -30,15 +35,17 @@ const Actions = () => {
 
   const handleClick = useCallback(
     (id) => async () => {
+      showNotification();
       await fetch(`/api/message/${restaurantId}/${tableId}/${id}`, {
         method: "POST",
       });
     },
-    [restaurantId, tableId]
+    [restaurantId, showNotification, tableId]
   );
 
   return !isLoading ? (
     <>
+      {renderNotification()}
       {actions.map((a) => (
         <Button
           key={a._id}
