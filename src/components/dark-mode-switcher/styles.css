@@ -2,8 +2,9 @@
     position: fixed;
     top: 15px;
     right: 15px;
-}
-
-.dark-mode-switcher > button {
-    outline: none;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    user-select: none;
+    color: var(--main-text-color);
 }
