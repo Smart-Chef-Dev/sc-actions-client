@@ -1,6 +1,11 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import { css } from "@linaria/core";
+import ReactGA from "react-ga";
+
+// eslint-disable-next-line no-undef
+ReactGA.initialize(process.env.REACT_APP_GA);
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 import App from "./App";
 
