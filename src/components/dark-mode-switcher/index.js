@@ -21,9 +21,9 @@ const DarkModeSwitcher = () => {
   }, [isDarkMode, setIsDarkMode]);
 
   return (
-    <div className="dark-mode-switcher" onClick={handleIconClick}>
+    <button className="dark-mode-switcher" onClick={handleIconClick}>
       {!isDarkMode ? <DarkModeIcon /> : <LightModeIcon />}
-    </div>
+    </button>
   );
 };
 

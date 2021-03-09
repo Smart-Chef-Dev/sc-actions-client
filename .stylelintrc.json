@@ -1,0 +1,4 @@
+{
+  "extends": ["stylelint-config-prettier", "stylelint-config-standard"],
+  "ignoreFiles": ["build/**/*.*"]
+}

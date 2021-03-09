@@ -1,4 +1,5 @@
 import { PureComponent, createContext, useContext } from "react";
+import PropTypes from "prop-types";
 
 const ErrorContext = createContext({});
 
@@ -44,5 +45,12 @@ class ErrorBoundary extends PureComponent {
     );
   }
 }
+
+ErrorBoundary.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
+};
 
 export default ErrorBoundary;

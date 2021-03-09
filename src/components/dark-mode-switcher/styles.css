@@ -1,10 +1,10 @@
 .dark-mode-switcher {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-    user-select: none;
-    color: var(--main-text-color);
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  user-select: none;
+  color: var(--main-text-color);
 }

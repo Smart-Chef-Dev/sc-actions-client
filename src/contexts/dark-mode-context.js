@@ -1,4 +1,5 @@
 import { memo, createContext, useState, useContext, useMemo } from "react";
+import PropTypes from "prop-types";
 
 const Context = createContext({ isDarkMode: false });
 
@@ -7,10 +8,8 @@ export const useDarkMode = () => useContext(Context);
 const DarkModeContext = ({ children }) => {
   const initialState = useMemo(() => {
     return (
-      (localStorage.hasOwnProperty("theme") &&
-        localStorage.getItem("theme") === "dark") ||
-      (!localStorage.hasOwnProperty("theme") &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
+      localStorage.getItem("theme") === "dark" ||
+      window.matchMedia("(prefers-color-scheme: dark)").matches
     );
   }, []);
 
@@ -21,6 +20,13 @@ const DarkModeContext = ({ children }) => {
       {children}
     </Context.Provider>
   );
+};
+
+DarkModeContext.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };
 
 export default memo(DarkModeContext);

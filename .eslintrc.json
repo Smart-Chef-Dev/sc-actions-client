@@ -1,0 +1,44 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:jsx-a11y/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "prettier"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "jsx-a11y",
+        "import",
+        "react-app"
+    ],
+    "rules": {
+        "import/no-unresolved": [2, {"commonjs": true, "amd": true}],
+        "import/named": 2,
+        "import/namespace": 2,
+        "import/default": 2,
+        "import/export": 2,
+        "react/jsx-uses-react": "off",
+        "react/react-in-jsx-scope": "off"
+    },
+    "ignorePatterns": [".eslintrc.js"],
+    "settings": {
+        "react": {
+            "version": "17"
+        }
+    }
+}

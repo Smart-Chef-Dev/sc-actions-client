@@ -1,12 +1,12 @@
 :root {
-  --main-bg-color: #ffffff;
-  --main-text-color: #000000;
-  --main-color: #FF2D55;
+  --main-bg-color: #fff;
+  --main-text-color: #000;
+  --main-color: #ff2d55;
   --white: #fff;
 }
 
 [data-theme="dark"] {
-  --main-bg-color: #434C5F;
+  --main-bg-color: #434c5f;
   --main-text-color: #fff;
 }
 
@@ -16,7 +16,7 @@ body {
 }
 
 div#root {
-  background-color: var(--main-bg-color)
+  background-color: var(--main-bg-color);
 }
 
 .container {
@@ -40,6 +40,7 @@ div#root {
   text-align: center;
 }
 
-h1, h2 {
-  color: var(--main-text-color)
+h1,
+h2 {
+  color: var(--main-text-color);
 }

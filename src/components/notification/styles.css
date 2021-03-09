@@ -1,22 +1,21 @@
 .notification-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0,0,0,0.5);
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center; /* aligns on vertical for column */
-    align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center; /* aligns on vertical for column */
+  align-items: center;
 }
 
 .notification-popup {
-    width: 200px;
-    height: 150px;
-    border-radius: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 200px;
+  height: 150px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
