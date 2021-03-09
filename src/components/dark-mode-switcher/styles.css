@@ -7,4 +7,7 @@
   cursor: pointer;
   user-select: none;
   color: var(--main-text-color);
+  background-color: transparent;
+  border: none;
+  outline: none;
 }
