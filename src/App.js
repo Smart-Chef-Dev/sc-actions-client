@@ -1,32 +1,47 @@
 import { lazy, Suspense } from "react";
 import { Route, Switch } from "wouter";
+import { styled } from "@linaria/react";
 
 import DarkModeSwitcher from "./components/dark-mode-switcher";
 import Logo from "./components/logo";
 import { Routes } from "./constants/routes";
 import ErrorBoundary from "./pages/error-boundary";
 import DarkModeContext from "./contexts/dark-mode-context";
+import Loader from "./components/loader";
 
 const Actions = lazy(() => import("./pages/actions"));
 
 function App() {
   return (
-    <div className="container">
+    <Container>
       <DarkModeContext>
         <DarkModeSwitcher />
         <Logo />
-        <div className="page-container">
-          <Suspense fallback={<div>Loading...</div>}>
+        <PageContainer>
+          <Suspense fallback={<Loader />}>
             <ErrorBoundary>
               <Switch>
                 <Route path={Routes.ACTIONS} component={Actions} />
               </Switch>
             </ErrorBoundary>
           </Suspense>
-        </div>
+        </PageContainer>
       </DarkModeContext>
-    </div>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+`;
+
+const PageContainer = styled.div`
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
 
 export default App;

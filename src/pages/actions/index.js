@@ -3,9 +3,10 @@ import { useRoute } from "wouter";
 
 import { Routes } from "../../constants/routes";
 import Button from "../../components/button";
+import Loader from "../../components/loader";
 import { useErrorContext } from "../error-boundary";
 import { useNotifications } from "../../hooks/useNotifications";
-import { ReactComponent as DoneIcon } from "./done-icon.svg";
+import DoneIcon from "./done-icon.svg";
 
 const Actions = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.ACTIONS);
@@ -50,13 +51,14 @@ const Actions = () => {
         <Button
           key={a._id}
           classNames="margin-bottom-one"
-          text={a.name}
           onClick={handleClick(a._id)}
-        />
+        >
+          {a.name}
+        </Button>
       ))}
     </>
   ) : (
-    <div>Loading...</div>
+    <Loader />
   );
 };
 

@@ -1,6 +1,9 @@
 import { PureComponent, createContext, useContext } from "react";
 import PropTypes from "prop-types";
 
+import H1 from "../../components/h1";
+import H2 from "../../components/h2";
+
 const ErrorContext = createContext({});
 
 export const useErrorContext = () => useContext(ErrorContext);
@@ -34,9 +37,9 @@ class ErrorBoundary extends PureComponent {
     return (
       <ErrorContext.Provider value={{ handleError: this.changeErrorState }}>
         {this.state.hasError ? (
-          <div className="text-center">
-            <h1>Ooops...</h1>
-            <h2>Something went wrong</h2>
+          <div>
+            <H1>Ooops...</H1>
+            <H2>Something went wrong</H2>
           </div>
         ) : (
           this.props.children

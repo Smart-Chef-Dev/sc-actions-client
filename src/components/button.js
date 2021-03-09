@@ -1,4 +1,6 @@
-.button {
+import { styled } from "@linaria/react";
+
+const Button = styled.button`
   background-color: var(--main-color);
   border: 1px solid var(--main-color);
   color: var(--white);
@@ -14,8 +16,11 @@
   text-align: center;
   user-select: none;
   font-family: sans-serif;
-}
+  margin-bottom: 1em;
 
-.button:focus {
-  outline: none;
-}
+  &:hover {
+    outline: none;
+  }
+`;
+
+export default Button;
