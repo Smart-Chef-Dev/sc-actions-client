@@ -18,17 +18,13 @@ export const globals = css`
       --main-bg-color: #fff;
       --main-text-color: #000;
       --main-color: #ff2d55;
-      --white: #fff;
+      --text: #fff;
     }
 
     [data-theme="dark"] {
       --main-bg-color: #434c5f;
       --main-text-color: #fff;
-    }
-
-    body {
-      margin: 0;
-      font-family: sans-serif;
+      --text: #000;
     }
 
     div#root {

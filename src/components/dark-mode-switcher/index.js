@@ -20,7 +20,7 @@ const DarkModeSwitcher = () => {
   }, [isDarkMode, setIsDarkMode]);
 
   return (
-    <Button onClick={handleIconClick}>
+    <Button onClick={handleIconClick} aria-label="dark-mode-switcher">
       {!isDarkMode ? <DarkModeIcon /> : <LightModeIcon />}
     </Button>
   );

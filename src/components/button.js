@@ -3,7 +3,7 @@ import { styled } from "@linaria/react";
 const Button = styled.button`
   background-color: var(--main-color);
   border: 1px solid var(--main-color);
-  color: var(--white);
+  color: var(--text);
   width: 200px;
   height: 40px;
   padding: 6px 20px;
