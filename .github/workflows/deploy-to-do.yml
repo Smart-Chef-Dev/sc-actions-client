@@ -6,6 +6,12 @@ name: Deploy to DO
 on:
   registry_package:
 
+  workflow_run:
+    workflows:
+      - "Build image"
+    types:
+      - completed
+
 jobs:
   deploy-to-do:
     runs-on: ubuntu-latest
