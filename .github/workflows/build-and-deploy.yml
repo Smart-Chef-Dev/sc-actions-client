@@ -14,7 +14,6 @@ on:
   pull_request:
 
 env:
-  # TODO: Change variable to your image's name.
   IMAGE_NAME: sc-actions-client
 
 jobs:
@@ -50,11 +49,10 @@ jobs:
         id: prep
         run: |
           TAG=$(echo $GITHUB_SHA | head -c7)
-          IMAGE=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
-          echo IMAGE_NAME=docker.pkg.github.com/$(echo ${{ github.repository }}/$IMAGE_NAME | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-          echo ::set-output name=tagged_image::${IMAGE_NAME}:${TAG}
-          echo ::set-output name=tag::${TAG}
           echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+          echo ::set-output name=tagged_image::${IMAGE_ID}:${TAG}
+          echo ::set-output name=tag::${TAG}
       - name: Set up Docker Buildx
         id: buildx
         # Use the action from the master, as we've seen some inconsistencies with @v1
