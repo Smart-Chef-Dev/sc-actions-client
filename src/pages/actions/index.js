@@ -7,6 +7,7 @@ import Loader from "../../components/loader";
 import { useErrorContext } from "../error-boundary";
 import { useNotifications } from "../../hooks/useNotifications";
 import DoneIcon from "./done-icon.svg";
+import { useScreenBlock } from "../../hooks/useScreenBlock";
 
 const Actions = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.ACTIONS);
@@ -16,6 +17,7 @@ const Actions = () => {
   const { renderNotification, showNotification } = useNotifications(
     <DoneIcon />
   );
+  const { renderScreenBlock, attemptsWrapper } = useScreenBlock();
 
   useEffect(() => {
     if (!restaurantId) {
@@ -37,16 +39,18 @@ const Actions = () => {
   const handleClick = useCallback(
     (id) => async () => {
       showNotification();
+      attemptsWrapper();
       await fetch(`/api/message/${restaurantId}/${tableId}/${id}`, {
         method: "POST",
       });
     },
-    [restaurantId, showNotification, tableId]
+    [attemptsWrapper, restaurantId, showNotification, tableId]
   );
 
   return !isLoading ? (
     <>
       {renderNotification()}
+      {renderScreenBlock()}
       {actions.map((a) => (
         <Button
           key={a._id}

@@ -1,16 +1,14 @@
 import { memo } from "react";
 import { styled } from "@linaria/react";
 
-import { useDarkMode } from "../../contexts/dark-mode-context";
-import LightLogo from "./logo.svg";
-import DarkLogo from "./logo-dark.svg";
+import LogoIcon from "./logo.svg";
 
 const Logo = () => {
-  const { isDarkMode } = useDarkMode();
-
   return (
     <LogoContainer>
-      <Img>{isDarkMode ? <DarkLogo /> : <LightLogo />}</Img>
+      <Img>
+        <LogoIcon />
+      </Img>
     </LogoContainer>
   );
 };
@@ -24,6 +22,7 @@ const LogoContainer = styled.div`
 
 const Img = styled.div`
   width: 20em;
+  fill: var(--main-text-color);
 `;
 
 export default memo(Logo);

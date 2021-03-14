@@ -24,6 +24,7 @@ export const globals = css`
       --main-text-color: #000;
       --main-color: #ff2d55;
       --text: #fff;
+      --black-layout-color: rgba(0, 0, 0, 0.7);
     }
 
     [data-theme="dark"] {
