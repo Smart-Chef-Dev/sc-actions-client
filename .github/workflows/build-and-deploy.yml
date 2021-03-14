@@ -50,7 +50,7 @@ jobs:
         run: |
           TAG=$(echo $GITHUB_SHA | head -c7)
           echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-          echo ::set-output name=tagged_image::docker.pkg.github.com/$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')/$IMAGE_NAME:${TAG}
+          echo ::set-output name=tagged_image::ghcr.io/$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')/$IMAGE_NAME
           echo ::set-output name=tag::${TAG}
       - name: Set up Docker Buildx
         id: buildx
@@ -73,9 +73,9 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
-          registry: docker.pkg.github.com
+          registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.CR_PAT }}
 
       - name: Build production image and push
         uses: docker/build-push-action@v2
@@ -86,7 +86,9 @@ jobs:
           # Set the desired build target here
           target: production
           push: true
-          tags: ${{ steps.prep.outputs.tagged_image }}
+          tags: |
+            ${{ steps.prep.outputs.tagged_image }}:${{ steps.prep.outputs.tag }}
+            ${{ steps.prep.outputs.tagged_image }}:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           # Note the mode=max here
           # More: https://github.com/moby/buildkit#--export-cache-options
