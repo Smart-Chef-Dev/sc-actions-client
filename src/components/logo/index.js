@@ -21,7 +21,7 @@ const LogoContainer = styled.div`
 `;
 
 const Img = styled.div`
-  width: 20em;
+  width: 18em;
   fill: var(--main-text-color);
 `;
 

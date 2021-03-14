@@ -1,5 +1,7 @@
 export const Keys = {
   BLOCK_SCREEN: "blockScreen",
+  CURRENT_LANGUAGE: "currentLanguage",
+  THEME: "theme",
 };
 
 export const getOrDefault = (key, defaultValue) => {

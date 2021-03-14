@@ -2,17 +2,19 @@ import { memo, useMemo } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
 import { formatDistance } from "date-fns";
-import { ru } from "date-fns/esm/locale";
+import { ru, enUS } from "date-fns/esm/locale";
 
+import { useTranslation, Languages } from "contexts/translation-context";
 import BlockIcon from "./block-icon.svg";
 
 const ScreenBlock = ({ remainingSeconds = 0 }) => {
+  const { currentLanguage } = useTranslation();
   const formattedTime = useMemo(() => {
     return formatDistance(0, remainingSeconds, {
       includeSeconds: true,
-      locale: ru,
+      locale: currentLanguage === Languages.EN ? enUS : ru,
     });
-  }, [remainingSeconds]);
+  }, [currentLanguage, remainingSeconds]);
 
   return (
     <ScreenBlockContainer>
