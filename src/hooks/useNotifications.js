@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import Notification from "components/notification";
 
@@ -14,7 +15,9 @@ export const useNotifications = (text, hideTimeout = DEFAULT_HIDE_TIMEOUT) => {
   }, [hideTimeout, isHidden]);
 
   const renderNotification = useCallback(() => {
-    return isHidden ? <></> : <Notification text={text} />;
+    return !isHidden
+      ? createPortal(<Notification text={text} />, document.body)
+      : null;
   }, [isHidden, text]);
 
   const showNotification = useCallback(() => {
