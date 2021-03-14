@@ -1,9 +1,9 @@
 import { memo, useCallback, useEffect } from "react";
 import { styled } from "@linaria/react";
 
+import { useDarkMode } from "contexts/dark-mode-context";
 import DarkModeIcon from "./dark-mode-symbol.svg";
 import LightModeIcon from "./light-mode-symbol.svg";
-import { useDarkMode } from "../../contexts/dark-mode-context";
 
 const DarkModeSwitcher = () => {
   const { isDarkMode, setIsDarkMode } = useDarkMode();

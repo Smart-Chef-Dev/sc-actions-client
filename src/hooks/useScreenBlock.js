@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useReducer } from "react";
 import { createPortal } from "react-dom";
 import { addSeconds } from "date-fns";
 
-import ScreenBlock from "../components/screen-block";
-import { Keys, getOrDefault } from "../utils/localStorage";
+import ScreenBlock from "components/screen-block";
+import { Keys, getOrDefault } from "utils/localStorage";
 
 const MAX_ATTEMPTS_COUNT = 3;
 const MIN_ALLOW_INTERVAL = 10;

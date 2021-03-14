@@ -1,8 +1,8 @@
 import { PureComponent, createContext, useContext } from "react";
 import PropTypes from "prop-types";
 
-import H1 from "../../components/h1";
-import H2 from "../../components/h2";
+import H1 from "components/h1";
+import H2 from "components/h2";
 
 const ErrorContext = createContext({});
 

@@ -1,13 +1,13 @@
-import { memo, useEffect, useState, useCallback } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useRoute } from "wouter";
 
-import { Routes } from "../../constants/routes";
-import Button from "../../components/button";
-import Loader from "../../components/loader";
-import { useErrorContext } from "../error-boundary";
-import { useNotifications } from "../../hooks/useNotifications";
+import { Routes } from "constants/routes";
+import Button from "components/button";
+import Loader from "components/loader";
+import { useErrorContext } from "pages/error-boundary";
+import { useNotifications } from "hooks/useNotifications";
+import { useScreenBlock } from "hooks/useScreenBlock";
 import DoneIcon from "./done-icon.svg";
-import { useScreenBlock } from "../../hooks/useScreenBlock";
 
 const Actions = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.ACTIONS);

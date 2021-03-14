@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import Notification from "../components/notification";
+
+import Notification from "components/notification";
 
 const DEFAULT_HIDE_TIMEOUT = 1000;
 
