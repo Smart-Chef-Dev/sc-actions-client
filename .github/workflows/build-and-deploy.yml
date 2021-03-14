@@ -1,4 +1,4 @@
-name: Build image and diploy to DO
+name: Build image
 
 on:
   push:
@@ -11,29 +11,7 @@ env:
   IMAGE_NAME: sc-actions-client
 
 jobs:
-  # Run tests.
-  # See also https://docs.docker.com/docker-hub/builds/automated-testing/
-  lint:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [ 14.x ]
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install modules
-        run: yarn
-
-      - name: Run ESLint
-        run: yarn lint:js
-
-      - name: Run StyleLint
-        run: yarn lint:styles
-
   build-and-push:
-    needs: lint
     runs-on: ubuntu-latest
 
     steps:
@@ -93,26 +71,3 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-
-  deploy-to-do:
-    needs: build-and-push
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      - name: Deploy to Digital Ocean droplet via SSH
-        uses: appleboy/ssh-action@v0.1.4
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
-          script: |
-            cd ./sc-actions/
-            docker-compose stop
-            docker pull ghcr.io/smart-chef-dev/sc-actions-client/sc-actions-client:latest
-            docker-compose up -d
