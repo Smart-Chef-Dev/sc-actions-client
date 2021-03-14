@@ -50,7 +50,7 @@ jobs:
         run: |
           TAG=$(echo $GITHUB_SHA | head -c7)
           echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+          IMAGE_ID=docker.pkg.github.com/${{ env.IMAGE_REPOSITORY }}/$IMAGE_NAME
           echo ::set-output name=tagged_image::${IMAGE_ID}:${TAG}
           echo ::set-output name=tag::${TAG}
       - name: Set up Docker Buildx
