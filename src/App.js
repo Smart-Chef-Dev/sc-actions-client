@@ -10,7 +10,12 @@ import ErrorBoundary from "pages/error-boundary";
 import DarkModeContext from "contexts/dark-mode-context";
 import { TranslationContext } from "contexts/translation-context";
 
-const Actions = lazy(() => import("pages/actions"));
+const Actions = lazy(() =>
+  import("pages/actions" /* webpackChunkName: "actions" */)
+);
+const QrCodeBuilder = lazy(() =>
+  import("pages/qr-code-builder" /* webpackChunkName: "qr-code-builder" */)
+);
 
 function App() {
   return (
@@ -24,6 +29,10 @@ function App() {
               <ErrorBoundary>
                 <Switch>
                   <Route path={Routes.ACTIONS} component={Actions} />
+                  <Route
+                    path={Routes.QR_CODE_BUILDER}
+                    component={QrCodeBuilder}
+                  />
                 </Switch>
               </ErrorBoundary>
             </Suspense>
