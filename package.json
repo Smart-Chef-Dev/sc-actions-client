@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
-    "@babel/plugin-transform-react-jsx": "^7.12.17",
+    "@babel/plugin-transform-react-jsx": "^7.13.12",
     "@linaria/webpack-loader": "^3.0.0-beta.1",
     "@svgr/webpack": "^5.5.0",
     "@typescript-eslint/parser": "^4.17.0",
