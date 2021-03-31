@@ -23,6 +23,7 @@ export const globals = css`
       --main-bg-color: #fff;
       --main-text-color: #000;
       --main-color: #ff2d55;
+      --main-color-disabled: rgba(255, 45, 85, 0.5);
       --text: #fff;
       --black-layout-color: rgba(0, 0, 0, 0.7);
     }
@@ -35,6 +36,10 @@ export const globals = css`
 
     div#root {
       background-color: var(--main-bg-color);
+    }
+
+    span {
+      color: var(--main-text-color);
     }
   }
 `;
