@@ -1,12 +1,13 @@
-import { Suspense, lazy } from "react";
+import { lazy, Suspense } from "react";
+import { Switch } from "wouter";
 import { styled } from "@linaria/react";
-import { Route, Switch } from "wouter";
 
-import DarkModeSwitcher from "components/dark-mode-switcher";
-import Logo from "components/logo";
-import Loader from "components/loader";
-import { Routes } from "constants/routes";
 import ErrorBoundary from "pages/error-boundary";
+import { Routes } from "constants/routes";
+import Route from "components/Route";
+import MainLayout from "components/MainLayout";
+import SimpleLayout from "components/SimpleLayout";
+import Loader from "components/loader";
 import DarkModeContext from "contexts/dark-mode-context";
 import { TranslationContext } from "contexts/translation-context";
 
@@ -19,41 +20,37 @@ const QrCodeBuilder = lazy(() =>
 
 function App() {
   return (
-    <Container>
+    <s.Container>
       <TranslationContext>
         <DarkModeContext>
-          <DarkModeSwitcher />
-          <Logo />
-          <PageContainer>
-            <Suspense fallback={<Loader />}>
-              <ErrorBoundary>
-                <Switch>
-                  <Route path={Routes.ACTIONS} component={Actions} />
-                  <Route
-                    path={Routes.QR_CODE_BUILDER}
-                    component={QrCodeBuilder}
-                  />
-                </Switch>
-              </ErrorBoundary>
-            </Suspense>
-          </PageContainer>
+          <Suspense fallback={<Loader />}>
+            <ErrorBoundary>
+              <Switch>
+                <Route
+                  path={Routes.QR_CODE_BUILDER}
+                  component={QrCodeBuilder}
+                  layout={SimpleLayout}
+                />
+                <Route
+                  path={Routes.ACTIONS}
+                  component={Actions}
+                  layout={MainLayout}
+                />
+              </Switch>
+            </ErrorBoundary>
+          </Suspense>
         </DarkModeContext>
       </TranslationContext>
-    </Container>
+    </s.Container>
   );
 }
 
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-`;
-
-const PageContainer = styled.div`
-  height: 70vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
+const s = {
+  Container: styled.div`
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  `,
+};
 
 export default App;

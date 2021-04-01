@@ -63,13 +63,12 @@ const QrCodeBuilderPage = () => {
   }, [isExportInProgress, restaurant]);
 
   return (
-    <Flex width={1} height={1}>
+    <Flex width={1} height={1} p={theme.spacing(1)}>
       <Flex
         direction="column"
         justifyContent="center"
         alignItems="center"
         width={1 / 4}
-        mx={theme.spacing(1)}
       >
         <Settings
           content={content}

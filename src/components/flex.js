@@ -6,21 +6,38 @@ export const Box = styled.div`
 
   margin: ${(props) => props.margin ?? props.m ?? "0"};
   margin-top: ${(props) =>
-    props.marginTop ?? props.mt ?? props.marginY ?? props.my ?? "0"};
+    props.marginTop ?? props.mt ?? props.marginY ?? props.my ?? props.m ?? "0"};
   margin-right: ${(props) =>
-    props.marginRight ?? props.mr ?? props.marginX ?? props.mx ?? "0"};
+    props.marginRight ??
+    props.mr ??
+    props.marginX ??
+    props.mx ??
+    props.m ??
+    "0"};
   margin-bottom: ${(props) =>
-    props.marginBottom ?? props.mb ?? props.marginY ?? props.my ?? "0"};
+    props.marginBottom ??
+    props.mb ??
+    props.marginY ??
+    props.my ??
+    props.m ??
+    "0"};
   margin-left: ${(props) =>
-    props.marginLeft ?? props.ml ?? props.marginX ?? props.mx ?? "0"};
+    props.marginLeft ??
+    props.ml ??
+    props.marginX ??
+    props.mx ??
+    props.m ??
+    "0"};
 
   padding: ${(props) => props.padding ?? props.p ?? "0"};
-  padding-top: ${(props) => props.paddingTop ?? props.pt ?? props.py ?? "0"};
+  padding-top: ${(props) =>
+    props.paddingTop ?? props.pt ?? props.py ?? props.p ?? "0"};
   padding-right: ${(props) =>
-    props.paddingRight ?? props.pr ?? props.px ?? "0"};
+    props.paddingRight ?? props.pr ?? props.px ?? props.p ?? "0"};
   padding-bottom: ${(props) =>
-    props.paddingBottom ?? props.pb ?? props.py ?? "0"};
-  padding-left: ${(props) => props.paddingLeft ?? props.pl ?? props.px ?? "0"};
+    props.paddingBottom ?? props.pb ?? props.py ?? props.p ?? "0"};
+  padding-left: ${(props) =>
+    props.paddingLeft ?? props.pl ?? props.px ?? props.p ?? "0"};
 `;
 
 export const Flex = styled(Box)`

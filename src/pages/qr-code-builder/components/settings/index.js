@@ -1,6 +1,7 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import ImageUploader from "react-images-upload";
+import { styled } from "@linaria/react";
 
 import { Flex } from "components/flex";
 import Input from "components/input";
@@ -32,7 +33,13 @@ const Settings = ({
   onExport,
 }) => {
   return (
-    <>
+    <s.Container
+      width={1}
+      direction="column"
+      alignItems="center"
+      ml={theme.spacing(2)}
+      p={theme.spacing(1)}
+    >
       <Flex mb={theme.spacing(3)}>
         <span>Settings</span>
       </Flex>
@@ -98,8 +105,16 @@ const Settings = ({
       <Button onClick={onExport} disabled={isExportInProgress}>
         Export
       </Button>
-    </>
+    </s.Container>
   );
+};
+
+const s = {
+  Container: styled(Flex)`
+    border: 3px solid var(--main-text-color);
+    border-radius: 3rem;
+    overflow-y: auto;
+  `,
 };
 
 Settings.propTypes = {
