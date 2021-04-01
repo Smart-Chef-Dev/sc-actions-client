@@ -1,0 +1,5 @@
+{
+  "enter_table_name": "Введите номер стола:",
+  "enter_button": "Вход",
+  "table_not_found_error": "Стол не найден"
+}

@@ -11,10 +11,7 @@ const Route = ({ layout: Layout, ...props }) => {
 };
 
 Route.propTypes = {
-  layout: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
+  layout: PropTypes.object.isRequired,
 };
 
 export default React.memo(Route);

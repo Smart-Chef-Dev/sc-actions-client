@@ -11,6 +11,9 @@ import Loader from "components/loader";
 import DarkModeContext from "contexts/dark-mode-context";
 import { TranslationContext } from "contexts/translation-context";
 
+const RestaurantLogin = lazy(() =>
+  import("pages/restaurant-login" /* webpackChunkName: "restaurant-login" */)
+);
 const Actions = lazy(() =>
   import("pages/actions" /* webpackChunkName: "actions" */)
 );
@@ -30,6 +33,11 @@ function App() {
                   path={Routes.QR_CODE_BUILDER}
                   component={QrCodeBuilder}
                   layout={SimpleLayout}
+                />
+                <Route
+                  path={Routes.RESTAURANT_LOGIN}
+                  component={RestaurantLogin}
+                  layout={MainLayout}
                 />
                 <Route
                   path={Routes.ACTIONS}

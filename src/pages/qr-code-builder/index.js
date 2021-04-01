@@ -1,18 +1,22 @@
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
 import { theme } from "theme";
-import { useErrorContext } from "pages/error-boundary";
 import { Flex } from "components/flex";
 import { urlToFile } from "utils/images";
 import { delay } from "utils/common";
 import Settings from "./components/settings";
 import Preview from "./components/preview";
+import { useRestaurant } from "../../hooks/useRestaurant";
 
 const QrCodeBuilderPage = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const restaurantId = urlParams.get("restaurantId");
+
+  const { restaurant } = useRestaurant(restaurantId);
+
   const [content, setContent] = useState(`${window.location.origin}/no-data`);
-  const [restaurant, setRestaurant] = useState(null);
   const [size, setSize] = useState(512);
   const [angle, setAngle] = useState(0);
   const [bgColor, setBgColor] = useState("#FFF");
@@ -23,19 +27,6 @@ const QrCodeBuilderPage = () => {
   const [y, setY] = useState(0);
   const [isExportInProgress, setIsExportInProgress] = useState(false);
   const qrCodeCanvasRef = useRef(null);
-  const { handleError } = useErrorContext();
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const restaurantId = urlParams.get("restaurantId");
-    if (!restaurantId) {
-      return handleError(new Error("RestaurantId should be provided"));
-    }
-
-    fetch(`/api/restaurant/${restaurantId}`)
-      .then((resp) => resp.json())
-      .then((r) => setRestaurant(r));
-  }, []);
 
   const handleExportButtonClick = useCallback(async () => {
     if (isExportInProgress) {
