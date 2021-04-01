@@ -14,6 +14,7 @@ const QrCodeBuilderPage = () => {
   const [content, setContent] = useState(`${window.location.origin}/no-data`);
   const [restaurant, setRestaurant] = useState(null);
   const [size, setSize] = useState(512);
+  const [angle, setAngle] = useState(0);
   const [bgColor, setBgColor] = useState("#FFF");
   const [fgColor, setFgColor] = useState("#000");
   const [[picture], setPicture] = useState([null]);
@@ -72,6 +73,7 @@ const QrCodeBuilderPage = () => {
       >
         <Settings
           content={content}
+          angle={angle}
           size={size}
           bgColor={bgColor}
           fgColor={fgColor}
@@ -81,6 +83,7 @@ const QrCodeBuilderPage = () => {
           isExportInProgress={isExportInProgress}
           onContentChange={setContent}
           onSizeChange={setSize}
+          onAngleChange={setAngle}
           onBgColorChange={setBgColor}
           onFgColorChange={setFgColor}
           onPictureChange={setPicture}
@@ -101,6 +104,7 @@ const QrCodeBuilderPage = () => {
           x={x}
           y={y}
           content={content}
+          angle={angle}
           size={size}
           bgColor={bgColor}
           fgColor={fgColor}

@@ -11,15 +11,18 @@ import Button from "components/button";
 
 const imgExtension = [".jpg", ".gif", ".png", ".gif", ".svg"];
 const MAX_FILE_SIZE = 5242880;
+const MAX_QR_CODE_ANGLE = 180;
 
 const Settings = ({
   x,
   y,
   size,
+  angle,
   bgColor,
   fgColor,
   isExportInProgress,
   onSizeChange,
+  onAngleChange,
   onBgColorChange,
   onFgColorChange,
   onPictureChange,
@@ -49,6 +52,15 @@ const Settings = ({
           name="y"
           value={y}
           onChange={onYChange}
+        />
+      </Flex>
+      <Flex width={1} direction="column" mb={theme.spacing(1)}>
+        <span>QrCode Angle ({angle} deg):</span>
+        <Slider
+          value={angle}
+          min={-MAX_QR_CODE_ANGLE}
+          max={MAX_QR_CODE_ANGLE}
+          onChange={onAngleChange}
         />
       </Flex>
       <Flex width={1} direction="column" mb={theme.spacing(1)}>
@@ -94,10 +106,12 @@ Settings.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
   size: PropTypes.number,
+  angle: PropTypes.number,
   bgColor: PropTypes.string,
   fgColor: PropTypes.string,
   isExportInProgress: PropTypes.bool,
   onSizeChange: PropTypes.func,
+  onAngleChange: PropTypes.func,
   onBgColorChange: PropTypes.func,
   onFgColorChange: PropTypes.func,
   onPictureChange: PropTypes.func,

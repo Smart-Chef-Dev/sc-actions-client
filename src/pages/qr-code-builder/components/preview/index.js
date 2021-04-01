@@ -14,7 +14,18 @@ const MAX_CANVAS_SIZE = 512;
 
 const Preview = forwardRef(
   (
-    { x, y, content, size, bgColor, fgColor, picture, bgPicture, onSizeChange },
+    {
+      x,
+      y,
+      content,
+      size,
+      angle,
+      bgColor,
+      fgColor,
+      picture,
+      bgPicture,
+      onSizeChange,
+    },
     ref
   ) => {
     const containerRef = useRef(null);
@@ -87,7 +98,7 @@ const Preview = forwardRef(
               <ImagePreview src={imageBgSrc} />
             </Layer>
             <Layer x={x} y={y}>
-              <ImagePreview src={imageSrc} />
+              <ImagePreview src={imageSrc} rotation={angle} />
             </Layer>
           </Stage>
         )}
@@ -109,6 +120,7 @@ Preview.propTypes = {
   content: PropTypes.string,
   x: PropTypes.number,
   y: PropTypes.number,
+  angle: PropTypes.number,
   size: PropTypes.number,
   bgColor: PropTypes.string,
   fgColor: PropTypes.string,
