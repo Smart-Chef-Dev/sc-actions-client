@@ -6,13 +6,7 @@ import Button from "./button";
 const ButtonLink = ({ text, href }) => {
   return (
     <Button>
-      <a
-        rel="noreferrer"
-        href={
-          href ?? "https://www.cl.cam.ac.uk/~lw525/publications/icn-basics.pdf"
-        }
-        target="_blank"
-      >
+      <a rel="noreferrer" href={href} target="_blank">
         {text}
       </a>
     </Button>
