@@ -1,4 +1,4 @@
-import React from "react";
+import { memo } from "react";
 import PropTypes from "prop-types";
 
 import Button from "./button";
@@ -24,4 +24,4 @@ ButtonLink.propTypes = {
   href: PropTypes.string,
 };
 
-export default React.memo(ButtonLink);
+export default memo(ButtonLink);

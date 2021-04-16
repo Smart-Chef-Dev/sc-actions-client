@@ -4,10 +4,9 @@ import { styled } from "@linaria/react";
 
 import { useTranslation } from "contexts/translation-context";
 import { useRestaurant } from "hooks/useRestaurant";
-import Input from "components/input";
+import TableNumberInput from "components/table-number-input";
 import { Label } from "components/label";
 import { Routes } from "constants/routes";
-import Button from "components/button";
 import { Flex } from "components/flex";
 import { theme } from "theme";
 
@@ -18,30 +17,41 @@ const RestaurantLogin = () => {
   } = useTranslation();
   const [, { restaurantId }] = useRoute(Routes.RESTAURANT_LOGIN);
   const { restaurant } = useRestaurant(restaurantId);
-  const [tableNumber, setTableNumber] = useState("");
   const [error, setError] = useState("");
 
-  const handleClick = useCallback(() => {
-    const { tables } = restaurant;
+  const handleSubmit = useCallback(
+    (tableNumber) => {
+      const { tables } = restaurant;
 
-    const table = tables.find((t) => t.number === +tableNumber);
-    if (table) {
-      setLocation(`/${restaurantId}/${table._id}`);
-    } else {
-      setError(translations["table_not_found_error"]);
-    }
-  }, [restaurant, restaurantId, setLocation, tableNumber, translations]);
+      const table = tables.find((t) => t.number === +tableNumber);
+      if (table) {
+        setLocation(`/${restaurantId}/${table._id}`);
+      } else {
+        setError(translations["table_not_found_error"]);
+      }
+    },
+    [restaurant, restaurantId, setLocation, translations]
+  );
 
   return (
-    <Flex width={1 / 2} direction="column">
+    <Flex
+      width={1}
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+    >
       <s.ErrorMessage width={1} justifyContent="center" mb={theme.spacing(2)}>
         {error}
       </s.ErrorMessage>
-      <Label>{translations["enter_table_name"]}</Label>
-      <Input value={tableNumber} onChange={setTableNumber} />
-      <Flex width={1} my={theme.spacing(2)} justifyContent="center">
-        <Button onClick={handleClick}>{translations["enter_button"]}</Button>
+      <Flex mb={theme.spacing(1)}>
+        <Label>{translations["enter_table_name"]}</Label>
       </Flex>
+      <TableNumberInput
+        isLoading={false}
+        isInvalid={false}
+        resetPasswordKey="1234"
+        onSubmit={handleSubmit}
+      />
     </Flex>
   );
 };
