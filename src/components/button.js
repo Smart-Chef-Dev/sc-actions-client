@@ -25,6 +25,11 @@ const Button = styled.button`
   &:hover {
     outline: none;
   }
+
+  a {
+    color: var(--text);
+    text-decoration: none;
+  }
 `;
 
 export default Button;

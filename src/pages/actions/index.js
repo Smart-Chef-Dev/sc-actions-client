@@ -2,11 +2,11 @@ import { memo, useCallback, useMemo } from "react";
 import { useRoute } from "wouter";
 
 import { Routes } from "constants/routes";
-import Button from "components/button";
 import Loader from "components/loader";
 import { useNotifications } from "hooks/useNotifications";
 import { useScreenBlock } from "hooks/useScreenBlock";
 import { useRestaurant } from "hooks/useRestaurant";
+import ActionComponent from "./action-component";
 import DoneIcon from "./done-icon.svg";
 
 const Actions = () => {
@@ -37,13 +37,13 @@ const Actions = () => {
       {renderNotification()}
       {renderScreenBlock()}
       {actions.map((a) => (
-        <Button
+        <ActionComponent
           key={a._id}
-          classNames="margin-bottom-one"
-          onClick={handleClick(a._id)}
-        >
-          {a.name}
-        </Button>
+          _id={a._id}
+          name={a.name}
+          link={a.link}
+          onClick={handleClick}
+        />
       ))}
     </>
   ) : (
