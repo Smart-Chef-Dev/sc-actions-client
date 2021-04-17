@@ -7,7 +7,7 @@ const Button = styled.button`
     props.disabled
       ? "1px solid var(--main-color-disabled)"
       : "1px solid var(--main-color)"};
-  color: var(--text);
+  color: #fff;
   width: 200px;
   height: 40px;
   padding: 6px 20px;
@@ -27,7 +27,7 @@ const Button = styled.button`
   }
 
   a {
-    color: var(--text);
+    color: #fff;
     text-decoration: none;
   }
 `;
