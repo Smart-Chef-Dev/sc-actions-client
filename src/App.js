@@ -21,6 +21,14 @@ const QrCodeBuilder = lazy(() =>
   import("pages/qr-code-builder" /* webpackChunkName: "qr-code-builder" */)
 );
 
+const SingUp = lazy(() =>
+    import("pages/back-office/sing-up" /* webpackChunkName: "sing-up" */)
+);
+
+const SingIn = lazy(() =>
+    import("pages/back-office/sing-in" /* webpackChunkName: "sing-in" */)
+);
+
 function App() {
   return (
     <s.Container>
@@ -30,14 +38,24 @@ function App() {
             <ErrorBoundary>
               <Switch>
                 <Route
-                  path={Routes.QR_CODE_BUILDER}
-                  component={QrCodeBuilder}
-                  layout={SimpleLayout}
+                    path={Routes.SING_UP}
+                    component={SingUp}
+                    layout={MainLayout}
                 />
                 <Route
-                  path={Routes.RESTAURANT_LOGIN}
-                  component={RestaurantLogin}
-                  layout={MainLayout}
+                    path={Routes.SING_IN}
+                    component={SingIn}
+                    layout={MainLayout}
+                />
+                <Route
+                    path={Routes.QR_CODE_BUILDER}
+                    component={QrCodeBuilder}
+                    layout={SimpleLayout}
+                />
+                <Route
+                    path={Routes.RESTAURANT_LOGIN}
+                    component={RestaurantLogin}
+                    layout={MainLayout}
                 />
                 <Route
                   path={Routes.ACTIONS}
