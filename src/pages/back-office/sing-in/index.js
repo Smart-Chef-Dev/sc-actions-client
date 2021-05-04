@@ -50,7 +50,7 @@ const SingIn = () => {
 
                 <Flex mb={theme.spacing(1)} direction="column">
                     <Input
-                        type="string"
+                        type="password"
                         label="Password:"
                         name="password"
                         value={password}
@@ -65,7 +65,7 @@ const SingIn = () => {
             </Flex>
 
             <Flex direction="column" mt={theme.spacing(1)}>
-                <Button><Link href="/back-office/sing-up">Sing up</Link></Button>
+                <Link href="/back-office/sing-up"><Button>Sing up</Button></Link>
             </Flex>
         </s.Container>
     )

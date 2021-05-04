@@ -86,7 +86,7 @@ const SingUp = () => {
                 <Flex mb={theme.spacing(1)} direction="column">
                     <Flex direction="column">
                         <Input
-                            type="string"
+                            type="password"
                             label="Password:"
                             name="password"
                             value={password}
@@ -99,7 +99,7 @@ const SingUp = () => {
                 <Flex mb={theme.spacing(1)} direction="column">
                     <Flex direction="column">
                         <Input
-                            type="string"
+                            type="password"
                             label="Repeat password:"
                             name="password"
                             value={repPassword}
@@ -115,7 +115,7 @@ const SingUp = () => {
             </Flex>
 
             <Flex direction="column" mt={theme.spacing(1)}>
-                <Button><Link href="/back-office/sing-in">Sing in</Link></Button>
+                <Link href="/back-office/sing-in"><Button>Sing in</Button></Link>
             </Flex>
         </s.Container>
     )
