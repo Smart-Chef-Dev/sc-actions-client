@@ -1,86 +1,96 @@
-import {memo, useState, useCallback} from "react"
-import {styled} from "@linaria/react";
-import {Link} from 'wouter';
+import { memo, useState, useCallback } from "react";
+import { styled } from "@linaria/react";
+import { useLocation } from "wouter";
 
-import {Flex} from "components/flex";
-import {theme} from "theme";
-import Input from "../../../components/input";
-import Button from "../../../components/button";
-import {Label} from "../../../components/label";
+import { theme } from "theme";
+import { Flex } from "components/flex";
+import Input from "components/input";
+import Button from "components/button";
+import { Label } from "components/label";
+import { Routes } from "constants/routes";
+import { LocalStorageKeys } from "constants/local-storage-keys";
+import { COLORS } from "constants/colors";
 
 const SingIn = () => {
-    const [error, setError] = useState(false);
+  const [, setLocation] = useLocation();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
-    const click = useCallback(() => {
-        fetch('/api/users/singIn', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-        })
-            .then((res) => res.json(res.status !== 200 && setError(true)))
-            .then((data) => {
-                localStorage.setItem('token', data);
-            })
-    }, [email, password])
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    return (
-        <s.Container direction="column" alignItems="center">
-            <Flex direction="column" mb={theme.spacing(1)}>
-                <Label>Sing in</Label>
-            </Flex>
+  const handleClick = useCallback(() => {
+    fetch("/api/users/singIn", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((res) => {
+        res.status !== 200 && setError(true);
+        return res.json();
+      })
+      .then((data) => {
+        localStorage.setItem(LocalStorageKeys.TOKEN, data);
+      });
+  }, [email, password]);
 
-            <Flex direction="column">
-                <Flex mb={theme.spacing(1)} direction="column">
-                    <Input
-                        type="string"
-                        label="Email:"
-                        name="email"
-                        value={email}
-                        onChange={setEmail}
-                    />
-                </Flex>
+  const transition = useCallback(() => {
+    setLocation(Routes.SING_UP);
+  }, [setLocation]);
 
-                <Flex mb={theme.spacing(1)} direction="column">
-                    <Input
-                        type="password"
-                        label="Password:"
-                        name="password"
-                        value={password}
-                        onChange={setPassword}
-                    />
-                </Flex>
+  return (
+    <s.Container direction="column" alignItems="center">
+      <Flex direction="column" mb={theme.spacing(1)}>
+        <Label>Sing in</Label>
+      </Flex>
 
-            </Flex>
-            <Flex direction="column" alignItems="center">
-                <Button onClick={click}>Send</Button>
-                {error && <s.error>Incorrect login or password</s.error>}
-            </Flex>
+      <Flex direction="column">
+        <Flex mb={theme.spacing(1)} direction="column">
+          <Input
+            type="string"
+            label="Email:"
+            name="email"
+            value={email}
+            onChange={setEmail}
+          />
+        </Flex>
 
-            <Flex direction="column" mt={theme.spacing(1)}>
-                <Link href="/back-office/sing-up"><Button>Sing up</Button></Link>
-            </Flex>
-        </s.Container>
-    )
-}
+        <Flex mb={theme.spacing(1)} direction="column">
+          <Input
+            type="password"
+            label="Password:"
+            name="password"
+            value={password}
+            onChange={setPassword}
+          />
+        </Flex>
+      </Flex>
+      <Flex direction="column" alignItems="center">
+        <Button onClick={handleClick}>Send</Button>
+        {error && <s.error>Incorrect login or password</s.error>}
+      </Flex>
+
+      <Flex direction="column" mt={theme.spacing(1)}>
+        <Button onClick={transition}>Sing up</Button>
+      </Flex>
+    </s.Container>
+  );
+};
 
 const s = {
-    Container: styled(Flex)`
-      overflow-y: auto;
+  Container: styled(Flex)`
+    overflow-y: auto;
+  `,
+  error: styled.p`
+    color: ${COLORS.ERROR};
+    font-size: 12px;
+    margin: 0;
+  `,
+};
 
-    `,
-    error: styled.p`
-      color: #f36c6c;
-      font-size: 12px;
-      margin: 0;
-    `,
-}
-
-export default memo(SingIn)
+export default memo(SingIn);
