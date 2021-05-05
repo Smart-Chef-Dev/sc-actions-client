@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^12.8.3",
     "date-fns": "^2.19.0",
     "file-saver": "^2.0.5",
+    "formik": "^2.2.6",
     "jszip": "^3.6.0",
     "konva": "^7.2.5",
     "prop-types": "^15.7.2",
@@ -26,7 +27,8 @@
     "react-localization": "^1.0.16",
     "react-scripts": "4.0.3",
     "use-image": "^1.0.7",
-    "wouter": "^2.7.4"
+    "wouter": "^2.7.4",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-app-rewired start",

@@ -26,6 +26,7 @@ export const globals = css`
       --main-color-disabled: rgba(255, 45, 85, 0.5);
       --text: #fff;
       --black-layout-color: rgba(0, 0, 0, 0.7);
+      --error: #f36c6c;
     }
 
     [data-theme="dark"] {

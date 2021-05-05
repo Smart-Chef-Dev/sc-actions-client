@@ -1,3 +1,3 @@
 export const LocalStorageKeys = {
-  TOKEN: "token",
+  JWT_TOKEN: "token",
 };

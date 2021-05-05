@@ -1,140 +1,131 @@
 import { memo, useState, useCallback } from "react";
 import { styled } from "@linaria/react";
+import { useFormik } from "formik";
 import { useLocation } from "wouter";
+import * as Yup from "yup";
 
 import { theme } from "theme";
-import Input from "components/input";
 import Button from "components/button";
 import { Flex } from "components/flex";
 import { Label } from "components/label";
 import { Routes } from "constants/routes";
-import { COLORS } from "constants/colors";
+import InputFormik from "components/input-formik";
+
+const SignupSchema = Yup.object().shape({
+  password: Yup.string()
+    .min(8, "Must be at least 8 characters")
+    .max(25, "Must be 25 characters or less")
+    .required("Required"),
+  email: Yup.string().email("Invalid email address").required("Required"),
+  repPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "The entered password does not match")
+    .required("Required"),
+});
 
 const SingUp = () => {
   const [, setLocation] = useLocation();
 
   const [error, setError] = useState(false);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repPassword, setRepPassword] = useState("");
-  const [checkEmail, setCheckEmail] = useState(false);
-  const [checkPassword, setChecktPassword] = useState(false);
-  const [checkRepPassword, setCheckRepPassword] = useState(false);
-
-  const handleClick = useCallback(() => {
-    const emailRe = /.@.../;
-
-    if (emailRe.test(email) && email.length < 4) {
-      setCheckEmail(true);
-    } else {
-      setCheckEmail(false);
-    }
-
-    if (password.length <= 8) {
-      setChecktPassword(true);
-    } else {
-      setChecktPassword(false);
-    }
-
-    if (password !== repPassword) {
-      setCheckRepPassword(true);
-    } else {
-      setCheckRepPassword(false);
-    }
-
-    if (
-      emailRe.test(email) &&
-      password.length >= 8 &&
-      password === repPassword
-    ) {
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      repPassword: "",
+    },
+    validationSchema: SignupSchema,
+    onSubmit: (values) => {
       fetch("/api/users/signUp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: email,
-          password: password,
+          email: values.email,
+          password: values.password,
         }),
       }).then((res) => {
         res.status !== 200 ? setError(true) : setLocation(Routes.SING_IN);
         return res.text();
       });
-    }
-  }, [password, email, repPassword, setLocation]);
+    },
+  });
 
-  const transition = useCallback(() => {
+  const handleSignInButtonClick = useCallback(() => {
     setLocation(Routes.SING_IN);
   }, [setLocation]);
 
   return (
-    <s.Container direction="column" alignItems="center">
+    <Flex direction="column" alignItems="center">
       <Flex direction="column" mb={theme.spacing(1)}>
         <Label>Registration</Label>
       </Flex>
 
-      <Flex direction="column">
-        <Flex mb={theme.spacing(1)} direction="column">
-          <Flex direction="column">
-            <Input
-              type="string"
-              label="Email:"
-              name="email"
-              value={email}
-              onChange={setEmail}
-            />
+      <form onSubmit={formik.handleSubmit}>
+        <Flex direction="column">
+          <Flex mb={theme.spacing(1)} direction="column">
+            <Flex direction="column">
+              <InputFormik
+                id="email"
+                type="string"
+                label="Email:"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+              />
+            </Flex>
+            {formik.touched.email && formik.errors.email ? (
+              <Error>{formik.errors.email}</Error>
+            ) : null}
           </Flex>
-          {checkEmail && <s.error>Please enter a valid email</s.error>}
+
+          <Flex mb={theme.spacing(1)} direction="column">
+            <Flex direction="column">
+              <InputFormik
+                id="password"
+                type="password"
+                label="Password:"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+              />
+            </Flex>
+            {formik.touched.password && formik.errors.password ? (
+              <Error>{formik.errors.password}</Error>
+            ) : null}
+          </Flex>
+
+          <Flex mb={theme.spacing(1)} direction="column">
+            <Flex direction="column">
+              <InputFormik
+                id="repPassword"
+                type="password"
+                label="Repeat password::"
+                value={formik.values.repPassword}
+                onChange={formik.handleChange}
+              />
+            </Flex>
+            {formik.touched.repPassword && formik.errors.repPassword ? (
+              <Error>{formik.errors.repPassword}</Error>
+            ) : null}
+          </Flex>
         </Flex>
 
-        <Flex mb={theme.spacing(1)} direction="column">
-          <Flex direction="column">
-            <Input
-              type="password"
-              label="Password:"
-              name="password"
-              value={password}
-              onChange={setPassword}
-            />
-          </Flex>
-          {checkPassword && <s.error>Password is small (min 8)</s.error>}
+        <Flex direction="column" alignItems="center">
+          <Button type="submit">Creat accounts</Button>
+          {error && <Error>Email already taken</Error>}
         </Flex>
-
-        <Flex mb={theme.spacing(1)} direction="column">
-          <Flex direction="column">
-            <Input
-              type="password"
-              label="Repeat password:"
-              name="password"
-              value={repPassword}
-              onChange={setRepPassword}
-            />
-          </Flex>
-          {checkRepPassword && (
-            <s.error>The entered password does not match</s.error>
-          )}
-        </Flex>
-      </Flex>
-      <Flex direction="column" alignItems="center">
-        <Button onClick={handleClick}>Creat acconts</Button>
-        {error && <s.error>Email already taken</s.error>}
-      </Flex>
+      </form>
 
       <Flex direction="column" mt={theme.spacing(1)}>
-        <Button onClick={transition}>Sing in</Button>
+        <Button onClick={handleSignInButtonClick}>Sing in</Button>
       </Flex>
-    </s.Container>
+    </Flex>
   );
 };
 
-const s = {
-  Container: styled(Flex)``,
-  error: styled.p`
-    color: ${COLORS.ERROR};
-    font-size: 12px;
-    margin: 0;
-  `,
-};
+const Error = styled.p`
+  color: var(--error);
+  font-size: 12px;
+  margin: 0;
+`;
 
 export default memo(SingUp);
