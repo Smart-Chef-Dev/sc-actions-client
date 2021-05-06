@@ -1,31 +1,41 @@
 import { memo, useState, useCallback } from "react";
-import { styled } from "@linaria/react";
-import { useFormik } from "formik";
 import { useLocation } from "wouter";
+import { useFormik } from "formik";
+import { styled } from "@linaria/react";
 import * as Yup from "yup";
 
-import { theme } from "theme";
 import Button from "components/button";
 import { Flex } from "components/flex";
 import { Label } from "components/label";
 import { Routes } from "constants/routes";
 import InputFormik from "components/input-formik";
 
-const SignupSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(8, "Must be at least 8 characters")
-    .max(25, "Must be 25 characters or less")
-    .required("Required"),
-  email: Yup.string().email("Invalid email address").required("Required"),
-  repPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "The entered password does not match")
-    .required("Required"),
-});
+import { theme } from "theme";
+import { useTranslation } from "contexts/translation-context";
 
 const SingUp = () => {
   const [, setLocation] = useLocation();
+  const {
+    strings: { singUp: translations },
+  } = useTranslation();
 
   const [error, setError] = useState(false);
+
+  const SignupSchema = Yup.object().shape({
+    password: Yup.string()
+      .min(8, translations["min_password"])
+      .max(25, translations["max_password"])
+      .required(translations["required"]),
+    email: Yup.string()
+      .email(translations["validation_email"])
+      .required(translations["required"]),
+    repPassword: Yup.string()
+      .oneOf(
+        [Yup.ref("password")],
+        translations["entered_password_does_not_match"]
+      )
+      .required(translations["required"]),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -58,7 +68,7 @@ const SingUp = () => {
   return (
     <Flex direction="column" alignItems="center">
       <Flex direction="column" mb={theme.spacing(1)}>
-        <Label>Registration</Label>
+        <Label>{translations["registration"]}</Label>
       </Flex>
 
       <form onSubmit={formik.handleSubmit}>
@@ -68,7 +78,7 @@ const SingUp = () => {
               <InputFormik
                 id="email"
                 type="string"
-                label="Email:"
+                label={translations["email"]}
                 value={formik.values.email}
                 onChange={formik.handleChange}
               />
@@ -83,7 +93,7 @@ const SingUp = () => {
               <InputFormik
                 id="password"
                 type="password"
-                label="Password:"
+                label={translations["password"]}
                 value={formik.values.password}
                 onChange={formik.handleChange}
               />
@@ -98,7 +108,7 @@ const SingUp = () => {
               <InputFormik
                 id="repPassword"
                 type="password"
-                label="Repeat password::"
+                label={translations["repeat_password"]}
                 value={formik.values.repPassword}
                 onChange={formik.handleChange}
               />
@@ -110,13 +120,15 @@ const SingUp = () => {
         </Flex>
 
         <Flex direction="column" alignItems="center">
-          <Button type="submit">Creat accounts</Button>
-          {error && <Error>Email already taken</Error>}
+          <Button type="submit">{translations["creat_accounts"]}</Button>
+          {error && <Error>{translations["email_already_taken"]}</Error>}
         </Flex>
       </form>
 
       <Flex direction="column" mt={theme.spacing(1)}>
-        <Button onClick={handleSignInButtonClick}>Sing in</Button>
+        <Button onClick={handleSignInButtonClick}>
+          {translations["sing_in"]}
+        </Button>
       </Flex>
     </Flex>
   );

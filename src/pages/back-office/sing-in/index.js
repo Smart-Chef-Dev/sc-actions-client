@@ -1,10 +1,9 @@
 import { memo, useCallback, useState } from "react";
-import { styled } from "@linaria/react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { useLocation } from "wouter";
+import { styled } from "@linaria/react";
+import * as Yup from "yup";
 
-import { theme } from "theme";
 import { Flex } from "components/flex";
 import InputFormik from "components/input-formik";
 import Button from "components/button";
@@ -12,18 +11,26 @@ import { Label } from "components/label";
 import { Routes } from "constants/routes";
 import { LocalStorageKeys } from "constants/local-storage-keys";
 
-const SignupSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(8, "Must be at least 8 characters")
-    .max(25, "Must be 25 characters or less")
-    .required("Required"),
-  email: Yup.string().email("Invalid email address").required("Required"),
-});
+import { theme } from "theme";
+import { useTranslation } from "contexts/translation-context";
 
 const SingIn = () => {
   const [, setLocation] = useLocation();
+  const {
+    strings: { singIn: translations },
+  } = useTranslation();
 
   const [error, setError] = useState(false);
+
+  const SignupSchema = Yup.object().shape({
+    password: Yup.string()
+      .min(8, translations["min_password"])
+      .max(25, translations["max_password"])
+      .required(translations["required"]),
+    email: Yup.string()
+      .email(translations["validation_email"])
+      .required(translations["required"]),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -59,7 +66,7 @@ const SingIn = () => {
   return (
     <Flex direction="column" alignItems="center">
       <Flex direction="column" mb={theme.spacing(1)}>
-        <Label>Sing in</Label>
+        <Label>{translations["sing_in"]}</Label>
       </Flex>
 
       <form onSubmit={formik.handleSubmit}>
@@ -69,7 +76,7 @@ const SingIn = () => {
               <InputFormik
                 id="email"
                 type="string"
-                label="Email:"
+                label={translations["email"]}
                 value={formik.values.email}
                 onChange={formik.handleChange}
               />
@@ -84,7 +91,7 @@ const SingIn = () => {
               <InputFormik
                 id="password"
                 type="password"
-                label="Password:"
+                label={translations["password"]}
                 value={formik.values.password}
                 onChange={formik.handleChange}
               />
@@ -96,13 +103,17 @@ const SingIn = () => {
         </Flex>
 
         <Flex direction="column" alignItems="center">
-          <Button type="submit">Sing in</Button>
-          {error && <Error>Incorrect login or password</Error>}
+          <Button type="submit">{translations["sing_in"]}</Button>
+          {error && (
+            <Error>{translations["incorrect_login_or_password"]}</Error>
+          )}
         </Flex>
       </form>
 
       <Flex direction="column" mt={theme.spacing(1)}>
-        <Button onClick={handleSignInButtonClick}>Sing up</Button>
+        <Button onClick={handleSignInButtonClick}>
+          {translations["sing_up"]}
+        </Button>
       </Flex>
     </Flex>
   );
