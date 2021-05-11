@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import InputFormik from "components/input-formik";
+import Input from "components/input";
 import ErrorText from "components/error-text";
 import Button from "components/button";
 import { Flex } from "components/flex";
@@ -81,12 +81,12 @@ const SingUp = () => {
         <Flex direction="column">
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
-              <InputFormik
+              <Input
                 id="email"
                 type="string"
                 label={translations["email"]}
-                value={formik.values.email}
-                onChange={formik.handleChange}
+                value={formik.values["email"]}
+                onChange={(e) => formik.setFieldValue("email", e)}
               />
             </Flex>
             {formik.touched.email && formik.errors.email && (
@@ -96,12 +96,12 @@ const SingUp = () => {
 
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
-              <InputFormik
+              <Input
                 id="password"
                 type="password"
                 label={translations["password"]}
-                value={formik.values.password}
-                onChange={formik.handleChange}
+                value={formik.values["password"]}
+                onChange={(e) => formik.setFieldValue("password", e)}
               />
             </Flex>
             {formik.touched.password && formik.errors.password && (
@@ -111,12 +111,12 @@ const SingUp = () => {
 
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
-              <InputFormik
+              <Input
                 id="repPassword"
                 type="password"
                 label={translations["repeat_password"]}
-                value={formik.values.repPassword}
-                onChange={formik.handleChange}
+                value={formik.values["repPassword"]}
+                onChange={(e) => formik.setFieldValue("repPassword", e)}
               />
             </Flex>
             {formik.touched.repPassword && formik.errors.repPassword && (
