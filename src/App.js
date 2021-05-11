@@ -22,11 +22,15 @@ const QrCodeBuilder = lazy(() =>
 );
 
 const SingUp = lazy(() =>
-    import("pages/back-office/sing-up" /* webpackChunkName: "sing-up" */)
+  import("pages/back-office/sing-up" /* webpackChunkName: "sing-up" */)
 );
 
 const SingIn = lazy(() =>
-    import("pages/back-office/sing-in" /* webpackChunkName: "sing-in" */)
+  import("pages/back-office/sing-in" /* webpackChunkName: "sing-in" */)
+);
+
+const PrivateRoute = lazy(() =>
+  import("pages/public/private-route" /* webpackChunkName: "private-route" */)
 );
 
 function App() {
@@ -38,24 +42,29 @@ function App() {
             <ErrorBoundary>
               <Switch>
                 <Route
-                    path={Routes.SING_UP}
-                    component={SingUp}
-                    layout={MainLayout}
+                  path={Routes.PRIVATE_ROUTE}
+                  component={PrivateRoute}
+                  layout={MainLayout}
                 />
                 <Route
-                    path={Routes.SING_IN}
-                    component={SingIn}
-                    layout={MainLayout}
+                  path={Routes.SING_UP}
+                  component={SingUp}
+                  layout={MainLayout}
                 />
                 <Route
-                    path={Routes.QR_CODE_BUILDER}
-                    component={QrCodeBuilder}
-                    layout={SimpleLayout}
+                  path={Routes.SING_IN}
+                  component={SingIn}
+                  layout={MainLayout}
                 />
                 <Route
-                    path={Routes.RESTAURANT_LOGIN}
-                    component={RestaurantLogin}
-                    layout={MainLayout}
+                  path={Routes.QR_CODE_BUILDER}
+                  component={QrCodeBuilder}
+                  layout={SimpleLayout}
+                />
+                <Route
+                  path={Routes.RESTAURANT_LOGIN}
+                  component={RestaurantLogin}
+                  layout={MainLayout}
                 />
                 <Route
                   path={Routes.ACTIONS}

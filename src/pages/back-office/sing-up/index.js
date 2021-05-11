@@ -1,14 +1,15 @@
-import { memo, useState, useCallback } from "react";
+import { memo, useState, useCallback, useMemo } from "react";
 import { useLocation } from "wouter";
 import { useFormik } from "formik";
-import { styled } from "@linaria/react";
 import * as Yup from "yup";
 
+import InputFormik from "components/input-formik";
+import ErrorText from "components/error-text";
 import Button from "components/button";
 import { Flex } from "components/flex";
 import { Label } from "components/label";
+
 import { Routes } from "constants/routes";
-import InputFormik from "components/input-formik";
 
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
@@ -20,6 +21,12 @@ const SingUp = () => {
   } = useTranslation();
 
   const [error, setError] = useState(false);
+
+  const initialValues = {
+    email: "",
+    password: "",
+    repPassword: "",
+  };
 
   const SignupSchema = Yup.object().shape({
     password: Yup.string()
@@ -38,27 +45,26 @@ const SingUp = () => {
   });
 
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-      repPassword: "",
-    },
-    validationSchema: SignupSchema,
-    onSubmit: (values) => {
-      fetch("/api/users/signUp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
-      }).then((res) => {
-        res.status !== 200 ? setError(true) : setLocation(Routes.SING_IN);
-        return res.text();
-      });
-    },
+    initialValues: initialValues,
+    validationSchema: useMemo(() => SignupSchema, [SignupSchema]),
+    onSubmit: useCallback(
+      (values) => {
+        fetch("/api/users/signUp", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: values.email,
+            password: values.password,
+          }),
+        }).then((res) => {
+          res.status !== 200 ? setError(true) : setLocation(Routes.SING_IN);
+          return res.text();
+        });
+      },
+      [setError, setLocation]
+    ),
   });
 
   const handleSignInButtonClick = useCallback(() => {
@@ -83,9 +89,9 @@ const SingUp = () => {
                 onChange={formik.handleChange}
               />
             </Flex>
-            {formik.touched.email && formik.errors.email ? (
-              <Error>{formik.errors.email}</Error>
-            ) : null}
+            {formik.touched.email && formik.errors.email && (
+              <ErrorText>{formik.errors.email}</ErrorText>
+            )}
           </Flex>
 
           <Flex mb={theme.spacing(1)} direction="column">
@@ -98,9 +104,9 @@ const SingUp = () => {
                 onChange={formik.handleChange}
               />
             </Flex>
-            {formik.touched.password && formik.errors.password ? (
-              <Error>{formik.errors.password}</Error>
-            ) : null}
+            {formik.touched.password && formik.errors.password && (
+              <ErrorText>{formik.errors.password}</ErrorText>
+            )}
           </Flex>
 
           <Flex mb={theme.spacing(1)} direction="column">
@@ -113,15 +119,17 @@ const SingUp = () => {
                 onChange={formik.handleChange}
               />
             </Flex>
-            {formik.touched.repPassword && formik.errors.repPassword ? (
-              <Error>{formik.errors.repPassword}</Error>
-            ) : null}
+            {formik.touched.repPassword && formik.errors.repPassword && (
+              <ErrorText>{formik.errors.repPassword}</ErrorText>
+            )}
           </Flex>
         </Flex>
 
         <Flex direction="column" alignItems="center">
           <Button type="submit">{translations["creat_accounts"]}</Button>
-          {error && <Error>{translations["email_already_taken"]}</Error>}
+          {error && (
+            <ErrorText>{translations["email_already_taken"]}</ErrorText>
+          )}
         </Flex>
       </form>
 
@@ -133,11 +141,5 @@ const SingUp = () => {
     </Flex>
   );
 };
-
-const Error = styled.p`
-  color: var(--error);
-  font-size: 12px;
-  margin: 0;
-`;
 
 export default memo(SingUp);

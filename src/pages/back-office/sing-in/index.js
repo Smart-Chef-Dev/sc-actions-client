@@ -1,13 +1,14 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useState, useMemo } from "react";
 import { useFormik } from "formik";
 import { useLocation } from "wouter";
-import { styled } from "@linaria/react";
 import * as Yup from "yup";
 
-import { Flex } from "components/flex";
 import InputFormik from "components/input-formik";
+import ErrorText from "components/error-text";
 import Button from "components/button";
+import { Flex } from "components/flex";
 import { Label } from "components/label";
+
 import { Routes } from "constants/routes";
 import { LocalStorageKeys } from "constants/local-storage-keys";
 
@@ -22,6 +23,11 @@ const SingIn = () => {
 
   const [error, setError] = useState(false);
 
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
   const SignupSchema = Yup.object().shape({
     password: Yup.string()
       .min(8, translations["min_password"])
@@ -33,30 +39,32 @@ const SingIn = () => {
   });
 
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: SignupSchema,
-    onSubmit: (values) => {
-      fetch("/api/users/singIn", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
-      })
-        .then((res) => {
-          res.status !== 200 && setError(true);
-          return res.json();
+    initialValues: initialValues,
+    validationSchema: useMemo(() => SignupSchema, [SignupSchema]),
+    onSubmit: useCallback(
+      (values) => {
+        fetch("/api/users/singIn", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: values.email,
+            password: values.password,
+          }),
         })
-        .then((data) => {
-          localStorage.setItem(LocalStorageKeys.JWT_TOKEN, data);
-        });
-    },
+          .then((res) => {
+            res.status !== 200
+              ? setError(true)
+              : setLocation(Routes.PRIVATE_ROUTE);
+            return res.json();
+          })
+          .then((data) => {
+            localStorage.setItem(LocalStorageKeys.JWT_TOKEN, data);
+          });
+      },
+      [setError, setLocation]
+    ),
   });
 
   const handleSignInButtonClick = useCallback(() => {
@@ -82,7 +90,7 @@ const SingIn = () => {
               />
             </Flex>
             {formik.touched.email && formik.errors.email ? (
-              <Error>{formik.errors.email}</Error>
+              <ErrorText>{formik.errors.email}</ErrorText>
             ) : null}
           </Flex>
 
@@ -97,7 +105,7 @@ const SingIn = () => {
               />
             </Flex>
             {formik.touched.password && formik.errors.password ? (
-              <Error>{formik.errors.password}</Error>
+              <ErrorText>{formik.errors.password}</ErrorText>
             ) : null}
           </Flex>
         </Flex>
@@ -105,7 +113,7 @@ const SingIn = () => {
         <Flex direction="column" alignItems="center">
           <Button type="submit">{translations["sing_in"]}</Button>
           {error && (
-            <Error>{translations["incorrect_login_or_password"]}</Error>
+            <ErrorText>{translations["incorrect_login_or_password"]}</ErrorText>
           )}
         </Flex>
       </form>
@@ -118,11 +126,5 @@ const SingIn = () => {
     </Flex>
   );
 };
-
-const Error = styled.p`
-  color: var(--error);
-  font-size: 12px;
-  margin: 0;
-`;
 
 export default memo(SingIn);
