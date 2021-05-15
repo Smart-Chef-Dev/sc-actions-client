@@ -54,13 +54,14 @@ const SingIn = () => {
           }),
         })
           .then((res) => {
-            res.status !== 200
-              ? setError(true)
-              : setLocation(Routes.PRIVATE_ROUTE);
+            res.status !== 200 && setError(true);
             return res.json();
           })
           .then((data) => {
-            localStorage.setItem(LocalStorageKeys.JWT_TOKEN, data);
+            if (!data.statusCode) {
+              localStorage.setItem(LocalStorageKeys.JWT_TOKEN, data);
+              setLocation(Routes.DASHBOARD);
+            }
           });
       },
       [setError, setLocation]

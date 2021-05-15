@@ -5,6 +5,7 @@ import { styled } from "@linaria/react";
 import ErrorBoundary from "pages/error-boundary";
 import { Routes } from "constants/routes";
 import Route from "components/Route";
+import PrivateRoute from "components/private-route";
 import MainLayout from "components/MainLayout";
 import SimpleLayout from "components/SimpleLayout";
 import Loader from "components/loader";
@@ -29,8 +30,8 @@ const SingIn = lazy(() =>
   import("pages/back-office/sing-in" /* webpackChunkName: "sing-in" */)
 );
 
-const PrivateRoute = lazy(() =>
-  import("pages/public/private-route" /* webpackChunkName: "private-route" */)
+const dashboard = lazy(() =>
+  import("pages/back-office/dashboard" /* webpackChunkName: "dashboard" */)
 );
 
 function App() {
@@ -42,11 +43,6 @@ function App() {
             <ErrorBoundary>
               <Switch>
                 <Route
-                  path={Routes.PRIVATE_ROUTE}
-                  component={PrivateRoute}
-                  layout={MainLayout}
-                />
-                <Route
                   path={Routes.SING_UP}
                   component={SingUp}
                   layout={MainLayout}
@@ -56,15 +52,20 @@ function App() {
                   component={SingIn}
                   layout={MainLayout}
                 />
-                <Route
-                  path={Routes.QR_CODE_BUILDER}
-                  component={QrCodeBuilder}
-                  layout={SimpleLayout}
+                <PrivateRoute
+                  path={Routes.DASHBOARD}
+                  component={dashboard}
+                  layout={MainLayout}
                 />
                 <Route
                   path={Routes.RESTAURANT_LOGIN}
                   component={RestaurantLogin}
                   layout={MainLayout}
+                />
+                <Route
+                  path={Routes.QR_CODE_BUILDER}
+                  component={QrCodeBuilder}
+                  layout={SimpleLayout}
                 />
                 <Route
                   path={Routes.ACTIONS}

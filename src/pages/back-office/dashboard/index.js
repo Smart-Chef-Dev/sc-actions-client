@@ -2,7 +2,7 @@ import { memo } from "react";
 
 import { Flex } from "components/flex";
 
-const PrivateRoute = () => {
+const Dashboard = () => {
   return (
     <Flex alignItems="center">
       <Flex>dashboard</Flex>
@@ -10,4 +10,4 @@ const PrivateRoute = () => {
   );
 };
 
-export default memo(PrivateRoute);
+export default memo(Dashboard);
