@@ -86,7 +86,9 @@ const SingUp = () => {
                 type="string"
                 label={translations["email"]}
                 value={formik.values["email"]}
-                onChange={(e) => formik.setFieldValue("email", e)}
+                onChange={useCallback((e) => formik.setFieldValue("email", e), [
+                  formik,
+                ])}
               />
             </Flex>
             {formik.touched.email && formik.errors.email && (
@@ -101,7 +103,10 @@ const SingUp = () => {
                 type="password"
                 label={translations["password"]}
                 value={formik.values["password"]}
-                onChange={(e) => formik.setFieldValue("password", e)}
+                onChange={useCallback(
+                  (e) => formik.setFieldValue("password", e),
+                  [formik]
+                )}
               />
             </Flex>
             {formik.touched.password && formik.errors.password && (
@@ -116,7 +121,10 @@ const SingUp = () => {
                 type="password"
                 label={translations["repeat_password"]}
                 value={formik.values["repPassword"]}
-                onChange={(e) => formik.setFieldValue("repPassword", e)}
+                onChange={useCallback(
+                  (e) => formik.setFieldValue("repPassword", e),
+                  [formik]
+                )}
               />
             </Flex>
             {formik.touched.repPassword && formik.errors.repPassword && (

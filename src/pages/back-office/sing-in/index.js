@@ -87,7 +87,9 @@ const SingIn = () => {
                 type="string"
                 label={translations["email"]}
                 value={formik.values["email"]}
-                onChange={(e) => formik.setFieldValue("email", e)}
+                onChange={useCallback((e) => formik.setFieldValue("email", e), [
+                  formik,
+                ])}
               />
             </Flex>
             {formik.touched.email && formik.errors.email ? (
@@ -102,7 +104,10 @@ const SingIn = () => {
                 type="password"
                 label={translations["password"]}
                 value={formik.values["password"]}
-                onChange={(e) => formik.setFieldValue("password", e)}
+                onChange={useCallback(
+                  (e) => formik.setFieldValue("password", e),
+                  [formik]
+                )}
               />
             </Flex>
             {formik.touched.password && formik.errors.password ? (
