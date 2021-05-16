@@ -25,7 +25,7 @@ const SingUp = () => {
   const initialValues = {
     email: "",
     password: "",
-    repPassword: "",
+    repeatPassword: "",
   };
 
   const SignupSchema = Yup.object().shape({
@@ -36,7 +36,7 @@ const SingUp = () => {
     email: Yup.string()
       .email(translations["validation_email"])
       .required(translations["required"]),
-    repPassword: Yup.string()
+    repeatPassword: Yup.string()
       .oneOf(
         [Yup.ref("password")],
         translations["entered_password_does_not_match"]
@@ -71,6 +71,13 @@ const SingUp = () => {
     setLocation(Routes.SING_IN);
   }, [setLocation]);
 
+  const handleChange = useCallback(
+    (fieldName) => (e) => {
+      formik.setFieldValue(fieldName, e);
+    },
+    [formik]
+  );
+
   return (
     <Flex direction="column" alignItems="center">
       <Flex direction="column" mb={theme.spacing(1)}>
@@ -86,9 +93,7 @@ const SingUp = () => {
                 type="string"
                 label={translations["email"]}
                 value={formik.values["email"]}
-                onChange={useCallback((e) => formik.setFieldValue("email", e), [
-                  formik,
-                ])}
+                onChange={handleChange("email")}
               />
             </Flex>
             {formik.touched.email && formik.errors.email && (
@@ -103,10 +108,7 @@ const SingUp = () => {
                 type="password"
                 label={translations["password"]}
                 value={formik.values["password"]}
-                onChange={useCallback(
-                  (e) => formik.setFieldValue("password", e),
-                  [formik]
-                )}
+                onChange={handleChange("password")}
               />
             </Flex>
             {formik.touched.password && formik.errors.password && (
@@ -117,18 +119,15 @@ const SingUp = () => {
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
               <Input
-                id="repPassword"
+                id="repeatPassword"
                 type="password"
                 label={translations["repeat_password"]}
-                value={formik.values["repPassword"]}
-                onChange={useCallback(
-                  (e) => formik.setFieldValue("repPassword", e),
-                  [formik]
-                )}
+                value={formik.values["repeatPassword"]}
+                onChange={handleChange("repeatPassword")}
               />
             </Flex>
-            {formik.touched.repPassword && formik.errors.repPassword && (
-              <ErrorText>{formik.errors.repPassword}</ErrorText>
+            {formik.touched.repeatPassword && formik.errors.repeatPassword && (
+              <ErrorText>{formik.errors.repeatPassword}</ErrorText>
             )}
           </Flex>
         </Flex>

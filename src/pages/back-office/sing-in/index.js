@@ -68,6 +68,13 @@ const SingIn = () => {
     ),
   });
 
+  const handleChange = useCallback(
+    (fieldName) => (e) => {
+      formik.setFieldValue(fieldName, e);
+    },
+    [formik]
+  );
+
   const handleSignInButtonClick = useCallback(() => {
     setLocation(Routes.SING_UP);
   }, [setLocation]);
@@ -87,9 +94,7 @@ const SingIn = () => {
                 type="string"
                 label={translations["email"]}
                 value={formik.values["email"]}
-                onChange={useCallback((e) => formik.setFieldValue("email", e), [
-                  formik,
-                ])}
+                onChange={handleChange("email")}
               />
             </Flex>
             {formik.touched.email && formik.errors.email ? (
@@ -104,10 +109,7 @@ const SingIn = () => {
                 type="password"
                 label={translations["password"]}
                 value={formik.values["password"]}
-                onChange={useCallback(
-                  (e) => formik.setFieldValue("password", e),
-                  [formik]
-                )}
+                onChange={handleChange("password")}
               />
             </Flex>
             {formik.touched.password && formik.errors.password ? (
