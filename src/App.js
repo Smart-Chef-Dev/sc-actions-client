@@ -30,7 +30,7 @@ const SingIn = lazy(() =>
   import("pages/back-office/sing-in" /* webpackChunkName: "sing-in" */)
 );
 
-const dashboard = lazy(() =>
+const Dashboard = lazy(() =>
   import("pages/back-office/dashboard" /* webpackChunkName: "dashboard" */)
 );
 
@@ -54,7 +54,7 @@ function App() {
                 />
                 <PrivateRoute
                   path={Routes.DASHBOARD}
-                  component={dashboard}
+                  component={Dashboard}
                   layout={MainLayout}
                 />
                 <Route
