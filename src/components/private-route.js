@@ -10,11 +10,11 @@ const PrivateRoute = (props) => {
   const [, setLocation] = useLocation();
 
   useEffect(() => {
-    const TokenExpired = isExpired(
+    const tokenExpired = isExpired(
       localStorage.getItem(LocalStorageKeys.JWT_TOKEN)
     );
 
-    if (TokenExpired) {
+    if (tokenExpired) {
       setLocation(Routes.SING_IN);
     }
   });
