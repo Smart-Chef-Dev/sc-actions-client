@@ -7,6 +7,7 @@ import { Routes } from "constants/routes";
 import Route from "components/Route";
 import MainLayout from "components/MainLayout";
 import SimpleLayout from "components/SimpleLayout";
+import BlankLayout from "components/BlankLayout";
 import Loader from "components/loader";
 import DarkModeContext from "contexts/dark-mode-context";
 import { TranslationContext } from "contexts/translation-context";
@@ -20,6 +21,7 @@ const Actions = lazy(() =>
 const QrCodeBuilder = lazy(() =>
   import("pages/qr-code-builder" /* webpackChunkName: "qr-code-builder" */)
 );
+const Menu = lazy(() => import("pages/menu" /* webpackChunkName: "menu" */));
 
 function App() {
   return (
@@ -29,6 +31,11 @@ function App() {
           <Suspense fallback={<Loader />}>
             <ErrorBoundary>
               <Switch>
+                <Route
+                  path={Routes.MENU}
+                  component={Menu}
+                  layout={BlankLayout}
+                />
                 <Route
                   path={Routes.QR_CODE_BUILDER}
                   component={QrCodeBuilder}

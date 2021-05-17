@@ -25,6 +25,7 @@ export const globals = css`
       --main-color: #ff2d55;
       --main-color-disabled: rgba(255, 45, 85, 0.5);
       --text: #fff;
+      --grey: #c7c7cc;
       --black-layout-color: rgba(0, 0, 0, 0.7);
     }
 

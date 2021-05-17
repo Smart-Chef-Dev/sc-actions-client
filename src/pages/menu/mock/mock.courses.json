@@ -1,0 +1,32 @@
+[
+  {
+    "category": "Блюда",
+    "name": "Пероженное",
+    "picture": "/Pictures/berries.png",
+    "price": "1$"
+  },
+  {
+    "category": "Блюда",
+    "name": "Желе",
+    "picture": "/Pictures/berries.png",
+    "price": "0.6$"
+  },
+  {
+    "category": "Напитки",
+    "name": "Лате",
+    "picture": "/Pictures/berries.png",
+    "price": "0.2$"
+  },
+  {
+    "category": "Напитки",
+    "name": "Зелённый чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  }
+]
