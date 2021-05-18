@@ -3,6 +3,7 @@ import { styled } from "@linaria/react";
 
 import { theme } from "theme";
 import { Flex } from "components/flex";
+import { Box } from "components/flex";
 import { Label } from "components/label";
 import H1 from "components/h1";
 import H2 from "components/h2";
@@ -24,19 +25,19 @@ const Menu = () => {
   return (
     <Flex direction="column" p={theme.spacing(1)}>
       <H1 marginTop="0px">Menu</H1>
-      <s.Divider />
+      <s.Divider w="100vw" />
       <Flex direction="column" h="91vh" overflowY="scroll" overflowX="hidden">
         {category.map((currentCategory) => (
           <Flex key={Math.random()} direction="column">
             <H2>{currentCategory.category}</H2>
-            <Flex w="95vw" overflowX="scroll">
+            <Flex w="91vw" overflowX="scroll" ml={theme.spacing(1)}>
               {course.map(
                 (currentCourse) =>
                   currentCourse.category === currentCategory.category && (
                     <Flex
                       key={Math.random()}
                       direction="column"
-                      ml={theme.spacing(1)}
+                      mr={theme.spacing(1)}
                       mb={theme.spacing(1)}
                     >
                       <s.Preview
@@ -49,7 +50,7 @@ const Menu = () => {
                   )
               )}
             </Flex>
-            <s.Divider ml={theme.spacing(1)} />
+            <s.Divider ml={theme.spacing(1)} w="100vw" />
           </Flex>
         ))}
       </Flex>
@@ -58,11 +59,8 @@ const Menu = () => {
 };
 
 const s = {
-  Divider: styled.div`
+  Divider: styled(Box)`
     border-bottom: 1px solid var(--grey);
-    width: 100vw;
-
-    margin-left: ${(props) => props.ml ?? "0"};
   `,
   Preview: styled.img`
     border-radius: 10%;
