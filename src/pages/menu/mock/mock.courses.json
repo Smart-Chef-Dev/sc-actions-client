@@ -1,12 +1,12 @@
 [
   {
-    "category": "Блюда",
-    "name": "Пероженное",
+    "category": "Дессерты",
+    "name": "Пирожное",
     "picture": "/Pictures/berries.png",
     "price": "1$"
   },
   {
-    "category": "Блюда",
+    "category": "Дессерты",
     "name": "Желе",
     "picture": "/Pictures/berries.png",
     "price": "0.6$"
@@ -28,70 +28,83 @@
     "name": "Чёрный чай",
     "picture": "/Pictures/berries.png",
     "price": "0.1$"
-  },  {
-  "category": "Напитки",
-  "name": "Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-},  {
-  "category": "Напитки",
-  "name": "Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-},  {
-  "category": "Напитки",
-  "name": "Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-},{
-  "category": "Напитки",
-  "name": "Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-}, {
-  "category": "Напитки",
-  "name": "Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-}, {
-  "category": "Напитки",
-  "name": "Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-}, {
-  "category": "Напитки",
-  "name": "Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-}, {
-  "category": "Напитки",
-  "name": "Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-}, {
-  "category": "Напитки",
-  "name": "5Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-}, {
-  "category": "Напитки",
-  "name": "4Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-}, {
-  "category": "Напитки",
-  "name": "3Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-}, {
-  "category": "Напитки",
-  "name": "2Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-}, {
-  "category": "Напитки",
-  "name": "1Чёрный чай",
-  "picture": "/Pictures/berries.png",
-  "price": "0.1$"
-}
+  },
+  {
+    "category": "Напитки",
+    "name": "Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "5Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "4Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "3Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "2Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  },
+  {
+    "category": "Напитки",
+    "name": "1Чёрный чай",
+    "picture": "/Pictures/berries.png",
+    "price": "0.1$"
+  }
 ]

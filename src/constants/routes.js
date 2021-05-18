@@ -3,5 +3,5 @@ export const Routes = {
   ACTIONS: "/:restaurantId/:tableId",
   TABLES: "/:tableId",
   QR_CODE_BUILDER: "/qr-code-builder",
-  MENU: "/restaurant/:restaurantId/categories",
+  MENU: "/restaurant/:restaurantId",
 };
