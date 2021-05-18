@@ -1,8 +1,10 @@
 import { styled } from "@linaria/react";
 
 export const Box = styled.div`
-  width: ${(props) => (props.width ? `${100 * props.width}%` : "auto")};
-  height: ${(props) => (props.height ? `${100 * props.height}%` : "auto")};
+  width: ${(props) =>
+    props.w ?? (props.width ? `${100 * props.width}%` : "auto")};
+  height: ${(props) =>
+    props.h ?? (props.height ? `${100 * props.height}%` : "auto")};
 
   margin: ${(props) => props.margin ?? props.m ?? "0"};
   margin-top: ${(props) =>
@@ -38,6 +40,9 @@ export const Box = styled.div`
     props.paddingBottom ?? props.pb ?? props.py ?? props.p ?? "0"};
   padding-left: ${(props) =>
     props.paddingLeft ?? props.pl ?? props.px ?? props.p ?? "0"};
+
+  overflow-x: ${(props) => props.overflowX ?? "visible"};
+  overflow-y: ${(props) => props.overflowY ?? "visible"};
 `;
 
 export const Flex = styled(Box)`

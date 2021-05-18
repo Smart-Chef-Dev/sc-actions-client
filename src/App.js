@@ -7,7 +7,6 @@ import { Routes } from "constants/routes";
 import Route from "components/Route";
 import MainLayout from "components/MainLayout";
 import SimpleLayout from "components/SimpleLayout";
-import BlankLayout from "components/BlankLayout";
 import Loader from "components/loader";
 import DarkModeContext from "contexts/dark-mode-context";
 import { TranslationContext } from "contexts/translation-context";
@@ -34,7 +33,7 @@ function App() {
                 <Route
                   path={Routes.MENU}
                   component={Menu}
-                  layout={BlankLayout}
+                  layout={SimpleLayout}
                 />
                 <Route
                   path={Routes.QR_CODE_BUILDER}
