@@ -3,13 +3,14 @@ import { styled } from "@linaria/react";
 
 import { theme } from "theme";
 import { Flex } from "components/flex";
-import { Box } from "components/flex";
 import { Label } from "components/label";
 import H1 from "components/h1";
 import H2 from "components/h2";
 
 import mockCategory from "./mock/mock.categories.json";
 import mockCourses from "./mock/mock.courses.json";
+
+import Arrow from "./Arrow.png";
 
 const Menu = () => {
   const [category, setCategory] = useState([]);
@@ -29,8 +30,18 @@ const Menu = () => {
       <Flex direction="column" h="91vh" overflowY="scroll" overflowX="hidden">
         {category.map((currentCategory) => (
           <Flex key={Math.random()} direction="column">
-            <H2>{currentCategory.category}</H2>
-            <Flex w="91vw" overflowX="scroll" ml={theme.spacing(1)}>
+            <Flex w="92vw">
+              <H2>{currentCategory.category}</H2>
+              <Flex
+                width={1}
+                height={1}
+                direction="row-reverse"
+                alignItems="center"
+              >
+                <img src={Arrow} alt="Arrow" />
+              </Flex>
+            </Flex>
+            <Flex w="92vw" overflowX="scroll" ml={theme.spacing(1)}>
               {course.map(
                 (currentCourse) =>
                   currentCourse.category === currentCategory.category && (
@@ -59,7 +70,15 @@ const Menu = () => {
 };
 
 const s = {
-  Divider: styled(Box)`
+  B: styled.div`
+    width: 8px;
+    height: 13px;
+    left: calc(50% - 8px / 2 + 1.07px);
+    top: calc(50% - 13px / 2);
+
+    background: #c7c7cc;
+  `,
+  Divider: styled(Flex)`
     border-bottom: 1px solid var(--grey);
   `,
   Preview: styled.img`
