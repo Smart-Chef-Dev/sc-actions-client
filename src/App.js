@@ -21,6 +21,9 @@ const QrCodeBuilder = lazy(() =>
   import("pages/qr-code-builder" /* webpackChunkName: "qr-code-builder" */)
 );
 const Menu = lazy(() => import("pages/menu" /* webpackChunkName: "menu" */));
+const ExpandedMenu = lazy(() =>
+  import("pages/menu/expanded-menu" /* webpackChunkName: "expanded-menu" */)
+);
 
 function App() {
   return (
@@ -33,6 +36,11 @@ function App() {
                 <Route
                   path={Routes.MENU}
                   component={Menu}
+                  layout={SimpleLayout}
+                />
+                <Route
+                  path={Routes.EXPANDED_MENU}
+                  component={ExpandedMenu}
                   layout={SimpleLayout}
                 />
                 <Route
