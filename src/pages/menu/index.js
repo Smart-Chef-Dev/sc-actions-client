@@ -24,13 +24,13 @@ const Menu = () => {
   }, []);
 
   return (
-    <Flex direction="column" p={theme.spacing(1)}>
+    <Flex direction="column" p={theme.spacing(1)} height={1} pr="0px">
       <H1 marginTop="0px">Menu</H1>
-      <s.Divider w="100vw" />
-      <Flex direction="column" h="91vh" overflowY="scroll" overflowX="hidden">
+      <s.Divider width={1.5} />
+      <Flex direction="column" overflowY="scroll" overflowX="hidden" width={1}>
         {category.map((currentCategory) => (
-          <Flex key={Math.random()} direction="column">
-            <Flex w="92vw">
+          <Flex key={Math.random()} direction="column" width={0.95}>
+            <Flex width={1}>
               <H2>{currentCategory.category}</H2>
               <Flex
                 width={1}
@@ -41,7 +41,7 @@ const Menu = () => {
                 <img src={Arrow} alt="Arrow" />
               </Flex>
             </Flex>
-            <Flex w="92vw" overflowX="scroll" ml={theme.spacing(1)}>
+            <Flex overflowX="scroll" ml={theme.spacing(1)} width={1}>
               {course.map(
                 (currentCourse) =>
                   currentCourse.category === currentCategory.category && (
@@ -61,7 +61,7 @@ const Menu = () => {
                   )
               )}
             </Flex>
-            <s.Divider ml={theme.spacing(1)} w="100vw" />
+            <s.Divider ml={theme.spacing(1)} width={2} />
           </Flex>
         ))}
       </Flex>
@@ -70,14 +70,6 @@ const Menu = () => {
 };
 
 const s = {
-  B: styled.div`
-    width: 8px;
-    height: 13px;
-    left: calc(50% - 8px / 2 + 1.07px);
-    top: calc(50% - 13px / 2);
-
-    background: #c7c7cc;
-  `,
   Divider: styled(Flex)`
     border-bottom: 1px solid var(--grey);
   `,

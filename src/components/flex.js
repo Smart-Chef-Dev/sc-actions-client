@@ -1,10 +1,8 @@
 import { styled } from "@linaria/react";
 
 export const Box = styled.div`
-  width: ${(props) =>
-    props.w ?? (props.width ? `${100 * props.width}%` : "auto")};
-  height: ${(props) =>
-    props.h ?? (props.height ? `${100 * props.height}%` : "auto")};
+  width: ${(props) => (props.width ? `${100 * props.width}%` : "auto")};
+  height: ${(props) => (props.height ? `${100 * props.height}%` : "auto")};
 
   margin: ${(props) => props.margin ?? props.m ?? "0"};
   margin-top: ${(props) =>
