@@ -3,6 +3,7 @@ import { styled } from "@linaria/react";
 
 import { theme } from "theme";
 import { Flex } from "components/flex";
+import { Img } from "components/img";
 import { Label } from "components/label";
 import H1 from "components/h1";
 import H2 from "components/h2";
@@ -29,7 +30,7 @@ const Menu = () => {
       <s.Divider width={1.5} />
       <Flex direction="column" overflowY="scroll" overflowX="hidden" width={1}>
         {category.map((currentCategory) => (
-          <Flex key={Math.random()} direction="column" width={0.95}>
+          <Flex key={currentCategory} direction="column" width={0.95}>
             <Flex width={1}>
               <H2>{currentCategory.category}</H2>
               <Flex
@@ -38,7 +39,7 @@ const Menu = () => {
                 direction="row-reverse"
                 alignItems="center"
               >
-                <img src={Arrow} alt="Arrow" />
+                <Img src={Arrow} alt="Arrow" />
               </Flex>
             </Flex>
             <Flex overflowX="scroll" ml={theme.spacing(1)} width={1}>
@@ -46,7 +47,7 @@ const Menu = () => {
                 (currentCourse) =>
                   currentCourse.category === currentCategory.category && (
                     <Flex
-                      key={Math.random()}
+                      key={currentCourse}
                       direction="column"
                       mr={theme.spacing(1)}
                       mb={theme.spacing(1)}
@@ -54,6 +55,8 @@ const Menu = () => {
                       <s.Preview
                         src={currentCourse.picture}
                         alt={currentCourse.name}
+                        borderRadius="10%"
+                        mb="10px"
                       />
                       <Label>{currentCourse.name}</Label>
                       <s.Price>{currentCourse.price}</s.Price>
@@ -73,13 +76,11 @@ const s = {
   Divider: styled(Flex)`
     border-bottom: 1px solid var(--grey);
   `,
-  Preview: styled.img`
-    border-radius: 10%;
+  Preview: styled(Img)`
     width: 100px;
     height: 100px;
-    margin-bottom: 10px;
   `,
-  Price: styled.p`
+  Price: styled(Flex)`
     color: var(--grey);
     margin-bottom: 0;
     margin-top: 4px;
