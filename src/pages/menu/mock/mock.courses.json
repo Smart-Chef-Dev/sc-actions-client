@@ -1,146 +1,66 @@
 [
   {
     "id": "1",
+    "categoryId": "1",
     "category": "Дессерты",
     "name": "Пирожное",
-    "picture": "/Pictures/berries.png",
+    "picture": "/Pictures/pancake.png",
     "price": "1$",
-    "categoryId": "1"
+    "weight": "100g"
   },
-  {
-    "id": "2",
-    "category": "Дессерты",
-    "name": "Желе",
-    "picture": "/Pictures/berries.png",
-    "price": "0.6$",
-    "categoryId": "1"
-  },
+
   {
     "id": "3",
-    "category": "Напитки",
+    "categoryId": "2",
+    "category": "Кофе",
     "name": "Лате",
-    "picture": "/Pictures/berries.png",
+    "picture": "/Pictures/pancake.png",
     "price": "0.2$",
-    "categoryId": "2"
+    "weight": "100g"
   },
   {
     "id": "4",
-    "category": "Напитки",
+    "categoryId": "3",
+    "category": "Чаи",
     "name": "Зелённый чай",
-    "picture": "/Pictures/berries.png",
+    "picture": "/Pictures/pancake.png",
     "price": "0.1$",
-    "categoryId": "2"
+    "weight": "100g"
   },
   {
     "id": "5",
-    "category": "Напитки",
-    "name": "14Чёрный чай",
-    "picture": "/Pictures/berries.png",
+    "categoryId": "3",
+    "category": "Чаи",
+    "name": "Чёрный чай",
+    "picture": "/Pictures/pancake.png",
     "price": "0.1$",
-    "categoryId": "2"
+    "weight": "100g"
   },
   {
     "id": "6",
-    "category": "Напитки",
-    "name": "13Чёрный чай",
-    "picture": "/Pictures/berries.png",
+    "categoryId": "3",
+    "category": "Чаи",
+    "name": "Белый чай",
+    "picture": "/Pictures/pancake.png",
     "price": "0.1$",
-    "categoryId": "2"
+    "weight": "100g"
   },
   {
     "id": "7",
-    "category": "Напитки",
-    "name": "12Чёрный чай",
-    "picture": "/Pictures/berries.png",
+    "categoryId": "3",
+    "category": "Чаи",
+    "name": "Жёлтый чай",
+    "picture": "/Pictures/pancake.png",
     "price": "0.1$",
-    "categoryId": "2"
+    "weight": "100g"
   },
   {
     "id": "8",
-    "category": "Напитки",
-    "name": "11Чёрный чай",
-    "picture": "/Pictures/berries.png",
+    "categoryId": "3",
+    "category": "Чаи",
+    "name": "Улун",
+    "picture": "/Pictures/pancake.png",
     "price": "0.1$",
-    "categoryId": "2"
-  },
-  {
-    "id": "9",
-    "category": "Напитки",
-    "name": "10Чёрный чай",
-    "picture": "/Pictures/berries.png",
-    "price": "0.1$",
-    "categoryId": "2"
-  },
-  {
-    "id": "10",
-    "category": "Напитки",
-    "name": "9Чёрный чай",
-    "picture": "/Pictures/berries.png",
-    "price": "0.1$",
-    "categoryId": "2"
-  },
-  {
-    "id": "11",
-    "category": "Напитки",
-    "name": "8Чёрный чай",
-    "picture": "/Pictures/berries.png",
-    "price": "0.1$",
-    "categoryId": "2"
-  },
-  {
-    "id": "12",
-    "category": "Напитки",
-    "name": "7Чёрный чай",
-    "picture": "/Pictures/berries.png",
-    "price": "0.1$",
-    "categoryId": "2"
-  },
-  {
-    "id": "13",
-    "category": "Напитки",
-    "name": "6Чёрный чай",
-    "picture": "/Pictures/berries.png",
-    "price": "0.1$",
-    "categoryId": "2"
-  },
-  {
-    "id": "14",
-    "category": "Напитки",
-    "name": "5Чёрный чай",
-    "picture": "/Pictures/berries.png",
-    "price": "0.1$",
-    "categoryId": "2"
-  },
-  {
-    "id": "15",
-    "category": "Напитки",
-    "name": "4Чёрный чай",
-    "picture": "/Pictures/berries.png",
-    "price": "0.1$",
-    "categoryId": "2"
-  },
-  {
-    "id": "16",
-    "category": "Напитки",
-    "name": "3Чёрный чай",
-    "picture": "/Pictures/berries.png",
-    "price": "0.1$",
-    "categoryId": "2"
-  },
-  {
-    "id": "17",
-    "category": "Напитки",
-    "name": "2Чёрный чай",
-    "picture": "/Pictures/berries.png",
-    "price": "0.1$",
-    "categoryId": "2"
-  },
-  {
-    "id": "18",
-    "category": "Напитки",
-    "name": "1Чёрный чай",
-    "picture": "/Pictures/berries.png",
-    "price": "0.1$",
-    "categoryId": "2"
+    "weight": "100g"
   }
 ]
