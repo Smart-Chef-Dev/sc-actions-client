@@ -41,55 +41,69 @@ const ExpandedMenu = () => {
   }
 
   return (
-    <Flex p={theme.spacing(1)} direction="column" height={1}>
-      <Flex alignItems="center">
+    <Flex direction="column" height={1} width={1}>
+      <Flex alignItems="center" pl={theme.spacing(1)} pt={theme.spacing(1)}>
         <Img src={Arrow} alt="Arrow" />
         <s.DarkenedText pl="8px">Menu</s.DarkenedText>
       </Flex>
       {match && currentList[0] && (
-        <Flex direction="column" width={1}>
-          <H1>{currentList[0].category}</H1>
-          <s.Divider width={1.5} />
-          <Navigation category={category} currentCategory={params.categoryId} />
-          <Flex direction="column" width={1} height={1}>
-            {currentList.map((currentValue) => (
-              <s.Container
-                key={currentValue.id}
-                mb={theme.spacing(1)}
-                width={1}
-                direction="column"
-              >
-                <s.Preview
-                  src={currentValue.picture}
-                  alt={currentValue.name}
-                  borderRadius="12px 12px 0 0"
-                  width={1}
-                />
-                <s.ContainerCategory p={theme.spacing(1)}>
-                  {currentValue.category}
-                </s.ContainerCategory>
-                <Label pl={theme.spacing(1)}>{currentValue.name}</Label>
-                <Flex width={1}>
-                  <s.WeightCategory
-                    alignItems="center"
-                    height={1}
-                    pl={theme.spacing(1)}
-                  >
-                    {currentValue.weight}
-                  </s.WeightCategory>
-                  <Flex direction="row-reverse" width={1}>
-                    <H2 pr={theme.spacing(1)}>{currentValue.price}</H2>
+        <Flex direction="column" height={0.96} width={0.97}>
+          <Flex
+            direction="column"
+            pl={theme.spacing(1)}
+            pr={theme.spacing(1)}
+            width={1}
+          >
+            <H1>{currentList[0].category}</H1>
+            <s.Divider width={5} />
+            <Navigation
+              category={category}
+              currentCategory={params.categoryId}
+            />
+          </Flex>
+          <Flex
+            pr={theme.spacing(1)}
+            pl={theme.spacing(1)}
+            overflowY="scroll"
+            width={1}
+          >
+            <Flex direction="column" width={1} height={1}>
+              {currentList.map((currentValue) => (
+                <s.Container
+                  key={currentValue.id}
+                  mb={theme.spacing(1)}
+                  direction="column"
+                >
+                  <s.Preview
+                    src={currentValue.picture}
+                    alt={currentValue.name}
+                    borderRadius="12px 12px 0 0"
+                  />
+                  <s.ContainerCategory p={theme.spacing(1)}>
+                    {currentValue.category}
+                  </s.ContainerCategory>
+                  <Label pl={theme.spacing(1)}>{currentValue.name}</Label>
+                  <Flex width={1}>
+                    <s.WeightCategory
+                      alignItems="center"
+                      pl={theme.spacing(1)}
+                      height={1}
+                    >
+                      {currentValue.weight}
+                    </s.WeightCategory>
+                    <Flex direction="row-reverse" width={1}>
+                      <H2 pr={theme.spacing(1)}>{currentValue.price}</H2>
+                    </Flex>
                   </Flex>
-                </Flex>
-              </s.Container>
-            ))}
+                </s.Container>
+              ))}
+            </Flex>
           </Flex>
         </Flex>
       )}
     </Flex>
   );
 };
-
 const s = {
   Container: styled(Flex)`
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
@@ -126,5 +140,4 @@ const s = {
     letter-spacing: -0.41px;
   `,
 };
-
 export default memo(ExpandedMenu);

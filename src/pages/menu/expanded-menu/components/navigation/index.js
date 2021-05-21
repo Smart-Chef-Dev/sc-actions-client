@@ -18,7 +18,7 @@ const Navigation = (props) => {
   );
 
   return (
-    <Flex>
+    <Flex overflowX="scroll" width={1}>
       {props.category.map((currentValue) => (
         <Flex key={currentValue.id}>
           <Flex p={theme.spacing(1)}>

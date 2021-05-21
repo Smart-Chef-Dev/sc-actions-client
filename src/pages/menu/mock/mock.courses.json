@@ -8,7 +8,15 @@
     "price": "1$",
     "weight": "100g"
   },
-
+  {
+    "id": "2",
+    "categoryId": "1",
+    "category": "Дессерты",
+    "name": "Желе",
+    "picture": "/Pictures/pancake.png",
+    "price": "0.6$",
+    "weight": "100g"
+  },
   {
     "id": "3",
     "categoryId": "2",

@@ -42,7 +42,12 @@ const Menu = () => {
                 <Img src={Arrow} alt="Arrow" />
               </Flex>
             </Flex>
-            <Flex overflowX="scroll" ml={theme.spacing(1)} width={1}>
+            <Flex
+              overflowX="scroll"
+              ml={theme.spacing(1)}
+              width={1}
+              height={0.83}
+            >
               {course.map(
                 (currentCourse) =>
                   currentCourse.category === currentCategory.category && (
