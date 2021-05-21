@@ -47,12 +47,12 @@ const ExpandedMenu = () => {
         <s.DarkenedText pl="8px">Menu</s.DarkenedText>
       </Flex>
       {match && currentList[0] && (
-        <Flex direction="column" height={0.96} width={0.97}>
+        <Flex direction="column" height={0.96} width={1}>
           <Flex
             direction="column"
             pl={theme.spacing(1)}
             pr={theme.spacing(1)}
-            width={1}
+            width={0.97}
           >
             <H1>{currentList[0].category}</H1>
             <s.Divider width={5} />
@@ -73,11 +73,13 @@ const ExpandedMenu = () => {
                   key={currentValue.id}
                   mb={theme.spacing(1)}
                   direction="column"
+                  width={0.93}
                 >
                   <s.Preview
                     src={currentValue.picture}
                     alt={currentValue.name}
                     borderRadius="12px 12px 0 0"
+                    width={1}
                   />
                   <s.ContainerCategory p={theme.spacing(1)}>
                     {currentValue.category}
@@ -109,7 +111,10 @@ const s = {
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
     border-radius: 16px;
   `,
-  Preview: styled(Img)``,
+  Preview: styled(Img)`
+    max-height: 300px;
+    object-fit: cover;
+  `,
   Divider: styled(Flex)`
     border-bottom: 1px solid var(--grey);
   `,
