@@ -2,16 +2,16 @@ import { memo, useEffect, useState } from "react";
 import { useRoute } from "wouter";
 import { styled } from "@linaria/react";
 
-import mockCategory from "pages/menu/mock/mock.categories.json";
-import mockCourses from "pages/menu/mock/mock.courses.json";
-
 import { Routes } from "constants/routes";
 import { Flex } from "components/flex";
 import { Label } from "components/label";
-import H1 from "components/h1";
-import H2 from "components/h2";
 import { Img } from "components/img";
 import { theme } from "theme";
+import H1 from "components/h1";
+import H2 from "components/h2";
+
+import mockCategory from "pages/menu/mock/mock.categories.json";
+import mockCourses from "pages/menu/mock/mock.courses.json";
 
 import Navigation from "./components/navigation";
 
@@ -36,8 +36,6 @@ const ExpandedMenu = () => {
     currentList = course.filter(
       (currentValue) => currentValue.categoryId === params.categoryId
     );
-
-    console.log(currentList);
   }
 
   return (
@@ -140,7 +138,6 @@ const s = {
     font-weight: normal;
     font-size: 17px;
     line-height: 22px;
-    /* identical to box height, or 129% */
 
     letter-spacing: -0.41px;
   `,
