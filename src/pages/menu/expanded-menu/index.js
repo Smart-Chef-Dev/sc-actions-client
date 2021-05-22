@@ -4,7 +4,7 @@ import { styled } from "@linaria/react";
 
 import { Routes } from "constants/routes";
 import { Flex } from "components/flex";
-import { Label } from "components/label";
+import { Text } from "components/text";
 import { Img } from "components/img";
 import { theme } from "theme";
 import H1 from "components/h1";
@@ -42,7 +42,9 @@ const ExpandedMenu = () => {
     <Flex direction="column" height={1} width={1}>
       <Flex alignItems="center" pl={theme.spacing(1)} pt={theme.spacing(1)}>
         <Img src={Arrow} alt="Arrow" />
-        <s.DarkenedText pl="8px">Menu</s.DarkenedText>
+        <Text pl="8px" color="var(--grey)" fontFamily="SF UI Display">
+          Menu
+        </Text>
       </Flex>
       {match && currentList[0] && (
         <Flex direction="column" height={0.96} width={1}>
@@ -79,18 +81,27 @@ const ExpandedMenu = () => {
                     borderRadius="12px 12px 0 0"
                     width={1}
                   />
-                  <s.ContainerCategory p={theme.spacing(1)}>
+                  <Text
+                    p={theme.spacing(1)}
+                    color="var(--grey)"
+                    fontFamily="SF UI Display"
+                    textTransform="uppercase"
+                  >
                     {currentValue.category}
-                  </s.ContainerCategory>
-                  <Label pl={theme.spacing(1)}>{currentValue.name}</Label>
+                  </Text>
+                  <Text fontFamily="Actor" pl={theme.spacing(1)}>
+                    {currentValue.name}
+                  </Text>
                   <Flex width={1}>
-                    <s.WeightCategory
+                    <Text
                       alignItems="center"
                       pl={theme.spacing(1)}
                       height={1}
+                      color="var(--grey)"
+                      font-family="SF UI Display"
                     >
                       {currentValue.weight}
-                    </s.WeightCategory>
+                    </Text>
                     <Flex direction="row-reverse" width={1}>
                       <H2 pr={theme.spacing(1)}>{currentValue.price}</H2>
                     </Flex>
@@ -115,31 +126,6 @@ const s = {
   `,
   Divider: styled(Flex)`
     border-bottom: 1px solid var(--grey);
-  `,
-  WeightCategory: styled(Flex)`
-    color: var(--grey);
-    font-family: SF UI Display;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
-    line-height: 16px;
-  `,
-  ContainerCategory: styled(Flex)`
-    color: var(--grey);
-    font-family: SF UI Display;
-
-    text-transform: uppercase;
-  `,
-  DarkenedText: styled(Flex)`
-    color: var(--grey);
-    font-family: SF UI Display;
-
-    font-style: normal;
-    font-weight: normal;
-    font-size: 17px;
-    line-height: 22px;
-
-    letter-spacing: -0.41px;
   `,
 };
 export default memo(ExpandedMenu);

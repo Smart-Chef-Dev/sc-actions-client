@@ -5,6 +5,7 @@ import { theme } from "theme";
 import { Flex } from "components/flex";
 import { Img } from "components/img";
 import { Label } from "components/label";
+import { Text } from "components/text";
 import H1 from "components/h1";
 import H2 from "components/h2";
 
@@ -64,7 +65,9 @@ const Menu = () => {
                         mb="10px"
                       />
                       <Label>{currentCourse.name}</Label>
-                      <s.Price>{currentCourse.price}</s.Price>
+                      <Text color="var(--grey)" mb="4px">
+                        {currentCourse.price}
+                      </Text>
                     </Flex>
                   )
               )}
@@ -84,11 +87,8 @@ const s = {
   Preview: styled(Img)`
     width: 100px;
     height: 100px;
-  `,
-  Price: styled(Flex)`
-    color: var(--grey);
-    margin-bottom: 0;
-    margin-top: 4px;
+
+    object-fit: cover;
   `,
 };
 

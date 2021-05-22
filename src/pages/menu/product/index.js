@@ -1,12 +1,15 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { useRoute } from "wouter";
-import { Routes } from "constants/routes";
 import { styled } from "@linaria/react";
 
 import { Flex } from "components/flex";
 import { Img } from "components/img";
 import { Label } from "components/label";
+import { Text } from "components/text";
 import Button from "components/button";
+
+import { Routes } from "constants/routes";
+
 import { theme } from "theme";
 
 import mockCourses from "pages/menu/mock/mock.courses.json";
@@ -38,7 +41,7 @@ const Product = () => {
   }, [portions]);
 
   const increasePortion = useCallback(() => {
-    if (portions < 99) {
+    if (portions < 100) {
       setPortions(portions + 1);
     }
   }, [portions]);
@@ -49,43 +52,64 @@ const Product = () => {
         <Flex direction="column" height={1}>
           <s.Arrow src={Arrow} alt="Arrow" />
           <Flex width={1} height={1} flex={1}>
-            <s.Preview
-              src={currentItem.picture}
-              alt={currentItem.name}
-              width={1}
-            />
+            <Img src={currentItem.picture} alt={currentItem.name} width={1} />
           </Flex>
           <s.MainInformation direction="column" p={theme.spacing(1)} height={1}>
             <s.Time>
               <Label>{"~ " + currentItem.time}</Label>
             </s.Time>
-            <s.Category pb={theme.spacing(1)}>
+            <Text
+              color="var(--grey)"
+              fontFamily="SF UI Display"
+              textTransform="uppercase"
+              pb={theme.spacing(1)}
+            >
               {currentItem.category}
-            </s.Category>
-            <s.Name pb={theme.spacing(1)}>{currentItem.name}</s.Name>
+            </Text>
+            <Text
+              fontFamily="SF UI Display"
+              fontSize="2rem"
+              pb={theme.spacing(1)}
+            >
+              {currentItem.name}
+            </Text>
             <Flex
               justifyContent="space-between"
               width={1}
               pb={theme.spacing(1)}
             >
-              <s.GrayText height={1} alignItems="center">
+              <Text color="#999999" height={1} alignItems="center">
                 {"Weight:" + currentItem.weight}
-              </s.GrayText>
-              <s.Price>{currentItem.price}</s.Price>
+              </Text>
+              <Text fontFamily="SF UI Display" color="#4cd964" fontSize="2rem">
+                {currentItem.price}
+              </Text>
             </Flex>
-            <s.GrayText>{currentItem.description}</s.GrayText>
+            <Text color="#999999">{currentItem.description}</Text>
             <Flex width={1} flex={1} direction="column-reverse">
               <Flex width={1} justifyContent="space-between">
                 <Flex>
-                  <s.PortionMinAndPlus onClick={reducePortion}>
+                  <Text
+                    color="var(--main-color)"
+                    fontSize="40px"
+                    onClick={reducePortion}
+                  >
                     -
-                  </s.PortionMinAndPlus>
-                  <s.Portions pl={theme.spacing(1)} pr={theme.spacing(1)}>
+                  </Text>
+                  <Text
+                    fontSize="40px"
+                    pl={theme.spacing(1)}
+                    pr={theme.spacing(1)}
+                  >
                     {portions}
-                  </s.Portions>
-                  <s.PortionMinAndPlus onClick={increasePortion}>
+                  </Text>
+                  <Text
+                    color="var(--main-color)"
+                    fontSize="40px"
+                    onClick={increasePortion}
+                  >
                     +
-                  </s.PortionMinAndPlus>
+                  </Text>
                 </Flex>
                 <Button>ORDER</Button>
               </Flex>
@@ -98,7 +122,6 @@ const Product = () => {
 };
 
 const s = {
-  Preview: styled(Img)``,
   MainInformation: styled(Flex)`
     background: white;
     border-radius: 16px 16px 0 0;
@@ -114,31 +137,6 @@ const s = {
     background: white;
     padding: 8px;
     border-radius: 16px;
-  `,
-  PortionMinAndPlus: styled(Flex)`
-    color: var(--main-color);
-    font-size: 40px;
-  `,
-  Portions: styled(Flex)`
-    font-size: 40px;
-  `,
-  Category: styled(Flex)`
-    color: var(--grey);
-    font-family: SF UI Display;
-
-    text-transform: uppercase;
-  `,
-  GrayText: styled(Flex)`
-    color: rgba(0, 0, 0, 0.4);
-  `,
-  Price: styled(Flex)`
-    font-family: SF UI Display;
-    color: #4cd964;
-    font-size: 2rem;
-  `,
-  Name: styled(Flex)`
-    font-family: SF UI Display;
-    font-size: 32px;
   `,
   Arrow: styled(Img)`
     position: absolute;
