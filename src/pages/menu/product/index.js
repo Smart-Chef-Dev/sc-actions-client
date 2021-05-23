@@ -49,12 +49,18 @@ const Product = () => {
   return (
     <Flex height={1}>
       {match && currentItem && (
-        <Flex direction="column" height={1}>
+        <Flex direction="column" height={1} width={1}>
           <s.Arrow src={Arrow} alt="Arrow" />
           <Flex width={1} height={1} flex={1}>
             <Img src={currentItem.picture} alt={currentItem.name} width={1} />
           </Flex>
-          <s.MainInformation direction="column" p={theme.spacing(1)} height={1}>
+          <s.MainInformation
+            direction="column"
+            p={theme.spacing(1)}
+            height={1}
+            width={1}
+            boxSizing="border-box"
+          >
             <s.Time>
               <Label>{"~ " + currentItem.time}</Label>
             </s.Time>
@@ -68,7 +74,7 @@ const Product = () => {
             </Text>
             <Text
               fontFamily="SF UI Display"
-              fontSize="2rem"
+              fontSize={theme.fontSize(3)}
               pb={theme.spacing(1)}
             >
               {currentItem.name}
@@ -88,25 +94,28 @@ const Product = () => {
             <Text color="#999999">{currentItem.description}</Text>
             <Flex width={1} flex={1} direction="column-reverse">
               <Flex width={1} justifyContent="space-between">
-                <Flex>
+                <Flex height={1} alignItems="center">
                   <Text
+                    fontSize={theme.fontSize(3)}
                     color="var(--main-color)"
-                    fontSize="40px"
                     onClick={reducePortion}
+                    mb={theme.spacing(1)}
                   >
                     -
                   </Text>
                   <Text
-                    fontSize="40px"
+                    fontSize={theme.fontSize(3)}
                     pl={theme.spacing(1)}
                     pr={theme.spacing(1)}
+                    mb={theme.spacing(1)}
                   >
                     {portions}
                   </Text>
                   <Text
+                    fontSize={theme.fontSize(3)}
                     color="var(--main-color)"
-                    fontSize="40px"
                     onClick={increasePortion}
+                    mb={theme.spacing(1)}
                   >
                     +
                   </Text>

@@ -43,6 +43,8 @@ export const Box = styled.div`
   overflow-y: ${(props) => props.overflowY ?? "visible"};
 
   border-radius: ${(props) => props.borderRadius ?? "0"};
+
+  box-sizing: ${(props) => props.boxSizing ?? "content-box"};
 `;
 
 export const Flex = styled(Box)`

@@ -7,8 +7,6 @@ import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Img } from "components/img";
 import { theme } from "theme";
-import H1 from "components/h1";
-import H2 from "components/h2";
 
 import mockCategory from "pages/menu/mock/mock.categories.json";
 import mockCourses from "pages/menu/mock/mock.courses.json";
@@ -40,21 +38,32 @@ const ExpandedMenu = () => {
 
   return (
     <Flex direction="column" height={1} width={1}>
-      <Flex alignItems="center" pl={theme.spacing(1)} pt={theme.spacing(1)}>
+      <s.Arrow alignItems="center">
         <Img src={Arrow} alt="Arrow" />
-        <Text pl="8px" color="var(--grey)" fontFamily="SF UI Display">
+        <Text color="var(--grey)" fontFamily="SF UI Display">
           Menu
         </Text>
-      </Flex>
+      </s.Arrow>
       {match && currentList[0] && (
-        <Flex direction="column" height={0.96} width={1}>
+        <Flex direction="column" height={1} width={1}>
           <Flex
             direction="column"
             pl={theme.spacing(1)}
             pr={theme.spacing(1)}
-            width={0.97}
+            width={1}
+            flex={1}
+            height={1}
+            boxSizing="border-box"
           >
-            <H1>{currentList[0].category}</H1>
+            <Text
+              fontFamily="SF UI Display"
+              fontSize={theme.fontSize(3)}
+              mt={theme.spacing(3)}
+              mb={theme.spacing(1)}
+              fontWeight="bold"
+            >
+              {currentList[0].category}
+            </Text>
             <s.Divider width={5} />
             <Navigation
               category={category}
@@ -62,10 +71,12 @@ const ExpandedMenu = () => {
             />
           </Flex>
           <Flex
+            boxSizing="border-box"
             pr={theme.spacing(1)}
             pl={theme.spacing(1)}
             overflowY="scroll"
             width={1}
+            height={1}
           >
             <Flex direction="column" width={1} height={1}>
               {currentList.map((currentValue) => (
@@ -73,7 +84,7 @@ const ExpandedMenu = () => {
                   key={currentValue.id}
                   mb={theme.spacing(1)}
                   direction="column"
-                  width={0.93}
+                  width={1}
                 >
                   <s.Preview
                     src={currentValue.picture}
@@ -89,7 +100,11 @@ const ExpandedMenu = () => {
                   >
                     {currentValue.category}
                   </Text>
-                  <Text fontFamily="Actor" pl={theme.spacing(1)}>
+                  <Text
+                    fontFamily="Actor"
+                    pl={theme.spacing(1)}
+                    fontSize={theme.fontSize(1)}
+                  >
                     {currentValue.name}
                   </Text>
                   <Flex width={1}>
@@ -97,13 +112,21 @@ const ExpandedMenu = () => {
                       alignItems="center"
                       pl={theme.spacing(1)}
                       height={1}
+                      width={1}
                       color="var(--grey)"
                       font-family="SF UI Display"
+                      fontSize={theme.fontSize(0)}
                     >
                       {currentValue.weight}
                     </Text>
                     <Flex direction="row-reverse" width={1}>
-                      <H2 pr={theme.spacing(1)}>{currentValue.price}</H2>
+                      <Text
+                        m={theme.spacing(1)}
+                        fontSize={theme.fontSize(2)}
+                        fontWeight="bold"
+                      >
+                        {currentValue.price}
+                      </Text>
                     </Flex>
                   </Flex>
                 </s.Container>
@@ -119,6 +142,11 @@ const s = {
   Container: styled(Flex)`
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
     border-radius: 16px;
+  `,
+  Arrow: styled(Flex)`
+    position: absolute;
+    left: 8px;
+    top: 12px;
   `,
   Preview: styled(Img)`
     max-height: 300px;

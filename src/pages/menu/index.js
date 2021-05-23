@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { styled } from "@linaria/react";
 
 import { theme } from "theme";
@@ -25,6 +25,8 @@ const Menu = () => {
     }, 2000);
   }, []);
 
+  const arrowClicking = useCallback(() => {}, []);
+
   return (
     <Flex direction="column" p={theme.spacing(1)} height={1} pr="0px">
       <H1 marginTop="0px">Menu</H1>
@@ -40,7 +42,7 @@ const Menu = () => {
                 direction="row-reverse"
                 alignItems="center"
               >
-                <Img src={Arrow} alt="Arrow" />
+                <Img src={Arrow} alt="Arrow" onClick={arrowClicking} />
               </Flex>
             </Flex>
             <Flex
@@ -61,13 +63,11 @@ const Menu = () => {
                       <s.Preview
                         src={currentCourse.picture}
                         alt={currentCourse.name}
-                        borderRadius="10%"
-                        mb="10px"
+                        borderRadius="12px"
+                        mb={theme.spacing(1)}
                       />
                       <Label>{currentCourse.name}</Label>
-                      <Text color="var(--grey)" mb="4px">
-                        {currentCourse.price}
-                      </Text>
+                      <Text color="var(--grey)">{currentCourse.price}</Text>
                     </Flex>
                   )
               )}

@@ -6,7 +6,7 @@
     "name": "Пирожное",
     "picture": "/Pictures/pancake.png",
     "price": "1$",
-    "weight": "100g",
+    "weight": "100 g",
     "time": "15 min",
     "description": "Description of the most delicious dessert description of the most delicious dessert description (meringue, cream of mascarpone cheese, raspberries, mint, powdered sugar)"
   },
@@ -17,7 +17,7 @@
     "name": "Желе",
     "picture": "/Pictures/pancake.png",
     "price": "0.6$",
-    "weight": "100g",
+    "weight": "100 g",
     "time": "15 min",
     "description": "Description of the most delicious dessert description of the most delicious dessert description (meringue, cream of mascarpone cheese, raspberries, mint, powdered sugar)"
   },
@@ -28,7 +28,7 @@
     "name": "Лате",
     "picture": "/Pictures/pancake.png",
     "price": "0.2$",
-    "weight": "100g",
+    "weight": "100 g",
     "time": "15 min",
     "description": "Description of the most delicious dessert description of the most delicious dessert description (meringue, cream of mascarpone cheese, raspberries, mint, powdered sugar)"
   },
@@ -39,7 +39,7 @@
     "name": "Зелённый чай",
     "picture": "/Pictures/pancake.png",
     "price": "0.1$",
-    "weight": "100g",
+    "weight": "100 g",
     "time": "15 min",
     "description": "Description of the most delicious dessert description of the most delicious dessert description (meringue, cream of mascarpone cheese, raspberries, mint, powdered sugar)"
   },
@@ -50,7 +50,7 @@
     "name": "Чёрный чай",
     "picture": "/Pictures/pancake.png",
     "price": "0.1$",
-    "weight": "100g",
+    "weight": "100 g",
     "time": "15 min",
     "description": "Description of the most delicious dessert description of the most delicious dessert description (meringue, cream of mascarpone cheese, raspberries, mint, powdered sugar)"
   },
@@ -61,7 +61,7 @@
     "name": "Белый чай",
     "picture": "/Pictures/pancake.png",
     "price": "0.1$",
-    "weight": "100g",
+    "weight": "100 g",
     "time": "15 min",
     "description": "Description of the most delicious dessert description of the most delicious dessert description (meringue, cream of mascarpone cheese, raspberries, mint, powdered sugar)"
   },
@@ -72,7 +72,7 @@
     "name": "Жёлтый чай",
     "picture": "/Pictures/pancake.png",
     "price": "0.1$",
-    "weight": "100g",
+    "weight": "100 g",
     "time": "15 min",
     "description": "Description of the most delicious dessert description of the most delicious dessert description (meringue, cream of mascarpone cheese, raspberries, mint, powdered sugar)"
   },
@@ -83,7 +83,7 @@
     "name": "Улун",
     "picture": "/Pictures/pancake.png",
     "price": "0.1$",
-    "weight": "100g",
+    "weight": "100 g",
     "time": "15 min",
     "description": "Description of the most delicious dessert description of the most delicious dessert description (meringue, cream of mascarpone cheese, raspberries, mint, powdered sugar)"
   }
