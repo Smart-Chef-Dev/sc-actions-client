@@ -3,7 +3,7 @@ export const Routes = {
   ACTIONS: "/:restaurantId/:tableId",
   TABLES: "/:tableId",
   QR_CODE_BUILDER: "/qr-code-builder",
-  MENU: "/restaurant/:restaurantId",
+  MENU: "/restaurant/:restaurant",
   EXPANDED_MENU: "/restaurant/:restaurant/:categoryId",
   PRODUCT: "/restaurant/:restaurant/item/:itemId",
 };

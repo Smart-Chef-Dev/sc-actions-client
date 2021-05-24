@@ -1,7 +1,9 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { styled } from "@linaria/react";
+import { useLocation, useRoute } from "wouter";
 
 import { theme } from "theme";
+import { Routes } from "constants/routes";
 import { Flex } from "components/flex";
 import { Img } from "components/img";
 import { Label } from "components/label";
@@ -17,15 +19,35 @@ import Arrow from "./Arrow.png";
 const Menu = () => {
   const [category, setCategory] = useState([]);
   const [course, setCourse] = useState([]);
+  const [match, params] = useRoute(Routes.MENU);
+  const [, setLocation] = useLocation();
 
   useEffect(() => {
     setTimeout(() => {
       setCategory(mockCategory);
       setCourse(mockCourses);
-    }, 2000);
+    }, 1);
   }, []);
 
-  const arrowClicking = useCallback(() => {}, []);
+  const arrowClicking = useCallback(
+    (categoryId) => () => {
+      if (match) {
+        setLocation("/restaurant/" + params.restaurant + "/" + categoryId);
+      }
+    },
+    [setLocation, params.restaurant, match]
+  );
+
+  const pressingItems = useCallback(
+    (itemId) => () => {
+      if (match) {
+        setLocation(
+          "/restaurant/" + params.restaurant + "/" + "item/" + itemId
+        );
+      }
+    },
+    [setLocation, params.restaurant, match]
+  );
 
   return (
     <Flex direction="column" p={theme.spacing(1)} height={1} pr="0px">
@@ -42,7 +64,11 @@ const Menu = () => {
                 direction="row-reverse"
                 alignItems="center"
               >
-                <Img src={Arrow} alt="Arrow" onClick={arrowClicking} />
+                <Img
+                  src={Arrow}
+                  alt="Arrow"
+                  onClick={arrowClicking(currentCategory.id)}
+                />
               </Flex>
             </Flex>
             <Flex
@@ -65,6 +91,7 @@ const Menu = () => {
                         alt={currentCourse.name}
                         borderRadius="12px"
                         mb={theme.spacing(1)}
+                        onClick={pressingItems(currentCourse.id)}
                       />
                       <Label>{currentCourse.name}</Label>
                       <Text color="var(--grey)">{currentCourse.price}</Text>

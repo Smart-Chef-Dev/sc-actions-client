@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useState } from "react";
-import { useRoute } from "wouter";
+import { useLocation, useRoute } from "wouter";
 import { styled } from "@linaria/react";
 
 import { Flex } from "components/flex";
@@ -16,15 +16,22 @@ import mockCourses from "pages/menu/mock/mock.courses.json";
 
 import Arrow from "./Arrow.png";
 
+import productsState from "atoms/basket";
+
+import { useRecoilState } from "recoil";
+
 const Product = () => {
   const [match, params] = useRoute(Routes.PRODUCT);
   const [course, setCourse] = useState([]);
   const [portions, setPortions] = useState(1);
+  const [, setLocation] = useLocation();
+
+  const [products, setProducts] = useRecoilState(productsState);
 
   useEffect(() => {
     setTimeout(() => {
       setCourse(mockCourses);
-    }, 1000);
+    }, 1);
   }, []);
 
   let currentItem;
@@ -46,11 +53,26 @@ const Product = () => {
     }
   }, [portions]);
 
+  const arrowClicking = useCallback(() => {
+    if (match) {
+      setLocation("/restaurant/" + params.restaurant);
+    }
+  }, [setLocation, params.restaurant, match]);
+
+  const addProductToOrder = useCallback(() => {
+    const intermediateProducts = [];
+    intermediateProducts.push(...products, {
+      productId: currentItem.id,
+      portions: portions,
+    });
+    setProducts(intermediateProducts);
+  }, [currentItem, portions, products, setProducts]);
+
   return (
     <Flex height={1}>
       {match && currentItem && (
         <Flex direction="column" height={1} width={1}>
-          <s.Arrow src={Arrow} alt="Arrow" />
+          <s.Arrow src={Arrow} alt="Arrow" onClick={arrowClicking} />
           <Flex width={1} height={1} flex={1}>
             <Img src={currentItem.picture} alt={currentItem.name} width={1} />
           </Flex>
@@ -120,7 +142,7 @@ const Product = () => {
                     +
                   </Text>
                 </Flex>
-                <Button>ORDER</Button>
+                <Button onClick={addProductToOrder}>ORDER</Button>
               </Flex>
             </Flex>
           </s.MainInformation>

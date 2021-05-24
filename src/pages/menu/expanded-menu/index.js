@@ -1,5 +1,5 @@
-import { memo, useEffect, useState } from "react";
-import { useRoute } from "wouter";
+import { memo, useCallback, useEffect, useState } from "react";
+import { useRoute, useLocation } from "wouter";
 import { styled } from "@linaria/react";
 
 import { Routes } from "constants/routes";
@@ -16,15 +16,16 @@ import Navigation from "./components/navigation";
 import Arrow from "./Arrow.png";
 
 const ExpandedMenu = () => {
-  const [match, params] = useRoute(Routes.EXPANDED_MENU);
   const [category, setCategory] = useState([]);
   const [course, setCourse] = useState([]);
+  const [match, params] = useRoute(Routes.EXPANDED_MENU);
+  const [, setLocation] = useLocation();
 
   useEffect(() => {
     setTimeout(() => {
       setCategory(mockCategory);
       setCourse(mockCourses);
-    }, 1000);
+    }, 1);
   }, [category, course]);
 
   useEffect(() => {});
@@ -36,10 +37,27 @@ const ExpandedMenu = () => {
     );
   }
 
+  const arrowClicking = useCallback(() => {
+    if (match) {
+      setLocation("/restaurant/" + params.restaurant);
+    }
+  }, [setLocation, params.restaurant, match]);
+
+  const pressingItems = useCallback(
+    (itemId) => () => {
+      if (match) {
+        setLocation(
+          "/restaurant/" + params.restaurant + "/" + "item/" + itemId
+        );
+      }
+    },
+    [setLocation, params.restaurant, match]
+  );
+
   return (
     <Flex direction="column" height={1} width={1}>
       <s.Arrow alignItems="center">
-        <Img src={Arrow} alt="Arrow" />
+        <Img src={Arrow} alt="Arrow" onClick={arrowClicking} />
         <Text color="var(--grey)" fontFamily="SF UI Display">
           Menu
         </Text>
@@ -85,6 +103,7 @@ const ExpandedMenu = () => {
                   mb={theme.spacing(1)}
                   direction="column"
                   width={1}
+                  onClick={pressingItems(currentValue.id)}
                 >
                   <s.Preview
                     src={currentValue.picture}

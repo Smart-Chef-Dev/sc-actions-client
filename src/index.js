@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import { css } from "@linaria/core";
 import ReactGA from "react-ga";
+import { RecoilRoot } from "recoil";
 
 // eslint-disable-next-line no-undef
 ReactGA.initialize(process.env.REACT_APP_GA);
@@ -11,7 +12,9 @@ import App from "./App";
 
 ReactDOM.render(
   <StrictMode>
-    <App />
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
   </StrictMode>,
   document.getElementById("root"),
   () => document.getElementById("spinner")?.remove()
