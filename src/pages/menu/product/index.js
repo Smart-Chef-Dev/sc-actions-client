@@ -16,7 +16,7 @@ import mockCourses from "pages/menu/mock/mock.courses.json";
 
 import Arrow from "./Arrow.png";
 
-import productsState from "atoms/basket";
+import productsInBasketState from "atoms/basket";
 
 import { useRecoilState } from "recoil";
 
@@ -26,7 +26,7 @@ const Product = () => {
   const [portions, setPortions] = useState(1);
   const [, setLocation] = useLocation();
 
-  const [products, setProducts] = useRecoilState(productsState);
+  const [, setProductsInBasket] = useRecoilState(productsInBasketState);
 
   useEffect(() => {
     setTimeout(() => {
@@ -60,13 +60,17 @@ const Product = () => {
   }, [setLocation, params.restaurant, match]);
 
   const addProductToOrder = useCallback(() => {
-    const intermediateProducts = [];
-    intermediateProducts.push(...products, {
-      productId: currentItem.id,
-      portions: portions,
-    });
-    setProducts(intermediateProducts);
-  }, [currentItem, portions, products, setProducts]);
+    setProductsInBasket((oldProductsInBasket) => [
+      ...oldProductsInBasket,
+      {
+        productId: currentItem.id,
+        name: currentItem.name,
+        picture: currentItem.picture,
+        price: currentItem.price,
+        portions: portions,
+      },
+    ]);
+  }, [currentItem, portions, setProductsInBasket]);
 
   return (
     <Flex height={1}>

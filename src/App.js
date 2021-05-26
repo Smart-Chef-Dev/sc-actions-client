@@ -25,7 +25,10 @@ const ExpandedMenu = lazy(() =>
   import("pages/menu/expanded-menu" /* webpackChunkName: "expanded-menu" */)
 );
 const Product = lazy(() =>
-  import("pages/menu/product" /* webpackChunkName: "expanded-menu" */)
+  import("pages/menu/product" /* webpackChunkName: "product" */)
+);
+const Basket = lazy(() =>
+  import("pages/menu/basket" /* webpackChunkName: "basket" */)
 );
 
 function App() {
@@ -39,6 +42,11 @@ function App() {
                 <Route
                   path={Routes.PRODUCT}
                   component={Product}
+                  layout={SimpleLayout}
+                />
+                <Route
+                  path={Routes.BASKET}
+                  component={Basket}
                   layout={SimpleLayout}
                 />
                 <Route

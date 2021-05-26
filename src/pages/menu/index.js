@@ -11,8 +11,8 @@ import { Text } from "components/text";
 import H1 from "components/h1";
 import H2 from "components/h2";
 
-import mockCategory from "./mock/mock.categories.json";
-import mockCourses from "./mock/mock.courses.json";
+import mockCategory from "pages/menu/mock/mock.categories.json";
+import mockCourses from "pages/menu/mock/mock.courses.json";
 
 import Arrow from "./Arrow.png";
 
@@ -55,7 +55,7 @@ const Menu = () => {
       <s.Divider width={1.5} />
       <Flex direction="column" overflowY="scroll" overflowX="hidden" width={1}>
         {category.map((currentCategory) => (
-          <Flex key={currentCategory} direction="column" width={0.95}>
+          <Flex key={currentCategory.category} direction="column" width={0.95}>
             <Flex width={1}>
               <H2>{currentCategory.category}</H2>
               <Flex
@@ -81,7 +81,7 @@ const Menu = () => {
                 (currentCourse) =>
                   currentCourse.category === currentCategory.category && (
                     <Flex
-                      key={currentCourse}
+                      key={currentCourse.name}
                       direction="column"
                       mr={theme.spacing(1)}
                       mb={theme.spacing(1)}

@@ -3,10 +3,11 @@ import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
 
-const productsState = atom({
-  key: "productsState",
+const productsInBasketState = atom({
+  key: "productsInBasketState",
   default: [],
+  dangerouslyAllowMutability: true,
   effects_UNSTABLE: [persistAtom],
 });
 
-export default productsState;
+export default productsInBasketState;
