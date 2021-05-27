@@ -6,10 +6,12 @@ import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Img } from "components/img";
 import Button from "components/button";
+import SwipeDelete from "./components/swipe-delete";
 import { theme } from "theme";
 
 import productsInBasketState from "atoms/basket";
 import icon from "./icon.png";
+import basket from "./basket.png";
 
 const Basket = () => {
   const [productsInBasket, setProductsInBasket] = useRecoilState(
@@ -20,6 +22,8 @@ const Basket = () => {
   const [person, setPerson] = useState(1);
   const [totalCost, setTotalCost] = useState(0);
   const [allPortions, setAllPortions] = useState(0);
+
+  const [candidateForDeletion, setCandidateForDeletion] = useState(0);
 
   const increasePortion = useCallback(
     (indexProducts) => () => {
@@ -69,28 +73,39 @@ const Basket = () => {
       setAllPortions((t) => t + products[i].portions);
     }
 
-    setTotalCost((t) => t.toFixed(1));
+    setTotalCost((t) => parseFloat(t).toFixed(1));
   }, [products]);
 
+  const removeComponent = useCallback(() => {
+    console.log(products);
+    for (let i = 0; i < products.length; i++) {
+      if (products[i].productId === candidateForDeletion) {
+        console.log(products[i]);
+        products.splice(i, 1);
+        break;
+      }
+    }
+    setProducts([...products]);
+    setProductsInBasket([...products]);
+
+    setTotalCost(0);
+    setAllPortions(0);
+  }, [products, candidateForDeletion, setProductsInBasket]);
+
   return (
-    <Flex
-      direction="column"
-      height={1}
-      weight={1}
-      p={theme.spacing(1)}
-      boxSizing="border-box"
-    >
+    <Flex direction="column" height={1} weight={1} boxSizing="border-box">
       <Flex height={1} weight={1} flex={1}>
         <Text
           fontSize={theme.fontSize(3)}
           fontWeight="bold"
-          pt={theme.spacing(1)}
+          pt={theme.spacing(2)}
           pb={theme.spacing(1)}
+          pl={theme.spacing(1)}
         >
           My Order ({allPortions})
         </Text>
       </Flex>
-      <s.Divider mb={theme.spacing(1)} />
+      <s.Divider mb={theme.spacing(1)} ml={theme.spacing(1)} />
       <Flex
         height={1}
         width={1}
@@ -99,7 +114,13 @@ const Basket = () => {
         overflowY="scroll"
         overflowX="hidden"
       >
-        <Flex width={1} direction="column">
+        <Flex
+          width={1}
+          direction="column"
+          pl={theme.spacing(1)}
+          pr={theme.spacing(1)}
+          boxSizing="border-box"
+        >
           <Flex pb={theme.spacing(1)} width={1} alignItems="center">
             <s.Preview src={icon} alt="icon" />
             <Text fontSize={theme.fontSize(0)} pl={theme.spacing(1)} width={1}>
@@ -131,53 +152,126 @@ const Basket = () => {
               </Text>
             </Flex>
           </Flex>
-          <s.Divider mb={theme.spacing(1)} />
+          <s.Divider />
         </Flex>
         {products.map((currentValue, index) => (
           <Flex key={index} width={1} direction="column">
-            <Flex pb={theme.spacing(1)} width={1} alignItems="center">
-              <s.Preview src={currentValue.picture} alt={currentValue.name} />
-              <Text
-                fontSize={theme.fontSize(0)}
-                pl={theme.spacing(1)}
-                width={1}
-              >
-                {currentValue.name}
-              </Text>
-              <Flex
-                directio="row-reverse"
-                width={1}
-                alignItems="center"
-                justifyContent="flex-end"
-              >
-                <Flex height={1}>
-                  <Text
-                    fontSize={theme.fontSize(3)}
-                    pr={theme.spacing(1)}
-                    color="var(--main-color)"
-                    onClick={reducePortion(index)}
+            <SwipeDelete
+              itemId={currentValue.productId}
+              setCandidateForDeletion={setCandidateForDeletion}
+            >
+              {candidateForDeletion === currentValue.productId ? (
+                <Flex width={1} height={1}>
+                  <s.RemoteComponent
+                    p={theme.spacing(1)}
+                    width={1}
+                    alignItems="center"
                   >
-                    -
-                  </Text>
-                  <Text fontSize={theme.fontSize(3)}>
-                    {currentValue.portions}
-                  </Text>
-                  <Text
-                    fontSize={theme.fontSize(3)}
-                    pl={theme.spacing(1)}
-                    color="var(--main-color)"
-                    onClick={increasePortion(index)}
+                    <s.Preview
+                      src={currentValue.picture}
+                      alt={currentValue.name}
+                    />
+                    <Text
+                      fontSize={theme.fontSize(0)}
+                      pl={theme.spacing(1)}
+                      width={1}
+                    >
+                      {currentValue.name}
+                    </Text>
+                    <Flex
+                      directio="row-reverse"
+                      width={1}
+                      alignItems="center"
+                      justifyContent="flex-end"
+                    >
+                      <Flex height={1}>
+                        <Text
+                          fontSize={theme.fontSize(3)}
+                          pr={theme.spacing(1)}
+                          color="var(--main-color)"
+                          onClick={reducePortion(index)}
+                        >
+                          -
+                        </Text>
+                        <Text fontSize={theme.fontSize(3)}>
+                          {currentValue.portions}
+                        </Text>
+                        <Text
+                          fontSize={theme.fontSize(3)}
+                          pl={theme.spacing(1)}
+                          color="var(--main-color)"
+                          onClick={increasePortion(index)}
+                        >
+                          +
+                        </Text>
+                      </Flex>
+                      <Text pl={theme.spacing(2)}>{currentValue.price}</Text>
+                    </Flex>
+                  </s.RemoteComponent>
+                  <s.DeleteButton
+                    alignItems="center"
+                    justifyContent="center"
+                    onClick={removeComponent}
                   >
-                    +
-                  </Text>
+                    <img src={basket} alt="basket" />
+                  </s.DeleteButton>
                 </Flex>
-                <Text pl={theme.spacing(2)}>{currentValue.price}</Text>
-              </Flex>
-            </Flex>
-            <s.Divider mb={theme.spacing(1)} />
+              ) : (
+                <Flex p={theme.spacing(1)} width={1} alignItems="center">
+                  <s.Preview
+                    src={currentValue.picture}
+                    alt={currentValue.name}
+                  />
+                  <Text
+                    fontSize={theme.fontSize(0)}
+                    pl={theme.spacing(1)}
+                    width={1}
+                  >
+                    {currentValue.name}
+                  </Text>
+                  <Flex
+                    directio="row-reverse"
+                    width={1}
+                    alignItems="center"
+                    justifyContent="flex-end"
+                  >
+                    <Flex height={1}>
+                      <Text
+                        fontSize={theme.fontSize(3)}
+                        pr={theme.spacing(1)}
+                        color="var(--main-color)"
+                        onClick={reducePortion(index)}
+                      >
+                        -
+                      </Text>
+                      <Text fontSize={theme.fontSize(3)}>
+                        {currentValue.portions}
+                      </Text>
+                      <Text
+                        fontSize={theme.fontSize(3)}
+                        pl={theme.spacing(1)}
+                        color="var(--main-color)"
+                        onClick={increasePortion(index)}
+                      >
+                        +
+                      </Text>
+                    </Flex>
+                    <Text pl={theme.spacing(2)}>{currentValue.price}</Text>
+                  </Flex>
+                </Flex>
+              )}
+            </SwipeDelete>
+            <s.Divider ml={theme.spacing(1)} />
           </Flex>
         ))}
-        <Flex justifyContent="space-between" width={1}>
+        <Flex
+          justifyContent="space-between"
+          width={1}
+          pl={theme.spacing(1)}
+          pr={theme.spacing(1)}
+          mt={theme.spacing(1)}
+          boxSizing="border-box"
+        >
           <Text fontWeight="bold">Total:</Text>
           <Text fontWeight="bold">{totalCost + "$"}</Text>
         </Flex>
@@ -190,6 +284,7 @@ const Basket = () => {
         alignItems="center"
         flex={1}
         mt={theme.spacing(2)}
+        mb={theme.spacing(1)}
       >
         <Button>Confirm order ({totalCost + "$"})</Button>
         <Text fontSize={theme.fontSize(0)} color="var(--grey)">
@@ -211,6 +306,15 @@ const s = {
   Divider: styled(Flex)`
     border-bottom: 1px solid var(--grey);
     width: 300%;
+  `,
+  DeleteButton: styled(Flex)`
+    width: 100px;
+    height: 100%;
+
+    background: var(--main-color);
+  `,
+  RemoteComponent: styled(Flex)`
+    background: #e5e5ea;
   `,
 };
 
