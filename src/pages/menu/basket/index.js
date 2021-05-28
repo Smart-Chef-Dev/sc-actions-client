@@ -315,7 +315,7 @@ const s = {
     right: 0;
   `,
   RemoteComponent: styled(Flex)`
-    background: #e5e5ea;
+    background: var(--grey);
 
     position: relative;
     right: 58px;

@@ -91,7 +91,7 @@ const Product = () => {
               <Label>{"~ " + currentItem.time}</Label>
             </s.Time>
             <Text
-              color="var(--grey)"
+              color="var(--text-grey)"
               fontFamily="SF UI Display"
               textTransform="uppercase"
               pb={theme.spacing(1)}
@@ -158,7 +158,7 @@ const Product = () => {
 
 const s = {
   MainInformation: styled(Flex)`
-    background: white;
+    background: var(--main-bg-color);
     border-radius: 16px 16px 0 0;
     position: relative;
     bottom: 16px;
@@ -169,7 +169,7 @@ const s = {
     right: 16px;
     top: -16px;
 
-    background: white;
+    background: var(--main-bg-color);
     padding: 8px;
     border-radius: 16px;
   `,

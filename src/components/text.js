@@ -8,5 +8,5 @@ export const Text = styled(Flex)`
   font-family: ${(props) => props.fontFamily ?? "Arial"};
   font-weight: ${(props) => props.fontWeight ?? "normal"};
 
-  color: ${(props) => props.color ?? "black"};
+  color: ${(props) => props.color ?? "var(--main-text-color)"};
 `;

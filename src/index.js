@@ -28,14 +28,18 @@ export const globals = css`
       --main-color: #ff2d55;
       --main-color-disabled: rgba(255, 45, 85, 0.5);
       --text: #fff;
-      --grey: #c7c7cc;
+      --grey: #e5e5ea;
+      --text-grey: #c7c7cc;
+      --shadow: #0000003d;
       --black-layout-color: rgba(0, 0, 0, 0.7);
     }
 
     [data-theme="dark"] {
       --main-bg-color: #434c5f;
       --main-text-color: #fff;
+      --grey: #c7c7cc;
       --text: #000;
+      --shadow: #ffffff3d;
     }
 
     div#root {

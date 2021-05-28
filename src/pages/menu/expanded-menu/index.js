@@ -58,7 +58,7 @@ const ExpandedMenu = () => {
     <Flex direction="column" height={1} width={1}>
       <s.Arrow alignItems="center">
         <Img src={Arrow} alt="Arrow" onClick={arrowClicking} />
-        <Text color="var(--grey)" fontFamily="SF UI Display">
+        <Text color="var(--text-grey)" fontFamily="SF UI Display">
           Menu
         </Text>
       </s.Arrow>
@@ -113,7 +113,7 @@ const ExpandedMenu = () => {
                   />
                   <Text
                     p={theme.spacing(1)}
-                    color="var(--grey)"
+                    color="var(--text-grey)"
                     fontFamily="SF UI Display"
                     textTransform="uppercase"
                   >
@@ -132,7 +132,7 @@ const ExpandedMenu = () => {
                       pl={theme.spacing(1)}
                       height={1}
                       width={1}
-                      color="var(--grey)"
+                      color="var(--text-grey)"
                       font-family="SF UI Display"
                       fontSize={theme.fontSize(0)}
                     >
@@ -159,7 +159,7 @@ const ExpandedMenu = () => {
 };
 const s = {
   Container: styled(Flex)`
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 5px 15px var(--shadow);
     border-radius: 16px;
   `,
   Arrow: styled(Flex)`

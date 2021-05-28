@@ -94,7 +94,9 @@ const Menu = () => {
                         onClick={pressingItems(currentCourse.id)}
                       />
                       <Label>{currentCourse.name}</Label>
-                      <Text color="var(--grey)">{currentCourse.price}</Text>
+                      <Text color="var(--text-grey)">
+                        {currentCourse.price}
+                      </Text>
                     </Flex>
                   )
               )}
@@ -109,7 +111,7 @@ const Menu = () => {
 
 const s = {
   Divider: styled(Flex)`
-    border-bottom: 1px solid var(--grey);
+    border-bottom: 1px solid var(--text-grey);
   `,
   Preview: styled(Img)`
     width: 100px;

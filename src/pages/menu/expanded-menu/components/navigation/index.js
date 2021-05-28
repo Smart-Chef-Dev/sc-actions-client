@@ -1,10 +1,9 @@
 import { memo, useCallback } from "react";
 import { useLocation } from "wouter";
-import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
-import { Label } from "components/label";
+import { Text } from "components/text";
 import { theme } from "theme";
 
 const Navigation = (props) => {
@@ -23,13 +22,16 @@ const Navigation = (props) => {
         <Flex key={currentValue.id}>
           <Flex p={theme.spacing(1)}>
             {props.currentCategory === currentValue.id ? (
-              <Label onClick={changeCategory(currentValue.id)}>
+              <Text onClick={changeCategory(currentValue.id)}>
                 {currentValue.category}
-              </Label>
+              </Text>
             ) : (
-              <s.DarkenedText onClick={changeCategory(currentValue.id)}>
+              <Text
+                onClick={changeCategory(currentValue.id)}
+                color="var(--text-grey)"
+              >
                 {currentValue.category}
-              </s.DarkenedText>
+              </Text>
             )}
           </Flex>
         </Flex>
@@ -41,12 +43,6 @@ const Navigation = (props) => {
 Navigation.propTypes = {
   category: PropTypes.array,
   currentCategory: PropTypes.string,
-};
-
-const s = {
-  DarkenedText: styled(Flex)`
-    color: var(--grey);
-  `,
 };
 
 export default memo(Navigation);
