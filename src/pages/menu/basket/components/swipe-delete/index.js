@@ -10,7 +10,12 @@ const SwipeDelete = ({ children, itemId, setCandidateForDeletion }) => {
       setCandidateForDeletion(itemId);
     },
     onSwipedRight: () => {
-      setCandidateForDeletion(0);
+      setCandidateForDeletion((candidateForDeletion) => {
+        if (candidateForDeletion === itemId) {
+          return 0;
+        }
+        return candidateForDeletion;
+      });
     },
   });
 

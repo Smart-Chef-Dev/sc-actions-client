@@ -77,10 +77,8 @@ const Basket = () => {
   }, [products]);
 
   const removeComponent = useCallback(() => {
-    console.log(products);
     for (let i = 0; i < products.length; i++) {
       if (products[i].productId === candidateForDeletion) {
-        console.log(products[i]);
         products.splice(i, 1);
         break;
       }
@@ -161,7 +159,7 @@ const Basket = () => {
               setCandidateForDeletion={setCandidateForDeletion}
             >
               {candidateForDeletion === currentValue.productId ? (
-                <Flex width={1} height={1}>
+                <Flex width={1} height={1} position="relative">
                   <s.RemoteComponent
                     p={theme.spacing(1)}
                     width={1}
@@ -308,13 +306,19 @@ const s = {
     width: 300%;
   `,
   DeleteButton: styled(Flex)`
-    width: 100px;
-    height: 100%;
+    width: 58px;
+    height: 83px;
 
     background: var(--main-color);
+
+    position: absolute;
+    right: 0;
   `,
   RemoteComponent: styled(Flex)`
     background: #e5e5ea;
+
+    position: relative;
+    right: 58px;
   `,
 };
 

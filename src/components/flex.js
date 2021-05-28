@@ -45,6 +45,8 @@ export const Box = styled.div`
   border-radius: ${(props) => props.borderRadius ?? "0"};
 
   box-sizing: ${(props) => props.boxSizing ?? "content-box"};
+
+  position: ${(props) => props.position ?? "static"};
 `;
 
 export const Flex = styled(Box)`
