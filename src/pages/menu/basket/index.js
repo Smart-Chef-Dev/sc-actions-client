@@ -30,9 +30,6 @@ const Basket = () => {
       products[indexProducts].portions++;
       setProducts([...products]);
       setProductsInBasket([...products]);
-
-      setTotalCost(0);
-      setAllPortions(0);
     },
     [products, setProductsInBasket]
   );
@@ -43,9 +40,6 @@ const Basket = () => {
         products[indexProducts].portions--;
         setProducts([...products]);
         setProductsInBasket([...products]);
-
-        setTotalCost(0);
-        setAllPortions(0);
       }
     },
     [products, setProductsInBasket]
@@ -61,20 +55,27 @@ const Basket = () => {
     }
   }, [person]);
 
+  console.log(candidateForDeletion);
+
   useEffect(() => {
+    setTotalCost(0);
+    setAllPortions(0);
+
     for (let i = 0; i < products.length; i++) {
-      setTotalCost(
-        (t) =>
-          t +
-          Number(products[i].price.replace(/[^.\d]/g, "")) *
-            Number(products[i].portions)
-      );
+      if (products[i].productId !== candidateForDeletion) {
+        setTotalCost(
+          (t) =>
+            t +
+            Number(products[i].price.replace(/[^.\d]/g, "")) *
+              Number(products[i].portions)
+        );
+      }
 
       setAllPortions((t) => t + products[i].portions);
     }
 
     setTotalCost((t) => parseFloat(t).toFixed(1));
-  }, [products]);
+  }, [products, candidateForDeletion]);
 
   const removeComponent = useCallback(() => {
     for (let i = 0; i < products.length; i++) {
