@@ -6,12 +6,12 @@ import { Routes } from "constants/routes";
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Img } from "components/img";
+import { Divider } from "components/divider";
+import Navigation from "./components/navigation";
 import { theme } from "theme";
 
 import mockCategory from "pages/menu/mock/mock.categories.json";
 import mockCourses from "pages/menu/mock/mock.courses.json";
-
-import Navigation from "./components/navigation";
 
 import Arrow from "./Arrow.png";
 
@@ -82,7 +82,7 @@ const ExpandedMenu = () => {
             >
               {currentList[0].category}
             </Text>
-            <s.Divider width={5} />
+            <Divider />
             <Navigation
               category={category}
               currentCategory={params.categoryId}
@@ -170,9 +170,6 @@ const s = {
   Preview: styled(Img)`
     max-height: 300px;
     object-fit: cover;
-  `,
-  Divider: styled(Flex)`
-    border-bottom: 1px solid var(--grey);
   `,
 };
 export default memo(ExpandedMenu);

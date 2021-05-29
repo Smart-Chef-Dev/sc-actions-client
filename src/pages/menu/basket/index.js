@@ -7,6 +7,7 @@ import { Text } from "components/text";
 import { Img } from "components/img";
 import Button from "components/button";
 import SwipeDelete from "./components/swipe-delete";
+import { Divider } from "components/divider";
 import { theme } from "theme";
 
 import productsInBasketState from "atoms/basket";
@@ -55,8 +56,6 @@ const Basket = () => {
     }
   }, [person]);
 
-  console.log(candidateForDeletion);
-
   useEffect(() => {
     setTotalCost(0);
     setAllPortions(0);
@@ -92,7 +91,7 @@ const Basket = () => {
   }, [products, candidateForDeletion, setProductsInBasket]);
 
   return (
-    <Flex direction="column" height={1} weight={1} boxSizing="border-box">
+    <Flex direction="column" height={1} width={1} boxSizing="border-box">
       <Flex height={1} weight={1} flex={1}>
         <Text
           fontSize={theme.fontSize(3)}
@@ -104,7 +103,7 @@ const Basket = () => {
           My Order ({allPortions})
         </Text>
       </Flex>
-      <s.Divider mb={theme.spacing(1)} ml={theme.spacing(1)} />
+      <Divider mb={theme.spacing(1)} ml={theme.spacing(1)} />
       <Flex
         height={1}
         width={1}
@@ -151,7 +150,7 @@ const Basket = () => {
               </Text>
             </Flex>
           </Flex>
-          <s.Divider />
+          <Divider />
         </Flex>
         {products.map((currentValue, index) => (
           <Flex key={index} width={1} direction="column">
@@ -260,7 +259,7 @@ const Basket = () => {
                 </Flex>
               )}
             </SwipeDelete>
-            <s.Divider ml={theme.spacing(1)} />
+            <Divider ml={theme.spacing(1)} />
           </Flex>
         ))}
         <Flex
@@ -286,7 +285,7 @@ const Basket = () => {
         mb={theme.spacing(1)}
       >
         <Button>Confirm order ({totalCost + "$"})</Button>
-        <Text fontSize={theme.fontSize(0)} color="var(--grey)">
+        <Text fontSize={theme.fontSize(0)} color="var(--text-grey)">
           Continue the order
         </Text>
       </Flex>
@@ -301,11 +300,6 @@ const s = {
     object-fit: cover;
     border-radius: 16px;
   `,
-
-  Divider: styled(Flex)`
-    border-bottom: 1px solid var(--grey);
-    width: 300%;
-  `,
   DeleteButton: styled(Flex)`
     width: 58px;
     height: 83px;
@@ -316,7 +310,7 @@ const s = {
     right: 0;
   `,
   RemoteComponent: styled(Flex)`
-    background: var(--grey);
+    background: var(--highlighted-item);
 
     position: relative;
     right: 58px;

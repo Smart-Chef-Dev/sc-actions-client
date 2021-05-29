@@ -26,7 +26,9 @@ const Product = () => {
   const [portions, setPortions] = useState(1);
   const [, setLocation] = useLocation();
 
-  const [, setProductsInBasket] = useRecoilState(productsInBasketState);
+  const [productsInBasket, setProductsInBasket] = useRecoilState(
+    productsInBasketState
+  );
 
   useEffect(() => {
     setTimeout(() => {
@@ -45,13 +47,13 @@ const Product = () => {
     if (portions !== 1) {
       setPortions(portions - 1);
     }
-  }, [portions]);
+    console.log(productsInBasket);
+  }, [portions, productsInBasket]);
 
   const increasePortion = useCallback(() => {
-    if (portions < 100) {
-      setPortions(portions + 1);
-    }
-  }, [portions]);
+    setPortions(portions + 1);
+    console.log(productsInBasket);
+  }, [portions, productsInBasket]);
 
   const arrowClicking = useCallback(() => {
     if (match) {
@@ -60,8 +62,18 @@ const Product = () => {
   }, [setLocation, params.restaurant, match]);
 
   const addProductToOrder = useCallback(() => {
-    setProductsInBasket((oldProductsInBasket) => [
-      ...oldProductsInBasket,
+    for (let i = 0; i < productsInBasket.length; i++) {
+      if (productsInBasket[i].productId === currentItem.id) {
+        productsInBasket[i].portions = productsInBasket[i].portions + portions;
+
+        setProductsInBasket([...productsInBasket]);
+
+        return;
+      }
+    }
+
+    setProductsInBasket([
+      ...productsInBasket,
       {
         productId: currentItem.id,
         name: currentItem.name,
@@ -70,7 +82,7 @@ const Product = () => {
         portions: portions,
       },
     ]);
-  }, [currentItem, portions, setProductsInBasket]);
+  }, [currentItem, portions, setProductsInBasket, productsInBasket]);
 
   return (
     <Flex height={1}>

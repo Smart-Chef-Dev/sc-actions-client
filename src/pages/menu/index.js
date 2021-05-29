@@ -9,12 +9,12 @@ import { Img } from "components/img";
 import { Label } from "components/label";
 import { Text } from "components/text";
 import H1 from "components/h1";
-import H2 from "components/h2";
 
 import mockCategory from "pages/menu/mock/mock.categories.json";
 import mockCourses from "pages/menu/mock/mock.courses.json";
 
 import Arrow from "./Arrow.png";
+import { Divider } from "../../components/divider";
 
 const Menu = () => {
   const [category, setCategory] = useState([]);
@@ -50,14 +50,23 @@ const Menu = () => {
   );
 
   return (
-    <Flex direction="column" p={theme.spacing(1)} height={1} pr="0px">
+    <Flex
+      direction="column"
+      pl={theme.spacing(1)}
+      pt={theme.spacing(1)}
+      height={1}
+      width={1}
+      boxSizing="border-box"
+    >
       <H1 marginTop="0px">Menu</H1>
-      <s.Divider width={1.5} />
+      <Divider mb={theme.spacing(1)} />
       <Flex direction="column" overflowY="scroll" overflowX="hidden" width={1}>
         {category.map((currentCategory) => (
           <Flex key={currentCategory.category} direction="column" width={0.95}>
             <Flex width={1}>
-              <H2>{currentCategory.category}</H2>
+              <Text fontSize={theme.fontSize(2)} fontWeight="bold">
+                {currentCategory.category}
+              </Text>
               <Flex
                 width={1}
                 height={1}
@@ -74,6 +83,7 @@ const Menu = () => {
             <Flex
               overflowX="scroll"
               ml={theme.spacing(1)}
+              mt={theme.spacing(1)}
               width={1}
               height={0.83}
             >
@@ -101,7 +111,7 @@ const Menu = () => {
                   )
               )}
             </Flex>
-            <s.Divider ml={theme.spacing(1)} width={2} />
+            <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
           </Flex>
         ))}
       </Flex>
@@ -110,9 +120,6 @@ const Menu = () => {
 };
 
 const s = {
-  Divider: styled(Flex)`
-    border-bottom: 1px solid var(--text-grey);
-  `,
   Preview: styled(Img)`
     width: 100px;
     height: 100px;
