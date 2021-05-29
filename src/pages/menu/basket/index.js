@@ -37,7 +37,7 @@ const Basket = () => {
 
   const reducePortion = useCallback(
     (indexProducts) => () => {
-      if (products[indexProducts].portions !== 1) {
+      if (products[indexProducts].portions > 1) {
         products[indexProducts].portions--;
         setProducts([...products]);
         setProductsInBasket([...products]);
@@ -51,7 +51,7 @@ const Basket = () => {
   }, [person]);
 
   const reducePerson = useCallback(() => {
-    if (person !== 1) {
+    if (person > 1) {
       setPerson(person - 1);
     }
   }, [person]);

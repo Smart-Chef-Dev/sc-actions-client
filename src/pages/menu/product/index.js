@@ -24,6 +24,9 @@ const Product = () => {
   const [match, params] = useRoute(Routes.PRODUCT);
   const [course, setCourse] = useState([]);
   const [portions, setPortions] = useState(1);
+  const [currentItem, setCurrentItem] = useState();
+  const [alreadyInTheCart, setAlreadyInTheCart] = useState(false);
+  const [indexCourses, setIndexCourses] = useState(-1);
   const [, setLocation] = useLocation();
 
   const [productsInBasket, setProductsInBasket] = useRecoilState(
@@ -36,24 +39,58 @@ const Product = () => {
     }, 1);
   }, []);
 
-  let currentItem;
-  if (match) {
-    currentItem = course.find(
-      (currentValue) => currentValue.id === params.itemId
+  useEffect(() => {
+    setCurrentItem(
+      course.find((currentValue) => currentValue.id === params.itemId)
     );
-  }
+  }, [course, params]);
+
+  useEffect(() => {
+    if (currentItem) {
+      for (let i = 0; i < productsInBasket.length; i++) {
+        if (productsInBasket[i].productId === currentItem.id) {
+          console.log(2);
+          setAlreadyInTheCart(true);
+          setIndexCourses(i);
+          setPortions(productsInBasket[i].portions);
+          break;
+        }
+      }
+    }
+  }, [currentItem, productsInBasket]);
 
   const reducePortion = useCallback(() => {
-    if (portions !== 1) {
+    if (alreadyInTheCart && portions > 1) {
+      productsInBasket[indexCourses].portions--;
+
+      setProductsInBasket([...productsInBasket]);
+    } else if (portions > 1) {
+      console.log(1);
       setPortions(portions - 1);
     }
-    console.log(productsInBasket);
-  }, [portions, productsInBasket]);
+  }, [
+    portions,
+    indexCourses,
+    productsInBasket,
+    alreadyInTheCart,
+    setProductsInBasket,
+  ]);
 
   const increasePortion = useCallback(() => {
-    setPortions(portions + 1);
-    console.log(productsInBasket);
-  }, [portions, productsInBasket]);
+    if (alreadyInTheCart) {
+      productsInBasket[indexCourses].portions++;
+
+      setProductsInBasket([...productsInBasket]);
+    } else {
+      setPortions(portions + 1);
+    }
+  }, [
+    portions,
+    indexCourses,
+    productsInBasket,
+    alreadyInTheCart,
+    setProductsInBasket,
+  ]);
 
   const arrowClicking = useCallback(() => {
     if (match) {
@@ -62,16 +99,6 @@ const Product = () => {
   }, [setLocation, params.restaurant, match]);
 
   const addProductToOrder = useCallback(() => {
-    for (let i = 0; i < productsInBasket.length; i++) {
-      if (productsInBasket[i].productId === currentItem.id) {
-        productsInBasket[i].portions = productsInBasket[i].portions + portions;
-
-        setProductsInBasket([...productsInBasket]);
-
-        return;
-      }
-    }
-
     setProductsInBasket([
       ...productsInBasket,
       {
@@ -158,7 +185,17 @@ const Product = () => {
                     +
                   </Text>
                 </Flex>
-                <Button onClick={addProductToOrder}>ORDER</Button>
+                {alreadyInTheCart ? (
+                  <Text
+                    fontSize={theme.fontSize(3)}
+                    mb={theme.spacing(1)}
+                    fontFamily="SF UI Display"
+                  >
+                    already in the cart
+                  </Text>
+                ) : (
+                  <Button onClick={addProductToOrder}>ORDER</Button>
+                )}
               </Flex>
             </Flex>
           </s.MainInformation>
