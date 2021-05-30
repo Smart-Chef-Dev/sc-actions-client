@@ -10,9 +10,6 @@ import { Divider } from "components/divider";
 import Navigation from "./components/navigation";
 import { theme } from "theme";
 
-import mockCategory from "pages/menu/mock/mock.categories.json";
-import mockCourses from "pages/menu/mock/mock.courses.json";
-
 import Arrow from "./Arrow.png";
 
 const ExpandedMenu = () => {
@@ -22,18 +19,33 @@ const ExpandedMenu = () => {
   const [, setLocation] = useLocation();
 
   useEffect(() => {
-    setTimeout(() => {
-      setCategory(mockCategory);
-      setCourse(mockCourses);
-    }, 1);
-  }, [category, course]);
+    fetch("/api/menu/" + params.restaurant + "/getCategory", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        setCategory(result);
+      });
 
-  useEffect(() => {});
+    fetch("/api/menu/" + params.restaurant + "/getCourse", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        setCourse(result);
+      });
+  }, [params.restaurant]);
 
   let currentList = [];
   if (match) {
     currentList = course.filter(
-      (currentValue) => currentValue.categoryId === params.categoryId
+      (currentValue) => currentValue.category._id === params.categoryId
     );
   }
 
@@ -80,7 +92,7 @@ const ExpandedMenu = () => {
               mb={theme.spacing(1)}
               fontWeight="bold"
             >
-              {currentList[0].category}
+              {currentList[0].category.category}
             </Text>
             <Divider />
             <Navigation
@@ -99,11 +111,11 @@ const ExpandedMenu = () => {
             <Flex direction="column" width={1} height={1}>
               {currentList.map((currentValue) => (
                 <s.Container
-                  key={currentValue.id}
+                  key={currentValue._id}
                   mb={theme.spacing(1)}
                   direction="column"
                   width={1}
-                  onClick={pressingItems(currentValue.id)}
+                  onClick={pressingItems(currentValue._id)}
                 >
                   <s.Preview
                     src={currentValue.picture}
@@ -117,7 +129,7 @@ const ExpandedMenu = () => {
                     fontFamily="SF UI Display"
                     textTransform="uppercase"
                   >
-                    {currentValue.category}
+                    {currentValue.category.category}
                   </Text>
                   <Text
                     fontFamily="Actor"

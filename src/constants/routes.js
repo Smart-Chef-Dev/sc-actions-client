@@ -6,5 +6,5 @@ export const Routes = {
   MENU: "/restaurant/:restaurant",
   EXPANDED_MENU: "/restaurant/:restaurant/:categoryId",
   PRODUCT: "/restaurant/:restaurant/item/:itemId",
-  BASKET: "/basket",
+  BASKET: "/basket/:restaurant",
 };

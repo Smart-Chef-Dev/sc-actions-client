@@ -1,4 +1,6 @@
+import { useLocation, useRoute } from "wouter";
 import { memo, useCallback } from "react";
+import { styled } from "@linaria/react";
 
 import MenuIcon from "./icon_menu.svg";
 import MenuIconDedicated from "./icon_menu_dedicated.svg";
@@ -6,26 +8,41 @@ import MenuIconDedicated from "./icon_menu_dedicated.svg";
 import BasketIcon from "./icon_basket.svg";
 import BasketIconDedicated from "./icon_basket_dedicated.svg";
 
-// import { theme } from "../../theme";
-import { useLocation, useRoute } from "wouter";
-import { Routes } from "../../constants/routes";
-import { styled } from "@linaria/react";
+import { Routes } from "constants/routes";
 
 const MenuTabs = () => {
   const [, setLocation] = useLocation();
 
-  const [menu] = useRoute(Routes.MENU);
-  const [expandedMenu] = useRoute(Routes.EXPANDED_MENU);
-  const [product] = useRoute(Routes.PRODUCT);
-  const [basket] = useRoute(Routes.BASKET);
+  const [menu, menuParams] = useRoute(Routes.MENU);
+  const [expandedMenu, expandedMenuParams] = useRoute(Routes.EXPANDED_MENU);
+  const [product, productParams] = useRoute(Routes.PRODUCT);
+  const [basket, basketParams] = useRoute(Routes.BASKET);
 
   const goToTheMenu = useCallback(() => {
-    setLocation(Routes.MENU);
-  }, [setLocation]);
+    if (basket) {
+      setLocation("/restaurant/" + basketParams.restaurant);
+    }
+  }, [setLocation, basket, basketParams]);
+
+  console.log(expandedMenuParams);
+  console.log(basketParams);
 
   const goToTheOrder = useCallback(() => {
-    setLocation(Routes.BASKET);
-  }, [setLocation]);
+    if (menu) {
+      setLocation("/basket/" + menuParams.restaurant);
+    } else if (expandedMenu) {
+      setLocation("/basket/" + expandedMenuParams.restaurant);
+    } else if (productParams) {
+      setLocation("/basket/" + productParams.restaurant);
+    }
+  }, [
+    setLocation,
+    expandedMenu,
+    expandedMenuParams,
+    menuParams,
+    menu,
+    productParams,
+  ]);
 
   return (
     <>

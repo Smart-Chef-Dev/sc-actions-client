@@ -19,15 +19,15 @@ const Navigation = (props) => {
   return (
     <Flex overflowX="scroll" width={1}>
       {props.category.map((currentValue) => (
-        <Flex key={currentValue.id}>
+        <Flex key={currentValue._id}>
           <Flex p={theme.spacing(1)}>
-            {props.currentCategory === currentValue.id ? (
-              <Text onClick={changeCategory(currentValue.id)}>
+            {props.currentCategory === currentValue._id ? (
+              <Text onClick={changeCategory(currentValue._id)}>
                 {currentValue.category}
               </Text>
             ) : (
               <Text
-                onClick={changeCategory(currentValue.id)}
+                onClick={changeCategory(currentValue._id)}
                 color="var(--text-grey)"
               >
                 {currentValue.category}

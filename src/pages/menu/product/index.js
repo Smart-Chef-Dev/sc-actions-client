@@ -12,8 +12,6 @@ import { Routes } from "constants/routes";
 
 import { theme } from "theme";
 
-import mockCourses from "pages/menu/mock/mock.courses.json";
-
 import Arrow from "./Arrow.png";
 
 import productsInBasketState from "atoms/basket";
@@ -34,22 +32,28 @@ const Product = () => {
   );
 
   useEffect(() => {
-    setTimeout(() => {
-      setCourse(mockCourses);
-    }, 1);
-  }, []);
+    fetch("/api/menu/" + params.restaurant + "/getCourse", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        setCourse(result);
+      });
+  }, [params.restaurant]);
 
   useEffect(() => {
     setCurrentItem(
-      course.find((currentValue) => currentValue.id === params.itemId)
+      course.find((currentValue) => currentValue._id === params.itemId)
     );
   }, [course, params]);
 
   useEffect(() => {
     if (currentItem) {
       for (let i = 0; i < productsInBasket.length; i++) {
-        if (productsInBasket[i].productId === currentItem.id) {
-          console.log(2);
+        if (productsInBasket[i].productId === currentItem._id) {
           setAlreadyInTheCart(true);
           setIndexCourses(i);
           setPortions(productsInBasket[i].portions);
@@ -65,7 +69,6 @@ const Product = () => {
 
       setProductsInBasket([...productsInBasket]);
     } else if (portions > 1) {
-      console.log(1);
       setPortions(portions - 1);
     }
   }, [
@@ -102,7 +105,7 @@ const Product = () => {
     setProductsInBasket([
       ...productsInBasket,
       {
-        productId: currentItem.id,
+        productId: currentItem._id,
         name: currentItem.name,
         picture: currentItem.picture,
         price: currentItem.price,
@@ -135,7 +138,7 @@ const Product = () => {
               textTransform="uppercase"
               pb={theme.spacing(1)}
             >
-              {currentItem.category}
+              {currentItem.category.category}
             </Text>
             <Text
               fontFamily="SF UI Display"
