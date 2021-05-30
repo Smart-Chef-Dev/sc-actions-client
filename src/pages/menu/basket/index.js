@@ -15,35 +15,32 @@ import icon from "./icon.png";
 import basket from "./basket.png";
 
 const Basket = () => {
-  const [productsInBasket, setProductsInBasket] = useRecoilState(
+  const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
     productsInBasketState
   );
-  const [products, setProducts] = useState(productsInBasket);
 
   const [person, setPerson] = useState(1);
   const [totalCost, setTotalCost] = useState(0);
-  const [allPortions, setAllPortions] = useState(0);
+  const [allCount, setAllCount] = useState(0);
 
   const [candidateForDeletion, setCandidateForDeletion] = useState(0);
 
   const increasePortion = useCallback(
     (indexProducts) => () => {
-      products[indexProducts].portions++;
-      setProducts([...products]);
-      setProductsInBasket([...products]);
+      productsInBasketAtoms[indexProducts].count++;
+      setProductsInBasketAtoms([...productsInBasketAtoms]);
     },
-    [products, setProductsInBasket]
+    [setProductsInBasketAtoms, productsInBasketAtoms]
   );
 
   const reducePortion = useCallback(
     (indexProducts) => () => {
-      if (products[indexProducts].portions > 1) {
-        products[indexProducts].portions--;
-        setProducts([...products]);
-        setProductsInBasket([...products]);
+      if (productsInBasketAtoms[indexProducts].count > 1) {
+        productsInBasketAtoms[indexProducts].count--;
+        setProductsInBasketAtoms([...productsInBasketAtoms]);
       }
     },
-    [products, setProductsInBasket]
+    [setProductsInBasketAtoms, productsInBasketAtoms]
   );
 
   const increasePerson = useCallback(() => {
@@ -58,37 +55,36 @@ const Basket = () => {
 
   useEffect(() => {
     setTotalCost(0);
-    setAllPortions(0);
+    setAllCount(0);
 
-    for (let i = 0; i < products.length; i++) {
-      if (products[i].productId !== candidateForDeletion) {
+    for (let i = 0; i < productsInBasketAtoms.length; i++) {
+      if (productsInBasketAtoms[i].productId !== candidateForDeletion) {
         setTotalCost(
           (t) =>
             t +
-            Number(products[i].price.replace(/[^.\d]/g, "")) *
-              Number(products[i].portions)
+            Number(productsInBasketAtoms[i].price.replace(/[^.\d]/g, "")) *
+              Number(productsInBasketAtoms[i].count)
         );
       }
 
-      setAllPortions((t) => t + products[i].portions);
+      setAllCount((t) => t + productsInBasketAtoms[i].count);
     }
 
     setTotalCost((t) => parseFloat(t).toFixed(1));
-  }, [products, candidateForDeletion]);
+  }, [candidateForDeletion, productsInBasketAtoms]);
 
   const removeComponent = useCallback(() => {
-    for (let i = 0; i < products.length; i++) {
-      if (products[i].productId === candidateForDeletion) {
-        products.splice(i, 1);
+    for (let i = 0; i < productsInBasketAtoms.length; i++) {
+      if (productsInBasketAtoms[i].productId === candidateForDeletion) {
+        productsInBasketAtoms.splice(i, 1);
         break;
       }
     }
-    setProducts([...products]);
-    setProductsInBasket([...products]);
+    setProductsInBasketAtoms([...productsInBasketAtoms]);
 
     setTotalCost(0);
-    setAllPortions(0);
-  }, [products, candidateForDeletion, setProductsInBasket]);
+    setAllCount(0);
+  }, [candidateForDeletion, setProductsInBasketAtoms, productsInBasketAtoms]);
 
   const sendAnOrder = useCallback(() => {
     fetch("/api/menu/sendMessage", {
@@ -96,12 +92,11 @@ const Basket = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(productsInBasket),
+      body: JSON.stringify(productsInBasketAtoms),
     }).then(() => {
-      setProductsInBasket([]);
-      setProducts([]);
+      setProductsInBasketAtoms([]);
     });
-  }, [productsInBasket, setProductsInBasket]);
+  }, [productsInBasketAtoms, setProductsInBasketAtoms]);
 
   return (
     <Flex direction="column" height={1} width={1} boxSizing="border-box">
@@ -113,7 +108,7 @@ const Basket = () => {
           pb={theme.spacing(1)}
           pl={theme.spacing(1)}
         >
-          My Order ({allPortions})
+          My Order ({allCount})
         </Text>
       </Flex>
       <Divider mb={theme.spacing(1)} ml={theme.spacing(1)} />
@@ -165,7 +160,7 @@ const Basket = () => {
           </Flex>
           <Divider />
         </Flex>
-        {products.map((currentValue, index) => (
+        {productsInBasketAtoms.map((currentValue, index) => (
           <Flex key={index} width={1} direction="column">
             <SwipeDelete
               itemId={currentValue.productId}
@@ -205,7 +200,7 @@ const Basket = () => {
                           -
                         </Text>
                         <Text fontSize={theme.fontSize(3)}>
-                          {currentValue.portions}
+                          {currentValue.count}
                         </Text>
                         <Text
                           fontSize={theme.fontSize(3)}
@@ -256,7 +251,7 @@ const Basket = () => {
                         -
                       </Text>
                       <Text fontSize={theme.fontSize(3)}>
-                        {currentValue.portions}
+                        {currentValue.count}
                       </Text>
                       <Text
                         fontSize={theme.fontSize(3)}

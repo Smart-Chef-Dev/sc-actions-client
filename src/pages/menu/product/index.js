@@ -21,7 +21,7 @@ import { useRecoilState } from "recoil";
 const Product = () => {
   const [match, params] = useRoute(Routes.PRODUCT);
   const [course, setCourse] = useState([]);
-  const [portions, setPortions] = useState(1);
+  const [count, setcount] = useState(1);
   const [currentItem, setCurrentItem] = useState();
   const [alreadyInTheCart, setAlreadyInTheCart] = useState(false);
   const [indexCourses, setIndexCourses] = useState(-1);
@@ -56,7 +56,7 @@ const Product = () => {
         if (productsInBasket[i].productId === currentItem._id) {
           setAlreadyInTheCart(true);
           setIndexCourses(i);
-          setPortions(productsInBasket[i].portions);
+          setcount(productsInBasket[i].count);
           break;
         }
       }
@@ -64,15 +64,15 @@ const Product = () => {
   }, [currentItem, productsInBasket]);
 
   const reducePortion = useCallback(() => {
-    if (alreadyInTheCart && portions > 1) {
-      productsInBasket[indexCourses].portions--;
+    if (alreadyInTheCart && count > 1) {
+      productsInBasket[indexCourses].count--;
 
       setProductsInBasket([...productsInBasket]);
-    } else if (portions > 1) {
-      setPortions(portions - 1);
+    } else if (count > 1) {
+      setcount(count - 1);
     }
   }, [
-    portions,
+    count,
     indexCourses,
     productsInBasket,
     alreadyInTheCart,
@@ -81,14 +81,14 @@ const Product = () => {
 
   const increasePortion = useCallback(() => {
     if (alreadyInTheCart) {
-      productsInBasket[indexCourses].portions++;
+      productsInBasket[indexCourses].count++;
 
       setProductsInBasket([...productsInBasket]);
     } else {
-      setPortions(portions + 1);
+      setcount(count + 1);
     }
   }, [
-    portions,
+    count,
     indexCourses,
     productsInBasket,
     alreadyInTheCart,
@@ -109,10 +109,11 @@ const Product = () => {
         name: currentItem.name,
         picture: currentItem.picture,
         price: currentItem.price,
-        portions: portions,
+        count: count,
+        restaurant: currentItem.category.restaurant,
       },
     ]);
-  }, [currentItem, portions, setProductsInBasket, productsInBasket]);
+  }, [currentItem, count, setProductsInBasket, productsInBasket]);
 
   return (
     <Flex height={1}>
@@ -177,7 +178,7 @@ const Product = () => {
                     pr={theme.spacing(1)}
                     mb={theme.spacing(1)}
                   >
-                    {portions}
+                    {count}
                   </Text>
                   <Text
                     fontSize={theme.fontSize(3)}
