@@ -90,6 +90,19 @@ const Basket = () => {
     setAllPortions(0);
   }, [products, candidateForDeletion, setProductsInBasket]);
 
+  const sendAnOrder = useCallback(() => {
+    fetch("/api/menu/sendMessage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(productsInBasket),
+    }).then(() => {
+      setProductsInBasket([]);
+      setProducts([]);
+    });
+  }, [productsInBasket, setProductsInBasket]);
+
   return (
     <Flex direction="column" height={1} width={1} boxSizing="border-box">
       <Flex height={1} weight={1} flex={1}>
@@ -284,7 +297,7 @@ const Basket = () => {
         mt={theme.spacing(2)}
         mb={theme.spacing(1)}
       >
-        <Button>Confirm order ({totalCost + "$"})</Button>
+        <Button onClick={sendAnOrder}>Confirm order ({totalCost + "$"})</Button>
         <Text fontSize={theme.fontSize(0)} color="var(--text-grey)">
           Continue the order
         </Text>
