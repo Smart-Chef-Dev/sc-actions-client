@@ -53,21 +53,23 @@ const Menu = () => {
   const arrowClicking = useCallback(
     (categoryId) => () => {
       if (match) {
-        setLocation("/restaurant/" + params.restaurant + "/" + categoryId);
+        setLocation(
+          `/restaurant/${params.restaurant}/${params.tableId}/${categoryId}`
+        );
       }
     },
-    [setLocation, params.restaurant, match]
+    [setLocation, params.restaurant, params.tableId, match]
   );
 
   const pressingItems = useCallback(
     (itemId) => () => {
       if (match) {
         setLocation(
-          "/restaurant/" + params.restaurant + "/" + "item/" + itemId
+          `/restaurant/${params.restaurant}/${params.tableId}/item/${itemId}`
         );
       }
     },
-    [setLocation, params.restaurant, match]
+    [setLocation, params.restaurant, params.tableId, match]
   );
 
   return (

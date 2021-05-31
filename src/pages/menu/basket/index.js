@@ -13,6 +13,8 @@ import { theme } from "theme";
 import productsInBasketState from "atoms/basket";
 import icon from "./icon.png";
 import basket from "./basket.png";
+import { useRoute } from "wouter";
+import { Routes } from "../../../constants/routes";
 
 const Basket = () => {
   const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
@@ -24,6 +26,7 @@ const Basket = () => {
   const [allCount, setAllCount] = useState(0);
 
   const [candidateForDeletion, setCandidateForDeletion] = useState(0);
+  const [, params] = useRoute(Routes.BASKET);
 
   const increasePortion = useCallback(
     (indexProducts) => () => {
@@ -87,7 +90,7 @@ const Basket = () => {
   }, [candidateForDeletion, setProductsInBasketAtoms, productsInBasketAtoms]);
 
   const sendAnOrder = useCallback(() => {
-    fetch("/api/menu/sendMessage", {
+    fetch(`/api/menu/sendMessage/${params.restaurant}/${params.tableId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -96,7 +99,12 @@ const Basket = () => {
     }).then(() => {
       setProductsInBasketAtoms([]);
     });
-  }, [productsInBasketAtoms, setProductsInBasketAtoms]);
+  }, [
+    productsInBasketAtoms,
+    setProductsInBasketAtoms,
+    params.restaurant,
+    params.tableId,
+  ]);
 
   return (
     <Flex direction="column" height={1} width={1} boxSizing="border-box">
