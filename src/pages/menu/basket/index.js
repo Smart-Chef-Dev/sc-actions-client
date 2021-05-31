@@ -293,9 +293,6 @@ const Basket = () => {
         mb={theme.spacing(1)}
       >
         <Button onClick={sendAnOrder}>Confirm order ({totalCost + "$"})</Button>
-        <Text fontSize={theme.fontSize(0)} color="var(--text-grey)">
-          Continue the order
-        </Text>
       </Flex>
     </Flex>
   );

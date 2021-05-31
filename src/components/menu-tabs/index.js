@@ -24,9 +24,6 @@ const MenuTabs = () => {
     }
   }, [setLocation, basket, basketParams]);
 
-  console.log(expandedMenuParams);
-  console.log(basketParams);
-
   const goToTheOrder = useCallback(() => {
     if (menu) {
       setLocation("/basket/" + menuParams.restaurant);

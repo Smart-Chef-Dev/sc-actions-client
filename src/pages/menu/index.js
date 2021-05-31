@@ -27,7 +27,10 @@ const Menu = () => {
         "Content-Type": "application/json",
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        setError(!response.ok);
+        return response.json();
+      })
       .then((result) => {
         setCategory(result);
       });
@@ -39,7 +42,7 @@ const Menu = () => {
       },
     })
       .then((response) => {
-        response.status !== 200 && setError(true);
+        setError(!response.ok);
         return response.json();
       })
       .then((result) => {
@@ -66,8 +69,6 @@ const Menu = () => {
     },
     [setLocation, params.restaurant, match]
   );
-
-  console.log(category);
 
   return (
     <Flex

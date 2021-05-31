@@ -13,9 +13,10 @@ import { theme } from "theme";
 import Arrow from "./Arrow.png";
 
 const ExpandedMenu = () => {
+  const [match, params] = useRoute(Routes.EXPANDED_MENU);
   const [category, setCategory] = useState([]);
   const [course, setCourse] = useState([]);
-  const [match, params] = useRoute(Routes.EXPANDED_MENU);
+  const [error, setError] = useState(false);
   const [, setLocation] = useLocation();
 
   useEffect(() => {
@@ -25,7 +26,10 @@ const ExpandedMenu = () => {
         "Content-Type": "application/json",
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        setError(!response.ok);
+        return response.json();
+      })
       .then((result) => {
         setCategory(result);
       });
@@ -36,14 +40,17 @@ const ExpandedMenu = () => {
         "Content-Type": "application/json",
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        setError(!response.ok);
+        return response.json();
+      })
       .then((result) => {
         setCourse(result);
       });
   }, [params.restaurant]);
 
   let currentList = [];
-  if (match) {
+  if (match && !error) {
     currentList = course.filter(
       (currentValue) => currentValue.category._id === params.categoryId
     );
@@ -74,7 +81,7 @@ const ExpandedMenu = () => {
           Menu
         </Text>
       </s.Arrow>
-      {match && currentList[0] && (
+      {match && !error && currentList[0] && (
         <Flex direction="column" height={1} width={1}>
           <Flex
             direction="column"

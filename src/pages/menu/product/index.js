@@ -26,6 +26,7 @@ const Product = () => {
   const [alreadyInTheCart, setAlreadyInTheCart] = useState(false);
   const [indexCourses, setIndexCourses] = useState(-1);
   const [, setLocation] = useLocation();
+  const [error, setError] = useState(false);
 
   const [productsInBasket, setProductsInBasket] = useRecoilState(
     productsInBasketState
@@ -38,17 +39,22 @@ const Product = () => {
         "Content-Type": "application/json",
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        setError(!response.ok);
+        return response.json();
+      })
       .then((result) => {
         setCourse(result);
       });
   }, [params.restaurant]);
 
   useEffect(() => {
-    setCurrentItem(
-      course.find((currentValue) => currentValue._id === params.itemId)
-    );
-  }, [course, params]);
+    if (!error) {
+      setCurrentItem(
+        course.find((currentValue) => currentValue._id === params.itemId)
+      );
+    }
+  }, [course, params, error]);
 
   useEffect(() => {
     if (currentItem) {
@@ -117,7 +123,7 @@ const Product = () => {
 
   return (
     <Flex height={1}>
-      {match && currentItem && (
+      {match && !error && currentItem && (
         <Flex direction="column" height={1} width={1}>
           <s.Arrow src={Arrow} alt="Arrow" onClick={arrowClicking} />
           <Flex width={1} height={1} flex={1}>
