@@ -10,6 +10,7 @@ import { Divider } from "components/divider";
 import Button from "components/button";
 import SwipeDelete from "./components/swipe-delete";
 
+import { useTranslation } from "contexts/translation-context";
 import { theme } from "theme";
 import { Routes } from "constants/routes";
 
@@ -30,6 +31,10 @@ const Basket = () => {
 
   const [candidateForDeletion, setCandidateForDeletion] = useState(0);
   const [, params] = useRoute(Routes.BASKET);
+
+  const {
+    strings: { basket: translations },
+  } = useTranslation();
 
   useEffect(() => {
     if (
@@ -77,7 +82,7 @@ const Basket = () => {
         setTotalCost(
           (t) =>
             t +
-            Number(productsInBasketAtoms[i].price.replace(/[^.\d]/g, "")) *
+            Number(productsInBasketAtoms[i].price) *
               Number(productsInBasketAtoms[i].count)
         );
       }
@@ -134,7 +139,7 @@ const Basket = () => {
           pb={theme.spacing(1)}
           pl={theme.spacing(1)}
         >
-          My Order ({allCount})
+          {translations["my_order"]} ({allCount})
         </Text>
       </Flex>
       <Divider mb={theme.spacing(1)} ml={theme.spacing(1)} />
@@ -156,7 +161,7 @@ const Basket = () => {
           <Flex pb={theme.spacing(1)} width={1} alignItems="center">
             <s.Preview src={icon} alt="icon" />
             <Text fontSize={theme.fontSize(0)} pl={theme.spacing(1)} width={1}>
-              Count of persons
+              {translations["count_of_persons"]}
             </Text>
             <Flex
               height={1}
@@ -237,7 +242,7 @@ const Basket = () => {
                           +
                         </Text>
                       </Flex>
-                      <Text pl={theme.spacing(2)}>{currentValue.price}</Text>
+                      <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
                     </Flex>
                   </s.RemoteComponent>
                   <s.DeleteButton
@@ -288,7 +293,7 @@ const Basket = () => {
                         +
                       </Text>
                     </Flex>
-                    <Text pl={theme.spacing(2)}>{currentValue.price}</Text>
+                    <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
                   </Flex>
                 </Flex>
               )}
@@ -304,7 +309,7 @@ const Basket = () => {
           mt={theme.spacing(1)}
           boxSizing="border-box"
         >
-          <Text fontWeight="bold">Total:</Text>
+          <Text fontWeight="bold">{translations["total"]}</Text>
           <Text fontWeight="bold">{totalCost + "$"}</Text>
         </Flex>
       </Flex>
@@ -318,7 +323,9 @@ const Basket = () => {
         mt={theme.spacing(2)}
         mb={theme.spacing(1)}
       >
-        <Button onClick={sendAnOrder}>Confirm order ({totalCost + "$"})</Button>
+        <Button onClick={sendAnOrder}>
+          {translations["confirm_order"]} ({totalCost + "$"})
+        </Button>
       </Flex>
     </Flex>
   );

@@ -11,6 +11,7 @@ import Navigation from "./components/navigation";
 import { theme } from "theme";
 
 import Arrow from "./Arrow.png";
+import { useTranslation } from "../../../contexts/translation-context";
 
 const ExpandedMenu = () => {
   const [match, params] = useRoute(Routes.EXPANDED_MENU);
@@ -18,6 +19,10 @@ const ExpandedMenu = () => {
   const [course, setCourse] = useState([]);
   const [error, setError] = useState(false);
   const [, setLocation] = useLocation();
+
+  const {
+    strings: { expandedMenu: translations },
+  } = useTranslation();
 
   useEffect(() => {
     fetch("/api/menu/" + params.restaurant + "/getCategory", {
@@ -82,7 +87,7 @@ const ExpandedMenu = () => {
           fontFamily="SF UI Display"
           fontSize={theme.fontSize(2)}
         >
-          Menu
+          {translations["menu"]}
         </Text>
       </s.Arrow>
       {match && !error && currentList[0] && (
@@ -159,7 +164,7 @@ const ExpandedMenu = () => {
                       font-family="SF UI Display"
                       fontSize={theme.fontSize(0)}
                     >
-                      {currentValue.weight}
+                      {`${currentValue.weight} ${translations["g"]}`}
                     </Text>
                     <Flex direction="row-reverse" width={1}>
                       <Text
@@ -167,7 +172,7 @@ const ExpandedMenu = () => {
                         fontSize={theme.fontSize(2)}
                         fontWeight="bold"
                       >
-                        {currentValue.price}
+                        {currentValue.price}$
                       </Text>
                     </Flex>
                   </Flex>

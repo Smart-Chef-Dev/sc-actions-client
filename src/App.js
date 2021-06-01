@@ -21,7 +21,9 @@ const Actions = lazy(() =>
 const QrCodeBuilder = lazy(() =>
   import("pages/qr-code-builder" /* webpackChunkName: "qr-code-builder" */)
 );
-const Menu = lazy(() => import("pages/menu" /* webpackChunkName: "menu" */));
+const Menu = lazy(() =>
+  import("pages/menu/main-menu" /* webpackChunkName: "menu" */)
+);
 const ExpandedMenu = lazy(() =>
   import("pages/menu/expanded-menu" /* webpackChunkName: "expanded-menu" */)
 );

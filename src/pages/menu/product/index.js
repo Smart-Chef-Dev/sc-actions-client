@@ -9,6 +9,7 @@ import { Label } from "components/label";
 import { Text } from "components/text";
 import Button from "components/button";
 
+import { useTranslation } from "contexts/translation-context";
 import { Routes } from "constants/routes";
 import { theme } from "theme";
 
@@ -29,6 +30,10 @@ const Product = () => {
   const [productsInBasket, setProductsInBasket] = useRecoilState(
     productsInBasketState
   );
+
+  const {
+    strings: { product: translations },
+  } = useTranslation();
 
   useEffect(() => {
     fetch("/api/menu/" + params.restaurant + "/getCourse", {
@@ -135,7 +140,7 @@ const Product = () => {
             boxSizing="border-box"
           >
             <s.Time>
-              <Label>{"~ " + currentItem.time}</Label>
+              <Label>{`~ ${currentItem.time} ${translations["min"]}`}</Label>
             </s.Time>
             <Text
               color="var(--text-grey)"
@@ -158,10 +163,10 @@ const Product = () => {
               pb={theme.spacing(1)}
             >
               <Text color="#999999" height={1} alignItems="center">
-                {"Weight:" + currentItem.weight}
+                {`${translations["weight"]} ${currentItem.weight} ${translations["g"]}`}
               </Text>
               <Text fontFamily="SF UI Display" color="#4cd964" fontSize="2rem">
-                {currentItem.price}
+                {currentItem.price}$
               </Text>
             </Flex>
             <Text color="#999999">{currentItem.description}</Text>
@@ -202,7 +207,9 @@ const Product = () => {
                     already in the basket
                   </Text>
                 ) : (
-                  <Button onClick={addProductToOrder}>ORDER</Button>
+                  <Button onClick={addProductToOrder}>
+                    {translations["order"]}
+                  </Button>
                 )}
               </Flex>
             </Flex>

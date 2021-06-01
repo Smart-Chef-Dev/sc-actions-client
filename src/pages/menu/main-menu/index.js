@@ -2,13 +2,15 @@ import { memo, useCallback, useEffect, useState } from "react";
 import { useLocation, useRoute } from "wouter";
 import { styled } from "@linaria/react";
 
-import { theme } from "theme";
 import { Routes } from "constants/routes";
 import { Flex } from "components/flex";
 import { Img } from "components/img";
 import { Label } from "components/label";
 import { Text } from "components/text";
 import H1 from "components/h1";
+
+import { theme } from "theme";
+import { useTranslation } from "contexts/translation-context";
 
 import Arrow from "./Arrow.png";
 import { Divider } from "components/divider";
@@ -19,6 +21,10 @@ const Menu = () => {
   const [match, params] = useRoute(Routes.MENU);
   const [error, setError] = useState(false);
   const [, setLocation] = useLocation();
+
+  const {
+    strings: { mainMenu: translations },
+  } = useTranslation();
 
   useEffect(() => {
     fetch("/api/menu/" + params.restaurant + "/getCategory", {
@@ -81,7 +87,7 @@ const Menu = () => {
       width={1}
       boxSizing="border-box"
     >
-      <H1 marginTop="0px">Menu</H1>
+      <H1 marginTop="0px">{translations["menu"]}</H1>
       <Divider mb={theme.spacing(1)} />
       <Flex direction="column" overflowY="scroll" overflowX="hidden" width={1}>
         {!error &&
@@ -130,7 +136,7 @@ const Menu = () => {
                         />
                         <Label>{currentCourse.name}</Label>
                         <Text color="var(--text-grey)">
-                          {currentCourse.price}
+                          {currentCourse.price}$
                         </Text>
                       </Flex>
                     )
