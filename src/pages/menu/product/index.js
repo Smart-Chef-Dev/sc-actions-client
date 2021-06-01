@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { useLocation, useRoute } from "wouter";
+import { useRecoilState } from "recoil";
 import { styled } from "@linaria/react";
 
 import { Flex } from "components/flex";
@@ -9,14 +10,11 @@ import { Text } from "components/text";
 import Button from "components/button";
 
 import { Routes } from "constants/routes";
-
 import { theme } from "theme";
 
 import Arrow from "./Arrow.png";
 
 import productsInBasketState from "atoms/basket";
-
-import { useRecoilState } from "recoil";
 
 const Product = () => {
   const [match, params] = useRoute(Routes.PRODUCT);

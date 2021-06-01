@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useState } from "react";
-import { styled } from "@linaria/react";
 import { useLocation, useRoute } from "wouter";
+import { styled } from "@linaria/react";
 
 import { theme } from "theme";
 import { Routes } from "constants/routes";
@@ -11,7 +11,7 @@ import { Text } from "components/text";
 import H1 from "components/h1";
 
 import Arrow from "./Arrow.png";
-import { Divider } from "../../components/divider";
+import { Divider } from "components/divider";
 
 const Menu = () => {
   const [category, setCategory] = useState([]);

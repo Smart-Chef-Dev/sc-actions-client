@@ -1,11 +1,12 @@
 import { memo } from "react";
-import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
+import PropTypes from "prop-types";
+
+import { Flex } from "./flex";
+import { Divider } from "./divider";
 
 import DarkModeSwitcher from "./dark-mode-switcher";
 import MenuTabs from "./menu-tabs";
-import { Flex } from "./flex";
-import { Divider } from "./divider";
 
 const MenuLayout = ({ children }) => {
   return (

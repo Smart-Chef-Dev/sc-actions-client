@@ -1,27 +1,30 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+import { useRoute } from "wouter";
 import { styled } from "@linaria/react";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Img } from "components/img";
+import { Divider } from "components/divider";
 import Button from "components/button";
 import SwipeDelete from "./components/swipe-delete";
-import { Divider } from "components/divider";
+
 import { theme } from "theme";
+import { Routes } from "constants/routes";
 
 import productsInBasketState from "atoms/basket";
+import personState from "atoms/person";
+
 import icon from "./icon.png";
 import basket from "./basket.png";
-import { useRoute } from "wouter";
-import { Routes } from "../../../constants/routes";
 
 const Basket = () => {
   const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
     productsInBasketState
   );
+  const [personAtoms, setPersonAtoms] = useRecoilState(personState);
 
-  const [person, setPerson] = useState(1);
   const [totalCost, setTotalCost] = useState(0);
   const [allCount, setAllCount] = useState(0);
 
@@ -56,14 +59,14 @@ const Basket = () => {
   );
 
   const increasePerson = useCallback(() => {
-    setPerson(person + 1);
-  }, [person]);
+    setPersonAtoms(personAtoms + 1);
+  }, [personAtoms, setPersonAtoms]);
 
   const reducePerson = useCallback(() => {
-    if (person > 1) {
-      setPerson(person - 1);
+    if (personAtoms > 1) {
+      setPersonAtoms(personAtoms - 1);
     }
-  }, [person]);
+  }, [personAtoms, setPersonAtoms]);
 
   useEffect(() => {
     setTotalCost(0);
@@ -105,7 +108,10 @@ const Basket = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify([{ person: person }, ...productsInBasketAtoms]),
+        body: JSON.stringify([
+          { person: personAtoms },
+          ...productsInBasketAtoms,
+        ]),
       }).then(() => {
         setProductsInBasketAtoms([]);
       });
@@ -115,7 +121,7 @@ const Basket = () => {
     setProductsInBasketAtoms,
     params.restaurant,
     params.tableId,
-    person,
+    personAtoms,
   ]);
 
   return (
@@ -167,7 +173,7 @@ const Basket = () => {
               >
                 -
               </Text>
-              <Text fontSize={theme.fontSize(3)}>{person}</Text>
+              <Text fontSize={theme.fontSize(3)}>{personAtoms}</Text>
               <Text
                 fontSize={theme.fontSize(3)}
                 pl={theme.spacing(1)}
