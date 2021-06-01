@@ -116,7 +116,7 @@ const Product = () => {
         picture: currentItem.picture,
         price: currentItem.price,
         count: count,
-        restaurant: currentItem.category.restaurant,
+        restaurantId: currentItem.category.restaurant,
       },
     ]);
   }, [currentItem, count, setProductsInBasket, productsInBasket]);
@@ -201,7 +201,7 @@ const Product = () => {
                     mb={theme.spacing(1)}
                     fontFamily="SF UI Display"
                   >
-                    already in the cart
+                    already in the basket
                   </Text>
                 ) : (
                   <Button onClick={addProductToOrder}>ORDER</Button>

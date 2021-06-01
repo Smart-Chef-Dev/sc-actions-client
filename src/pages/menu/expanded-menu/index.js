@@ -77,7 +77,11 @@ const ExpandedMenu = () => {
     <Flex direction="column" height={1} width={1}>
       <s.Arrow alignItems="center">
         <Img src={Arrow} alt="Arrow" onClick={arrowClicking} />
-        <Text color="var(--text-grey)" fontFamily="SF UI Display">
+        <Text
+          color="var(--text-grey)"
+          fontFamily="SF UI Display"
+          fontSize={theme.fontSize(2)}
+        >
           Menu
         </Text>
       </s.Arrow>

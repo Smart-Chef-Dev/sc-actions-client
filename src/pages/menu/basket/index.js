@@ -28,6 +28,15 @@ const Basket = () => {
   const [candidateForDeletion, setCandidateForDeletion] = useState(0);
   const [, params] = useRoute(Routes.BASKET);
 
+  useEffect(() => {
+    if (
+      productsInBasketAtoms.length &&
+      productsInBasketAtoms[0].restaurantId !== params.restaurant
+    ) {
+      setProductsInBasketAtoms([]);
+    }
+  }, [params.restaurant, setProductsInBasketAtoms, productsInBasketAtoms]);
+
   const increasePortion = useCallback(
     (indexProducts) => () => {
       productsInBasketAtoms[indexProducts].count++;
@@ -90,20 +99,23 @@ const Basket = () => {
   }, [candidateForDeletion, setProductsInBasketAtoms, productsInBasketAtoms]);
 
   const sendAnOrder = useCallback(() => {
-    fetch(`/api/menu/sendMessage/${params.restaurant}/${params.tableId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(productsInBasketAtoms),
-    }).then(() => {
-      setProductsInBasketAtoms([]);
-    });
+    if (productsInBasketAtoms.length) {
+      fetch(`/api/menu/sendMessage/${params.restaurant}/${params.tableId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify([{ person: person }, ...productsInBasketAtoms]),
+      }).then(() => {
+        setProductsInBasketAtoms([]);
+      });
+    }
   }, [
     productsInBasketAtoms,
     setProductsInBasketAtoms,
     params.restaurant,
     params.tableId,
+    person,
   ]);
 
   return (
