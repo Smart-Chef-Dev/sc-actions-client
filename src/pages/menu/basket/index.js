@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { useRoute } from "wouter";
+import { useLocation, useRoute } from "wouter";
 import { styled } from "@linaria/react";
 
 import { Flex } from "components/flex";
@@ -30,6 +30,8 @@ const Basket = () => {
   const [allCount, setAllCount] = useState(0);
 
   const [candidateForDeletion, setCandidateForDeletion] = useState(0);
+
+  const [, setLocation] = useLocation();
   const [, params] = useRoute(Routes.BASKET);
 
   const {
@@ -119,6 +121,8 @@ const Basket = () => {
         ]),
       }).then(() => {
         setProductsInBasketAtoms([]);
+        setPersonAtoms(1);
+        setLocation(`/restaurant/${params.restaurant}/${params.tableId}`);
       });
     }
   }, [
@@ -127,6 +131,8 @@ const Basket = () => {
     params.restaurant,
     params.tableId,
     personAtoms,
+    setLocation,
+    setPersonAtoms,
   ]);
 
   return (
@@ -324,7 +330,7 @@ const Basket = () => {
         mb={theme.spacing(1)}
       >
         <Button onClick={sendAnOrder}>
-          {translations["confirm_order"]} ({totalCost + "$"})
+          {`${translations["confirm_order"]} (${totalCost + "$"})`}
         </Button>
       </Flex>
     </Flex>

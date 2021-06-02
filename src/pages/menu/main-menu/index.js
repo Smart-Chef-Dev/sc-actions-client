@@ -16,11 +16,13 @@ import Arrow from "./Arrow.png";
 import { Divider } from "components/divider";
 
 const Menu = () => {
+  const [match, params] = useRoute(Routes.MENU);
+  const [, setLocation] = useLocation();
+
   const [category, setCategory] = useState([]);
   const [course, setCourse] = useState([]);
-  const [match, params] = useRoute(Routes.MENU);
+
   const [error, setError] = useState(false);
-  const [, setLocation] = useLocation();
 
   const {
     strings: { mainMenu: translations },

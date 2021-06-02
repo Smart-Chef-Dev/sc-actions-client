@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { useRoute, useLocation } from "wouter";
+import { useRecoilState } from "recoil";
 import { styled } from "@linaria/react";
 
 import { Routes } from "constants/routes";
@@ -8,17 +9,28 @@ import { Text } from "components/text";
 import { Img } from "components/img";
 import { Divider } from "components/divider";
 import Navigation from "./components/navigation";
+
+import { useTranslation } from "contexts/translation-context";
 import { theme } from "theme";
 
 import Arrow from "./Arrow.png";
-import { useTranslation } from "../../../contexts/translation-context";
+import Basket from "./basket.svg";
+
+import productsInBasketState from "atoms/basket";
 
 const ExpandedMenu = () => {
   const [match, params] = useRoute(Routes.EXPANDED_MENU);
+  const [, setLocation] = useLocation();
+
   const [category, setCategory] = useState([]);
   const [course, setCourse] = useState([]);
+  const [currentList, setCurrentList] = useState([]);
+
   const [error, setError] = useState(false);
-  const [, setLocation] = useLocation();
+
+  const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
+    productsInBasketState
+  );
 
   const {
     strings: { expandedMenu: translations },
@@ -54,12 +66,15 @@ const ExpandedMenu = () => {
       });
   }, [params.restaurant]);
 
-  let currentList = [];
-  if (match && !error) {
-    currentList = course.filter(
-      (currentValue) => currentValue.category._id === params.categoryId
-    );
-  }
+  useEffect(() => {
+    if (match && !error) {
+      setCurrentList(
+        course.filter(
+          (currentValue) => currentValue.category._id === params.categoryId
+        )
+      );
+    }
+  }, [course, error, match, params.categoryId]);
 
   const arrowClicking = useCallback(() => {
     if (match) {
@@ -76,6 +91,28 @@ const ExpandedMenu = () => {
       }
     },
     [setLocation, params.restaurant, params.tableId, match]
+  );
+
+  const addProductToOrder = useCallback(
+    (id, name, picture, price) => () => {
+      for (let i = 0; i < productsInBasketAtoms.length; i++) {
+        if (productsInBasketAtoms[i].productId === id) {
+          return;
+        }
+      }
+      setProductsInBasketAtoms([
+        ...productsInBasketAtoms,
+        {
+          productId: id,
+          name: name,
+          picture: picture,
+          price: price,
+          count: 1,
+          restaurantId: params.restaurant,
+        },
+      ]);
+    },
+    [setProductsInBasketAtoms, productsInBasketAtoms, params.restaurant]
   );
 
   return (
@@ -129,51 +166,66 @@ const ExpandedMenu = () => {
                 <s.Container
                   key={currentValue._id}
                   mb={theme.spacing(1)}
-                  direction="column"
                   width={1}
-                  onClick={pressingItems(currentValue._id)}
                 >
-                  <s.Preview
-                    src={currentValue.picture}
-                    alt={currentValue.name}
-                    borderRadius="12px 12px 0 0"
+                  <s.IconBasket
+                    onClick={addProductToOrder(
+                      currentValue._id,
+                      currentValue.name,
+                      currentValue.picture,
+                      currentValue.price
+                    )}
+                  >
+                    <Basket />
+                  </s.IconBasket>
+                  <Flex
+                    direction="column"
+                    height={1}
                     width={1}
-                  />
-                  <Text
-                    p={theme.spacing(1)}
-                    color="var(--text-grey)"
-                    fontFamily="SF UI Display"
-                    textTransform="uppercase"
+                    onClick={pressingItems(currentValue._id)}
                   >
-                    {currentValue.category.category}
-                  </Text>
-                  <Text
-                    fontFamily="Actor"
-                    pl={theme.spacing(1)}
-                    fontSize={theme.fontSize(1)}
-                  >
-                    {currentValue.name}
-                  </Text>
-                  <Flex width={1}>
-                    <Text
-                      alignItems="center"
-                      pl={theme.spacing(1)}
-                      height={1}
+                    <s.Preview
+                      src={currentValue.picture}
+                      alt={currentValue.name}
+                      borderRadius="12px 12px 0 0"
                       width={1}
+                    />
+                    <Text
+                      p={theme.spacing(1)}
                       color="var(--text-grey)"
-                      font-family="SF UI Display"
-                      fontSize={theme.fontSize(0)}
+                      fontFamily="SF UI Display"
+                      textTransform="uppercase"
                     >
-                      {`${currentValue.weight} ${translations["g"]}`}
+                      {currentValue.category.category}
                     </Text>
-                    <Flex direction="row-reverse" width={1}>
+                    <Text
+                      fontFamily="Actor"
+                      pl={theme.spacing(1)}
+                      fontSize={theme.fontSize(1)}
+                    >
+                      {currentValue.name}
+                    </Text>
+                    <Flex width={1}>
                       <Text
-                        m={theme.spacing(1)}
-                        fontSize={theme.fontSize(2)}
-                        fontWeight="bold"
+                        alignItems="center"
+                        pl={theme.spacing(1)}
+                        height={1}
+                        width={1}
+                        color="var(--text-grey)"
+                        font-family="SF UI Display"
+                        fontSize={theme.fontSize(0)}
                       >
-                        {currentValue.price}$
+                        {`${currentValue.weight} ${translations["g"]}`}
                       </Text>
+                      <Flex direction="row-reverse" width={1}>
+                        <Text
+                          m={theme.spacing(1)}
+                          fontSize={theme.fontSize(2)}
+                          fontWeight="bold"
+                        >
+                          {currentValue.price}$
+                        </Text>
+                      </Flex>
                     </Flex>
                   </Flex>
                 </s.Container>
@@ -187,7 +239,9 @@ const ExpandedMenu = () => {
 };
 const s = {
   Container: styled(Flex)`
-    box-shadow: 0px 5px 15px var(--shadow);
+    position: relative;
+
+    box-shadow: 0 5px 15px var(--shadow);
     border-radius: 16px;
   `,
   Arrow: styled(Flex)`
@@ -198,6 +252,11 @@ const s = {
   Preview: styled(Img)`
     max-height: 300px;
     object-fit: cover;
+  `,
+  IconBasket: styled(Flex)`
+    position: absolute;
+    right: 16px;
+    top: 16px;
   `,
 };
 export default memo(ExpandedMenu);

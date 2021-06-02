@@ -19,12 +19,14 @@ import productsInBasketState from "atoms/basket";
 
 const Product = () => {
   const [match, params] = useRoute(Routes.PRODUCT);
+  const [, setLocation] = useLocation();
+
   const [course, setCourse] = useState([]);
   const [count, setcount] = useState(1);
   const [currentItem, setCurrentItem] = useState();
-  const [alreadyInTheCart, setAlreadyInTheCart] = useState(false);
+
   const [indexCourses, setIndexCourses] = useState(-1);
-  const [, setLocation] = useLocation();
+  const [alreadyInTheCart, setAlreadyInTheCart] = useState(false);
   const [error, setError] = useState(false);
 
   const [productsInBasket, setProductsInBasket] = useRecoilState(
@@ -204,7 +206,7 @@ const Product = () => {
                     mb={theme.spacing(1)}
                     fontFamily="SF UI Display"
                   >
-                    already in the basket
+                    {translations["already_in_the_basket"]}
                   </Text>
                 ) : (
                   <Button onClick={addProductToOrder}>

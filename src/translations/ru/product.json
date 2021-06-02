@@ -2,5 +2,6 @@
   "weight":"Масса:",
   "g": "г",
   "min": "мин",
-  "order": "ЗАКАЗАТЬ"
+  "order": "ЗАКАЗАТЬ",
+  "already_in_the_basket": "в корзине"
 }
