@@ -127,7 +127,7 @@ const Product = () => {
   }, [currentItem, count, setProductsInBasket, productsInBasket]);
 
   return (
-    <Flex height={1}>
+    <Flex height={1} width={1} overflowY="scroll">
       {match && !error && currentItem && (
         <Flex direction="column" height={1} width={1}>
           <s.Arrow src={Arrow} alt="Arrow" onClick={arrowClicking} />
@@ -172,7 +172,12 @@ const Product = () => {
               </Text>
             </Flex>
             <Text color="#999999">{currentItem.description}</Text>
-            <Flex width={1} flex={1} direction="column-reverse">
+            <Flex
+              width={1}
+              flex={1}
+              direction="column-reverse"
+              mt={theme.spacing(1)}
+            >
               <Flex width={1} justifyContent="space-between">
                 <Flex height={1} alignItems="center">
                   <Text
