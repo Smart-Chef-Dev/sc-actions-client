@@ -18,10 +18,12 @@ const MainLayout = ({ children }) => {
 const s = {
   PageContainer: styled.div`
     height: 70vh;
+
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
+
+    overflow-y: scroll;
   `,
 };
 
