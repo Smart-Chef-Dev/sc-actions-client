@@ -8,7 +8,7 @@ const Button = styled.button`
       ? "1px solid var(--main-color-disabled)"
       : "1px solid var(--main-color)"};
   color: #fff;
-  width: 200px;
+  width: ${(props) => (props.width ? `${100 * props.width}%` : "200px")};
   height: 40px;
   padding: 6px 20px;
   font-size: 16px;

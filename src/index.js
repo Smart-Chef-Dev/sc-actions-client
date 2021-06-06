@@ -37,7 +37,7 @@ export const globals = css`
     [data-theme="dark"] {
       --main-bg-color: #434c5f;
       --main-text-color: #fff;
-      --highlighted-item: #000;
+      --highlighted-item: #e5e5ea26;
       --text: #000;
       --shadow: #ffffff3d;
     }

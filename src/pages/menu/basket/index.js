@@ -326,10 +326,11 @@ const Basket = () => {
         width={1}
         alignItems="center"
         flex={1}
-        mt={theme.spacing(2)}
-        mb={theme.spacing(1)}
+        boxSizing="border-box"
+        pt={theme.spacing(2)}
+        p={theme.spacing(1)}
       >
-        <Button onClick={sendAnOrder}>
+        <Button onClick={sendAnOrder} width={1}>
           {`${translations["confirm_order"]} (${totalCost + "$"})`}
         </Button>
       </Flex>

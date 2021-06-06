@@ -127,7 +127,7 @@ const Product = () => {
   }, [currentItem, count, setProductsInBasket, productsInBasket]);
 
   return (
-    <Flex height={1} width={1} overflowY="scroll">
+    <Flex height={1} width={1} overflowY="scroll" overflowX="hidden">
       {match && !error && currentItem && (
         <Flex direction="column" height={1} width={1}>
           <s.Arrow src={Arrow} alt="Arrow" onClick={arrowClicking} />
@@ -206,13 +206,9 @@ const Product = () => {
                   </Text>
                 </Flex>
                 {alreadyInTheCart ? (
-                  <Text
-                    fontSize={theme.fontSize(3)}
-                    mb={theme.spacing(1)}
-                    fontFamily="SF UI Display"
-                  >
+                  <Button disabled={true}>
                     {translations["already_in_the_basket"]}
-                  </Text>
+                  </Button>
                 ) : (
                   <Button onClick={addProductToOrder}>
                     {translations["order"]}
