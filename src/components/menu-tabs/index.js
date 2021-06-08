@@ -21,21 +21,21 @@ const MenuTabs = () => {
   const goToTheMenu = useCallback(() => {
     if (basket) {
       setLocation(
-        `/restaurant/${basketParams.restaurant}/${basketParams.tableId}`
+        `/restaurant/${basketParams.restaurantId}/${basketParams.tableId}`
       );
     }
   }, [setLocation, basket, basketParams]);
 
   const goToTheOrder = useCallback(() => {
     if (menu) {
-      setLocation(`/basket/${menuParams.restaurant}/${menuParams.tableId}`);
+      setLocation(`/basket/${menuParams.restaurantId}/${menuParams.tableId}`);
     } else if (expandedMenu) {
       setLocation(
-        `/basket/${expandedMenuParams.restaurant}/${expandedMenuParams.tableId}`
+        `/basket/${expandedMenuParams.restaurantId}/${expandedMenuParams.tableId}`
       );
     } else if (productParams) {
       setLocation(
-        `/basket/${productParams.restaurant}/${productParams.tableId}`
+        `/basket/${productParams.restaurantId}/${productParams.tableId}`
       );
     }
   }, [

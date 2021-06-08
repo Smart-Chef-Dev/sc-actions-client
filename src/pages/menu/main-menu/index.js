@@ -16,7 +16,7 @@ import { useTranslation } from "contexts/translation-context";
 import Arrow from "./arrow.svg";
 
 const Menu = () => {
-  const [match, params] = useRoute(Routes.MENU);
+  const [match, { restaurantId, tableId }] = useRoute(Routes.MENU);
   const [, setLocation] = useLocation();
 
   const [category, setCategory] = useState([]);
@@ -29,7 +29,7 @@ const Menu = () => {
   } = useTranslation();
 
   useEffect(() => {
-    fetch("/api/menu/" + params.restaurant + "/getCategory", {
+    fetch("/api/menu/" + restaurantId + "/getCategory", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ const Menu = () => {
         setCategory(result);
       });
 
-    fetch("/api/menu/" + params.restaurant + "/getCourse", {
+    fetch("/api/menu/" + restaurantId + "/getCourse", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,28 +56,24 @@ const Menu = () => {
       .then((result) => {
         setCourse(result);
       });
-  }, [params.restaurant]);
+  }, [restaurantId]);
 
   const arrowClicking = useCallback(
     (categoryId) => () => {
       if (match) {
-        setLocation(
-          `/restaurant/${params.restaurant}/${params.tableId}/${categoryId}`
-        );
+        setLocation(`/restaurant/${restaurantId}/${tableId}/${categoryId}`);
       }
     },
-    [setLocation, params.restaurant, params.tableId, match]
+    [setLocation, restaurantId, tableId, match]
   );
 
   const pressingItems = useCallback(
     (itemId) => () => {
       if (match) {
-        setLocation(
-          `/restaurant/${params.restaurant}/${params.tableId}/item/${itemId}`
-        );
+        setLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
       }
     },
-    [setLocation, params.restaurant, params.tableId, match]
+    [setLocation, restaurantId, tableId, match]
   );
 
   return (

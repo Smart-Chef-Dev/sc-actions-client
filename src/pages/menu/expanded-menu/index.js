@@ -19,7 +19,9 @@ import Basket from "./basket.svg";
 import productsInBasketState from "atoms/basket";
 
 const ExpandedMenu = () => {
-  const [match, params] = useRoute(Routes.EXPANDED_MENU);
+  const [match, { restaurantId, categoryId, tableId }] = useRoute(
+    Routes.EXPANDED_MENU
+  );
   const [, setLocation] = useLocation();
 
   const [category, setCategory] = useState([]);
@@ -37,7 +39,7 @@ const ExpandedMenu = () => {
   } = useTranslation();
 
   useEffect(() => {
-    fetch("/api/menu/" + params.restaurant + "/getCategory", {
+    fetch("/api/menu/" + restaurantId + "/getCategory", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +53,7 @@ const ExpandedMenu = () => {
         setCategory(result);
       });
 
-    fetch("/api/menu/" + params.restaurant + "/getCourse", {
+    fetch("/api/menu/" + restaurantId + "/getCourse", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -64,33 +66,31 @@ const ExpandedMenu = () => {
       .then((result) => {
         setCourse(result);
       });
-  }, [params.restaurant]);
+  }, [restaurantId]);
 
   useEffect(() => {
     if (match && !error) {
       setCurrentList(
         course.filter(
-          (currentValue) => currentValue.category._id === params.categoryId
+          (currentValue) => currentValue.category._id === categoryId
         )
       );
     }
-  }, [course, error, match, params.categoryId]);
+  }, [course, error, match, categoryId]);
 
   const arrowClicking = useCallback(() => {
     if (match) {
-      setLocation(`/restaurant/${params.restaurant}/${params.tableId}`);
+      setLocation(`/restaurant/${restaurantId}/${tableId}`);
     }
-  }, [setLocation, params.restaurant, params.tableId, match]);
+  }, [setLocation, restaurantId, tableId, match]);
 
   const pressingItems = useCallback(
     (itemId) => () => {
       if (match) {
-        setLocation(
-          `/restaurant/${params.restaurant}/${params.tableId}/item/${itemId}`
-        );
+        setLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
       }
     },
-    [setLocation, params.restaurant, params.tableId, match]
+    [setLocation, restaurantId, tableId, match]
   );
 
   const addProductToOrder = useCallback(
@@ -108,11 +108,11 @@ const ExpandedMenu = () => {
           picture: picture,
           price: price,
           count: 1,
-          restaurantId: params.restaurant,
+          restaurantId: restaurantId,
         },
       ]);
     },
-    [setProductsInBasketAtoms, productsInBasketAtoms, params.restaurant]
+    [setProductsInBasketAtoms, productsInBasketAtoms, restaurantId]
   );
 
   return (
@@ -148,10 +148,7 @@ const ExpandedMenu = () => {
               {currentList[0].category.category}
             </Text>
             <Divider />
-            <Navigation
-              category={category}
-              currentCategory={params.categoryId}
-            />
+            <Navigation category={category} currentCategory={categoryId} />
           </Flex>
           <Flex
             boxSizing="border-box"

@@ -18,7 +18,7 @@ import Arrow from "./arrow.svg";
 import productsInBasketState from "atoms/basket";
 
 const Product = () => {
-  const [match, params] = useRoute(Routes.PRODUCT);
+  const [match, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
   const [, setLocation] = useLocation();
 
   const [course, setCourse] = useState([]);
@@ -38,7 +38,7 @@ const Product = () => {
   } = useTranslation();
 
   useEffect(() => {
-    fetch("/api/menu/" + params.restaurant + "/getCourse", {
+    fetch("/api/menu/" + restaurantId + "/getCourse", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -51,15 +51,15 @@ const Product = () => {
       .then((result) => {
         setCourse(result);
       });
-  }, [params.restaurant]);
+  }, [restaurantId]);
 
   useEffect(() => {
     if (!error) {
       setCurrentItem(
-        course.find((currentValue) => currentValue._id === params.itemId)
+        course.find((currentValue) => currentValue._id === itemId)
       );
     }
-  }, [course, params, error]);
+  }, [course, itemId, error]);
 
   useEffect(() => {
     if (currentItem) {
@@ -108,9 +108,9 @@ const Product = () => {
 
   const arrowClicking = useCallback(() => {
     if (match) {
-      setLocation(`/restaurant/${params.restaurant}/${params.tableId}`);
+      setLocation(`/restaurant/${restaurantId}/${tableId}`);
     }
-  }, [setLocation, params.restaurant, params.tableId, match]);
+  }, [setLocation, restaurantId, tableId, match]);
 
   const addProductToOrder = useCallback(() => {
     setProductsInBasket([

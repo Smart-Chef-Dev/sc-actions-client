@@ -32,7 +32,7 @@ const Basket = () => {
   const [candidateForDeletion, setCandidateForDeletion] = useState(0);
 
   const [, setLocation] = useLocation();
-  const [, params] = useRoute(Routes.BASKET);
+  const [, { restaurantId, tableId }] = useRoute(Routes.BASKET);
 
   const {
     strings: { basket: translations },
@@ -41,11 +41,11 @@ const Basket = () => {
   useEffect(() => {
     if (
       productsInBasketAtoms.length &&
-      productsInBasketAtoms[0].restaurantId !== params.restaurant
+      productsInBasketAtoms[0].restaurantId !== restaurantId
     ) {
       setProductsInBasketAtoms([]);
     }
-  }, [params.restaurant, setProductsInBasketAtoms, productsInBasketAtoms]);
+  }, [restaurantId, setProductsInBasketAtoms, productsInBasketAtoms]);
 
   const increasePortion = useCallback(
     (indexProducts) => () => {
@@ -110,7 +110,7 @@ const Basket = () => {
 
   const sendAnOrder = useCallback(() => {
     if (productsInBasketAtoms.length) {
-      fetch(`/api/menu/sendMessage/${params.restaurant}/${params.tableId}`, {
+      fetch(`/api/menu/sendMessage/${restaurantId}/${tableId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -122,14 +122,14 @@ const Basket = () => {
       }).then(() => {
         setProductsInBasketAtoms([]);
         setPersonAtoms(1);
-        setLocation(`/restaurant/${params.restaurant}/${params.tableId}`);
+        setLocation(`/restaurant/${restaurantId}/${tableId}`);
       });
     }
   }, [
     productsInBasketAtoms,
     setProductsInBasketAtoms,
-    params.restaurant,
-    params.tableId,
+    restaurantId,
+    tableId,
     personAtoms,
     setLocation,
     setPersonAtoms,
