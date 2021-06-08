@@ -13,7 +13,7 @@ import { useTranslation } from "contexts/translation-context";
 import { Routes } from "constants/routes";
 import { theme } from "theme";
 
-import Arrow from "./Arrow.png";
+import Arrow from "./arrow.svg";
 
 import productsInBasketState from "atoms/basket";
 
@@ -130,7 +130,9 @@ const Product = () => {
     <Flex height={1} width={1} overflowY="scroll" overflowX="hidden">
       {match && !error && currentItem && (
         <Flex direction="column" height={1} width={1}>
-          <s.Arrow src={Arrow} alt="Arrow" onClick={arrowClicking} />
+          <s.Arrow>
+            <Arrow onClick={arrowClicking} />
+          </s.Arrow>
           <Flex width={1} height={1} flex={1}>
             <Img src={currentItem.picture} alt={currentItem.name} width={1} />
           </Flex>
@@ -240,7 +242,7 @@ const s = {
     padding: 8px;
     border-radius: 16px;
   `,
-  Arrow: styled(Img)`
+  Arrow: styled(Flex)`
     position: absolute;
     left: 20px;
     top: 20px;

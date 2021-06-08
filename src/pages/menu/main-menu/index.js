@@ -7,13 +7,13 @@ import { Flex } from "components/flex";
 import { Img } from "components/img";
 import { Label } from "components/label";
 import { Text } from "components/text";
+import { Divider } from "components/divider";
 import H1 from "components/h1";
 
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
 
-import Arrow from "./Arrow.png";
-import { Divider } from "components/divider";
+import Arrow from "./arrow.svg";
 
 const Menu = () => {
   const [match, params] = useRoute(Routes.MENU);
@@ -105,11 +105,7 @@ const Menu = () => {
                   direction="row-reverse"
                   alignItems="center"
                 >
-                  <Img
-                    src={Arrow}
-                    alt="Arrow"
-                    onClick={arrowClicking(currentCategory._id)}
-                  />
+                  <Arrow onClick={arrowClicking(currentCategory._id)} />
                 </Flex>
               </Flex>
               <Flex

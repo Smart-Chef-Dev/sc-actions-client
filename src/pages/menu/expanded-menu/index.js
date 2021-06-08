@@ -13,7 +13,7 @@ import Navigation from "./components/navigation";
 import { useTranslation } from "contexts/translation-context";
 import { theme } from "theme";
 
-import Arrow from "./Arrow.png";
+import Arrow from "./arrow.svg";
 import Basket from "./basket.svg";
 
 import productsInBasketState from "atoms/basket";
@@ -118,7 +118,7 @@ const ExpandedMenu = () => {
   return (
     <Flex direction="column" height={1} width={1}>
       <s.Arrow alignItems="center">
-        <Img src={Arrow} alt="Arrow" onClick={arrowClicking} />
+        <Arrow onClick={arrowClicking} />
         <Text
           color="var(--text-grey)"
           fontFamily="SF UI Display"

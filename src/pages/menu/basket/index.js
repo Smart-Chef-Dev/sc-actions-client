@@ -17,8 +17,8 @@ import { Routes } from "constants/routes";
 import productsInBasketState from "atoms/basket";
 import personState from "atoms/person";
 
-import icon from "./icon.png";
-import basket from "./basket.png";
+import Icon from "./icon.svg";
+import BasketIcon from "./basket-icon.svg";
 
 const Basket = () => {
   const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
@@ -165,7 +165,9 @@ const Basket = () => {
           boxSizing="border-box"
         >
           <Flex pb={theme.spacing(1)} width={1} alignItems="center">
-            <s.Preview src={icon} alt="icon" />
+            <Flex>
+              <Icon />
+            </Flex>
             <Text fontSize={theme.fontSize(0)} pl={theme.spacing(1)} width={1}>
               {translations["count_of_persons"]}
             </Text>
@@ -256,7 +258,7 @@ const Basket = () => {
                     justifyContent="center"
                     onClick={removeComponent}
                   >
-                    <img src={basket} alt="basket" />
+                    <BasketIcon />
                   </s.DeleteButton>
                 </Flex>
               ) : (
