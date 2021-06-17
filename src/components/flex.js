@@ -39,6 +39,7 @@ export const Box = styled.div`
   padding-left: ${(props) =>
     props.paddingLeft ?? props.pl ?? props.px ?? props.p ?? "0"};
 
+  overflow: ${(props) => props.overflow ?? "visible"};
   overflow-x: ${(props) => props.overflowX ?? "visible"};
   overflow-y: ${(props) => props.overflowY ?? "visible"};
 

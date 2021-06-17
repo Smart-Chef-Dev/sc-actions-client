@@ -161,10 +161,15 @@ const Basket = () => {
           width={1}
           direction="column"
           pl={theme.spacing(1)}
-          pr={theme.spacing(1)}
           boxSizing="border-box"
         >
-          <Flex pb={theme.spacing(1)} width={1} alignItems="center">
+          <Flex
+            boxSizing="border-box"
+            pb={theme.spacing(1)}
+            pr={theme.spacing(1)}
+            width={1}
+            alignItems="center"
+          >
             <Flex>
               <Icon />
             </Flex>

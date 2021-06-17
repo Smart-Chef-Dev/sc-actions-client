@@ -78,10 +78,6 @@ const ExpandedMenu = () => {
     }
   }, [course, error, match, categoryId]);
 
-  console.log(course);
-  console.log(category);
-  console.log(currentList);
-
   const arrowClicking = useCallback(() => {
     if (match) {
       setLocation(`/restaurant/${restaurantId}/${tableId}`);
@@ -136,7 +132,6 @@ const ExpandedMenu = () => {
           <Flex
             direction="column"
             pl={theme.spacing(1)}
-            pr={theme.spacing(1)}
             width={1}
             flex={1}
             height={1}

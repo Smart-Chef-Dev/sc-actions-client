@@ -5,10 +5,8 @@ import { styled } from "@linaria/react";
 import { Routes } from "constants/routes";
 import { Flex } from "components/flex";
 import { Img } from "components/img";
-import { Label } from "components/label";
 import { Text } from "components/text";
 import { Divider } from "components/divider";
-import H1 from "components/h1";
 
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
@@ -85,7 +83,13 @@ const Menu = () => {
       width={1}
       boxSizing="border-box"
     >
-      <H1 marginTop="0px">{translations["menu"]}</H1>
+      <Text
+        fontSize={theme.fontSize(3)}
+        fontWeight="bold"
+        mb={theme.spacing(1)}
+      >
+        {translations["menu"]}
+      </Text>
       <Divider mb={theme.spacing(1)} />
       <Flex direction="column" overflowY="scroll" overflowX="hidden" width={1}>
         {!error &&
@@ -128,7 +132,7 @@ const Menu = () => {
                           mb={theme.spacing(1)}
                           onClick={pressingItems(currentCourse._id)}
                         />
-                        <Label>{currentCourse.name}</Label>
+                        <Text>{currentCourse.name}</Text>
                         <Text color="var(--text-grey)">
                           {currentCourse.price}$
                         </Text>

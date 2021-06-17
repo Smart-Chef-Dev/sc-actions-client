@@ -5,7 +5,6 @@ import { styled } from "@linaria/react";
 
 import { Flex } from "components/flex";
 import { Img } from "components/img";
-import { Label } from "components/label";
 import { Text } from "components/text";
 import Button from "components/button";
 
@@ -148,7 +147,7 @@ const Product = () => {
             boxSizing="border-box"
           >
             <s.Time>
-              <Label>{`~ ${currentItem.time} ${translations["min"]}`}</Label>
+              <Text>{`~ ${currentItem.time} ${translations["min"]}`}</Text>
             </s.Time>
             <Text
               color="var(--text-grey)"
