@@ -29,7 +29,7 @@ const Menu = () => {
   } = useTranslation();
 
   useEffect(() => {
-    fetch("/api/menu/" + restaurantId + "/getCategory", {
+    fetch(`/api/category/${restaurantId}/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +43,7 @@ const Menu = () => {
         setCategory(result);
       });
 
-    fetch("/api/menu/" + restaurantId + "/getCourse", {
+    fetch(`/api/menu/${restaurantId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -93,7 +93,7 @@ const Menu = () => {
             <Flex key={currentCategory._id} direction="column" width={0.95}>
               <Flex width={1}>
                 <Text fontSize={theme.fontSize(2)} fontWeight="bold">
-                  {currentCategory.category}
+                  {currentCategory.name}
                 </Text>
                 <Flex
                   width={1}
@@ -122,7 +122,7 @@ const Menu = () => {
                         mb={theme.spacing(1)}
                       >
                         <s.Preview
-                          src={currentCourse.picture}
+                          src={currentCourse.pictureUrl}
                           alt={currentCourse.name}
                           borderRadius="12px"
                           mb={theme.spacing(1)}

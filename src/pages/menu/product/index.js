@@ -38,7 +38,7 @@ const Product = () => {
   } = useTranslation();
 
   useEffect(() => {
-    fetch("/api/menu/" + restaurantId + "/getCourse", {
+    fetch(`/api/menu/${restaurantId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -118,10 +118,10 @@ const Product = () => {
       {
         productId: currentItem._id,
         name: currentItem.name,
-        picture: currentItem.picture,
+        pictureUrl: currentItem.pictureUrl,
         price: currentItem.price,
         count: count,
-        restaurantId: currentItem.category.restaurant,
+        restaurantId: currentItem.category.restaurant._id,
       },
     ]);
   }, [currentItem, count, setProductsInBasket, productsInBasket]);
@@ -134,7 +134,11 @@ const Product = () => {
             <Arrow onClick={arrowClicking} />
           </s.Arrow>
           <Flex width={1} height={1} flex={1}>
-            <Img src={currentItem.picture} alt={currentItem.name} width={1} />
+            <Img
+              src={currentItem.pictureUrl}
+              alt={currentItem.name}
+              width={1}
+            />
           </Flex>
           <s.MainInformation
             direction="column"
@@ -152,7 +156,7 @@ const Product = () => {
               textTransform="uppercase"
               pb={theme.spacing(1)}
             >
-              {currentItem.category.category}
+              {currentItem.category.name}
             </Text>
             <Text
               fontFamily="SF UI Display"

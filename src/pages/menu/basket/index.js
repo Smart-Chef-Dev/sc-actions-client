@@ -110,7 +110,7 @@ const Basket = () => {
 
   const sendAnOrder = useCallback(() => {
     if (productsInBasketAtoms.length) {
-      fetch(`/api/menu/sendMessage/${restaurantId}/${tableId}`, {
+      fetch(`/api/message/${restaurantId}/${tableId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -213,7 +213,7 @@ const Basket = () => {
                     alignItems="center"
                   >
                     <s.Preview
-                      src={currentValue.picture}
+                      src={currentValue.pictureUrl}
                       alt={currentValue.name}
                     />
                     <Text
@@ -264,7 +264,7 @@ const Basket = () => {
               ) : (
                 <Flex p={theme.spacing(1)} width={1} alignItems="center">
                   <s.Preview
-                    src={currentValue.picture}
+                    src={currentValue.pictureUrl}
                     alt={currentValue.name}
                   />
                   <Text

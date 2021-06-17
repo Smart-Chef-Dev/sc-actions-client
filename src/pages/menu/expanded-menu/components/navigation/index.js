@@ -23,14 +23,14 @@ const Navigation = (props) => {
           <Flex p={theme.spacing(1)}>
             {props.currentCategory === currentValue._id ? (
               <Text onClick={changeCategory(currentValue._id)}>
-                {currentValue.category}
+                {currentValue.name}
               </Text>
             ) : (
               <Text
                 onClick={changeCategory(currentValue._id)}
                 color="var(--text-grey)"
               >
-                {currentValue.category}
+                {currentValue.name}
               </Text>
             )}
           </Flex>

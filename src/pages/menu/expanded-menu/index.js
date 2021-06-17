@@ -39,7 +39,7 @@ const ExpandedMenu = () => {
   } = useTranslation();
 
   useEffect(() => {
-    fetch("/api/menu/" + restaurantId + "/getCategory", {
+    fetch(`/api/category/${restaurantId}/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ const ExpandedMenu = () => {
         setCategory(result);
       });
 
-    fetch("/api/menu/" + restaurantId + "/getCourse", {
+    fetch(`/api/menu/${restaurantId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -77,6 +77,10 @@ const ExpandedMenu = () => {
       );
     }
   }, [course, error, match, categoryId]);
+
+  console.log(course);
+  console.log(category);
+  console.log(currentList);
 
   const arrowClicking = useCallback(() => {
     if (match) {
@@ -145,7 +149,7 @@ const ExpandedMenu = () => {
               mb={theme.spacing(1)}
               fontWeight="bold"
             >
-              {currentList[0].category.category}
+              {currentList[0].category.name}
             </Text>
             <Divider />
             <Navigation category={category} currentCategory={categoryId} />
@@ -182,7 +186,7 @@ const ExpandedMenu = () => {
                     onClick={pressingItems(currentValue._id)}
                   >
                     <s.Preview
-                      src={currentValue.picture}
+                      src={currentValue.pictureUrl}
                       alt={currentValue.name}
                       borderRadius="12px 12px 0 0"
                       width={1}
@@ -193,7 +197,7 @@ const ExpandedMenu = () => {
                       fontFamily="SF UI Display"
                       textTransform="uppercase"
                     >
-                      {currentValue.category.category}
+                      {currentValue.category.name}
                     </Text>
                     <Text
                       fontFamily="Actor"
