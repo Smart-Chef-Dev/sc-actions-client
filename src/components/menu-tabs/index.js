@@ -1,6 +1,5 @@
 import { useLocation, useRoute } from "wouter";
 import { memo, useCallback } from "react";
-import { styled } from "@linaria/react";
 
 import MenuIcon from "../../assets/icons/menu-tabs/menu-icon.svg";
 import MenuIconDedicated from "../../assets/icons/menu-tabs/menu-icon-dedicated.svg";
@@ -9,6 +8,8 @@ import BasketIcon from "../../assets/icons/menu-tabs/icon-basket.svg";
 import BasketIconDedicated from "../../assets/icons/menu-tabs/icon-basket-dedicated.svg";
 
 import { Routes } from "constants/routes";
+import { Flex } from "../flex";
+import { theme } from "../../theme";
 
 const MenuTabs = () => {
   const [, setLocation] = useLocation();
@@ -50,31 +51,26 @@ const MenuTabs = () => {
   return (
     <>
       {menu || expandedMenu || product ? (
-        <Img>
+        <Flex p={theme.spacing(1)}>
           <MenuIconDedicated onClick={goToTheMenu} />
-        </Img>
+        </Flex>
       ) : (
-        <Img>
+        <Flex p={theme.spacing(1)}>
           <MenuIcon fill="var(--main-text-color)" onClick={goToTheMenu} />
-        </Img>
+        </Flex>
       )}
 
       {basket ? (
-        <Img>
+        <Flex p={theme.spacing(1)}>
           <BasketIconDedicated onClick={goToTheOrder} />
-        </Img>
+        </Flex>
       ) : (
-        <Img>
+        <Flex p={theme.spacing(1)}>
           <BasketIcon fill="var(--main-text-color)" onClick={goToTheOrder} />
-        </Img>
+        </Flex>
       )}
     </>
   );
 };
-
-const Img = styled.div`
-  //width: 18em;
-  padding: 1rem;
-`;
 
 export default memo(MenuTabs);

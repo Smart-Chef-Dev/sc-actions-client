@@ -1,5 +1,5 @@
 import { memo } from "react";
-import Spinner from "./spinner.svg";
+import Spinner from "../../assets/icons/loader/spinner.svg";
 
 const Loader = () => {
   return <Spinner />;
