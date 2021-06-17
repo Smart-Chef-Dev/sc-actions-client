@@ -154,7 +154,7 @@ const Basket = () => {
         width={1}
         direction="column"
         boxSizing="border-box"
-        overflowY="scroll"
+        overflowY="auto"
         overflowX="hidden"
       >
         <Flex

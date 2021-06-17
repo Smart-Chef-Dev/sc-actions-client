@@ -126,7 +126,7 @@ const Product = () => {
   }, [currentItem, count, setProductsInBasket, productsInBasket]);
 
   return (
-    <Flex height={1} width={1} overflowY="scroll" overflowX="hidden">
+    <Flex height={1} width={1} overflowY="auto" overflowX="hidden">
       {match && !error && currentItem && (
         <Flex direction="column" height={1} width={1}>
           <s.Arrow>

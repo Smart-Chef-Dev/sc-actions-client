@@ -91,7 +91,7 @@ const Menu = () => {
         {translations["menu"]}
       </Text>
       <Divider mb={theme.spacing(1)} />
-      <Flex direction="column" overflowY="scroll" overflowX="hidden" width={1}>
+      <Flex direction="column" overflowY="auto" overflowX="hidden" width={1}>
         {!error &&
           category.map((currentCategory) => (
             <Flex key={currentCategory._id} direction="column" width={1}>
@@ -116,7 +116,7 @@ const Menu = () => {
                 width={1}
                 height={1}
               >
-                <Flex overflowX="scroll">
+                <Flex overflowX="auto">
                   {course.map(
                     (currentCourse) =>
                       currentCourse.category.category ===

@@ -153,7 +153,7 @@ const ExpandedMenu = () => {
             boxSizing="border-box"
             pr={theme.spacing(1)}
             pl={theme.spacing(1)}
-            overflowY="scroll"
+            overflowY="auto"
             width={1}
             height={1}
           >
