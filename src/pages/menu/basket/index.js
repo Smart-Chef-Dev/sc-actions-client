@@ -17,8 +17,8 @@ import { Routes } from "constants/routes";
 import productsInBasketState from "atoms/basket";
 import personState from "atoms/person";
 
-import Icon from "./icon.svg";
-import BasketIcon from "./basket-icon.svg";
+import Icon from "../../../assets/icons/basket/icon.svg";
+import BasketIcon from "../../../assets/icons/basket/basket-icon.svg";
 
 const Basket = () => {
   const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(

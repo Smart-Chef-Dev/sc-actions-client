@@ -13,8 +13,8 @@ import Navigation from "./components/navigation";
 import { useTranslation } from "contexts/translation-context";
 import { theme } from "theme";
 
-import Arrow from "./arrow.svg";
-import Basket from "./basket.svg";
+import Arrow from "../../../assets/icons/expanded-menu/arrow.svg";
+import Basket from "../../../assets/icons/expanded-menu/basket.svg";
 
 import productsInBasketState from "atoms/basket";
 

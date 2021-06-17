@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import RemoveNumber from "assets/icons/remove-number.svg";
+import RemoveNumber from "assets/icons/table-number-input/remove-number.svg";
 import { splitArray } from "utils/array";
 import TableNumberDisplay from "./table-number-display";
 import ButtonRounded from "./button-rounded";

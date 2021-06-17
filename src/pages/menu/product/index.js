@@ -12,7 +12,7 @@ import { useTranslation } from "contexts/translation-context";
 import { Routes } from "constants/routes";
 import { theme } from "theme";
 
-import Arrow from "./arrow.svg";
+import Arrow from "../../../assets/icons/product/arrow.svg";
 
 import productsInBasketState from "atoms/basket";
 

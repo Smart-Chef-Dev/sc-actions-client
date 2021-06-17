@@ -7,7 +7,7 @@ import { useNotifications } from "hooks/useNotifications";
 import { useScreenBlock } from "hooks/useScreenBlock";
 import { useRestaurant } from "hooks/useRestaurant";
 import ActionComponent from "./action-component";
-import DoneIcon from "./done-icon.svg";
+import DoneIcon from "../../assets/icons/actions/done-icon.svg";
 
 const Actions = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.ACTIONS);

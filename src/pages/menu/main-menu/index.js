@@ -11,7 +11,7 @@ import { Divider } from "components/divider";
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
 
-import Arrow from "./arrow.svg";
+import Arrow from "../../../assets/icons/main-menu/arrow.svg";
 
 const Menu = () => {
   const [match, { restaurantId, tableId }] = useRoute(Routes.MENU);
