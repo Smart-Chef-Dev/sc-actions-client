@@ -94,7 +94,7 @@ const Menu = () => {
       <Flex direction="column" overflowY="scroll" overflowX="hidden" width={1}>
         {!error &&
           category.map((currentCategory) => (
-            <Flex key={currentCategory._id} direction="column" width={0.95}>
+            <Flex key={currentCategory._id} direction="column" width={1}>
               <Flex width={1}>
                 <Text fontSize={theme.fontSize(2)} fontWeight="bold">
                   {currentCategory.name}
@@ -102,6 +102,7 @@ const Menu = () => {
                 <Flex
                   width={1}
                   height={1}
+                  mr={theme.spacing(1)}
                   direction="row-reverse"
                   alignItems="center"
                 >
@@ -109,36 +110,39 @@ const Menu = () => {
                 </Flex>
               </Flex>
               <Flex
-                overflowX="scroll"
-                ml={theme.spacing(1)}
-                mt={theme.spacing(1)}
+                boxSizing="border-box"
+                pl={theme.spacing(1)}
+                pt={theme.spacing(1)}
                 width={1}
-                height={0.83}
+                height={1}
               >
-                {course.map(
-                  (currentCourse) =>
-                    currentCourse.category.category ===
-                      currentCategory.category && (
-                      <Flex
-                        key={currentCourse._id}
-                        direction="column"
-                        mr={theme.spacing(1)}
-                        mb={theme.spacing(1)}
-                      >
-                        <s.Preview
-                          src={currentCourse.pictureUrl}
-                          alt={currentCourse.name}
-                          borderRadius="12px"
-                          mb={theme.spacing(1)}
-                          onClick={pressingItems(currentCourse._id)}
-                        />
-                        <Text>{currentCourse.name}</Text>
-                        <Text color="var(--text-grey)">
-                          {currentCourse.price}$
-                        </Text>
-                      </Flex>
-                    )
-                )}
+                <Flex overflowX="scroll">
+                  {course.map(
+                    (currentCourse) =>
+                      currentCourse.category.category ===
+                        currentCategory.category && (
+                        <Flex
+                          key={currentCourse._id}
+                          pr={theme.spacing(1)}
+                          pb={theme.spacing(1)}
+                        >
+                          <Flex direction="column">
+                            <s.Preview
+                              src={currentCourse.pictureUrl}
+                              alt={currentCourse.name}
+                              borderRadius="12px"
+                              mb={theme.spacing(1)}
+                              onClick={pressingItems(currentCourse._id)}
+                            />
+                            <Text>{currentCourse.name}</Text>
+                            <Text color="var(--text-grey)">
+                              {currentCourse.price}$
+                            </Text>
+                          </Flex>
+                        </Flex>
+                      )
+                  )}
+                </Flex>
               </Flex>
               <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
             </Flex>

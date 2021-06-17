@@ -94,7 +94,7 @@ const ExpandedMenu = () => {
   );
 
   const addProductToOrder = useCallback(
-    (id, name, picture, price) => () => {
+    (id, name, pictureUrl, price) => () => {
       for (let i = 0; i < productsInBasketAtoms.length; i++) {
         if (productsInBasketAtoms[i].productId === id) {
           return;
@@ -105,7 +105,7 @@ const ExpandedMenu = () => {
         {
           productId: id,
           name: name,
-          picture: picture,
+          pictureUrl: pictureUrl,
           price: price,
           count: 1,
           restaurantId: restaurantId,
@@ -168,7 +168,7 @@ const ExpandedMenu = () => {
                     onClick={addProductToOrder(
                       currentValue._id,
                       currentValue.name,
-                      currentValue.picture,
+                      currentValue.pictureUrl,
                       currentValue.price
                     )}
                   >
