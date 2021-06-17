@@ -6,7 +6,6 @@ import ErrorBoundary from "pages/error-boundary";
 import { Routes } from "constants/routes";
 import Route from "components/Route";
 import MainLayout from "components/MainLayout";
-import MenuLayout from "components/MenuLayout";
 import SimpleLayout from "components/SimpleLayout";
 import Loader from "components/loader";
 import DarkModeContext from "contexts/dark-mode-context";
@@ -45,22 +44,26 @@ function App() {
                 <Route
                   path={Routes.PRODUCT}
                   component={Product}
-                  layout={MenuLayout}
+                  layout={SimpleLayout}
+                  needMenu={true}
                 />
                 <Route
                   path={Routes.BASKET}
                   component={Basket}
-                  layout={MenuLayout}
+                  layout={SimpleLayout}
+                  needMenu={true}
                 />
                 <Route
                   path={Routes.MENU}
                   component={Menu}
-                  layout={MenuLayout}
+                  layout={SimpleLayout}
+                  needMenu={true}
                 />
                 <Route
                   path={Routes.EXPANDED_MENU}
                   component={ExpandedMenu}
-                  layout={MenuLayout}
+                  layout={SimpleLayout}
+                  needMenu={true}
                 />
                 <Route
                   path={Routes.QR_CODE_BUILDER}
