@@ -15,21 +15,23 @@ import { theme } from "theme";
 import { Routes } from "constants/routes";
 
 import productsInBasketState from "atoms/basket";
-import personState from "atoms/person";
+import personCountState from "atoms/personCount";
 
-import Icon from "../../../assets/icons/basket/icon.svg";
-import BasketIcon from "../../../assets/icons/basket/basket-icon.svg";
+import Icon from "assets/icons/basket/icon.svg";
+import BasketIcon from "assets/icons/basket/basket-icon.svg";
 
 const Basket = () => {
   const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
     productsInBasketState
   );
-  const [personAtoms, setPersonAtoms] = useRecoilState(personState);
+  const [personCountAtoms, setPersonCountAtoms] = useRecoilState(
+    personCountState
+  );
 
   const [totalCost, setTotalCost] = useState(0);
   const [allCount, setAllCount] = useState(0);
 
-  const [candidateForDeletion, setCandidateForDeletion] = useState(0);
+  const [candidateForDeletion, setCandidateForDeletion] = useState(false);
 
   const [, setLocation] = useLocation();
   const [, { restaurantId, tableId }] = useRoute(Routes.BASKET);
@@ -91,15 +93,15 @@ const Basket = () => {
     [setProductsInBasketAtoms, productsInBasketAtoms]
   );
 
-  const increasePerson = useCallback(() => {
-    setPersonAtoms(personAtoms + 1);
-  }, [personAtoms, setPersonAtoms]);
+  const increasePersonCount = useCallback(() => {
+    setPersonCountAtoms(personCountAtoms + 1);
+  }, [personCountAtoms, setPersonCountAtoms]);
 
-  const reducePerson = useCallback(() => {
-    if (personAtoms > 1) {
-      setPersonAtoms(personAtoms - 1);
+  const reducePersonCount = useCallback(() => {
+    if (personCountAtoms > 1) {
+      setPersonCountAtoms(personCountAtoms - 1);
     }
-  }, [personAtoms, setPersonAtoms]);
+  }, [personCountAtoms, setPersonCountAtoms]);
 
   useEffect(() => {
     setTotalCost(0);
@@ -142,12 +144,12 @@ const Basket = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify([
-          { person: personAtoms },
+          { personCount: personCountAtoms },
           ...productsInBasketAtoms,
         ]),
       }).then(() => {
         setProductsInBasketAtoms([]);
-        setPersonAtoms(1);
+        setPersonCountAtoms(1);
         setLocation(`/restaurant/${restaurantId}/${tableId}`);
       });
     }
@@ -156,9 +158,9 @@ const Basket = () => {
     setProductsInBasketAtoms,
     restaurantId,
     tableId,
-    personAtoms,
+    personCountAtoms,
     setLocation,
-    setPersonAtoms,
+    setPersonCountAtoms,
   ]);
 
   return (
@@ -213,16 +215,16 @@ const Basket = () => {
                 fontSize={theme.fontSize(3)}
                 pr={theme.spacing(1)}
                 color="var(--main-color)"
-                onClick={reducePerson}
+                onClick={reducePersonCount}
               >
                 -
               </Text>
-              <Text fontSize={theme.fontSize(3)}>{personAtoms}</Text>
+              <Text fontSize={theme.fontSize(3)}>{personCountAtoms}</Text>
               <Text
                 fontSize={theme.fontSize(3)}
                 pl={theme.spacing(1)}
                 color="var(--main-color)"
-                onClick={increasePerson}
+                onClick={increasePersonCount}
               >
                 +
               </Text>
@@ -231,7 +233,7 @@ const Basket = () => {
           <Divider />
         </Flex>
         {productsInBasketAtoms.map((currentValue, index) => (
-          <Flex key={index} width={1} direction="column">
+          <Flex key={currentValue.productId} width={1} direction="column">
             <SwipeDelete
               itemId={currentValue.productId}
               setCandidateForDeletion={setCandidateForDeletion}
@@ -343,8 +345,7 @@ const Basket = () => {
         <Flex
           justifyContent="space-between"
           width={1}
-          pl={theme.spacing(1)}
-          pr={theme.spacing(1)}
+          px={theme.spacing(1)}
           mt={theme.spacing(1)}
           boxSizing="border-box"
         >

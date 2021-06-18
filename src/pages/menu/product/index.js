@@ -177,17 +177,12 @@ const Product = () => {
             </s.Time>
             <Text
               color="var(--text-grey)"
-              fontFamily="SF UI Display"
               textTransform="uppercase"
               pb={theme.spacing(1)}
             >
               {currentItem.category.name}
             </Text>
-            <Text
-              fontFamily="SF UI Display"
-              fontSize={theme.fontSize(3)}
-              pb={theme.spacing(1)}
-            >
+            <Text fontSize={theme.fontSize(3)} pb={theme.spacing(1)}>
               {currentItem.name}
             </Text>
             <Flex
@@ -195,14 +190,14 @@ const Product = () => {
               width={1}
               pb={theme.spacing(1)}
             >
-              <Text color="#999999" height={1} alignItems="center">
+              <Text color="var(--bright-grey)" height={1} alignItems="center">
                 {`${translations["weight"]} ${currentItem.weight} ${translations["g"]}`}
               </Text>
-              <Text fontFamily="SF UI Display" color="#4cd964" fontSize="2rem">
+              <Text color="#4cd964" fontSize="2rem">
                 {currentItem.price}$
               </Text>
             </Flex>
-            <Text color="#999999">{currentItem.description}</Text>
+            <Text color="var(--bright-grey)">{currentItem.description}</Text>
             <Flex
               width={1}
               flex={1}
@@ -221,8 +216,7 @@ const Product = () => {
                   </Text>
                   <Text
                     fontSize={theme.fontSize(3)}
-                    pl={theme.spacing(1)}
-                    pr={theme.spacing(1)}
+                    px={theme.spacing(1)}
                     mb={theme.spacing(1)}
                   >
                     {count}

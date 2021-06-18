@@ -130,7 +130,7 @@ const Menu = () => {
                             <s.Preview
                               src={currentCourse.pictureUrl}
                               alt={currentCourse.name}
-                              borderRadius="12px"
+                              borderRadius="10%"
                               mb={theme.spacing(1)}
                               onClick={pressingItems(currentCourse._id)}
                             />

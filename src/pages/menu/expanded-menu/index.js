@@ -119,11 +119,7 @@ const ExpandedMenu = () => {
     <Flex direction="column" height={1} width={1}>
       <s.Arrow alignItems="center">
         <Arrow onClick={arrowClicking} />
-        <Text
-          color="var(--text-grey)"
-          fontFamily="SF UI Display"
-          fontSize={theme.fontSize(2)}
-        >
+        <Text color="var(--text-grey)" fontSize={theme.fontSize(2)}>
           {translations["menu"]}
         </Text>
       </s.Arrow>
@@ -138,7 +134,6 @@ const ExpandedMenu = () => {
             boxSizing="border-box"
           >
             <Text
-              fontFamily="SF UI Display"
               fontSize={theme.fontSize(3)}
               mt={theme.spacing(3)}
               mb={theme.spacing(1)}
@@ -151,8 +146,7 @@ const ExpandedMenu = () => {
           </Flex>
           <Flex
             boxSizing="border-box"
-            pr={theme.spacing(1)}
-            pl={theme.spacing(1)}
+            px={theme.spacing(1)}
             overflowY="auto"
             width={1}
             height={1}
@@ -189,7 +183,6 @@ const ExpandedMenu = () => {
                     <Text
                       p={theme.spacing(1)}
                       color="var(--text-grey)"
-                      fontFamily="SF UI Display"
                       textTransform="uppercase"
                     >
                       {currentValue.category.name}
@@ -208,7 +201,6 @@ const ExpandedMenu = () => {
                         height={1}
                         width={1}
                         color="var(--text-grey)"
-                        font-family="SF UI Display"
                         fontSize={theme.fontSize(0)}
                       >
                         {`${currentValue.weight} ${translations["g"]}`}
