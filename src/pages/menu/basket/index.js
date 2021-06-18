@@ -49,18 +49,44 @@ const Basket = () => {
 
   const increasePortion = useCallback(
     (indexProducts) => () => {
-      productsInBasketAtoms[indexProducts].count++;
-      setProductsInBasketAtoms([...productsInBasketAtoms]);
+      setProductsInBasketAtoms(
+        productsInBasketAtoms.map((currentValue, index) => {
+          if (index === indexProducts) {
+            return {
+              count: currentValue.count + 1,
+              productId: currentValue.productId,
+              restaurantId: currentValue.restaurantId,
+              pictureUrl: currentValue.pictureUrl,
+              price: currentValue.price,
+              name: currentValue.name,
+            };
+          }
+
+          return currentValue;
+        })
+      );
     },
     [setProductsInBasketAtoms, productsInBasketAtoms]
   );
 
   const reducePortion = useCallback(
     (indexProducts) => () => {
-      if (productsInBasketAtoms[indexProducts].count > 1) {
-        productsInBasketAtoms[indexProducts].count--;
-        setProductsInBasketAtoms([...productsInBasketAtoms]);
-      }
+      setProductsInBasketAtoms(
+        productsInBasketAtoms.map((currentValue, index) => {
+          if (index === indexProducts && currentValue.count > 1) {
+            return {
+              count: currentValue.count - 1,
+              productId: currentValue.productId,
+              restaurantId: currentValue.restaurantId,
+              pictureUrl: currentValue.pictureUrl,
+              price: currentValue.price,
+              name: currentValue.name,
+            };
+          }
+
+          return currentValue;
+        })
+      );
     },
     [setProductsInBasketAtoms, productsInBasketAtoms]
   );

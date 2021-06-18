@@ -21,14 +21,14 @@ const Product = () => {
   const [, setLocation] = useLocation();
 
   const [course, setCourse] = useState([]);
-  const [count, setcount] = useState(1);
+  const [count, setCount] = useState(1);
   const [currentItem, setCurrentItem] = useState();
 
-  const [indexCourses, setIndexCourses] = useState(-1);
+  const [indexProducts, setIndexProducts] = useState(-1);
   const [alreadyInTheCart, setAlreadyInTheCart] = useState(false);
   const [error, setError] = useState(false);
 
-  const [productsInBasket, setProductsInBasket] = useRecoilState(
+  const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
     productsInBasketState
   );
 
@@ -62,47 +62,73 @@ const Product = () => {
 
   useEffect(() => {
     if (currentItem) {
-      for (let i = 0; i < productsInBasket.length; i++) {
-        if (productsInBasket[i].productId === currentItem._id) {
+      for (let i = 0; i < productsInBasketAtoms.length; i++) {
+        if (productsInBasketAtoms[i].productId === currentItem._id) {
           setAlreadyInTheCart(true);
-          setIndexCourses(i);
-          setcount(productsInBasket[i].count);
+          setIndexProducts(i);
+          setCount(productsInBasketAtoms[i].count);
           break;
         }
       }
     }
-  }, [currentItem, productsInBasket]);
+  }, [currentItem, productsInBasketAtoms]);
 
   const reducePortion = useCallback(() => {
     if (alreadyInTheCart && count > 1) {
-      productsInBasket[indexCourses].count--;
+      setProductsInBasketAtoms(
+        productsInBasketAtoms.map((currentValue, index) => {
+          if (index === indexProducts) {
+            return {
+              count: currentValue.count - 1,
+              productId: currentValue.productId,
+              restaurantId: currentValue.restaurantId,
+              pictureUrl: currentValue.pictureUrl,
+              price: currentValue.price,
+              name: currentValue.name,
+            };
+          }
 
-      setProductsInBasket([...productsInBasket]);
+          return currentValue;
+        })
+      );
     } else if (count > 1) {
-      setcount(count - 1);
+      setCount(count - 1);
     }
   }, [
     count,
-    indexCourses,
-    productsInBasket,
+    indexProducts,
+    productsInBasketAtoms,
     alreadyInTheCart,
-    setProductsInBasket,
+    setProductsInBasketAtoms,
   ]);
 
   const increasePortion = useCallback(() => {
     if (alreadyInTheCart) {
-      productsInBasket[indexCourses].count++;
+      setProductsInBasketAtoms(
+        productsInBasketAtoms.map((currentValue, index) => {
+          if (index === indexProducts) {
+            return {
+              count: currentValue.count + 1,
+              productId: currentValue.productId,
+              restaurantId: currentValue.restaurantId,
+              pictureUrl: currentValue.pictureUrl,
+              price: currentValue.price,
+              name: currentValue.name,
+            };
+          }
 
-      setProductsInBasket([...productsInBasket]);
+          return currentValue;
+        })
+      );
     } else {
-      setcount(count + 1);
+      setCount(count + 1);
     }
   }, [
     count,
-    indexCourses,
-    productsInBasket,
+    indexProducts,
+    productsInBasketAtoms,
     alreadyInTheCart,
-    setProductsInBasket,
+    setProductsInBasketAtoms,
   ]);
 
   const arrowClicking = useCallback(() => {
@@ -112,8 +138,8 @@ const Product = () => {
   }, [setLocation, restaurantId, tableId, match]);
 
   const addProductToOrder = useCallback(() => {
-    setProductsInBasket([
-      ...productsInBasket,
+    setProductsInBasketAtoms([
+      ...productsInBasketAtoms,
       {
         productId: currentItem._id,
         name: currentItem.name,
@@ -123,7 +149,7 @@ const Product = () => {
         restaurantId: currentItem.category.restaurant._id,
       },
     ]);
-  }, [currentItem, count, setProductsInBasket, productsInBasket]);
+  }, [currentItem, count, setProductsInBasketAtoms, productsInBasketAtoms]);
 
   return (
     <Flex height={1} width={1} overflowY="auto" overflowX="hidden">

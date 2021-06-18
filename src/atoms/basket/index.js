@@ -6,7 +6,6 @@ const { persistAtom } = recoilPersist();
 const productsInBasketState = atom({
   key: "productsInBasketState",
   default: [],
-  dangerouslyAllowMutability: true,
   effects_UNSTABLE: [persistAtom],
 });
 

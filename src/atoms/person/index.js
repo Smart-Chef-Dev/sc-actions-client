@@ -6,7 +6,6 @@ const { persistAtom } = recoilPersist();
 const personState = atom({
   key: "personState",
   default: 1,
-  dangerouslyAllowMutability: true,
   effects_UNSTABLE: [persistAtom],
 });
 
