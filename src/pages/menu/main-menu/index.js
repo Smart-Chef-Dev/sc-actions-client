@@ -115,8 +115,7 @@ const Menu = () => {
                 <Flex overflowX="auto">
                   {course.map(
                     (currentCourse) =>
-                      currentCourse.category.category ===
-                        currentCategory.category && (
+                      currentCourse.category._id === currentCategory._id && (
                         <Flex
                           key={currentCourse._id}
                           pr={theme.spacing(1)}

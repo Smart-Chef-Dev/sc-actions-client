@@ -71,59 +71,33 @@ const Basket = () => {
     // eslint-disable-next-line
   }, []);
 
-  const increasePortion = useCallback(
-    (indexProducts) => () => {
-      setProductsInBasketAtoms(
-        productsInBasketAtoms.map((currentValue, index) => {
-          if (index === indexProducts) {
-            return {
-              count: currentValue.count + 1,
-              productId: currentValue.productId,
-              restaurantId: currentValue.restaurantId,
-              pictureUrl: currentValue.pictureUrl,
-              price: currentValue.price,
-              name: currentValue.name,
-            };
-          }
-
-          return currentValue;
-        })
-      );
+  const changeTheNumberOfServings = useCallback(
+    (changesTo, indexProducts) => () => {
+      if (productsInBasketAtoms[indexProducts].count + changesTo >= 1) {
+        setProductsInBasketAtoms([
+          ...productsInBasketAtoms.slice(0, indexProducts),
+          {
+            count: productsInBasketAtoms[indexProducts].count + changesTo,
+            productId: productsInBasketAtoms[indexProducts].productId,
+            restaurantId: productsInBasketAtoms[indexProducts].restaurantId,
+            pictureUrl: productsInBasketAtoms[indexProducts].pictureUrl,
+            price: productsInBasketAtoms[indexProducts].price,
+            name: productsInBasketAtoms[indexProducts].name,
+          },
+          ...productsInBasketAtoms.slice(indexProducts + 1),
+        ]);
+      }
     },
-    [setProductsInBasketAtoms, productsInBasketAtoms]
+    [productsInBasketAtoms, setProductsInBasketAtoms]
   );
 
-  const reducePortion = useCallback(
-    (indexProducts) => () => {
-      setProductsInBasketAtoms(
-        productsInBasketAtoms.map((currentValue, index) => {
-          if (index === indexProducts && currentValue.count > 1) {
-            return {
-              count: currentValue.count - 1,
-              productId: currentValue.productId,
-              restaurantId: currentValue.restaurantId,
-              pictureUrl: currentValue.pictureUrl,
-              price: currentValue.price,
-              name: currentValue.name,
-            };
-          }
-
-          return currentValue;
-        })
-      );
+  const changeTheNumberOfPeople = useCallback(
+    (changesTo) => () => {
+      if (personCountAtoms + changesTo >= 1)
+        setPersonCountAtoms(personCountAtoms + changesTo);
     },
-    [setProductsInBasketAtoms, productsInBasketAtoms]
+    [personCountAtoms, setPersonCountAtoms]
   );
-
-  const increasePersonCount = useCallback(() => {
-    setPersonCountAtoms(personCountAtoms + 1);
-  }, [personCountAtoms, setPersonCountAtoms]);
-
-  const reducePersonCount = useCallback(() => {
-    if (personCountAtoms > 1) {
-      setPersonCountAtoms(personCountAtoms - 1);
-    }
-  }, [personCountAtoms, setPersonCountAtoms]);
 
   const removeComponent = useCallback(() => {
     setProductsInBasketAtoms([
@@ -217,7 +191,7 @@ const Basket = () => {
                 fontSize={theme.fontSize(3)}
                 pr={theme.spacing(1)}
                 color="var(--main-color)"
-                onClick={reducePersonCount}
+                onClick={changeTheNumberOfPeople(-1)}
               >
                 -
               </Text>
@@ -226,7 +200,7 @@ const Basket = () => {
                 fontSize={theme.fontSize(3)}
                 pl={theme.spacing(1)}
                 color="var(--main-color)"
-                onClick={increasePersonCount}
+                onClick={changeTheNumberOfPeople(+1)}
               >
                 +
               </Text>
@@ -270,7 +244,7 @@ const Basket = () => {
                           fontSize={theme.fontSize(3)}
                           pr={theme.spacing(1)}
                           color="var(--main-color)"
-                          onClick={reducePortion(index)}
+                          onClick={changeTheNumberOfServings(-1, index)}
                         >
                           -
                         </Text>
@@ -281,7 +255,7 @@ const Basket = () => {
                           fontSize={theme.fontSize(3)}
                           pl={theme.spacing(1)}
                           color="var(--main-color)"
-                          onClick={increasePortion(index)}
+                          onClick={changeTheNumberOfServings(+1, index)}
                         >
                           +
                         </Text>
@@ -321,7 +295,7 @@ const Basket = () => {
                         fontSize={theme.fontSize(3)}
                         pr={theme.spacing(1)}
                         color="var(--main-color)"
-                        onClick={reducePortion(index)}
+                        onClick={changeTheNumberOfServings(-1, index)}
                       >
                         -
                       </Text>
@@ -332,7 +306,7 @@ const Basket = () => {
                         fontSize={theme.fontSize(3)}
                         pl={theme.spacing(1)}
                         color="var(--main-color)"
-                        onClick={increasePortion(index)}
+                        onClick={changeTheNumberOfServings(+1, index)}
                       >
                         +
                       </Text>
