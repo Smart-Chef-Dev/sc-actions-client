@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useLocation, useRoute } from "wouter";
 import { styled } from "@linaria/react";
@@ -28,9 +28,6 @@ const Basket = () => {
     personCountState
   );
 
-  const [totalCost, setTotalCost] = useState(0);
-  const [allCount, setAllCount] = useState(0);
-
   const [candidateForDeletion, setCandidateForDeletion] = useState(false);
 
   const [, setLocation] = useLocation();
@@ -40,6 +37,26 @@ const Basket = () => {
     strings: { basket: translations },
   } = useTranslation();
 
+  const sum = useMemo(() => {
+    let totalCost = 0;
+    let numberMenuItems = 0;
+
+    for (let i = 0; i < productsInBasketAtoms.length; i++) {
+      totalCost =
+        +productsInBasketAtoms[i].price * +productsInBasketAtoms[i].count +
+        totalCost;
+
+      numberMenuItems = numberMenuItems + +productsInBasketAtoms[i].count;
+    }
+    totalCost = totalCost.toFixed(1);
+
+    return {
+      portions: numberMenuItems,
+      price: totalCost,
+    };
+  }, [productsInBasketAtoms]);
+
+  // should only be called when the page is refreshed
   useEffect(() => {
     if (
       productsInBasketAtoms.length &&
@@ -47,7 +64,9 @@ const Basket = () => {
     ) {
       setProductsInBasketAtoms([]);
     }
-  }, [restaurantId, setProductsInBasketAtoms, productsInBasketAtoms]);
+
+    // eslint-disable-next-line
+  }, []);
 
   const increasePortion = useCallback(
     (indexProducts) => () => {
@@ -103,26 +122,6 @@ const Basket = () => {
     }
   }, [personCountAtoms, setPersonCountAtoms]);
 
-  useEffect(() => {
-    setTotalCost(0);
-    setAllCount(0);
-
-    for (let i = 0; i < productsInBasketAtoms.length; i++) {
-      if (productsInBasketAtoms[i].productId !== candidateForDeletion) {
-        setTotalCost(
-          (t) =>
-            t +
-            Number(productsInBasketAtoms[i].price) *
-              Number(productsInBasketAtoms[i].count)
-        );
-      }
-
-      setAllCount((t) => t + productsInBasketAtoms[i].count);
-    }
-
-    setTotalCost((t) => parseFloat(t).toFixed(1));
-  }, [candidateForDeletion, productsInBasketAtoms]);
-
   const removeComponent = useCallback(() => {
     for (let i = 0; i < productsInBasketAtoms.length; i++) {
       if (productsInBasketAtoms[i].productId === candidateForDeletion) {
@@ -131,9 +130,6 @@ const Basket = () => {
       }
     }
     setProductsInBasketAtoms([...productsInBasketAtoms]);
-
-    setTotalCost(0);
-    setAllCount(0);
   }, [candidateForDeletion, setProductsInBasketAtoms, productsInBasketAtoms]);
 
   const sendAnOrder = useCallback(() => {
@@ -173,7 +169,7 @@ const Basket = () => {
           pb={theme.spacing(1)}
           pl={theme.spacing(1)}
         >
-          {translations["my_order"]} ({allCount})
+          {translations["my_order"]} ({sum.portions})
         </Text>
       </Flex>
       <Divider mb={theme.spacing(1)} ml={theme.spacing(1)} />
@@ -350,7 +346,7 @@ const Basket = () => {
           boxSizing="border-box"
         >
           <Text fontWeight="bold">{translations["total"]}</Text>
-          <Text fontWeight="bold">{totalCost + "$"}</Text>
+          <Text fontWeight="bold">{sum.price + "$"}</Text>
         </Flex>
       </Flex>
       <Flex
@@ -365,7 +361,7 @@ const Basket = () => {
         p={theme.spacing(1)}
       >
         <Button onClick={sendAnOrder} width={1}>
-          {`${translations["confirm_order"]} (${totalCost + "$"})`}
+          {`${translations["confirm_order"]} (${sum.price + "$"})`}
         </Button>
       </Flex>
     </Flex>

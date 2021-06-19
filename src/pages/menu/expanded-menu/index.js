@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useRoute, useLocation } from "wouter";
 import { useRecoilState } from "recoil";
 import { styled } from "@linaria/react";
@@ -19,14 +19,13 @@ import Basket from "../../../assets/icons/expanded-menu/basket.svg";
 import productsInBasketState from "atoms/basket";
 
 const ExpandedMenu = () => {
-  const [match, { restaurantId, categoryId, tableId }] = useRoute(
+  const [, { restaurantId, categoryId, tableId }] = useRoute(
     Routes.EXPANDED_MENU
   );
   const [, setLocation] = useLocation();
 
   const [category, setCategory] = useState([]);
   const [course, setCourse] = useState([]);
-  const [currentList, setCurrentList] = useState([]);
 
   const [error, setError] = useState(false);
 
@@ -37,6 +36,14 @@ const ExpandedMenu = () => {
   const {
     strings: { expandedMenu: translations },
   } = useTranslation();
+
+  const currentList = useMemo(() => {
+    if (!error) {
+      return course.filter(
+        (currentValue) => currentValue.category._id === categoryId
+      );
+    }
+  }, [course, error, categoryId]);
 
   useEffect(() => {
     fetch(`/api/category/${restaurantId}/`, {
@@ -68,29 +75,15 @@ const ExpandedMenu = () => {
       });
   }, [restaurantId]);
 
-  useEffect(() => {
-    if (match && !error) {
-      setCurrentList(
-        course.filter(
-          (currentValue) => currentValue.category._id === categoryId
-        )
-      );
-    }
-  }, [course, error, match, categoryId]);
-
   const arrowClicking = useCallback(() => {
-    if (match) {
-      setLocation(`/restaurant/${restaurantId}/${tableId}`);
-    }
-  }, [setLocation, restaurantId, tableId, match]);
+    setLocation(`/restaurant/${restaurantId}/${tableId}`);
+  }, [setLocation, restaurantId, tableId]);
 
   const pressingItems = useCallback(
     (itemId) => () => {
-      if (match) {
-        setLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
-      }
+      setLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
     },
-    [setLocation, restaurantId, tableId, match]
+    [setLocation, restaurantId, tableId]
   );
 
   const addProductToOrder = useCallback(
@@ -123,7 +116,7 @@ const ExpandedMenu = () => {
           {translations["menu"]}
         </Text>
       </s.Arrow>
-      {match && !error && currentList[0] && (
+      {!error && currentList[0] && (
         <Flex direction="column" height={1} width={1}>
           <Flex
             direction="column"

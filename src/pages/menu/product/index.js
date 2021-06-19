@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useRoute } from "wouter";
 import { useRecoilState } from "recoil";
 import { styled } from "@linaria/react";
@@ -17,15 +17,12 @@ import Arrow from "../../../assets/icons/product/arrow.svg";
 import productsInBasketState from "atoms/basket";
 
 const Product = () => {
-  const [match, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
+  const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
   const [, setLocation] = useLocation();
 
-  const [course, setCourse] = useState([]);
-  const [count, setCount] = useState(1);
-  const [currentItem, setCurrentItem] = useState();
+  const [menuItems, setMenuItems] = useState([]);
+  const [count, setCount] = useState(0);
 
-  const [indexProducts, setIndexProducts] = useState(-1);
-  const [alreadyInTheCart, setAlreadyInTheCart] = useState(false);
   const [error, setError] = useState(false);
 
   const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
@@ -35,6 +32,35 @@ const Product = () => {
   const {
     strings: { product: translations },
   } = useTranslation();
+
+  const currentMenuItem = useMemo(() => {
+    if (!error) {
+      return menuItems.find((currentValue) => currentValue._id === itemId);
+    }
+  }, [menuItems, itemId, error]);
+
+  const currentMenuItemInfo = useMemo(() => {
+    let alreadyInTheBasket = false;
+    let indexInBasketAtom = null;
+    let count = null;
+
+    if (currentMenuItem) {
+      for (let i = 0; i < productsInBasketAtoms.length; i++) {
+        if (productsInBasketAtoms[i].productId === currentMenuItem._id) {
+          alreadyInTheBasket = true;
+          indexInBasketAtom = i;
+          count = productsInBasketAtoms[i].count;
+          break;
+        }
+      }
+    }
+
+    return {
+      alreadyInTheBasket: alreadyInTheBasket,
+      indexInBasketAtom: indexInBasketAtom,
+      count: count,
+    };
+  }, [currentMenuItem, productsInBasketAtoms]);
 
   useEffect(() => {
     fetch(`/api/menu/${restaurantId}`, {
@@ -48,36 +74,18 @@ const Product = () => {
         return response.json();
       })
       .then((result) => {
-        setCourse(result);
+        setMenuItems(result);
       });
   }, [restaurantId]);
 
-  useEffect(() => {
-    if (!error) {
-      setCurrentItem(
-        course.find((currentValue) => currentValue._id === itemId)
-      );
-    }
-  }, [course, itemId, error]);
-
-  useEffect(() => {
-    if (currentItem) {
-      for (let i = 0; i < productsInBasketAtoms.length; i++) {
-        if (productsInBasketAtoms[i].productId === currentItem._id) {
-          setAlreadyInTheCart(true);
-          setIndexProducts(i);
-          setCount(productsInBasketAtoms[i].count);
-          break;
-        }
-      }
-    }
-  }, [currentItem, productsInBasketAtoms]);
-
   const reducePortion = useCallback(() => {
-    if (alreadyInTheCart && count > 1) {
+    if (
+      currentMenuItemInfo.alreadyInTheBasket &&
+      currentMenuItemInfo.count > 1
+    ) {
       setProductsInBasketAtoms(
         productsInBasketAtoms.map((currentValue, index) => {
-          if (index === indexProducts) {
+          if (index === currentMenuItemInfo.indexInBasketAtom) {
             return {
               count: currentValue.count - 1,
               productId: currentValue.productId,
@@ -96,17 +104,16 @@ const Product = () => {
     }
   }, [
     count,
-    indexProducts,
     productsInBasketAtoms,
-    alreadyInTheCart,
     setProductsInBasketAtoms,
+    currentMenuItemInfo,
   ]);
 
   const increasePortion = useCallback(() => {
-    if (alreadyInTheCart) {
+    if (currentMenuItemInfo.alreadyInTheBasket) {
       setProductsInBasketAtoms(
         productsInBasketAtoms.map((currentValue, index) => {
-          if (index === indexProducts) {
+          if (index === currentMenuItemInfo.indexInBasketAtom) {
             return {
               count: currentValue.count + 1,
               productId: currentValue.productId,
@@ -125,43 +132,41 @@ const Product = () => {
     }
   }, [
     count,
-    indexProducts,
     productsInBasketAtoms,
-    alreadyInTheCart,
     setProductsInBasketAtoms,
+    currentMenuItemInfo.alreadyInTheBasket,
+    currentMenuItemInfo.indexInBasketAtom,
   ]);
 
   const arrowClicking = useCallback(() => {
-    if (match) {
-      setLocation(`/restaurant/${restaurantId}/${tableId}`);
-    }
-  }, [setLocation, restaurantId, tableId, match]);
+    setLocation(`/restaurant/${restaurantId}/${tableId}`);
+  }, [setLocation, restaurantId, tableId]);
 
   const addProductToOrder = useCallback(() => {
     setProductsInBasketAtoms([
       ...productsInBasketAtoms,
       {
-        productId: currentItem._id,
-        name: currentItem.name,
-        pictureUrl: currentItem.pictureUrl,
-        price: currentItem.price,
+        productId: currentMenuItem._id,
+        name: currentMenuItem.name,
+        pictureUrl: currentMenuItem.pictureUrl,
+        price: currentMenuItem.price,
         count: count,
-        restaurantId: currentItem.category.restaurant._id,
+        restaurantId: currentMenuItem.category.restaurant._id,
       },
     ]);
-  }, [currentItem, count, setProductsInBasketAtoms, productsInBasketAtoms]);
+  }, [currentMenuItem, count, setProductsInBasketAtoms, productsInBasketAtoms]);
 
   return (
     <Flex height={1} width={1} overflowY="auto" overflowX="hidden">
-      {match && !error && currentItem && (
+      {!error && currentMenuItem && (
         <Flex direction="column" height={1} width={1}>
           <s.Arrow>
             <Arrow onClick={arrowClicking} />
           </s.Arrow>
           <Flex width={1} height={1} flex={1}>
             <Img
-              src={currentItem.pictureUrl}
-              alt={currentItem.name}
+              src={currentMenuItem.pictureUrl}
+              alt={currentMenuItem.name}
               width={1}
             />
           </Flex>
@@ -173,17 +178,17 @@ const Product = () => {
             boxSizing="border-box"
           >
             <s.Time>
-              <Text>{`~ ${currentItem.time} ${translations["min"]}`}</Text>
+              <Text>{`~ ${currentMenuItem.time} ${translations["min"]}`}</Text>
             </s.Time>
             <Text
               color="var(--text-grey)"
               textTransform="uppercase"
               pb={theme.spacing(1)}
             >
-              {currentItem.category.name}
+              {currentMenuItem.category.name}
             </Text>
             <Text fontSize={theme.fontSize(3)} pb={theme.spacing(1)}>
-              {currentItem.name}
+              {currentMenuItem.name}
             </Text>
             <Flex
               justifyContent="space-between"
@@ -191,13 +196,15 @@ const Product = () => {
               pb={theme.spacing(1)}
             >
               <Text color="var(--bright-grey)" height={1} alignItems="center">
-                {`${translations["weight"]} ${currentItem.weight} ${translations["g"]}`}
+                {`${translations["weight"]} ${currentMenuItem.weight} ${translations["g"]}`}
               </Text>
               <Text color="#4cd964" fontSize="2rem">
-                {currentItem.price}$
+                {currentMenuItem.price}$
               </Text>
             </Flex>
-            <Text color="var(--bright-grey)">{currentItem.description}</Text>
+            <Text color="var(--bright-grey)">
+              {currentMenuItem.description}
+            </Text>
             <Flex
               width={1}
               flex={1}
@@ -219,7 +226,9 @@ const Product = () => {
                     px={theme.spacing(1)}
                     mb={theme.spacing(1)}
                   >
-                    {count}
+                    {currentMenuItemInfo.alreadyInTheBasket
+                      ? currentMenuItemInfo.count
+                      : count}
                   </Text>
                   <Text
                     fontSize={theme.fontSize(3)}
@@ -230,7 +239,7 @@ const Product = () => {
                     +
                   </Text>
                 </Flex>
-                {alreadyInTheCart ? (
+                {currentMenuItemInfo.alreadyInTheBasket ? (
                   <Button disabled={true}>
                     {translations["already_in_the_basket"]}
                   </Button>

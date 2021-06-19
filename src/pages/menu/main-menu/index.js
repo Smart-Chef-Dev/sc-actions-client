@@ -14,7 +14,7 @@ import { useTranslation } from "contexts/translation-context";
 import Arrow from "../../../assets/icons/main-menu/arrow.svg";
 
 const Menu = () => {
-  const [match, { restaurantId, tableId }] = useRoute(Routes.MENU);
+  const [, { restaurantId, tableId }] = useRoute(Routes.MENU);
   const [, setLocation] = useLocation();
 
   const [category, setCategory] = useState([]);
@@ -58,20 +58,16 @@ const Menu = () => {
 
   const arrowClicking = useCallback(
     (categoryId) => () => {
-      if (match) {
-        setLocation(`/restaurant/${restaurantId}/${tableId}/${categoryId}`);
-      }
+      setLocation(`/restaurant/${restaurantId}/${tableId}/${categoryId}`);
     },
-    [setLocation, restaurantId, tableId, match]
+    [setLocation, restaurantId, tableId]
   );
 
   const pressingItems = useCallback(
     (itemId) => () => {
-      if (match) {
-        setLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
-      }
+      setLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
     },
-    [setLocation, restaurantId, tableId, match]
+    [setLocation, restaurantId, tableId]
   );
 
   return (
