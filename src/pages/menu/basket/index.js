@@ -28,7 +28,10 @@ const Basket = () => {
     personCountState
   );
 
-  const [candidateForDeletion, setCandidateForDeletion] = useState(false);
+  const [candidateForDeletion, setCandidateForDeletion] = useState({
+    indexInBasketAtom: null,
+    id: null,
+  });
 
   const [, setLocation] = useLocation();
   const [, { restaurantId, tableId }] = useRoute(Routes.BASKET);
@@ -123,14 +126,17 @@ const Basket = () => {
   }, [personCountAtoms, setPersonCountAtoms]);
 
   const removeComponent = useCallback(() => {
-    for (let i = 0; i < productsInBasketAtoms.length; i++) {
-      if (productsInBasketAtoms[i].productId === candidateForDeletion) {
-        productsInBasketAtoms.splice(i, 1);
-        break;
-      }
-    }
-    setProductsInBasketAtoms([...productsInBasketAtoms]);
-  }, [candidateForDeletion, setProductsInBasketAtoms, productsInBasketAtoms]);
+    setProductsInBasketAtoms([
+      ...productsInBasketAtoms.slice(0, candidateForDeletion.indexInBasketAtom),
+      ...productsInBasketAtoms.slice(
+        candidateForDeletion.indexInBasketAtom + 1
+      ),
+    ]);
+  }, [
+    candidateForDeletion.indexInBasketAtom,
+    productsInBasketAtoms,
+    setProductsInBasketAtoms,
+  ]);
 
   const sendAnOrder = useCallback(() => {
     if (productsInBasketAtoms.length) {
@@ -231,10 +237,11 @@ const Basket = () => {
         {productsInBasketAtoms.map((currentValue, index) => (
           <Flex key={currentValue.productId} width={1} direction="column">
             <SwipeDelete
+              index={index}
               itemId={currentValue.productId}
               setCandidateForDeletion={setCandidateForDeletion}
             >
-              {candidateForDeletion === currentValue.productId ? (
+              {candidateForDeletion.id === currentValue.productId ? (
                 <Flex width={1} height={1} position="relative">
                   <s.RemoteComponent
                     p={theme.spacing(1)}

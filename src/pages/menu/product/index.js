@@ -21,7 +21,7 @@ const Product = () => {
   const [, setLocation] = useLocation();
 
   const [menuItems, setMenuItems] = useState([]);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
 
   const [error, setError] = useState(false);
 

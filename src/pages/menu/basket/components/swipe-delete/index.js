@@ -4,16 +4,23 @@ import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 
-const SwipeDelete = ({ children, itemId, setCandidateForDeletion }) => {
+const SwipeDelete = ({ children, itemId, setCandidateForDeletion, index }) => {
   const handlers = useSwipeable({
     onSwipedLeft: () => {
-      setCandidateForDeletion(itemId);
+      setCandidateForDeletion({
+        indexInBasketAtom: index,
+        id: itemId,
+      });
     },
     onSwipedRight: () => {
       setCandidateForDeletion((candidateForDeletion) => {
-        if (candidateForDeletion === itemId) {
-          return false;
+        if (candidateForDeletion.id === itemId) {
+          return {
+            indexInBasketAtom: null,
+            id: null,
+          };
         }
+
         return candidateForDeletion;
       });
     },
@@ -33,6 +40,7 @@ SwipeDelete.propTypes = {
   ]).isRequired,
   itemId: PropTypes.string,
   setCandidateForDeletion: PropTypes.func,
+  index: PropTypes.number,
 };
 
 export default memo(SwipeDelete);
