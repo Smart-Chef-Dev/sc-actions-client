@@ -20,6 +20,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Deploy to Digital Ocean droplet via SSH
+        if: github.ref == 'refs/heads/master'
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.HOST }}
@@ -31,3 +32,18 @@ jobs:
             docker-compose stop
             docker pull ghcr.io/smart-chef-dev/sc-actions-client/sc-actions-client:latest
             docker-compose up -d
+
+      - name: Deploy to Digital Ocean develop droplet via SSH
+        if: github.ref == 'refs/heads/develop'
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST_DEV }}
+          username: ${{ secrets.USERNAME_DEV }}
+          password: ${{ secrets.PASSWORD_DEV }}
+          port: ${{ secrets.PORT_DEV }}
+          script: |
+            cd ./sc-actions/
+            docker-compose stop
+            docker pull ghcr.io/smart-chef-dev/sc-actions-client/sc-actions-client:dev
+            docker-compose up -d
+
