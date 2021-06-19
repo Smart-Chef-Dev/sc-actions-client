@@ -46,7 +46,7 @@ const ExpandedMenu = () => {
   }, [course, error, categoryId]);
 
   useEffect(() => {
-    fetch(`/api/category/${restaurantId}/`, {
+    fetch(`/api/restaurant/${restaurantId}/category`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +60,7 @@ const ExpandedMenu = () => {
         setCategory(result);
       });
 
-    fetch(`/api/menu/${restaurantId}`, {
+    fetch(`/api/restaurant/${restaurantId}/menuItems`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

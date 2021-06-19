@@ -27,7 +27,7 @@ const Menu = () => {
   } = useTranslation();
 
   useEffect(() => {
-    fetch(`/api/category/${restaurantId}/`, {
+    fetch(`/api/restaurant/${restaurantId}/category`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +41,7 @@ const Menu = () => {
         setCategory(result);
       });
 
-    fetch(`/api/menu/${restaurantId}`, {
+    fetch(`/api/restaurant/${restaurantId}/menuItems`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -20,7 +20,7 @@ const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
   const [, setLocation] = useLocation();
 
-  const [menuItems, setMenuItems] = useState([]);
+  const [menuItem, setMenuItem] = useState({});
   const [count, setCount] = useState(1);
 
   const [error, setError] = useState(false);
@@ -32,12 +32,6 @@ const Product = () => {
   const {
     strings: { product: translations },
   } = useTranslation();
-
-  const menuItem = useMemo(() => {
-    if (!error) {
-      return menuItems.find((Value) => Value._id === itemId);
-    }
-  }, [menuItems, itemId, error]);
 
   const menuItemInfo = useMemo(() => {
     let alreadyInTheBasket = false;
@@ -63,7 +57,7 @@ const Product = () => {
   }, [menuItem, productsInBasketAtoms]);
 
   useEffect(() => {
-    fetch(`/api/menu/${restaurantId}`, {
+    fetch(`/api/restaurant/${restaurantId}/menuItem/${itemId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -74,9 +68,9 @@ const Product = () => {
         return response.json();
       })
       .then((result) => {
-        setMenuItems(result);
+        setMenuItem(result);
       });
-  }, [restaurantId]);
+  }, [restaurantId, itemId]);
 
   const changeTheNumberOfServings = useCallback(
     (changesTo) => () => {
@@ -134,7 +128,7 @@ const Product = () => {
 
   return (
     <Flex height={1} width={1} overflowY="auto" overflowX="hidden">
-      {!error && menuItem && (
+      {!error && menuItem._id && (
         <Flex direction="column" height={1} width={1}>
           <s.Arrow>
             <Arrow onClick={arrowClicking} />
