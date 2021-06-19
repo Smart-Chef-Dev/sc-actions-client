@@ -35,6 +35,7 @@ const Basket = () => {
 
   const [, setLocation] = useLocation();
   const [, { restaurantId, tableId }] = useRoute(Routes.BASKET);
+  const [disable, setDisable] = useState(false);
 
   const {
     strings: { basket: translations },
@@ -113,7 +114,7 @@ const Basket = () => {
   ]);
 
   const sendAnOrder = useCallback(() => {
-    if (productsInBasketAtoms.length) {
+    if (!disable && productsInBasketAtoms.length) {
       fetch(`/api/message/${restaurantId}/${tableId}`, {
         method: "POST",
         headers: {
@@ -129,6 +130,8 @@ const Basket = () => {
         setLocation(`/restaurant/${restaurantId}/${tableId}`);
       });
     }
+
+    setDisable(true);
   }, [
     productsInBasketAtoms,
     setProductsInBasketAtoms,
@@ -137,6 +140,8 @@ const Basket = () => {
     personCountAtoms,
     setLocation,
     setPersonCountAtoms,
+    setDisable,
+    disable,
   ]);
 
   return (
