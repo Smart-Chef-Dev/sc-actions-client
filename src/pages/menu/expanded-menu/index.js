@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useRoute, useLocation } from "wouter";
 import { useRecoilState } from "recoil";
 import { styled } from "@linaria/react";
@@ -37,14 +37,6 @@ const ExpandedMenu = () => {
     strings: { expandedMenu: translations },
   } = useTranslation();
 
-  const currentList = useMemo(() => {
-    if (!error) {
-      return menuItems.filter(
-        (currentValue) => currentValue.category._id === categoryId
-      );
-    }
-  }, [menuItems, error, categoryId]);
-
   useEffect(() => {
     fetch(`/api/restaurant/${restaurantId}/category`, {
       method: "GET",
@@ -59,8 +51,10 @@ const ExpandedMenu = () => {
       .then((result) => {
         setCategory(result);
       });
+  }, [restaurantId]);
 
-    fetch(`/api/restaurant/${restaurantId}/menuItems`, {
+  useEffect(() => {
+    fetch(`/api/category/${categoryId}/menuItems`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +67,7 @@ const ExpandedMenu = () => {
       .then((result) => {
         setMenuItems(result);
       });
-  }, [restaurantId]);
+  }, [categoryId]);
 
   const arrowClicking = useCallback(() => {
     setLocation(`/restaurant/${restaurantId}/${tableId}`);
@@ -116,7 +110,7 @@ const ExpandedMenu = () => {
           {translations["menu"]}
         </Text>
       </s.Arrow>
-      {!error && currentList[0] && (
+      {!error && menuItems[0] && (
         <Flex direction="column" height={1} width={1}>
           <Flex
             direction="column"
@@ -132,7 +126,7 @@ const ExpandedMenu = () => {
               mb={theme.spacing(1)}
               fontWeight="bold"
             >
-              {currentList[0].category.name}
+              {menuItems[0].category.name}
             </Text>
             <Divider />
             <Navigation category={category} currentCategory={categoryId} />
@@ -145,7 +139,7 @@ const ExpandedMenu = () => {
             height={1}
           >
             <Flex direction="column" width={1} height={1}>
-              {currentList.map((currentValue) => (
+              {menuItems.map((currentValue) => (
                 <s.Container
                   key={currentValue._id}
                   mb={theme.spacing(1)}

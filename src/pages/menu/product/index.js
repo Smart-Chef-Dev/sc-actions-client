@@ -57,7 +57,7 @@ const Product = () => {
   }, [menuItem, productsInBasketAtoms]);
 
   useEffect(() => {
-    fetch(`/api/restaurant/${restaurantId}/menuItem/${itemId}`, {
+    fetch(`/api/menu/${itemId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
