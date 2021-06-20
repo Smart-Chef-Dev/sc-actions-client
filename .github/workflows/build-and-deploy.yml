@@ -12,8 +12,40 @@ env:
   IMAGE_NAME: sc-actions-client
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 14.x ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install modules
+        run: yarn
+        
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Run ESLint
+        run: yarn lint:js
+
+      - name: Run StyleLint
+        run: yarn lint:styles
+
   build-and-push:
     runs-on: ubuntu-latest
+    needs: lint
 
     steps:
       - uses: actions/checkout@v2
@@ -50,9 +82,8 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
 
-      - name: Build production image and push
+      - name: Build image and push
         uses: docker/build-push-action@v2
-        if: github.ref == 'refs/heads/master'
         with:
           context: .
           builder: ${{ steps.buildx.outputs.name }}
@@ -62,26 +93,7 @@ jobs:
           push: true
           tags: |
             ${{ steps.prep.outputs.tagged_image }}:${{ steps.prep.outputs.tag }}
-            ${{ steps.prep.outputs.tagged_image }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          # Note the mode=max here
-          # More: https://github.com/moby/buildkit#--export-cache-options
-          # And: https://github.com/docker/buildx#--cache-tonametypetypekeyvalue
-          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
-
-      - name: Build develop image and push
-        uses: docker/build-push-action@v2
-        if: github.ref == 'refs/heads/develop'
-        with:
-          context: .
-          builder: ${{ steps.buildx.outputs.name }}
-          file: Dockerfile
-          # Set the desired build target here
-          target: production
-          push: true
-          tags: |
-            ${{ steps.prep.outputs.tagged_image }}:${{ steps.prep.outputs.tag }}
-            ${{ steps.prep.outputs.tagged_image }}:dev
+            ${{ steps.prep.outputs.tagged_image }}:${{ GITHUB_REF##*/} }
           cache-from: type=local,src=/tmp/.buildx-cache
           # Note the mode=max here
           # More: https://github.com/moby/buildkit#--export-cache-options
@@ -111,7 +123,7 @@ jobs:
           script: |
             cd ./sc-actions/
             docker-compose stop
-            docker pull ghcr.io/smart-chef-dev/sc-actions-client/sc-actions-client:latest
+            docker pull ghcr.io/smart-chef-dev/sc-actions-client/sc-actions-client:master
             docker-compose up -d
 
       - name: Deploy to Digital Ocean develop droplet via SSH
@@ -125,5 +137,5 @@ jobs:
           script: |
             cd ./sc-actions/
             docker-compose stop
-            docker pull ghcr.io/smart-chef-dev/sc-actions-client/sc-actions-client:dev
+            docker pull ghcr.io/smart-chef-dev/sc-actions-client/sc-actions-client:develop
             docker-compose up -d
