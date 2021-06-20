@@ -32,10 +32,10 @@ const Basket = () => {
     indexInBasketAtom: null,
     id: null,
   });
+  const [disable, setDisable] = useState(false);
 
   const [, setLocation] = useLocation();
   const [, { restaurantId, tableId }] = useRoute(Routes.BASKET);
-  const [disable, setDisable] = useState(false);
 
   const {
     strings: { basket: translations },

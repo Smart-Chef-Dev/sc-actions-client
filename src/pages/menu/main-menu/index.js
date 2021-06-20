@@ -18,7 +18,7 @@ const Menu = () => {
   const [, setLocation] = useLocation();
 
   const [category, setCategory] = useState([]);
-  const [course, setCourse] = useState([]);
+  const [menuItems, setMenuItems] = useState([]);
 
   const [error, setError] = useState(false);
 
@@ -52,7 +52,7 @@ const Menu = () => {
         return response.json();
       })
       .then((result) => {
-        setCourse(result);
+        setMenuItems(result);
       });
   }, [restaurantId]);
 
@@ -113,25 +113,25 @@ const Menu = () => {
                 height={1}
               >
                 <Flex overflowX="auto">
-                  {course.map(
-                    (currentCourse) =>
-                      currentCourse.category._id === currentCategory._id && (
+                  {menuItems.map(
+                    (currentMenuItems) =>
+                      currentMenuItems.category._id === currentCategory._id && (
                         <Flex
-                          key={currentCourse._id}
+                          key={currentMenuItems._id}
                           pr={theme.spacing(1)}
                           pb={theme.spacing(1)}
                         >
                           <Flex direction="column">
                             <s.Preview
-                              src={currentCourse.pictureUrl}
-                              alt={currentCourse.name}
+                              src={currentMenuItems.pictureUrl}
+                              alt={currentMenuItems.name}
                               borderRadius="10%"
                               mb={theme.spacing(1)}
-                              onClick={pressingItems(currentCourse._id)}
+                              onClick={pressingItems(currentMenuItems._id)}
                             />
-                            <Text>{currentCourse.name}</Text>
+                            <Text>{currentMenuItems.name}</Text>
                             <Text color="var(--text-grey)">
-                              {currentCourse.price}$
+                              {currentMenuItems.price}$
                             </Text>
                           </Flex>
                         </Flex>

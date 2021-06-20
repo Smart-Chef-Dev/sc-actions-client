@@ -25,7 +25,7 @@ const ExpandedMenu = () => {
   const [, setLocation] = useLocation();
 
   const [category, setCategory] = useState([]);
-  const [course, setCourse] = useState([]);
+  const [menuItems, setMenuItems] = useState([]);
 
   const [error, setError] = useState(false);
 
@@ -39,11 +39,11 @@ const ExpandedMenu = () => {
 
   const currentList = useMemo(() => {
     if (!error) {
-      return course.filter(
+      return menuItems.filter(
         (currentValue) => currentValue.category._id === categoryId
       );
     }
-  }, [course, error, categoryId]);
+  }, [menuItems, error, categoryId]);
 
   useEffect(() => {
     fetch(`/api/restaurant/${restaurantId}/category`, {
@@ -71,7 +71,7 @@ const ExpandedMenu = () => {
         return response.json();
       })
       .then((result) => {
-        setCourse(result);
+        setMenuItems(result);
       });
   }, [restaurantId]);
 
