@@ -31,22 +31,6 @@ const Product = () => {
     strings: { product: translations },
   } = useTranslation();
 
-  const inTheBasket = useMemo(() => {
-    return !!basketAtoms.order.find((currentValue) => {
-      if (currentValue._id === itemId) return currentValue._id;
-    });
-  }, [itemId, basketAtoms]);
-
-  const valueInBasket = useMemo(() => {
-    return basketAtoms.order.find((currentValue) => {
-      if (currentValue._id === itemId) {
-        return {
-          count: currentValue.count,
-        };
-      }
-    });
-  }, [itemId, basketAtoms]);
-
   useEffect(() => {
     async function getData() {
       const response = await fetch(`/api/menu/${itemId}`, {
@@ -64,6 +48,22 @@ const Product = () => {
     getData();
   }, [restaurantId, itemId]);
 
+  const inTheBasket = useMemo(() => {
+    return !!basketAtoms.order.find((currentValue) => {
+      if (currentValue._id === itemId) return currentValue._id;
+    });
+  }, [itemId, basketAtoms]);
+
+  const valueInBasket = useMemo(() => {
+    return basketAtoms.order.find((currentValue) => {
+      if (currentValue._id === itemId) {
+        return {
+          count: currentValue.count,
+        };
+      }
+    });
+  }, [itemId, basketAtoms]);
+
   const changeTheNumberOfServings = useCallback(
     (diff) => () => {
       if (inTheBasket && valueInBasket.count + diff <= 0) {
@@ -75,10 +75,10 @@ const Product = () => {
       }
 
       if (inTheBasket) {
-        setBasketAtoms((oldProducts) => {
+        setBasketAtoms((oldOrder) => {
           return {
-            ...oldProducts,
-            order: oldProducts.order.map((currentValue) =>
+            ...oldOrder,
+            order: oldOrder.order.map((currentValue) =>
               currentValue._id === itemId
                 ? {
                     ...currentValue,

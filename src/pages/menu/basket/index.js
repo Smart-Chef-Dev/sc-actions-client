@@ -67,10 +67,10 @@ const Basket = () => {
         return;
       }
 
-      setBasketAtoms((oldBasket) => {
+      setBasketAtoms((oldOrder) => {
         return {
-          ...oldBasket,
-          order: oldBasket.order.map((currentValue) =>
+          ...oldOrder,
+          order: oldOrder.order.map((currentValue) =>
             currentValue._id === productId
               ? {
                   ...currentValue,
@@ -96,10 +96,10 @@ const Basket = () => {
   );
 
   const removeComponent = useCallback(() => {
-    setBasketAtoms((oldProduct) => {
+    setBasketAtoms((oldOrder) => {
       return {
-        ...oldProduct,
-        order: oldProduct.order.filter(
+        ...oldOrder,
+        order: oldOrder.order.filter(
           (currentValue) => currentValue._id !== preRemoveItemId
         ),
       };
