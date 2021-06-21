@@ -121,7 +121,7 @@ const Product = () => {
           <s.Arrow>
             <Arrow onClick={arrowClicking} />
           </s.Arrow>
-          <Flex width={1} height={1} flex={1}>
+          <Flex width={1} height={0.5} flex={1}>
             <Img src={menuItem.pictureUrl} alt={menuItem.name} width={1} />
           </Flex>
           <s.MainInformation

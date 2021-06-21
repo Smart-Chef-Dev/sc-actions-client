@@ -105,6 +105,7 @@ const Menu = () => {
                 <Flex
                   width={1}
                   height={1}
+                  flex="1"
                   mr={theme.spacing(1)}
                   direction="row-reverse"
                   alignItems="center"
@@ -138,7 +139,9 @@ const Menu = () => {
                                 mb={theme.spacing(1)}
                                 onClick={pressingItems(currentMenuItems._id)}
                               />
-                              <Text>{currentMenuItems.name}</Text>
+                              <s.ProductName>
+                                {currentMenuItems.name}
+                              </s.ProductName>
                               <Text color="var(--text-grey)">
                                 {currentMenuItems.price}$
                               </Text>
@@ -162,6 +165,9 @@ const s = {
     height: 100px;
 
     object-fit: cover;
+  `,
+  ProductName: styled(Text)`
+    max-width: 100px;
   `,
 };
 
