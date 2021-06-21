@@ -16,7 +16,7 @@ import { theme } from "theme";
 import Arrow from "assets/icons/expanded-menu/arrow.svg";
 import Basket from "assets/icons/expanded-menu/basket.svg";
 
-import productsInBasketState from "atoms/basket";
+import BasketState from "atoms/basket";
 
 const ExpandedMenu = () => {
   const [, { restaurantId, categoryId, tableId }] = useRoute(
@@ -29,9 +29,7 @@ const ExpandedMenu = () => {
 
   const [isError, setIsError] = useState(false);
 
-  const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
-    productsInBasketState
-  );
+  const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
 
   const {
     strings: { expandedMenu: translations },
@@ -84,29 +82,28 @@ const ExpandedMenu = () => {
 
   const addProductToOrder = useCallback(
     (product) => () => {
-      const inTheBasket = !!productsInBasketAtoms.find(
-        (currentValue) => currentValue.productId === product.id
+      const inTheBasket = !!basketAtoms.order.find(
+        (currentValue) => currentValue._id === product.id
       );
 
       if (inTheBasket) {
         return;
       }
 
-      setProductsInBasketAtoms((OldValue) => {
-        return [
-          ...OldValue,
-          {
-            productId: product.id,
-            name: product.name,
-            pictureUrl: product.pictureUrl,
-            price: product.price,
-            count: 1,
-            restaurantId: restaurantId,
-          },
-        ];
+      setBasketAtoms((OldOrder) => {
+        return {
+          ...OldOrder,
+          order: [
+            ...OldOrder.order,
+            {
+              ...product,
+              count: 1,
+            },
+          ],
+        };
       });
     },
-    [setProductsInBasketAtoms, productsInBasketAtoms, restaurantId]
+    [setBasketAtoms, basketAtoms]
   );
 
   return (

@@ -14,7 +14,7 @@ import { theme } from "theme";
 
 import Arrow from "assets/icons/product/arrow.svg";
 
-import productsInBasketState from "atoms/basket";
+import BasketState from "atoms/basket";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
@@ -25,29 +25,27 @@ const Product = () => {
 
   const [isError, setIsError] = useState(false);
 
-  const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
-    productsInBasketState
-  );
+  const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
 
   const {
     strings: { product: translations },
   } = useTranslation();
 
   const inTheBasket = useMemo(() => {
-    return !!productsInBasketAtoms.find(
-      (currentValue) => currentValue.productId === itemId
-    );
-  }, [itemId, productsInBasketAtoms]);
+    return !!basketAtoms.order.find((currentValue) => {
+      if (currentValue._id === itemId) return currentValue._id;
+    });
+  }, [itemId, basketAtoms]);
 
   const valueInBasket = useMemo(() => {
-    return productsInBasketAtoms.find((currentValue) => {
-      if (currentValue.productId === itemId) {
+    return basketAtoms.order.find((currentValue) => {
+      if (currentValue._id === itemId) {
         return {
           count: currentValue.count,
         };
       }
     });
-  }, [itemId, productsInBasketAtoms]);
+  }, [itemId, basketAtoms]);
 
   useEffect(() => {
     async function getData() {
@@ -77,21 +75,24 @@ const Product = () => {
       }
 
       if (inTheBasket) {
-        setProductsInBasketAtoms((oldProducts) =>
-          oldProducts.map((currentValue) =>
-            currentValue.productId === itemId
-              ? {
-                  ...currentValue,
-                  count: currentValue.count + diff,
-                }
-              : currentValue
-          )
-        );
+        setBasketAtoms((oldProducts) => {
+          return {
+            ...oldProducts,
+            order: oldProducts.order.map((currentValue) =>
+              currentValue._id === itemId
+                ? {
+                    ...currentValue,
+                    count: currentValue.count + diff,
+                  }
+                : currentValue
+            ),
+          };
+        });
       } else {
         setCount(count + diff);
       }
     },
-    [count, setProductsInBasketAtoms, valueInBasket, itemId, inTheBasket]
+    [count, setBasketAtoms, valueInBasket, itemId, inTheBasket]
   );
 
   const arrowClicking = useCallback(() => {
@@ -99,18 +100,19 @@ const Product = () => {
   }, [setLocation, restaurantId, tableId]);
 
   const addProductToOrder = useCallback(() => {
-    setProductsInBasketAtoms((oldValue) => [
-      ...oldValue,
-      {
-        productId: menuItem._id,
-        name: menuItem.name,
-        pictureUrl: menuItem.pictureUrl,
-        price: menuItem.price,
-        count: count,
-        restaurantId: menuItem.category.restaurant._id,
-      },
-    ]);
-  }, [menuItem, count, setProductsInBasketAtoms]);
+    setBasketAtoms((oldBasket) => {
+      return {
+        ...oldBasket,
+        order: [
+          ...oldBasket.order,
+          {
+            ...menuItem,
+            count: count,
+          },
+        ],
+      };
+    });
+  }, [menuItem, count, setBasketAtoms]);
 
   return (
     <Flex height={1} width={1} overflowY="auto" overflowX="hidden">

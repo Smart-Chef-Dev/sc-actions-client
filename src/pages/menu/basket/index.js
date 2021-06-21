@@ -14,22 +14,15 @@ import { useTranslation } from "contexts/translation-context";
 import { theme } from "theme";
 import { Routes } from "constants/routes";
 
-import productsInBasketState from "atoms/basket";
-import personCountState from "atoms/personCount";
-
 import Icon from "assets/icons/basket/icon.svg";
 import BasketIcon from "assets/icons/basket/basket-icon.svg";
+import BasketState from "../../../atoms/basket";
 
 const Basket = () => {
-  const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
-    productsInBasketState
-  );
-  const [personCountAtoms, setPersonCountAtoms] = useRecoilState(
-    personCountState
-  );
+  const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
 
   const [preRemoveItemId, setPreRemoveItemId] = useState(null);
-  const [isDisable, setIsDisable] = useState(!productsInBasketAtoms.length);
+  const [isDisable, setIsDisable] = useState(!basketAtoms.order.length);
 
   const [, setLocation] = useLocation();
   const [, { restaurantId, tableId }] = useRoute(Routes.BASKET);
@@ -40,72 +33,78 @@ const Basket = () => {
 
   // should only be called when the page is refreshed
   useEffect(() => {
-    if (
-      productsInBasketAtoms.length &&
-      productsInBasketAtoms[0].restaurantId !== restaurantId
-    ) {
-      setProductsInBasketAtoms([]);
+    if (basketAtoms.length && basketAtoms[0].restaurantId !== restaurantId) {
+      basketAtoms([]);
     }
 
     // eslint-disable-next-line
   }, []);
 
   const totalCost = useMemo(() => {
-    return productsInBasketAtoms
+    return basketAtoms.order
       .reduce(
         (previousValues, currentValue) =>
           previousValues + currentValue.price * currentValue.count,
         0
       )
       .toFixed(1);
-  }, [productsInBasketAtoms]);
+  }, [basketAtoms]);
 
   const numberMenuItems = useMemo(() => {
-    return productsInBasketAtoms.reduce(
+    return basketAtoms.order.reduce(
       (previousValues, currentValue) => previousValues + +currentValue.count,
       0
     );
-  }, [productsInBasketAtoms]);
+  }, [basketAtoms]);
 
   const changeTheNumberOfServings = useCallback(
     (diff, productId) => () => {
-      const product = productsInBasketAtoms.find(
-        (currentValue) => currentValue.productId === productId
+      const product = basketAtoms.order.find(
+        (currentValue) => currentValue._id === productId
       );
 
       if (product.count + diff <= 0) {
         return;
       }
 
-      setProductsInBasketAtoms((oldProduct) =>
-        oldProduct.map((currentValue) =>
-          currentValue.productId === productId
-            ? {
-                ...currentValue,
-                count: currentValue.count + diff,
-              }
-            : currentValue
-        )
-      );
+      setBasketAtoms((oldBasket) => {
+        return {
+          ...oldBasket,
+          order: oldBasket.order.map((currentValue) =>
+            currentValue._id === productId
+              ? {
+                  ...currentValue,
+                  count: currentValue.count + diff,
+                }
+              : currentValue
+          ),
+        };
+      });
     },
-    [productsInBasketAtoms, setProductsInBasketAtoms]
+    [basketAtoms, setBasketAtoms]
   );
 
   const changeTheNumberOfPeople = useCallback(
     (changesTo) => () => {
-      if (personCountAtoms + changesTo >= 1)
-        setPersonCountAtoms(personCountAtoms + changesTo);
+      if (basketAtoms.personCount + changesTo >= 1)
+        setBasketAtoms({
+          ...basketAtoms,
+          personCount: basketAtoms.personCount + changesTo,
+        });
     },
-    [personCountAtoms, setPersonCountAtoms]
+    [basketAtoms, setBasketAtoms]
   );
 
   const removeComponent = useCallback(() => {
-    setProductsInBasketAtoms((oldProduct) =>
-      oldProduct.filter(
-        (currentValue) => currentValue.productId !== preRemoveItemId
-      )
-    );
-  }, [setProductsInBasketAtoms, preRemoveItemId]);
+    setBasketAtoms((oldProduct) => {
+      return {
+        ...oldProduct,
+        order: oldProduct.order.filter(
+          (currentValue) => currentValue._id !== preRemoveItemId
+        ),
+      };
+    });
+  }, [setBasketAtoms, preRemoveItemId]);
 
   const sendAnOrder = useCallback(() => {
     fetch(`/api/message/${restaurantId}/${tableId}`, {
@@ -113,26 +112,20 @@ const Basket = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([
-        { personCount: personCountAtoms },
-        ...productsInBasketAtoms,
-      ]),
+      body: JSON.stringify(basketAtoms),
     }).finally(() => {
-      setProductsInBasketAtoms([]);
-      setPersonCountAtoms(1);
+      setBasketAtoms({ personCount: 1, order: [] });
       setLocation(`/restaurant/${restaurantId}/${tableId}`);
     });
 
     setIsDisable(true);
   }, [
-    productsInBasketAtoms,
-    setProductsInBasketAtoms,
     restaurantId,
     tableId,
-    personCountAtoms,
     setLocation,
-    setPersonCountAtoms,
     setIsDisable,
+    basketAtoms,
+    setBasketAtoms,
   ]);
 
   return (
@@ -191,7 +184,9 @@ const Basket = () => {
               >
                 -
               </Text>
-              <Text fontSize={theme.fontSize(3)}>{personCountAtoms}</Text>
+              <Text fontSize={theme.fontSize(3)}>
+                {basketAtoms.personCount}
+              </Text>
               <Text
                 fontSize={theme.fontSize(3)}
                 pl={theme.spacing(1)}
@@ -204,13 +199,13 @@ const Basket = () => {
           </Flex>
           <Divider />
         </Flex>
-        {productsInBasketAtoms.map((currentValue) => (
-          <Flex key={currentValue.productId} width={1} direction="column">
+        {basketAtoms.order.map((currentValue) => (
+          <Flex key={currentValue._id} width={1} direction="column">
             <SwipeDelete
-              itemId={currentValue.productId}
+              itemId={currentValue._id}
               onPreRemove={setPreRemoveItemId}
             >
-              {preRemoveItemId === currentValue.productId ? (
+              {preRemoveItemId === currentValue._id ? (
                 <Flex width={1} height={1} position="relative">
                   <s.RemoteComponent
                     p={theme.spacing(1)}
@@ -241,7 +236,7 @@ const Basket = () => {
                           color="var(--main-color)"
                           onClick={changeTheNumberOfServings(
                             -1,
-                            currentValue.productId
+                            currentValue.Id
                           )}
                         >
                           -
@@ -255,7 +250,7 @@ const Basket = () => {
                           color="var(--main-color)"
                           onClick={changeTheNumberOfServings(
                             +1,
-                            currentValue.productId
+                            currentValue._id
                           )}
                         >
                           +
@@ -298,7 +293,7 @@ const Basket = () => {
                         color="var(--main-color)"
                         onClick={changeTheNumberOfServings(
                           -1,
-                          currentValue.productId
+                          currentValue._id
                         )}
                       >
                         -
@@ -312,7 +307,7 @@ const Basket = () => {
                         color="var(--main-color)"
                         onClick={changeTheNumberOfServings(
                           +1,
-                          currentValue.productId
+                          currentValue._id
                         )}
                       >
                         +
