@@ -82,11 +82,14 @@ const ExpandedMenu = () => {
 
   const addProductToOrder = useCallback(
     (product) => () => {
-      for (let i = 0; i < productsInBasketAtoms.length; i++) {
-        if (productsInBasketAtoms[i].productId === product.id) {
-          return;
-        }
+      const inTheBasket = !!productsInBasketAtoms.find(
+        (currentValue) => currentValue.productId === product.id
+      );
+
+      if (inTheBasket) {
+        return;
       }
+
       setProductsInBasketAtoms((OldValue) => {
         return [
           ...OldValue,

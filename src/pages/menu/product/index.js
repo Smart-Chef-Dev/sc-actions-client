@@ -67,20 +67,26 @@ const Product = () => {
 
   const changeTheNumberOfServings = useCallback(
     (changesTo) => () => {
-      if (inTheBasket && valueInBasket.count + changesTo >= 1) {
-        setProductsInBasketAtoms((oldValue) =>
-          oldValue.map((currentValue) => {
-            if (currentValue.productId === itemId) {
-              return {
-                ...currentValue,
-                count: currentValue.count + changesTo,
-              };
-            }
+      if (inTheBasket && valueInBasket.count + changesTo <= 0) {
+        return;
+      }
 
-            return currentValue;
-          })
+      if (!inTheBasket && count + changesTo <= 0) {
+        return;
+      }
+
+      if (inTheBasket) {
+        setProductsInBasketAtoms((oldProducts) =>
+          oldProducts.map((currentValue) =>
+            currentValue.productId === itemId
+              ? {
+                  ...currentValue,
+                  count: currentValue.count + changesTo,
+                }
+              : currentValue
+          )
         );
-      } else if (count + changesTo >= 1) {
+      } else {
         setCount(count + changesTo);
       }
     },

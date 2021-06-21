@@ -28,11 +28,8 @@ const Basket = () => {
     personCountState
   );
 
-  const [candidateForDeletion, setCandidateForDeletion] = useState({
-    indexInBasketAtom: null,
-    id: null,
-  });
-  const [disable, setDisable] = useState(false);
+  const [preRemoveItemId, setPreRemoveItemId] = useState(null);
+  const [disable, setDisable] = useState(!productsInBasketAtoms.length);
 
   const [, setLocation] = useLocation();
   const [, { restaurantId, tableId }] = useRoute(Routes.BASKET);
@@ -40,25 +37,6 @@ const Basket = () => {
   const {
     strings: { basket: translations },
   } = useTranslation();
-
-  const sum = useMemo(() => {
-    let totalCost = 0;
-    let numberMenuItems = 0;
-
-    for (let i = 0; i < productsInBasketAtoms.length; i++) {
-      totalCost =
-        +productsInBasketAtoms[i].price * +productsInBasketAtoms[i].count +
-        totalCost;
-
-      numberMenuItems = numberMenuItems + +productsInBasketAtoms[i].count;
-    }
-    totalCost = totalCost.toFixed(1);
-
-    return {
-      portions: numberMenuItems,
-      price: totalCost,
-    };
-  }, [productsInBasketAtoms]);
 
   // should only be called when the page is refreshed
   useEffect(() => {
@@ -72,22 +50,43 @@ const Basket = () => {
     // eslint-disable-next-line
   }, []);
 
+  const totalCost = useMemo(() => {
+    return productsInBasketAtoms
+      .reduce(
+        (previousValues, currentValue) =>
+          previousValues + currentValue.price * currentValue.count,
+        0
+      )
+      .toFixed(1);
+  }, [productsInBasketAtoms]);
+
+  const numberMenuItems = useMemo(() => {
+    return productsInBasketAtoms.reduce(
+      (previousValues, currentValue) => previousValues + +currentValue.count,
+      0
+    );
+  }, [productsInBasketAtoms]);
+
   const changeTheNumberOfServings = useCallback(
-    (changesTo, indexProducts) => () => {
-      if (productsInBasketAtoms[indexProducts].count + changesTo >= 1) {
-        setProductsInBasketAtoms([
-          ...productsInBasketAtoms.slice(0, indexProducts),
-          {
-            count: productsInBasketAtoms[indexProducts].count + changesTo,
-            productId: productsInBasketAtoms[indexProducts].productId,
-            restaurantId: productsInBasketAtoms[indexProducts].restaurantId,
-            pictureUrl: productsInBasketAtoms[indexProducts].pictureUrl,
-            price: productsInBasketAtoms[indexProducts].price,
-            name: productsInBasketAtoms[indexProducts].name,
-          },
-          ...productsInBasketAtoms.slice(indexProducts + 1),
-        ]);
+    (changesTo, productId) => () => {
+      const product = productsInBasketAtoms.find(
+        (currentValue) => currentValue.productId === productId
+      );
+
+      if (product.count + changesTo <= 0) {
+        return;
       }
+
+      setProductsInBasketAtoms((oldProduct) =>
+        oldProduct.map((currentValue) =>
+          currentValue.productId === productId
+            ? {
+                ...currentValue,
+                count: currentValue.count + changesTo,
+              }
+            : currentValue
+        )
+      );
     },
     [productsInBasketAtoms, setProductsInBasketAtoms]
   );
@@ -101,35 +100,28 @@ const Basket = () => {
   );
 
   const removeComponent = useCallback(() => {
-    setProductsInBasketAtoms([
-      ...productsInBasketAtoms.slice(0, candidateForDeletion.indexInBasketAtom),
-      ...productsInBasketAtoms.slice(
-        candidateForDeletion.indexInBasketAtom + 1
-      ),
-    ]);
-  }, [
-    candidateForDeletion.indexInBasketAtom,
-    productsInBasketAtoms,
-    setProductsInBasketAtoms,
-  ]);
+    setProductsInBasketAtoms((oldProduct) =>
+      oldProduct.filter(
+        (currentValue) => currentValue.productId !== preRemoveItemId
+      )
+    );
+  }, [setProductsInBasketAtoms, preRemoveItemId]);
 
   const sendAnOrder = useCallback(() => {
-    if (!disable && productsInBasketAtoms.length) {
-      fetch(`/api/message/${restaurantId}/${tableId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([
-          { personCount: personCountAtoms },
-          ...productsInBasketAtoms,
-        ]),
-      }).then(() => {
-        setProductsInBasketAtoms([]);
-        setPersonCountAtoms(1);
-        setLocation(`/restaurant/${restaurantId}/${tableId}`);
-      });
-    }
+    fetch(`/api/message/${restaurantId}/${tableId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([
+        { personCount: personCountAtoms },
+        ...productsInBasketAtoms,
+      ]),
+    }).finally(() => {
+      setProductsInBasketAtoms([]);
+      setPersonCountAtoms(1);
+      setLocation(`/restaurant/${restaurantId}/${tableId}`);
+    });
 
     setDisable(true);
   }, [
@@ -141,7 +133,6 @@ const Basket = () => {
     setLocation,
     setPersonCountAtoms,
     setDisable,
-    disable,
   ]);
 
   return (
@@ -154,7 +145,7 @@ const Basket = () => {
           pb={theme.spacing(1)}
           pl={theme.spacing(1)}
         >
-          {translations["my_order"]} ({sum.portions})
+          {translations["my_order"]} ({numberMenuItems})
         </Text>
       </Flex>
       <Divider mb={theme.spacing(1)} ml={theme.spacing(1)} />
@@ -213,14 +204,13 @@ const Basket = () => {
           </Flex>
           <Divider />
         </Flex>
-        {productsInBasketAtoms.map((currentValue, index) => (
+        {productsInBasketAtoms.map((currentValue) => (
           <Flex key={currentValue.productId} width={1} direction="column">
             <SwipeDelete
-              index={index}
               itemId={currentValue.productId}
-              setCandidateForDeletion={setCandidateForDeletion}
+              onPreRemove={setPreRemoveItemId}
             >
-              {candidateForDeletion.id === currentValue.productId ? (
+              {preRemoveItemId === currentValue.productId ? (
                 <Flex width={1} height={1} position="relative">
                   <s.RemoteComponent
                     p={theme.spacing(1)}
@@ -249,7 +239,10 @@ const Basket = () => {
                           fontSize={theme.fontSize(3)}
                           pr={theme.spacing(1)}
                           color="var(--main-color)"
-                          onClick={changeTheNumberOfServings(-1, index)}
+                          onClick={changeTheNumberOfServings(
+                            -1,
+                            currentValue.productId
+                          )}
                         >
                           -
                         </Text>
@@ -260,7 +253,10 @@ const Basket = () => {
                           fontSize={theme.fontSize(3)}
                           pl={theme.spacing(1)}
                           color="var(--main-color)"
-                          onClick={changeTheNumberOfServings(+1, index)}
+                          onClick={changeTheNumberOfServings(
+                            +1,
+                            currentValue.productId
+                          )}
                         >
                           +
                         </Text>
@@ -300,7 +296,10 @@ const Basket = () => {
                         fontSize={theme.fontSize(3)}
                         pr={theme.spacing(1)}
                         color="var(--main-color)"
-                        onClick={changeTheNumberOfServings(-1, index)}
+                        onClick={changeTheNumberOfServings(
+                          -1,
+                          currentValue.productId
+                        )}
                       >
                         -
                       </Text>
@@ -311,7 +310,10 @@ const Basket = () => {
                         fontSize={theme.fontSize(3)}
                         pl={theme.spacing(1)}
                         color="var(--main-color)"
-                        onClick={changeTheNumberOfServings(+1, index)}
+                        onClick={changeTheNumberOfServings(
+                          +1,
+                          currentValue.productId
+                        )}
                       >
                         +
                       </Text>
@@ -332,7 +334,7 @@ const Basket = () => {
           boxSizing="border-box"
         >
           <Text fontWeight="bold">{translations["total"]}</Text>
-          <Text fontWeight="bold">{sum.price + "$"}</Text>
+          <Text fontWeight="bold">{totalCost + "$"}</Text>
         </Flex>
       </Flex>
       <Flex
@@ -346,8 +348,8 @@ const Basket = () => {
         pt={theme.spacing(2)}
         p={theme.spacing(1)}
       >
-        <Button onClick={sendAnOrder} width={1}>
-          {`${translations["confirm_order"]} (${sum.price + "$"})`}
+        <Button onClick={sendAnOrder} width={1} disabled={disable}>
+          {`${translations["confirm_order"]} (${totalCost + "$"})`}
         </Button>
       </Flex>
     </Flex>
