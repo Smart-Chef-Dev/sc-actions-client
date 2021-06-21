@@ -11,7 +11,7 @@ import { Divider } from "components/divider";
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
 
-import Arrow from "../../../assets/icons/main-menu/arrow.svg";
+import Arrow from "assets/icons/main-menu/arrow.svg";
 
 const Menu = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.MENU);
@@ -41,7 +41,7 @@ const Menu = () => {
         setCategory(result);
       });
 
-    fetch(`/api/restaurant/${restaurantId}/menuItems`, {
+    fetch(`/api/restaurant/${restaurantId}/menu-items`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -113,30 +113,32 @@ const Menu = () => {
                 height={1}
               >
                 <Flex overflowX="auto">
-                  {menuItems.map(
-                    (currentMenuItems) =>
-                      currentMenuItems.category._id === currentCategory._id && (
-                        <Flex
-                          key={currentMenuItems._id}
-                          pr={theme.spacing(1)}
-                          pb={theme.spacing(1)}
-                        >
-                          <Flex direction="column">
-                            <s.Preview
-                              src={currentMenuItems.pictureUrl}
-                              alt={currentMenuItems.name}
-                              borderRadius="10%"
-                              mb={theme.spacing(1)}
-                              onClick={pressingItems(currentMenuItems._id)}
-                            />
-                            <Text>{currentMenuItems.name}</Text>
-                            <Text color="var(--text-grey)">
-                              {currentMenuItems.price}$
-                            </Text>
+                  {!!menuItems.length &&
+                    menuItems.map(
+                      (currentMenuItems) =>
+                        currentMenuItems.category._id ===
+                          currentCategory._id && (
+                          <Flex
+                            key={currentMenuItems._id}
+                            pr={theme.spacing(1)}
+                            pb={theme.spacing(1)}
+                          >
+                            <Flex direction="column">
+                              <s.Preview
+                                src={currentMenuItems.pictureUrl}
+                                alt={currentMenuItems.name}
+                                borderRadius="10%"
+                                mb={theme.spacing(1)}
+                                onClick={pressingItems(currentMenuItems._id)}
+                              />
+                              <Text>{currentMenuItems.name}</Text>
+                              <Text color="var(--text-grey)">
+                                {currentMenuItems.price}$
+                              </Text>
+                            </Flex>
                           </Flex>
-                        </Flex>
-                      )
-                  )}
+                        )
+                    )}
                 </Flex>
               </Flex>
               <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />

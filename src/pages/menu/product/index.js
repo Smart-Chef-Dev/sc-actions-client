@@ -33,28 +33,21 @@ const Product = () => {
     strings: { product: translations },
   } = useTranslation();
 
-  const menuItemInfo = useMemo(() => {
-    let alreadyInTheBasket = false;
-    let indexInBasketAtom = null;
-    let count = null;
+  const inTheBasket = useMemo(() => {
+    return !!productsInBasketAtoms.find(
+      (currentValue) => currentValue.productId === itemId
+    );
+  }, [itemId, productsInBasketAtoms]);
 
-    if (menuItem) {
-      for (let i = 0; i < productsInBasketAtoms.length; i++) {
-        if (productsInBasketAtoms[i].productId === menuItem._id) {
-          alreadyInTheBasket = true;
-          indexInBasketAtom = i;
-          count = productsInBasketAtoms[i].count;
-          break;
-        }
+  const valueInBasket = useMemo(() => {
+    return productsInBasketAtoms.find((currentValue) => {
+      if (currentValue.productId === itemId) {
+        return {
+          count: currentValue.count,
+        };
       }
-    }
-
-    return {
-      alreadyInTheBasket: alreadyInTheBasket,
-      indexInBasket: indexInBasketAtom,
-      count: count,
-    };
-  }, [menuItem, productsInBasketAtoms]);
+    });
+  }, [itemId, productsInBasketAtoms]);
 
   useEffect(() => {
     fetch(`/api/menu/${itemId}`, {
@@ -74,38 +67,24 @@ const Product = () => {
 
   const changeTheNumberOfServings = useCallback(
     (changesTo) => () => {
-      if (
-        menuItemInfo.alreadyInTheBasket &&
-        productsInBasketAtoms[menuItemInfo.indexInBasket].count + changesTo >= 1
-      ) {
-        setProductsInBasketAtoms([
-          ...productsInBasketAtoms.slice(0, menuItemInfo.indexInBasket),
-          {
-            count:
-              productsInBasketAtoms[menuItemInfo.indexInBasket].count +
-              changesTo,
-            productId:
-              productsInBasketAtoms[menuItemInfo.indexInBasket].productId,
-            restaurantId:
-              productsInBasketAtoms[menuItemInfo.indexInBasket].restaurantId,
-            pictureUrl:
-              productsInBasketAtoms[menuItemInfo.indexInBasket].pictureUrl,
-            price: productsInBasketAtoms[menuItemInfo.indexInBasket].price,
-            name: productsInBasketAtoms[menuItemInfo.indexInBasket].name,
-          },
-          ...productsInBasketAtoms.slice(menuItemInfo.indexInBasket + 1),
-        ]);
+      if (inTheBasket && valueInBasket.count + changesTo >= 1) {
+        setProductsInBasketAtoms((oldValue) =>
+          oldValue.map((currentValue) => {
+            if (currentValue.productId === itemId) {
+              return {
+                ...currentValue,
+                count: currentValue.count + changesTo,
+              };
+            }
+
+            return currentValue;
+          })
+        );
       } else if (count + changesTo >= 1) {
         setCount(count + changesTo);
       }
     },
-    [
-      count,
-      productsInBasketAtoms,
-      setProductsInBasketAtoms,
-      menuItemInfo.alreadyInTheBasket,
-      menuItemInfo.indexInBasket,
-    ]
+    [count, setProductsInBasketAtoms, valueInBasket, itemId, inTheBasket]
   );
 
   const arrowClicking = useCallback(() => {
@@ -113,8 +92,8 @@ const Product = () => {
   }, [setLocation, restaurantId, tableId]);
 
   const addProductToOrder = useCallback(() => {
-    setProductsInBasketAtoms([
-      ...productsInBasketAtoms,
+    setProductsInBasketAtoms((oldValue) => [
+      ...oldValue,
       {
         productId: menuItem._id,
         name: menuItem.name,
@@ -124,11 +103,11 @@ const Product = () => {
         restaurantId: menuItem.category.restaurant._id,
       },
     ]);
-  }, [menuItem, count, setProductsInBasketAtoms, productsInBasketAtoms]);
+  }, [menuItem, count, setProductsInBasketAtoms]);
 
   return (
     <Flex height={1} width={1} overflowY="auto" overflowX="hidden">
-      {!error && menuItem._id && (
+      {!error && !!menuItem._id && (
         <Flex direction="column" height={1} width={1}>
           <s.Arrow>
             <Arrow onClick={arrowClicking} />
@@ -190,9 +169,7 @@ const Product = () => {
                     px={theme.spacing(1)}
                     mb={theme.spacing(1)}
                   >
-                    {menuItemInfo.alreadyInTheBasket
-                      ? menuItemInfo.count
-                      : count}
+                    {inTheBasket ? valueInBasket.count : count}
                   </Text>
                   <Text
                     fontSize={theme.fontSize(3)}
@@ -203,7 +180,7 @@ const Product = () => {
                     +
                   </Text>
                 </Flex>
-                {menuItemInfo.alreadyInTheBasket ? (
+                {inTheBasket ? (
                   <Button disabled={true}>
                     {translations["already_in_the_basket"]}
                   </Button>

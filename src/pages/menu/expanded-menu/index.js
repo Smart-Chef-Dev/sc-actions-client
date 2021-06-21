@@ -81,23 +81,25 @@ const ExpandedMenu = () => {
   );
 
   const addProductToOrder = useCallback(
-    (id, name, pictureUrl, price) => () => {
+    (product) => () => {
       for (let i = 0; i < productsInBasketAtoms.length; i++) {
-        if (productsInBasketAtoms[i].productId === id) {
+        if (productsInBasketAtoms[i].productId === product.id) {
           return;
         }
       }
-      setProductsInBasketAtoms([
-        ...productsInBasketAtoms,
-        {
-          productId: id,
-          name: name,
-          pictureUrl: pictureUrl,
-          price: price,
-          count: 1,
-          restaurantId: restaurantId,
-        },
-      ]);
+      setProductsInBasketAtoms((OldValue) => {
+        return [
+          ...OldValue,
+          {
+            productId: product.id,
+            name: product.name,
+            pictureUrl: product.pictureUrl,
+            price: product.price,
+            count: 1,
+            restaurantId: restaurantId,
+          },
+        ];
+      });
     },
     [setProductsInBasketAtoms, productsInBasketAtoms, restaurantId]
   );
@@ -145,14 +147,7 @@ const ExpandedMenu = () => {
                   mb={theme.spacing(1)}
                   width={1}
                 >
-                  <s.IconBasket
-                    onClick={addProductToOrder(
-                      currentValue._id,
-                      currentValue.name,
-                      currentValue.pictureUrl,
-                      currentValue.price
-                    )}
-                  >
+                  <s.IconBasket onClick={addProductToOrder(currentValue)}>
                     <Basket />
                   </s.IconBasket>
                   <Flex
