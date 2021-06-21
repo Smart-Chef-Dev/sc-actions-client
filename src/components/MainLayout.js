@@ -18,10 +18,13 @@ const MainLayout = ({ children }) => {
 const s = {
   PageContainer: styled.div`
     height: 70vh;
+    padding-top: 16px;
 
     display: flex;
+    justify-content: center;
     align-items: center;
     flex-direction: column;
+    box-sizing: border-box;
 
     overflow-y: scroll;
   `,
