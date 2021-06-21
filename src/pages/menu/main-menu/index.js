@@ -20,40 +20,47 @@ const Menu = () => {
   const [category, setCategory] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
 
-  const [error, setError] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const {
     strings: { mainMenu: translations },
   } = useTranslation();
 
   useEffect(() => {
-    fetch(`/api/restaurant/${restaurantId}/category`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        setError(!response.ok);
-        return response.json();
-      })
-      .then((result) => {
-        setCategory(result);
+    async function getData() {
+      const response = await fetch(`/api/restaurant/${restaurantId}/category`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
-    fetch(`/api/restaurant/${restaurantId}/menu-items`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        setError(!response.ok);
-        return response.json();
-      })
-      .then((result) => {
-        setMenuItems(result);
-      });
+      setIsError(!response.ok);
+
+      return setCategory(await response.json());
+    }
+
+    getData();
+  }, [restaurantId]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = await fetch(
+        `/api/restaurant/${restaurantId}/menu-items`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setIsError(!response.ok);
+
+      return setMenuItems(await response.json());
+    };
+
+    getData();
   }, [restaurantId]);
 
   const arrowClicking = useCallback(
@@ -88,7 +95,7 @@ const Menu = () => {
       </Text>
       <Divider mb={theme.spacing(1)} />
       <Flex direction="column" overflowY="auto" overflowX="hidden" width={1}>
-        {!error &&
+        {!isError &&
           category.map((currentCategory) => (
             <Flex key={currentCategory._id} direction="column" width={1}>
               <Flex width={1}>

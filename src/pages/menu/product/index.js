@@ -12,7 +12,7 @@ import { useTranslation } from "contexts/translation-context";
 import { Routes } from "constants/routes";
 import { theme } from "theme";
 
-import Arrow from "../../../assets/icons/product/arrow.svg";
+import Arrow from "assets/icons/product/arrow.svg";
 
 import productsInBasketState from "atoms/basket";
 
@@ -23,7 +23,7 @@ const Product = () => {
   const [menuItem, setMenuItem] = useState({});
   const [count, setCount] = useState(1);
 
-  const [error, setError] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
     productsInBasketState
@@ -50,28 +50,29 @@ const Product = () => {
   }, [itemId, productsInBasketAtoms]);
 
   useEffect(() => {
-    fetch(`/api/menu/${itemId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        setError(!response.ok);
-        return response.json();
-      })
-      .then((result) => {
-        setMenuItem(result);
+    async function getData() {
+      const response = await fetch(`/api/menu/${itemId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
+
+      setIsError(!response.ok);
+
+      return setMenuItem(await response.json());
+    }
+
+    getData();
   }, [restaurantId, itemId]);
 
   const changeTheNumberOfServings = useCallback(
-    (changesTo) => () => {
-      if (inTheBasket && valueInBasket.count + changesTo <= 0) {
+    (diff) => () => {
+      if (inTheBasket && valueInBasket.count + diff <= 0) {
         return;
       }
 
-      if (!inTheBasket && count + changesTo <= 0) {
+      if (!inTheBasket && count + diff <= 0) {
         return;
       }
 
@@ -81,13 +82,13 @@ const Product = () => {
             currentValue.productId === itemId
               ? {
                   ...currentValue,
-                  count: currentValue.count + changesTo,
+                  count: currentValue.count + diff,
                 }
               : currentValue
           )
         );
       } else {
-        setCount(count + changesTo);
+        setCount(count + diff);
       }
     },
     [count, setProductsInBasketAtoms, valueInBasket, itemId, inTheBasket]
@@ -113,7 +114,7 @@ const Product = () => {
 
   return (
     <Flex height={1} width={1} overflowY="auto" overflowX="hidden">
-      {!error && !!menuItem._id && (
+      {!isError && !!menuItem._id && (
         <Flex direction="column" height={1} width={1}>
           <s.Arrow>
             <Arrow onClick={arrowClicking} />

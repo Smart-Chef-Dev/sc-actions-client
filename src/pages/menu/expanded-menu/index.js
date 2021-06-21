@@ -13,8 +13,8 @@ import Navigation from "./components/navigation";
 import { useTranslation } from "contexts/translation-context";
 import { theme } from "theme";
 
-import Arrow from "../../../assets/icons/expanded-menu/arrow.svg";
-import Basket from "../../../assets/icons/expanded-menu/basket.svg";
+import Arrow from "assets/icons/expanded-menu/arrow.svg";
+import Basket from "assets/icons/expanded-menu/basket.svg";
 
 import productsInBasketState from "atoms/basket";
 
@@ -27,7 +27,7 @@ const ExpandedMenu = () => {
   const [category, setCategory] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
 
-  const [error, setError] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const [productsInBasketAtoms, setProductsInBasketAtoms] = useRecoilState(
     productsInBasketState
@@ -38,35 +38,37 @@ const ExpandedMenu = () => {
   } = useTranslation();
 
   useEffect(() => {
-    fetch(`/api/restaurant/${restaurantId}/category`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        setError(!response.ok);
-        return response.json();
-      })
-      .then((result) => {
-        setCategory(result);
+    async function getData() {
+      const response = await fetch(`/api/restaurant/${restaurantId}/category`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
+
+      setIsError(!response.ok);
+
+      return setCategory(await response.json());
+    }
+
+    getData();
   }, [restaurantId]);
 
   useEffect(() => {
-    fetch(`/api/category/${categoryId}/menuItems`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        setError(!response.ok);
-        return response.json();
-      })
-      .then((result) => {
-        setMenuItems(result);
+    async function getData() {
+      const response = await fetch(`/api/category/${categoryId}/menuItems`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
+
+      setIsError(!response.ok);
+
+      return setMenuItems(await response.json());
+    }
+
+    getData();
   }, [categoryId]);
 
   const arrowClicking = useCallback(() => {
@@ -115,7 +117,7 @@ const ExpandedMenu = () => {
           {translations["menu"]}
         </Text>
       </s.Arrow>
-      {!error && menuItems[0] && (
+      {!isError && menuItems[0] && (
         <Flex direction="column" height={1} width={1}>
           <Flex
             direction="column"

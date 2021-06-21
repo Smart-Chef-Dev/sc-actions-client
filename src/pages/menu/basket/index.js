@@ -29,7 +29,7 @@ const Basket = () => {
   );
 
   const [preRemoveItemId, setPreRemoveItemId] = useState(null);
-  const [disable, setDisable] = useState(!productsInBasketAtoms.length);
+  const [isDisable, setIsDisable] = useState(!productsInBasketAtoms.length);
 
   const [, setLocation] = useLocation();
   const [, { restaurantId, tableId }] = useRoute(Routes.BASKET);
@@ -68,12 +68,12 @@ const Basket = () => {
   }, [productsInBasketAtoms]);
 
   const changeTheNumberOfServings = useCallback(
-    (changesTo, productId) => () => {
+    (diff, productId) => () => {
       const product = productsInBasketAtoms.find(
         (currentValue) => currentValue.productId === productId
       );
 
-      if (product.count + changesTo <= 0) {
+      if (product.count + diff <= 0) {
         return;
       }
 
@@ -82,7 +82,7 @@ const Basket = () => {
           currentValue.productId === productId
             ? {
                 ...currentValue,
-                count: currentValue.count + changesTo,
+                count: currentValue.count + diff,
               }
             : currentValue
         )
@@ -123,7 +123,7 @@ const Basket = () => {
       setLocation(`/restaurant/${restaurantId}/${tableId}`);
     });
 
-    setDisable(true);
+    setIsDisable(true);
   }, [
     productsInBasketAtoms,
     setProductsInBasketAtoms,
@@ -132,7 +132,7 @@ const Basket = () => {
     personCountAtoms,
     setLocation,
     setPersonCountAtoms,
-    setDisable,
+    setIsDisable,
   ]);
 
   return (
@@ -348,7 +348,7 @@ const Basket = () => {
         pt={theme.spacing(2)}
         p={theme.spacing(1)}
       >
-        <Button onClick={sendAnOrder} width={1} disabled={disable}>
+        <Button onClick={sendAnOrder} width={1} disabled={isDisable}>
           {`${translations["confirm_order"]} (${totalCost + "$"})`}
         </Button>
       </Flex>

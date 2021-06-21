@@ -6,7 +6,7 @@ import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { theme } from "theme";
 
-const Navigation = (props) => {
+const Navigation = ({ category, currentCategory }) => {
   const [, setLocation] = useLocation();
 
   const changeCategory = useCallback(
@@ -18,10 +18,10 @@ const Navigation = (props) => {
 
   return (
     <Flex overflowX="auto" width={1}>
-      {props.category.map((currentValue) => (
+      {category.map((currentValue) => (
         <Flex key={currentValue._id}>
           <Flex p={theme.spacing(1)}>
-            {props.currentCategory === currentValue._id ? (
+            {currentCategory === currentValue._id ? (
               <Text onClick={changeCategory(currentValue._id)}>
                 {currentValue.name}
               </Text>
