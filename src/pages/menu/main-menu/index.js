@@ -65,9 +65,9 @@ const Menu = () => {
   }, [restaurantId]);
 
   useEffect(() => {
-    const getData = async () => {
+    category.map(async (curentValue) => {
       const response = await fetch(
-        `/api/restaurant/${restaurantId}/menu-items`,
+        `/api/category/${curentValue._id}/menuItems`,
         {
           method: "GET",
           headers: {
@@ -78,11 +78,11 @@ const Menu = () => {
 
       setIsError(!response.ok);
 
-      return setMenuItems(await response.json());
-    };
+      const body = await response.json();
 
-    getData();
-  }, [restaurantId]);
+      setMenuItems((oldMenu) => [...oldMenu, ...body]);
+    });
+  }, [restaurantId, category]);
 
   const arrowClicking = useCallback(
     (categoryId) => () => {
