@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { useLocation, useRoute } from "wouter";
+import { useRecoilState } from "recoil";
 import { styled } from "@linaria/react";
 
 import { Routes } from "constants/routes";
@@ -13,6 +14,8 @@ import { useTranslation } from "contexts/translation-context";
 
 import Arrow from "assets/icons/main-menu/arrow.svg";
 
+import BasketState from "atoms/basket";
+
 const Menu = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.MENU);
   const [, setLocation] = useLocation();
@@ -22,9 +25,27 @@ const Menu = () => {
 
   const [isError, setIsError] = useState(false);
 
+  const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
+
   const {
     strings: { mainMenu: translations },
   } = useTranslation();
+
+  // should only be called when the page is refreshed
+  useEffect(() => {
+    if (
+      !!basketAtoms.order.length &&
+      basketAtoms.order[0].restaurantId !== restaurantId
+    ) {
+      setBasketAtoms((oldBasket) => {
+        return {
+          ...oldBasket,
+          order: [],
+        };
+      });
+    }
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     async function getData() {

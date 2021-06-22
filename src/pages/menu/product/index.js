@@ -65,8 +65,6 @@ const Product = () => {
     });
   }, [itemId, basketAtoms]);
 
-  console.log(valueInBasket);
-
   const changeTheNumberOfServings = useCallback(
     (diff) => () => {
       if (inTheBasket && valueInBasket.count + diff <= 0) {
@@ -177,11 +175,11 @@ const Product = () => {
                   count={inTheBasket ? valueInBasket.count : count}
                 />
                 {inTheBasket ? (
-                  <Button disabled={true} mb="0">
+                  <Button disabled={true} mb={0}>
                     {translations["already_in_the_basket"]}
                   </Button>
                 ) : (
-                  <Button onClick={addProductToOrder} mb="0">
+                  <Button onClick={addProductToOrder} mb={0}>
                     {translations["order"]}
                   </Button>
                 )}

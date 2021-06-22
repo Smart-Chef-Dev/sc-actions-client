@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useLocation, useRoute } from "wouter";
 import { styled } from "@linaria/react";
@@ -9,6 +9,8 @@ import { Img } from "components/img";
 import { Divider } from "components/divider";
 import Button from "components/button";
 import SwipeDelete from "./components/swipe-delete";
+import BasketState from "atoms/basket";
+import Counter from "components/counter";
 
 import { useTranslation } from "contexts/translation-context";
 import { theme } from "theme";
@@ -16,8 +18,6 @@ import { Routes } from "constants/routes";
 
 import Icon from "assets/icons/basket/icon.svg";
 import BasketIcon from "assets/icons/basket/basket-icon.svg";
-import BasketState from "../../../atoms/basket";
-import Counter from "../../../components/counter";
 
 const Basket = () => {
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
@@ -31,15 +31,6 @@ const Basket = () => {
   const {
     strings: { basket: translations },
   } = useTranslation();
-
-  // should only be called when the page is refreshed
-  useEffect(() => {
-    if (basketAtoms.length && basketAtoms[0].restaurantId !== restaurantId) {
-      basketAtoms([]);
-    }
-
-    // eslint-disable-next-line
-  }, []);
 
   const totalCost = useMemo(() => {
     return basketAtoms.order

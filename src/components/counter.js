@@ -1,5 +1,5 @@
 import { memo } from "react";
-import PropTypes, { string } from "prop-types";
+import PropTypes from "prop-types";
 
 import { Text } from "./text";
 import { theme } from "../theme";
@@ -32,7 +32,7 @@ const Counter = ({ reduceCount, enlargeCount, count }) => {
 Counter.propTypes = {
   reduceCount: PropTypes.func,
   enlargeCount: PropTypes.func,
-  count: string,
+  count: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default memo(Counter);
