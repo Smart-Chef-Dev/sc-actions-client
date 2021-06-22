@@ -222,7 +222,7 @@ const s = {
     top: 12px;
   `,
   Preview: styled(Img)`
-    max-height: 300px;
+    height: 225px;
     object-fit: cover;
   `,
   IconBasket: styled(Flex)`

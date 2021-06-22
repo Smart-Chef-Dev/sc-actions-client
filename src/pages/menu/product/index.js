@@ -15,6 +15,7 @@ import { theme } from "theme";
 import Arrow from "assets/icons/product/arrow.svg";
 
 import BasketState from "atoms/basket";
+import Counter from "../../../components/counter";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
@@ -122,7 +123,7 @@ const Product = () => {
             <Arrow onClick={arrowClicking} />
           </s.Arrow>
           <Flex width={1} height={0.5} flex={1}>
-            <Img src={menuItem.pictureUrl} alt={menuItem.name} width={1} />
+            <s.Photo src={menuItem.pictureUrl} alt={menuItem.name} width={1} />
           </Flex>
           <s.MainInformation
             direction="column"
@@ -163,38 +164,22 @@ const Product = () => {
               direction="column-reverse"
               mt={theme.spacing(1)}
             >
-              <Flex width={1} justifyContent="space-between">
-                <Flex height={1} alignItems="center">
-                  <Text
-                    fontSize={theme.fontSize(3)}
-                    color="var(--main-color)"
-                    onClick={changeTheNumberOfServings(-1)}
-                    mb={theme.spacing(1)}
-                  >
-                    -
-                  </Text>
-                  <Text
-                    fontSize={theme.fontSize(3)}
-                    px={theme.spacing(1)}
-                    mb={theme.spacing(1)}
-                  >
-                    {inTheBasket ? valueInBasket.count : count}
-                  </Text>
-                  <Text
-                    fontSize={theme.fontSize(3)}
-                    color="var(--main-color)"
-                    onClick={changeTheNumberOfServings(+1)}
-                    mb={theme.spacing(1)}
-                  >
-                    +
-                  </Text>
-                </Flex>
+              <Flex
+                width={1}
+                justifyContent="space-between"
+                mb={theme.spacing(1)}
+              >
+                <Counter
+                  reduceCount={changeTheNumberOfServings(-1)}
+                  enlargeCount={changeTheNumberOfServings(+1)}
+                  count={inTheBasket ? valueInBasket.count : count}
+                />
                 {inTheBasket ? (
-                  <Button disabled={true}>
+                  <Button disabled={true} mb="0">
                     {translations["already_in_the_basket"]}
                   </Button>
                 ) : (
-                  <Button onClick={addProductToOrder}>
+                  <Button onClick={addProductToOrder} mb="0">
                     {translations["order"]}
                   </Button>
                 )}
@@ -228,6 +213,10 @@ const s = {
     position: absolute;
     left: 20px;
     top: 20px;
+  `,
+  Photo: styled(Img)`
+    height: 250px;
+    object-fit: cover;
   `,
 };
 export default memo(Product);

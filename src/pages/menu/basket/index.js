@@ -17,6 +17,7 @@ import { Routes } from "constants/routes";
 import Icon from "assets/icons/basket/icon.svg";
 import BasketIcon from "assets/icons/basket/basket-icon.svg";
 import BasketState from "../../../atoms/basket";
+import Counter from "../../../components/counter";
 
 const Basket = () => {
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
@@ -176,25 +177,13 @@ const Basket = () => {
               alignItems="center"
               justifyContent="flex-end"
             >
-              <Text
-                fontSize={theme.fontSize(3)}
-                pr={theme.spacing(1)}
-                color="var(--main-color)"
-                onClick={changeTheNumberOfPeople(-1)}
-              >
-                -
-              </Text>
-              <Text fontSize={theme.fontSize(3)}>
-                {basketAtoms.personCount}
-              </Text>
-              <Text
-                fontSize={theme.fontSize(3)}
-                pl={theme.spacing(1)}
-                color="var(--main-color)"
-                onClick={changeTheNumberOfPeople(+1)}
-              >
-                +
-              </Text>
+              <Flex>
+                <Counter
+                  reduceCount={changeTheNumberOfPeople(-1)}
+                  enlargeCount={changeTheNumberOfPeople(+1)}
+                  count={basketAtoms.personCount}
+                />
+              </Flex>
             </Flex>
           </Flex>
           <Divider />
@@ -229,33 +218,17 @@ const Basket = () => {
                       alignItems="center"
                       justifyContent="flex-end"
                     >
-                      <Flex height={1}>
-                        <Text
-                          fontSize={theme.fontSize(3)}
-                          pr={theme.spacing(1)}
-                          color="var(--main-color)"
-                          onClick={changeTheNumberOfServings(
-                            -1,
-                            currentValue.Id
-                          )}
-                        >
-                          -
-                        </Text>
-                        <Text fontSize={theme.fontSize(3)}>
-                          {currentValue.count}
-                        </Text>
-                        <Text
-                          fontSize={theme.fontSize(3)}
-                          pl={theme.spacing(1)}
-                          color="var(--main-color)"
-                          onClick={changeTheNumberOfServings(
-                            +1,
-                            currentValue._id
-                          )}
-                        >
-                          +
-                        </Text>
-                      </Flex>
+                      <Counter
+                        reduceCount={changeTheNumberOfServings(
+                          -1,
+                          currentValue._id
+                        )}
+                        enlargeCount={changeTheNumberOfServings(
+                          +1,
+                          currentValue._id
+                        )}
+                        count={currentValue.count}
+                      />
                       <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
                     </Flex>
                   </s.RemoteComponent>
@@ -286,33 +259,17 @@ const Basket = () => {
                     alignItems="center"
                     justifyContent="flex-end"
                   >
-                    <Flex height={1}>
-                      <Text
-                        fontSize={theme.fontSize(3)}
-                        pr={theme.spacing(1)}
-                        color="var(--main-color)"
-                        onClick={changeTheNumberOfServings(
-                          -1,
-                          currentValue._id
-                        )}
-                      >
-                        -
-                      </Text>
-                      <Text fontSize={theme.fontSize(3)}>
-                        {currentValue.count}
-                      </Text>
-                      <Text
-                        fontSize={theme.fontSize(3)}
-                        pl={theme.spacing(1)}
-                        color="var(--main-color)"
-                        onClick={changeTheNumberOfServings(
-                          +1,
-                          currentValue._id
-                        )}
-                      >
-                        +
-                      </Text>
-                    </Flex>
+                    <Counter
+                      reduceCount={changeTheNumberOfServings(
+                        -1,
+                        currentValue._id
+                      )}
+                      enlargeCount={changeTheNumberOfServings(
+                        +1,
+                        currentValue._id
+                      )}
+                      count={currentValue.count}
+                    />
                     <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
                   </Flex>
                 </Flex>
