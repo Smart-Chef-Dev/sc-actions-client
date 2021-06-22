@@ -82,11 +82,11 @@ const ExpandedMenu = () => {
 
   const addProductToOrder = useCallback(
     (product) => () => {
-      const inTheBasket = !!basketAtoms.order.find(
+      const isInTheBasket = !!basketAtoms.order.find(
         (currentValue) => currentValue._id === product.id
       );
 
-      if (inTheBasket) {
+      if (isInTheBasket) {
         return;
       }
 

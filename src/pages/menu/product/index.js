@@ -7,6 +7,7 @@ import { Flex } from "components/flex";
 import { Img } from "components/img";
 import { Text } from "components/text";
 import Button from "components/button";
+import Counter from "components/counter";
 
 import { useTranslation } from "contexts/translation-context";
 import { Routes } from "constants/routes";
@@ -15,7 +16,6 @@ import { theme } from "theme";
 import Arrow from "assets/icons/product/arrow.svg";
 
 import BasketState from "atoms/basket";
-import Counter from "../../../components/counter";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
@@ -50,9 +50,9 @@ const Product = () => {
   }, [restaurantId, itemId]);
 
   const inTheBasket = useMemo(() => {
-    return !!basketAtoms.order.find((currentValue) => {
-      if (currentValue._id === itemId) return currentValue._id;
-    });
+    return !!basketAtoms.order.find(
+      (currentValue) => currentValue._id === itemId
+    );
   }, [itemId, basketAtoms]);
 
   const valueInBasket = useMemo(() => {
@@ -64,6 +64,8 @@ const Product = () => {
       }
     });
   }, [itemId, basketAtoms]);
+
+  console.log(valueInBasket);
 
   const changeTheNumberOfServings = useCallback(
     (diff) => () => {
