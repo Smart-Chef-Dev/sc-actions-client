@@ -35,7 +35,7 @@ const Menu = () => {
   useEffect(() => {
     if (
       !!basketAtoms.order.length &&
-      basketAtoms.order[0].restaurantId !== restaurantId
+      basketAtoms.order[0].category.restaurant._id !== restaurantId
     ) {
       setBasketAtoms((oldBasket) => {
         return {
@@ -56,7 +56,10 @@ const Menu = () => {
         },
       });
 
-      setIsError(!response.ok);
+      if (!response.ok) {
+        setIsError(!response.ok);
+        return;
+      }
 
       return setCategory(await response.json());
     }
@@ -65,9 +68,9 @@ const Menu = () => {
   }, [restaurantId]);
 
   useEffect(() => {
-    category.map(async (curentValue) => {
+    category.map(async (currentValue) => {
       const response = await fetch(
-        `/api/category/${curentValue._id}/menuItems`,
+        `/api/category/${currentValue._id}/menu-item`,
         {
           method: "GET",
           headers: {
@@ -76,7 +79,10 @@ const Menu = () => {
         }
       );
 
-      setIsError(!response.ok);
+      if (!response.ok) {
+        setIsError(!response.ok);
+        return;
+      }
 
       const body = await response.json();
 

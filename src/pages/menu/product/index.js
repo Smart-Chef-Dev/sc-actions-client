@@ -41,7 +41,10 @@ const Product = () => {
         },
       });
 
-      setIsError(!response.ok);
+      if (!response.ok) {
+        setIsError(!response.ok);
+        return;
+      }
 
       return setMenuItem(await response.json());
     }
@@ -65,35 +68,38 @@ const Product = () => {
     });
   }, [itemId, basketAtoms]);
 
-  const changeTheNumberOfServings = useCallback(
+  const changeCount = useCallback(
     (diff) => () => {
-      if (inTheBasket && valueInBasket.count + diff <= 0) {
+      if (count + diff <= 0) {
         return;
       }
 
-      if (!inTheBasket && count + diff <= 0) {
-        return;
-      }
-
-      if (inTheBasket) {
-        setBasketAtoms((oldOrder) => {
-          return {
-            ...oldOrder,
-            order: oldOrder.order.map((currentValue) =>
-              currentValue._id === itemId
-                ? {
-                    ...currentValue,
-                    count: currentValue.count + diff,
-                  }
-                : currentValue
-            ),
-          };
-        });
-      } else {
-        setCount(count + diff);
-      }
+      setCount((count) => count + diff);
     },
-    [count, setBasketAtoms, valueInBasket, itemId, inTheBasket]
+    [count]
+  );
+
+  const changeOrderItemCount = useCallback(
+    (diff) => () => {
+      if (valueInBasket.count + diff <= 0) {
+        return;
+      }
+
+      setBasketAtoms((oldOrder) => {
+        return {
+          ...oldOrder,
+          order: oldOrder.order.map((currentValue) =>
+            currentValue._id === itemId
+              ? {
+                  ...currentValue,
+                  count: currentValue.count + diff,
+                }
+              : currentValue
+          ),
+        };
+      });
+    },
+    [setBasketAtoms, valueInBasket, itemId]
   );
 
   const arrowClicking = useCallback(() => {
@@ -150,14 +156,14 @@ const Product = () => {
               width={1}
               pb={theme.spacing(1)}
             >
-              <Text color="var(--bright-grey)" height={1} alignItems="center">
+              <Text color="var(--light-grey)" height={1} alignItems="center">
                 {`${translations["weight"]} ${menuItem.weight} ${translations["g"]}`}
               </Text>
               <Text color="#4cd964" fontSize="2rem">
                 {menuItem.price}$
               </Text>
             </Flex>
-            <Text color="var(--bright-grey)">{menuItem.description}</Text>
+            <Text color="var(--light-grey)">{menuItem.description}</Text>
             <Flex
               width={1}
               flex={1}
@@ -170,8 +176,12 @@ const Product = () => {
                 mb={theme.spacing(1)}
               >
                 <Counter
-                  reduceCount={changeTheNumberOfServings(-1)}
-                  enlargeCount={changeTheNumberOfServings(+1)}
+                  reduceCount={
+                    inTheBasket ? changeOrderItemCount(-1) : changeCount(-1)
+                  }
+                  enlargeCount={
+                    inTheBasket ? changeOrderItemCount(+1) : changeCount(+1)
+                  }
                   count={inTheBasket ? valueInBasket.count : count}
                 />
                 {inTheBasket ? (

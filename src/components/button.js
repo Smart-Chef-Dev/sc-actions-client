@@ -19,7 +19,7 @@ const Button = styled.button`
   text-align: center;
   user-select: none;
   font-family: sans-serif;
-  margin-bottom: ${(props) => (props.mb ? props.width : "1em")};
+  margin-bottom: ${(props) => props.mb ?? "1em"};
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 
   &:hover {

@@ -42,14 +42,14 @@ const Basket = () => {
       .toFixed(1);
   }, [basketAtoms]);
 
-  const numberMenuItems = useMemo(() => {
+  const countMenuItems = useMemo(() => {
     return basketAtoms.order.reduce(
       (previousValues, currentValue) => previousValues + +currentValue.count,
       0
     );
   }, [basketAtoms]);
 
-  const changeTheNumberOfServings = useCallback(
+  const changeOrderItemCount = useCallback(
     (diff, productId) => () => {
       const product = basketAtoms.order.find(
         (currentValue) => currentValue._id === productId
@@ -87,7 +87,7 @@ const Basket = () => {
     [basketAtoms, setBasketAtoms]
   );
 
-  const removeComponent = useCallback(() => {
+  const removeOrder = useCallback(() => {
     setBasketAtoms((oldOrder) => {
       return {
         ...oldOrder,
@@ -98,19 +98,23 @@ const Basket = () => {
     });
   }, [setBasketAtoms, preRemoveItemId]);
 
-  const sendAnOrder = useCallback(() => {
-    fetch(`/api/message/${restaurantId}/${tableId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(basketAtoms),
-    }).finally(() => {
-      setBasketAtoms({ personCount: 1, order: [] });
-      setLocation(`/restaurant/${restaurantId}/${tableId}`);
-    });
-
-    setIsDisable(true);
+  const submitOrder = useCallback(() => {
+    try {
+      setIsDisable(true);
+      fetch(`/api/message/${restaurantId}/${tableId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(basketAtoms),
+      }).finally(() => {
+        setBasketAtoms({ personCount: 1, order: [] });
+        setLocation(`/restaurant/${restaurantId}/${tableId}`);
+      });
+    } catch (err) {
+      setIsDisable(false);
+      console.log(err);
+    }
   }, [
     restaurantId,
     tableId,
@@ -130,7 +134,7 @@ const Basket = () => {
           pb={theme.spacing(1)}
           pl={theme.spacing(1)}
         >
-          {translations["my_order"]} ({numberMenuItems})
+          {translations["my_order"]} ({countMenuItems})
         </Text>
       </Flex>
       <Divider mb={theme.spacing(1)} ml={theme.spacing(1)} />
@@ -210,11 +214,8 @@ const Basket = () => {
                       justifyContent="flex-end"
                     >
                       <Counter
-                        reduceCount={changeTheNumberOfServings(
-                          -1,
-                          currentValue._id
-                        )}
-                        enlargeCount={changeTheNumberOfServings(
+                        reduceCount={changeOrderItemCount(-1, currentValue._id)}
+                        enlargeCount={changeOrderItemCount(
                           +1,
                           currentValue._id
                         )}
@@ -226,7 +227,7 @@ const Basket = () => {
                   <s.DeleteButton
                     alignItems="center"
                     justifyContent="center"
-                    onClick={removeComponent}
+                    onClick={removeOrder}
                   >
                     <BasketIcon />
                   </s.DeleteButton>
@@ -251,14 +252,8 @@ const Basket = () => {
                     justifyContent="flex-end"
                   >
                     <Counter
-                      reduceCount={changeTheNumberOfServings(
-                        -1,
-                        currentValue._id
-                      )}
-                      enlargeCount={changeTheNumberOfServings(
-                        +1,
-                        currentValue._id
-                      )}
+                      reduceCount={changeOrderItemCount(-1, currentValue._id)}
+                      enlargeCount={changeOrderItemCount(+1, currentValue._id)}
                       count={currentValue.count}
                     />
                     <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
@@ -291,7 +286,7 @@ const Basket = () => {
         pt={theme.spacing(2)}
         p={theme.spacing(1)}
       >
-        <Button onClick={sendAnOrder} width={1} disabled={isDisable}>
+        <Button onClick={submitOrder} width={1} disabled={isDisable}>
           {`${translations["confirm_order"]} (${totalCost + "$"})`}
         </Button>
       </Flex>

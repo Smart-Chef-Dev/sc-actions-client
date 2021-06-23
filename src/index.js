@@ -30,7 +30,7 @@ export const globals = css`
       --text: #fff;
       --highlighted-item: #e5e5ea;
       --text-grey: #c7c7cc;
-      --bright-grey: #00000066;
+      --light-grey: #00000066;
       --shadow: #0000003d;
       --black-layout-color: rgba(0, 0, 0, 0.7);
     }
@@ -41,7 +41,7 @@ export const globals = css`
       --highlighted-item: #e5e5ea26;
       --text: #000;
       --shadow: #ffffff3d;
-      --bright-grey: #c7c7cc;
+      --light-grey: #c7c7cc;
     }
 
     div#root {

@@ -4,29 +4,31 @@ import { styled } from "@linaria/react";
 
 import DarkModeSwitcher from "./dark-mode-switcher";
 import Logo from "./logo";
+import { Flex } from "./flex";
+import { theme } from "../theme";
 
 const MainLayout = ({ children }) => {
   return (
     <>
       <DarkModeSwitcher />
       <Logo />
-      <s.PageContainer>{children}</s.PageContainer>
+      <s.PageContainer
+        pt={theme.spacing(1)}
+        justifyContent="center"
+        alignItems="center"
+        direction="column"
+        boxSizing="border-box"
+        overflowY="auto"
+      >
+        {children}
+      </s.PageContainer>
     </>
   );
 };
 
 const s = {
-  PageContainer: styled.div`
+  PageContainer: styled(Flex)`
     height: 70vh;
-    padding-top: 16px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    box-sizing: border-box;
-
-    overflow-y: scroll;
   `,
 };
 

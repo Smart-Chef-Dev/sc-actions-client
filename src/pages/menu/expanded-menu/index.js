@@ -44,7 +44,10 @@ const ExpandedMenu = () => {
         },
       });
 
-      setIsError(!response.ok);
+      if (!response.ok) {
+        setIsError(!response.ok);
+        return;
+      }
 
       return setCategory(await response.json());
     }
@@ -61,7 +64,10 @@ const ExpandedMenu = () => {
         },
       });
 
-      setIsError(!response.ok);
+      if (!response.ok) {
+        setIsError(!response.ok);
+        return;
+      }
 
       return setMenuItems(await response.json());
     }
@@ -114,7 +120,7 @@ const ExpandedMenu = () => {
           {translations["menu"]}
         </Text>
       </s.Arrow>
-      {!isError && menuItems[0] && (
+      {!isError && !!menuItems.length && (
         <Flex direction="column" height={1} width={1}>
           <Flex
             direction="column"
