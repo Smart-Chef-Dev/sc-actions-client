@@ -5,7 +5,7 @@ import { formatDistance } from "date-fns";
 import { ru, enUS } from "date-fns/esm/locale";
 
 import { useTranslation, Languages } from "contexts/translation-context";
-import BlockIcon from "../../assets/icons/screen-block/block-icon.svg";
+import BlockIcon from "assets/icons/screen-block/block-icon.svg";
 
 const ScreenBlock = ({ remainingSeconds = 0 }) => {
   const { currentLanguage } = useTranslation();

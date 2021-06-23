@@ -57,7 +57,7 @@ const ExpandedMenu = () => {
 
   useEffect(() => {
     async function getData() {
-      const response = await fetch(`/api/category/${categoryId}/menuItems`, {
+      const response = await fetch(`/api/category/${categoryId}/menu-item`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +79,7 @@ const ExpandedMenu = () => {
     setLocation(`/restaurant/${restaurantId}/${tableId}`);
   }, [setLocation, restaurantId, tableId]);
 
-  const pressingItems = useCallback(
+  const ClickingItems = useCallback(
     (itemId) => () => {
       setLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
     },
@@ -96,11 +96,11 @@ const ExpandedMenu = () => {
         return;
       }
 
-      setBasketAtoms((OldOrder) => {
+      setBasketAtoms((oldOrder) => {
         return {
-          ...OldOrder,
+          ...oldOrder,
           order: [
-            ...OldOrder.order,
+            ...oldOrder.order,
             {
               ...product,
               count: 1,
@@ -162,7 +162,7 @@ const ExpandedMenu = () => {
                     direction="column"
                     height={1}
                     width={1}
-                    onClick={pressingItems(currentValue._id)}
+                    onClick={ClickingItems(currentValue._id)}
                   >
                     <s.Preview
                       src={currentValue.pictureUrl}

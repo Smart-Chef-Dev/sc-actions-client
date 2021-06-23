@@ -24,8 +24,24 @@ const MenuTabs = () => {
       setLocation(
         `/restaurant/${basketParams.restaurantId}/${basketParams.tableId}`
       );
+    } else if (product) {
+      setLocation(
+        `/restaurant/${productParams.restaurantId}/${productParams.tableId}`
+      );
+    } else if (expandedMenu) {
+      setLocation(
+        `/restaurant/${expandedMenuParams.restaurantId}/${expandedMenuParams.tableId}`
+      );
     }
-  }, [setLocation, basket, basketParams]);
+  }, [
+    setLocation,
+    basket,
+    basketParams,
+    product,
+    expandedMenu,
+    expandedMenuParams,
+    productParams,
+  ]);
 
   const goToTheOrder = useCallback(() => {
     if (menu) {

@@ -2,7 +2,7 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 
 import { Text } from "./text";
-import { theme } from "../theme";
+import { theme } from "theme";
 import { Flex } from "./flex";
 
 const Counter = ({ reduceCount, enlargeCount, count }) => {

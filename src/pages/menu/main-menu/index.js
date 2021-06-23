@@ -31,7 +31,6 @@ const Menu = () => {
     strings: { mainMenu: translations },
   } = useTranslation();
 
-  // should only be called when the page is refreshed
   useEffect(() => {
     if (
       !!basketAtoms.order.length &&
@@ -44,6 +43,7 @@ const Menu = () => {
         };
       });
     }
+    // should only be called when the page is refreshed
     // eslint-disable-next-line
   }, []);
 
@@ -97,7 +97,7 @@ const Menu = () => {
     [setLocation, restaurantId, tableId]
   );
 
-  const pressingItems = useCallback(
+  const ClickingItems = useCallback(
     (itemId) => () => {
       setLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
     },
@@ -164,7 +164,7 @@ const Menu = () => {
                                 alt={currentMenuItems.name}
                                 borderRadius="10%"
                                 mb={theme.spacing(1)}
-                                onClick={pressingItems(currentMenuItems._id)}
+                                onClick={ClickingItems(currentMenuItems._id)}
                               />
                               <s.ProductName>
                                 {currentMenuItems.name}

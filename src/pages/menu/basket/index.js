@@ -11,8 +11,8 @@ import Button from "components/button";
 import SwipeDelete from "./components/swipe-delete";
 import BasketState from "atoms/basket";
 import Counter from "components/counter";
-
 import { useTranslation } from "contexts/translation-context";
+
 import { theme } from "theme";
 import { Routes } from "constants/routes";
 
@@ -76,12 +76,12 @@ const Basket = () => {
     [basketAtoms, setBasketAtoms]
   );
 
-  const changeTheNumberOfPeople = useCallback(
-    (changesTo) => () => {
-      if (basketAtoms.personCount + changesTo >= 1)
+  const changeNumberOfPeople = useCallback(
+    (diff) => () => {
+      if (basketAtoms.personCount + diff >= 1)
         setBasketAtoms({
           ...basketAtoms,
-          personCount: basketAtoms.personCount + changesTo,
+          personCount: basketAtoms.personCount + diff,
         });
     },
     [basketAtoms, setBasketAtoms]
@@ -174,8 +174,8 @@ const Basket = () => {
             >
               <Flex>
                 <Counter
-                  reduceCount={changeTheNumberOfPeople(-1)}
-                  enlargeCount={changeTheNumberOfPeople(+1)}
+                  reduceCount={changeNumberOfPeople(-1)}
+                  enlargeCount={changeNumberOfPeople(+1)}
                   count={basketAtoms.personCount}
                 />
               </Flex>

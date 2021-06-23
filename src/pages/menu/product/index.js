@@ -58,14 +58,9 @@ const Product = () => {
     );
   }, [itemId, basketAtoms]);
 
-  const valueInBasket = useMemo(() => {
-    return basketAtoms.order.find((currentValue) => {
-      if (currentValue._id === itemId) {
-        return {
-          count: currentValue.count,
-        };
-      }
-    });
+  const countInBasket = useMemo(() => {
+    return basketAtoms.order.find((currentValue) => currentValue._id === itemId)
+      .count;
   }, [itemId, basketAtoms]);
 
   const changeCount = useCallback(
@@ -81,7 +76,7 @@ const Product = () => {
 
   const changeOrderItemCount = useCallback(
     (diff) => () => {
-      if (valueInBasket.count + diff <= 0) {
+      if (countInBasket + diff <= 0) {
         return;
       }
 
@@ -99,7 +94,7 @@ const Product = () => {
         };
       });
     },
-    [setBasketAtoms, valueInBasket, itemId]
+    [setBasketAtoms, countInBasket, itemId]
   );
 
   const arrowClicking = useCallback(() => {
@@ -182,7 +177,7 @@ const Product = () => {
                   enlargeCount={
                     inTheBasket ? changeOrderItemCount(+1) : changeCount(+1)
                   }
-                  count={inTheBasket ? valueInBasket.count : count}
+                  count={inTheBasket ? countInBasket : count}
                 />
                 {inTheBasket ? (
                   <Button disabled={true} mb={0}>

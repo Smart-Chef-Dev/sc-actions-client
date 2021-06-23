@@ -4,8 +4,9 @@ import { styled } from "@linaria/react";
 
 import DarkModeSwitcher from "./dark-mode-switcher";
 import Logo from "./logo";
+
 import { Flex } from "./flex";
-import { theme } from "../theme";
+import { theme } from "theme";
 
 const MainLayout = ({ children }) => {
   return (
