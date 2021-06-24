@@ -28,19 +28,19 @@ export const globals = css`
       --main-color: #ff2d55;
       --main-color-disabled: rgba(255, 45, 85, 0.5);
       --text: #fff;
-      --highlighted-item: #e5e5ea;
+      --color-for-selected-object: #e5e5ea;
       --text-grey: #c7c7cc;
       --light-grey: #00000066;
-      --shadow: #0000003d;
+      --box-shadow: #0000003d;
       --black-layout-color: rgba(0, 0, 0, 0.7);
     }
 
     [data-theme="dark"] {
       --main-bg-color: #434c5f;
       --main-text-color: #fff;
-      --highlighted-item: #e5e5ea26;
+      --color-for-selected-object: #e5e5ea26;
       --text: #000;
-      --shadow: #ffffff3d;
+      --box-shadow: #ffffff3d;
       --light-grey: #c7c7cc;
     }
 

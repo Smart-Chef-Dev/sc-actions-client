@@ -89,7 +89,7 @@ const ExpandedMenu = () => {
   const addProductToOrder = useCallback(
     (product) => () => {
       const isInTheBasket = !!basketAtoms.order.find(
-        (currentValue) => currentValue._id === product.id
+        (currentValue) => currentValue._id === product._id
       );
 
       if (isInTheBasket) {
@@ -169,6 +169,7 @@ const ExpandedMenu = () => {
                       alt={currentValue.name}
                       borderRadius="12px 12px 0 0"
                       width={1}
+                      height={1}
                     />
                     <Text
                       p={theme.spacing(1)}
@@ -219,7 +220,7 @@ const s = {
   Container: styled(Flex)`
     position: relative;
 
-    box-shadow: 0 5px 15px var(--shadow);
+    box-shadow: 0 5px 15px var(--box-shadow);
     border-radius: 16px;
   `,
   Arrow: styled(Flex)`
@@ -228,7 +229,7 @@ const s = {
     top: 12px;
   `,
   Preview: styled(Img)`
-    height: 225px;
+    max-height: 250px;
     object-fit: cover;
   `,
   IconBasket: styled(Flex)`

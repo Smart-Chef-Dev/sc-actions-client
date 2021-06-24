@@ -228,6 +228,8 @@ const Basket = () => {
                     alignItems="center"
                     justifyContent="center"
                     onClick={removeOrder}
+                    width={1}
+                    height={1}
                   >
                     <BasketIcon />
                   </s.DeleteButton>
@@ -296,14 +298,15 @@ const Basket = () => {
 
 const s = {
   Preview: styled(Img)`
-    height: 51px;
-    width: 51px;
+    max-width: 77px;
+    min-height: 77px;
     object-fit: cover;
+
     border-radius: 16px;
   `,
   DeleteButton: styled(Flex)`
-    width: 58px;
-    height: 83px;
+    max-width: 58px;
+    max-height: 109px;
 
     background: var(--main-color);
 
@@ -311,7 +314,7 @@ const s = {
     right: 0;
   `,
   RemoteComponent: styled(Flex)`
-    background: var(--highlighted-item);
+    background: var(--color-for-selected-object);
 
     position: relative;
     right: 58px;

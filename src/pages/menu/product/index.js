@@ -59,8 +59,11 @@ const Product = () => {
   }, [itemId, basketAtoms]);
 
   const countInBasket = useMemo(() => {
-    return basketAtoms.order.find((currentValue) => currentValue._id === itemId)
-      .count;
+    const valueInBasket = basketAtoms.order.find(
+      (currentValue) => currentValue._id === itemId
+    );
+
+    return valueInBasket ? valueInBasket.count : null;
   }, [itemId, basketAtoms]);
 
   const changeCount = useCallback(
@@ -203,7 +206,6 @@ const s = {
     border-radius: 16px 16px 0 0;
     position: relative;
     bottom: 16px;
-    padding-bottom: 0;
   `,
   Time: styled(Flex)`
     position: absolute;
@@ -220,7 +222,7 @@ const s = {
     top: 20px;
   `,
   Photo: styled(Img)`
-    height: 250px;
+    max-height: 300px;
     object-fit: cover;
   `,
 };

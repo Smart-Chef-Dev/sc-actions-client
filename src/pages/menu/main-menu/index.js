@@ -188,13 +188,13 @@ const Menu = () => {
 
 const s = {
   Preview: styled(Img)`
-    width: 100px;
-    height: 100px;
+    max-width: 135px;
+    min-height: 105px;
 
     object-fit: cover;
   `,
   ProductName: styled(Text)`
-    max-width: 100px;
+    max-width: 130px;
   `,
 };
 
