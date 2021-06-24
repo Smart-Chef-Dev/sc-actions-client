@@ -298,15 +298,15 @@ const Basket = () => {
 
 const s = {
   Preview: styled(Img)`
-    max-width: 77px;
-    min-height: 77px;
+    max-width: 70px;
+    min-height: 70px;
     object-fit: cover;
 
     border-radius: 16px;
   `,
   DeleteButton: styled(Flex)`
-    max-width: 58px;
-    max-height: 109px;
+    max-width: 60px;
+    max-height: 110px;
 
     background: var(--main-color);
 
