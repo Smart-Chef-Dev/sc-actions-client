@@ -100,7 +100,7 @@ const Product = () => {
     [setBasketAtoms, countInBasket, itemId]
   );
 
-  const arrowClicking = useCallback(() => {
+  const handleArrowClick = useCallback(() => {
     setLocation(`/restaurant/${restaurantId}/${tableId}`);
   }, [setLocation, restaurantId, tableId]);
 
@@ -124,7 +124,7 @@ const Product = () => {
       {!isError && !!menuItem._id && (
         <Flex direction="column" height={1} width={1}>
           <s.Arrow>
-            <Arrow onClick={arrowClicking} />
+            <Arrow onClick={handleArrowClick} />
           </s.Arrow>
           <Flex width={1} height={0.5} flex={1}>
             <s.Photo src={menuItem.pictureUrl} alt={menuItem.name} width={1} />

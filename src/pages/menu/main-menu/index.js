@@ -90,14 +90,14 @@ const Menu = () => {
     });
   }, [restaurantId, category]);
 
-  const arrowClicking = useCallback(
+  const handleArrowClick = useCallback(
     (categoryId) => () => {
       setLocation(`/restaurant/${restaurantId}/${tableId}/${categoryId}`);
     },
     [setLocation, restaurantId, tableId]
   );
 
-  const ClickingItems = useCallback(
+  const handleItemClick = useCallback(
     (itemId) => () => {
       setLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
     },
@@ -137,7 +137,7 @@ const Menu = () => {
                   direction="row-reverse"
                   alignItems="center"
                 >
-                  <Arrow onClick={arrowClicking(currentCategory._id)} />
+                  <Arrow onClick={handleArrowClick(currentCategory._id)} />
                 </Flex>
               </Flex>
               <Flex
@@ -164,7 +164,7 @@ const Menu = () => {
                                 alt={currentMenuItems.name}
                                 borderRadius="10%"
                                 mb={theme.spacing(1)}
-                                onClick={ClickingItems(currentMenuItems._id)}
+                                onClick={handleItemClick(currentMenuItems._id)}
                               />
                               <s.ProductName>
                                 {currentMenuItems.name}

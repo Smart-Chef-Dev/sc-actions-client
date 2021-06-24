@@ -75,11 +75,11 @@ const ExpandedMenu = () => {
     getData();
   }, [categoryId]);
 
-  const arrowClicking = useCallback(() => {
+  const handleArrowClick = useCallback(() => {
     setLocation(`/restaurant/${restaurantId}/${tableId}`);
   }, [setLocation, restaurantId, tableId]);
 
-  const ClickingItems = useCallback(
+  const handleItemClick = useCallback(
     (itemId) => () => {
       setLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
     },
@@ -115,7 +115,7 @@ const ExpandedMenu = () => {
   return (
     <Flex direction="column" height={1} width={1}>
       <s.Arrow alignItems="center">
-        <Arrow onClick={arrowClicking} />
+        <Arrow onClick={handleArrowClick} />
         <Text color="var(--text-grey)" fontSize={theme.fontSize(2)}>
           {translations["menu"]}
         </Text>
@@ -162,7 +162,7 @@ const ExpandedMenu = () => {
                     direction="column"
                     height={1}
                     width={1}
-                    onClick={ClickingItems(currentValue._id)}
+                    onClick={handleItemClick(currentValue._id)}
                   >
                     <s.Preview
                       src={currentValue.pictureUrl}
