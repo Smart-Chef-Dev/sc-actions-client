@@ -3,8 +3,9 @@ import { styled } from "@linaria/react";
 
 import { Keys } from "utils/localStorage";
 import { useDarkMode } from "contexts/dark-mode-context";
-import DarkModeIcon from "./dark-mode-symbol.svg";
-import LightModeIcon from "./light-mode-symbol.svg";
+
+import DarkModeIcon from "assets/icons/dark-mode-switcher/dark-mode-symbol.svg";
+import LightModeIcon from "assets/icons/dark-mode-switcher/light-mode-symbol.svg";
 
 const DarkModeSwitcher = () => {
   const { isDarkMode, setIsDarkMode } = useDarkMode();

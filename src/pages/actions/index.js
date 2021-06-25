@@ -1,40 +1,25 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useRoute } from "wouter";
 
 import { Routes } from "constants/routes";
-import Button from "components/button";
 import Loader from "components/loader";
-import { useErrorContext } from "pages/error-boundary";
 import { useNotifications } from "hooks/useNotifications";
 import { useScreenBlock } from "hooks/useScreenBlock";
-import DoneIcon from "./done-icon.svg";
+import { useRestaurant } from "hooks/useRestaurant";
+import ActionComponent from "./action-component";
+import DoneIcon from "assets/icons/actions/done-icon.svg";
 
 const Actions = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.ACTIONS);
-  const [isLoading, setLoading] = useState(true);
-  const [actions, setActions] = useState([]);
-  const { handleError } = useErrorContext();
+  const { isLoading, restaurant } = useRestaurant(restaurantId);
+  const actions = useMemo(() => {
+    return restaurant?.actions ?? [];
+  }, [restaurant?.actions]);
+
   const { renderNotification, showNotification } = useNotifications(
     <DoneIcon />
   );
   const { renderScreenBlock, attemptsWrapper } = useScreenBlock();
-
-  useEffect(() => {
-    if (!restaurantId) {
-      return handleError(new Error("restaurantId or tableId not provided"));
-    }
-
-    setLoading(true);
-    (async () => {
-      const resp = await fetch(`/api/restaurant/${restaurantId}/action`);
-      if (!resp.ok) {
-        return handleError(new Error("Can't fetch actions"));
-      }
-      const data = await resp.json();
-      setActions(data);
-      setLoading(false);
-    })();
-  }, [handleError, restaurantId]);
 
   const handleClick = useCallback(
     (id) => async () => {
@@ -52,13 +37,13 @@ const Actions = () => {
       {renderNotification()}
       {renderScreenBlock()}
       {actions.map((a) => (
-        <Button
+        <ActionComponent
           key={a._id}
-          classNames="margin-bottom-one"
-          onClick={handleClick(a._id)}
-        >
-          {a.name}
-        </Button>
+          _id={a._id}
+          name={a.name}
+          link={a.link}
+          onClick={handleClick}
+        />
       ))}
     </>
   ) : (
