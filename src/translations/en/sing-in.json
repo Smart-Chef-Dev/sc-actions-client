@@ -1,0 +1,11 @@
+{
+  "min_password": "Must be at least 8 characters",
+  "max_password": "Must be 25 characters or less",
+  "required": "Required",
+  "validation_email": "Invalid email address",
+  "email": "Email:",
+  "password": "Password:",
+  "sing_in": "Sign in",
+  "sing_up": "Sign up",
+  "incorrect_login_or_password": "Incorrect login or password"
+}
