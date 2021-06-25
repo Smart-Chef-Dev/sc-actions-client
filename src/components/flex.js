@@ -38,6 +38,15 @@ export const Box = styled.div`
     props.paddingBottom ?? props.pb ?? props.py ?? props.p ?? "0"};
   padding-left: ${(props) =>
     props.paddingLeft ?? props.pl ?? props.px ?? props.p ?? "0"};
+
+  overflow-x: ${(props) => props.overflowX ?? "visible"};
+  overflow-y: ${(props) => props.overflowY ?? "visible"};
+
+  border-radius: ${(props) => props.borderRadius ?? "0"};
+
+  box-sizing: ${(props) => props.boxSizing ?? "content-box"};
+
+  position: ${(props) => props.position ?? "static"};
 `;
 
 export const Flex = styled(Box)`
