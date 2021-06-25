@@ -60,7 +60,7 @@ const SingIn = () => {
           }),
         });
 
-        if (response.status === 403) {
+        if (response.status === 404) {
           setIsCorrectPasswordAndLogin(true);
           return;
         }

@@ -1,20 +1,21 @@
 import { memo, useEffect } from "react";
 import { isExpired } from "react-jwt";
 import { useLocation } from "wouter";
+import { useRecoilState } from "recoil";
 
 import Route from "./Route";
-import { LocalStorageKeys } from "constants/local-storage-keys";
 import { Routes } from "constants/routes";
+
+import UserDataState from "atoms/user";
 
 const PrivateRoute = (props) => {
   const [, setLocation] = useLocation();
+  const [userDataAtoms] = useRecoilState(UserDataState);
 
   useEffect(() => {
-    const tokenExpired = isExpired(
-      localStorage.getItem(LocalStorageKeys.JWT_TOKEN)
-    );
+    const isTokenExpired = isExpired(userDataAtoms);
 
-    if (tokenExpired) {
+    if (isTokenExpired) {
       setLocation(Routes.SING_IN);
     }
   });
