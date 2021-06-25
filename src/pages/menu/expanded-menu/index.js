@@ -164,7 +164,7 @@ const ExpandedMenu = () => {
                     width={1}
                     onClick={handleItemClick(currentValue._id)}
                   >
-                    <s.Preview
+                    <Img
                       src={currentValue.pictureUrl}
                       alt={currentValue.name}
                       borderRadius="12px 12px 0 0"
@@ -227,10 +227,6 @@ const s = {
     position: absolute;
     left: 8px;
     top: 12px;
-  `,
-  Preview: styled(Img)`
-    max-height: 250px;
-    object-fit: cover;
   `,
   IconBasket: styled(Flex)`
     position: absolute;
