@@ -13,7 +13,7 @@ const PrivateRoute = (props) => {
   const [userDataAtoms] = useRecoilState(UserDataState);
 
   useEffect(() => {
-    const isTokenExpired = isExpired(userDataAtoms);
+    const isTokenExpired = isExpired(userDataAtoms.jwt);
 
     if (isTokenExpired) {
       setLocation(Routes.SING_IN);
