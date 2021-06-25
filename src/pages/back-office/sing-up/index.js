@@ -10,8 +10,8 @@ import { Flex } from "components/flex";
 import { Label } from "components/label";
 
 import { Routes } from "constants/routes";
-
 import { theme } from "theme";
+
 import { useTranslation } from "contexts/translation-context";
 
 const SingUp = () => {
@@ -20,7 +20,7 @@ const SingUp = () => {
     strings: { singUp: translations },
   } = useTranslation();
 
-  const [error, setError] = useState(false);
+  const [isEmailExists, setIsEmailExists] = useState(false);
 
   const initialValues = {
     email: "",
@@ -28,7 +28,7 @@ const SingUp = () => {
     repeatPassword: "",
   };
 
-  const SignupSchema = Yup.object().shape({
+  const SignUpSchema = Yup.object().shape({
     password: Yup.string()
       .min(8, translations["min_password"])
       .max(25, translations["max_password"])
@@ -46,10 +46,10 @@ const SingUp = () => {
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: useMemo(() => SignupSchema, [SignupSchema]),
+    validationSchema: useMemo(() => SignUpSchema, [SignUpSchema]),
     onSubmit: useCallback(
-      (values) => {
-        fetch("/api/users/signUp", {
+      async (values) => {
+        const response = await fetch("/api/users/sign-up", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -58,12 +58,16 @@ const SingUp = () => {
             email: values.email,
             password: values.password,
           }),
-        }).then((res) => {
-          res.status !== 200 ? setError(true) : setLocation(Routes.SING_IN);
-          return res.text();
         });
+
+        if (response.status === 403) {
+          setIsEmailExists(true);
+          return;
+        }
+
+        setLocation(Routes.SING_IN);
       },
-      [setError, setLocation]
+      [setIsEmailExists, setLocation]
     ),
   });
 
@@ -134,7 +138,7 @@ const SingUp = () => {
 
         <Flex direction="column" alignItems="center">
           <Button type="submit">{translations["creat_accounts"]}</Button>
-          {error && (
+          {isEmailExists && (
             <ErrorText>{translations["email_already_taken"]}</ErrorText>
           )}
         </Flex>

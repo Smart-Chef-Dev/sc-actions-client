@@ -21,15 +21,24 @@ const Actions = lazy(() =>
 const QrCodeBuilder = lazy(() =>
   import("pages/qr-code-builder" /* webpackChunkName: "qr-code-builder" */)
 );
-
+const Menu = lazy(() =>
+  import("pages/menu/main-menu" /* webpackChunkName: "menu" */)
+);
+const ExpandedMenu = lazy(() =>
+  import("pages/menu/expanded-menu" /* webpackChunkName: "expanded-menu" */)
+);
+const Product = lazy(() =>
+  import("pages/menu/product" /* webpackChunkName: "product" */)
+);
+const Basket = lazy(() =>
+  import("pages/menu/basket" /* webpackChunkName: "basket" */)
+);
 const SingUp = lazy(() =>
   import("pages/back-office/sing-up" /* webpackChunkName: "sing-up" */)
 );
-
 const SingIn = lazy(() =>
   import("pages/back-office/sing-in" /* webpackChunkName: "sing-in" */)
 );
-
 const Dashboard = lazy(() =>
   import("pages/back-office/dashboard" /* webpackChunkName: "dashboard" */)
 );
@@ -56,16 +65,40 @@ function App() {
                   path={Routes.DASHBOARD}
                   component={Dashboard}
                   layout={MainLayout}
+                  />
+                <Route  
+                  path={Routes.PRODUCT}
+                  component={Product}
+                  layout={SimpleLayout}
+                  needMenu={true}
                 />
                 <Route
-                  path={Routes.RESTAURANT_LOGIN}
-                  component={RestaurantLogin}
-                  layout={MainLayout}
+                  path={Routes.BASKET}
+                  component={Basket}
+                  layout={SimpleLayout}
+                  needMenu={true}
+                />
+                <Route
+                  path={Routes.MENU}
+                  component={Menu}
+                  layout={SimpleLayout}
+                  needMenu={true}
+                />
+                <Route
+                  path={Routes.EXPANDED_MENU}
+                  component={ExpandedMenu}
+                  layout={SimpleLayout}
+                  needMenu={true}
                 />
                 <Route
                   path={Routes.QR_CODE_BUILDER}
                   component={QrCodeBuilder}
                   layout={SimpleLayout}
+                />
+                <Route
+                  path={Routes.RESTAURANT_LOGIN}
+                  component={RestaurantLogin}
+                  layout={MainLayout}
                 />
                 <Route
                   path={Routes.ACTIONS}

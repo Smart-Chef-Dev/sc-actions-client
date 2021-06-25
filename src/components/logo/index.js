@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { styled } from "@linaria/react";
 
-import LogoIcon from "./logo.svg";
+import LogoIcon from "assets/icons/logo/logo.svg";
 
 const Logo = () => {
   return (

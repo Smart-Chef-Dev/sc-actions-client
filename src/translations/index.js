@@ -10,10 +10,26 @@ import singInRu from "./ru/sing-in.json";
 import singUpEn from "./en/sing-up.json";
 import singUpRu from "./ru/sing-up.json";
 
+import mainMenuEn from "./en/menu.json";
+import mainMenuRu from "./ru/menu.json";
+
+import expandedMenuEn from "./en/expanded-menu.json";
+import expandedMenuRu from "./ru/expanded-menu.json";
+
+import productEn from "./en/product.json";
+import productRu from "./ru/product.json";
+
+import basketEn from "./en/basket.json";
+import basketRu from "./ru/basket.json";
+
 export const languages = {
   en: {
     actions: actionsEn,
     restaurantLogin: restaurantLoginEn,
+    mainMenu: mainMenuEn,
+    expandedMenu: expandedMenuEn,
+    product: productEn,
+    basket: basketEn,
     singIn: singInEn,
     singUp: singUpEn,
   },
@@ -22,5 +38,9 @@ export const languages = {
     restaurantLogin: restaurantLoginRu,
     singIn: singInRu,
     singUp: singUpRu,
+    mainMenu: mainMenuRu,
+    expandedMenu: expandedMenuRu,
+    product: productRu,
+    basket: basketRu,
   },
 };

@@ -1,6 +1,7 @@
 import { memo, useCallback, useState, useMemo } from "react";
-import { useFormik } from "formik";
+import { useRecoilState } from "recoil";
 import { useLocation } from "wouter";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import Input from "components/input";
@@ -10,10 +11,11 @@ import { Flex } from "components/flex";
 import { Label } from "components/label";
 
 import { Routes } from "constants/routes";
-import { LocalStorageKeys } from "constants/local-storage-keys";
 
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
+
+import UserDataState from "atoms/user";
 
 const SingIn = () => {
   const [, setLocation] = useLocation();
@@ -21,7 +23,11 @@ const SingIn = () => {
     strings: { singIn: translations },
   } = useTranslation();
 
-  const [error, setError] = useState(false);
+  const [isCorrectPasswordAndLogin, setIsCorrectPasswordAndLogin] = useState(
+    false
+  );
+
+  const [, setUserDataAtoms] = useRecoilState(UserDataState);
 
   const initialValues = {
     email: "",
@@ -42,8 +48,8 @@ const SingIn = () => {
     initialValues: initialValues,
     validationSchema: useMemo(() => SignupSchema, [SignupSchema]),
     onSubmit: useCallback(
-      (values) => {
-        fetch("/api/users/singIn", {
+      async (values) => {
+        const response = await fetch("/api/users/sing-in", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -52,19 +58,25 @@ const SingIn = () => {
             email: values.email,
             password: values.password,
           }),
-        })
-          .then((res) => {
-            res.status !== 200 && setError(true);
-            return res.json();
-          })
-          .then((data) => {
-            if (!data.statusCode) {
-              localStorage.setItem(LocalStorageKeys.JWT_TOKEN, data);
-              setLocation(Routes.DASHBOARD);
-            }
-          });
+        });
+
+        if (response.status === 403) {
+          setIsCorrectPasswordAndLogin(true);
+          return;
+        }
+
+        const jwt = await response.text();
+
+        setUserDataAtoms((oldUserData) => {
+          return {
+            ...oldUserData,
+            jwt: jwt,
+          };
+        });
+
+        setLocation(Routes.DASHBOARD);
       },
-      [setError, setLocation]
+      [setLocation, setUserDataAtoms]
     ),
   });
 
@@ -120,7 +132,7 @@ const SingIn = () => {
 
         <Flex direction="column" alignItems="center">
           <Button type="submit">{translations["sing_in"]}</Button>
-          {error && (
+          {isCorrectPasswordAndLogin && (
             <ErrorText>{translations["incorrect_login_or_password"]}</ErrorText>
           )}
         </Flex>
