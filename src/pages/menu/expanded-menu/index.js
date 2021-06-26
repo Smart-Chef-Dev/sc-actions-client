@@ -11,10 +11,12 @@ import { Divider } from "components/divider";
 import Navigation from "./components/navigation";
 
 import { useTranslation } from "contexts/translation-context";
+import { useNotifications } from "hooks/useNotifications";
 import { theme } from "theme";
 
 import Arrow from "assets/icons/expanded-menu/arrow.svg";
 import Basket from "assets/icons/expanded-menu/basket.svg";
+import DoneIcon from "assets/icons/actions/done-icon.svg";
 
 import BasketState from "atoms/basket";
 
@@ -26,7 +28,6 @@ const ExpandedMenu = () => {
 
   const [category, setCategory] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
-
   const [isError, setIsError] = useState(false);
 
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
@@ -34,6 +35,15 @@ const ExpandedMenu = () => {
   const {
     strings: { expandedMenu: translations },
   } = useTranslation();
+
+  const { renderNotification, showNotification } = useNotifications(
+    <Flex direction="column">
+      <Flex justifyContent="center" width={1} mb={theme.spacing(1)}>
+        <DoneIcon />
+      </Flex>
+      <Text color="#fff">{translations["product_added_to_order"]}</Text>
+    </Flex>
+  );
 
   useEffect(() => {
     async function getData() {
@@ -96,6 +106,8 @@ const ExpandedMenu = () => {
         return;
       }
 
+      showNotification();
+
       setBasketAtoms((oldOrder) => {
         return {
           ...oldOrder,
@@ -109,11 +121,12 @@ const ExpandedMenu = () => {
         };
       });
     },
-    [setBasketAtoms, basketAtoms]
+    [setBasketAtoms, basketAtoms, showNotification]
   );
 
   return (
     <Flex direction="column" height={1} width={1}>
+      {renderNotification()}
       <s.Arrow alignItems="center">
         <Arrow onClick={handleArrowClick} />
         <Text color="var(--text-grey)" fontSize={theme.fontSize(2)}>
