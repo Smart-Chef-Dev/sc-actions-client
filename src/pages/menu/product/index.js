@@ -16,7 +16,7 @@ import { theme } from "theme";
 import Arrow from "assets/icons/product/arrow.svg";
 
 import BasketState from "atoms/basket";
-import {formatCurrency} from 'utils/formatCurrency'
+import { formatCurrency } from "utils/formatCurrency";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
@@ -159,7 +159,10 @@ const Product = () => {
                 {`${translations["weight"]} ${menuItem.weight} ${translations["g"]}`}
               </Text>
               <Text color="#4cd964" fontSize="2rem">
-                {formatCurrency(menuItem.category.restaurant.currencyCode, menuItem.price)}
+                {formatCurrency(
+                  menuItem.category.restaurant.currencyCode,
+                  menuItem.price
+                )}
               </Text>
             </Flex>
             <Text color="var(--light-grey)">{menuItem.description}</Text>
