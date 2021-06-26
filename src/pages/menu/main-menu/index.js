@@ -90,7 +90,7 @@ const Menu = () => {
     });
   }, [restaurantId, category]);
 
-  const handleArrowClick = useCallback(
+  const redirectToCategory = useCallback(
     (categoryId) => () => {
       setLocation(`/restaurant/${restaurantId}/${tableId}/${categoryId}`);
     },
@@ -126,7 +126,11 @@ const Menu = () => {
           category.map((currentCategory) => (
             <Flex key={currentCategory._id} direction="column" width={1}>
               <Flex width={1}>
-                <Text fontSize={theme.fontSize(2)} fontWeight="bold">
+                <Text
+                  fontSize={theme.fontSize(2)}
+                  fontWeight="bold"
+                  onClick={redirectToCategory(currentCategory._id)}
+                >
                   {currentCategory.name}
                 </Text>
                 <Flex
@@ -137,7 +141,7 @@ const Menu = () => {
                   direction="row-reverse"
                   alignItems="center"
                 >
-                  <Arrow onClick={handleArrowClick(currentCategory._id)} />
+                  <Arrow onClick={redirectToCategory(currentCategory._id)} />
                 </Flex>
               </Flex>
               <Flex
