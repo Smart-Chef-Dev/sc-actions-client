@@ -15,9 +15,13 @@ import { useTranslation } from "contexts/translation-context";
 
 import { theme } from "theme";
 import { Routes } from "constants/routes";
+import { useNotifications } from "hooks/useNotifications";
 
 import Icon from "assets/icons/basket/icon.svg";
 import BasketIcon from "assets/icons/basket/basket-icon.svg";
+import DoneIcon from "assets/icons/actions/done-icon.svg";
+
+const durationOfNotificationMs = 2000;
 
 const Basket = () => {
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
@@ -31,6 +35,23 @@ const Basket = () => {
   const {
     strings: { basket: translations },
   } = useTranslation();
+
+  const { renderNotification, showNotification } = useNotifications(
+    <Flex direction="column">
+      <Flex justifyContent="center" width={1} mb={theme.spacing(1)}>
+        <DoneIcon />
+      </Flex>
+      <Flex direction="column" alignItems="center">
+        <Text color="#fff" mb={theme.spacing(1)}>
+          {translations["order_is_confirmed"]}
+        </Text>
+        <Text color="#fff" textAlign="center">
+          {translations["chefs_started_preparing_order"]}
+        </Text>
+      </Flex>
+    </Flex>,
+    durationOfNotificationMs
+  );
 
   const totalCost = useMemo(() => {
     return basketAtoms.order
@@ -108,8 +129,12 @@ const Basket = () => {
         },
         body: JSON.stringify(basketAtoms),
       }).finally(() => {
+        showNotification();
         setBasketAtoms({ personCount: 1, order: [] });
-        setLocation(`/restaurant/${restaurantId}/${tableId}`);
+        setTimeout(
+          () => setLocation(`/restaurant/${restaurantId}/${tableId}`),
+          durationOfNotificationMs
+        );
       });
     } catch (err) {
       setIsDisable(false);
@@ -122,10 +147,12 @@ const Basket = () => {
     setIsDisable,
     basketAtoms,
     setBasketAtoms,
+    showNotification,
   ]);
 
   return (
     <Flex direction="column" height={1} width={1} boxSizing="border-box">
+      {renderNotification()}
       <Flex height={1} weight={1} flex={1}>
         <Text
           fontSize={theme.fontSize(3)}
