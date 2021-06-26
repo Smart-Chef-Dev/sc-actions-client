@@ -17,6 +17,7 @@ import Arrow from "assets/icons/expanded-menu/arrow.svg";
 import Basket from "assets/icons/expanded-menu/basket.svg";
 
 import BasketState from "atoms/basket";
+import { formatCurrency } from "utils/formatCurrency";
 
 const ExpandedMenu = () => {
   const [, { restaurantId, categoryId, tableId }] = useRoute(
@@ -202,7 +203,10 @@ const ExpandedMenu = () => {
                           fontSize={theme.fontSize(2)}
                           fontWeight="bold"
                         >
-                          {currentValue.price}$
+                          {formatCurrency(
+                            currentValue.category.restaurant.currencyCode,
+                            currentValue.price
+                          )}
                         </Text>
                       </Flex>
                     </Flex>
