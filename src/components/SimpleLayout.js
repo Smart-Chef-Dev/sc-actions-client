@@ -12,12 +12,19 @@ const SimpleLayout = ({ children }) => {
     <>
       <DarkModeSwitcher />
       {children.props.needMenu ? (
-        <Flex direction="column" width={1} height={1}>
-          <Flex height={1} width={1} overflowY="auto" overflowX="hidden">
+        <Flex direction="column" width={1} height={1} overflowY="hidden">
+          <Flex height={1} width={1} overflowY="hidden" overflowX="hidden">
             {children}
           </Flex>
           <Divider />
-          <Flex height={1} flex={1} width={1} justifyContent="space-around">
+          <Flex
+            height={1}
+            flex={1}
+            width={1}
+            justifyContent="space-around"
+            position="sticky"
+            top="0px"
+          >
             <MenuTabs />
           </Flex>
         </Flex>

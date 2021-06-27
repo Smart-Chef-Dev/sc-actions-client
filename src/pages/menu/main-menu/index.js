@@ -112,6 +112,7 @@ const Menu = () => {
       height={1}
       width={1}
       boxSizing="border-box"
+      overflowY="hidden"
     >
       <Text
         fontSize={theme.fontSize(3)}
