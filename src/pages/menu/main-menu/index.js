@@ -8,6 +8,7 @@ import { Flex } from "components/flex";
 import { Img } from "components/img";
 import { Text } from "components/text";
 import { Divider } from "components/divider";
+import ImageContainer from "components/image";
 
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
@@ -159,13 +160,24 @@ const Menu = () => {
                             pb={theme.spacing(1)}
                           >
                             <Flex direction="column">
-                              <s.Preview
+                              <ImageContainer
                                 src={currentMenuItems.pictureUrl}
-                                alt={currentMenuItems.name}
-                                borderRadius="10%"
-                                mb={theme.spacing(1)}
-                                onClick={handleItemClick(currentMenuItems._id)}
-                              />
+                                preSrc={currentMenuItems.pictureLqipPreview}
+                              >
+                                {(src) => (
+                                  <s.Preview
+                                    src={src}
+                                    alt={currentMenuItems.name}
+                                    loading="lazy"
+                                    borderRadius="10%"
+                                    mb={theme.spacing(1)}
+                                    onClick={handleItemClick(
+                                      currentMenuItems._id
+                                    )}
+                                  />
+                                )}
+                              </ImageContainer>
+
                               <s.ProductName>
                                 {currentMenuItems.name}
                               </s.ProductName>
