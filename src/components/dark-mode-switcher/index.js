@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect } from "react";
 import { styled } from "@linaria/react";
+import PropTypes from "prop-types";
 
 import { Keys } from "utils/localStorage";
 import { useDarkMode } from "contexts/dark-mode-context";
@@ -7,7 +8,7 @@ import { useDarkMode } from "contexts/dark-mode-context";
 import DarkModeIcon from "assets/icons/dark-mode-switcher/dark-mode-symbol.svg";
 import LightModeIcon from "assets/icons/dark-mode-switcher/light-mode-symbol.svg";
 
-const DarkModeSwitcher = () => {
+const DarkModeSwitcher = ({ position }) => {
   const { isDarkMode, setIsDarkMode } = useDarkMode();
 
   useEffect(() => {
@@ -22,14 +23,18 @@ const DarkModeSwitcher = () => {
   }, [isDarkMode, setIsDarkMode]);
 
   return (
-    <Button onClick={handleIconClick} aria-label="dark-mode-switcher">
+    <Button
+      onClick={handleIconClick}
+      aria-label="dark-mode-switcher"
+      position={position}
+    >
       {!isDarkMode ? <DarkModeIcon /> : <LightModeIcon />}
     </Button>
   );
 };
 
 const Button = styled.button`
-  position: fixed;
+  position: ${(props) => props.position ?? "fixed"};
   top: 15px;
   right: 15px;
   width: 35px;
@@ -41,5 +46,9 @@ const Button = styled.button`
   border: none;
   outline: none;
 `;
+
+DarkModeSwitcher.propTypes = {
+  position: PropTypes.string,
+};
 
 export default memo(DarkModeSwitcher);

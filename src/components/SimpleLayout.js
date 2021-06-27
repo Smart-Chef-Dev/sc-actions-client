@@ -10,10 +10,16 @@ import MenuTabs from "./menu-tabs";
 const SimpleLayout = ({ children }) => {
   return (
     <>
-      <DarkModeSwitcher />
       {children.props.needMenu ? (
         <Flex direction="column" width={1} height={1}>
-          <Flex height={1} width={1} overflowY="auto" overflowX="hidden">
+          <Flex
+            height={1}
+            width={1}
+            overflowY="auto"
+            overflowX="hidden"
+            position="relative"
+          >
+            <DarkModeSwitcher position="absolute" />
             {children}
           </Flex>
           <Divider />
