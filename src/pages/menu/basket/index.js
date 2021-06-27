@@ -56,7 +56,14 @@ const Basket = () => {
       );
 
       if (product.count + diff <= 0) {
-        return;
+        return setBasketAtoms((oldOrder) => {
+          return {
+            ...oldOrder,
+            order: oldOrder.order.filter(
+              (currentValue) => currentValue._id !== productId
+            ),
+          };
+        });
       }
 
       setBasketAtoms((oldOrder) => {
