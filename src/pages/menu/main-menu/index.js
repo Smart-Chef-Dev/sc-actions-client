@@ -126,10 +126,7 @@ const Menu = () => {
           category.map((currentCategory) => (
             <Flex key={currentCategory._id} direction="column" width={1}>
               <Flex width={1} onClick={redirectToCategory(currentCategory._id)}>
-                <Text
-                  fontSize={theme.fontSize(2)}
-                  fontWeight="bold"
-                >
+                <Text fontSize={theme.fontSize(2)} fontWeight="bold">
                   {currentCategory.name}
                 </Text>
                 <Flex
