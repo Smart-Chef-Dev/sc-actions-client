@@ -104,6 +104,7 @@ const ExpandedMenu = () => {
             {
               ...product,
               count: 1,
+              productId: product._id,
             },
           ],
         };

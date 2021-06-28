@@ -8,6 +8,7 @@ const BasketState = atom({
   default: {
     personCount: 1,
     order: [],
+    modifiers: [],
   },
   effects_UNSTABLE: [persistAtom],
 });

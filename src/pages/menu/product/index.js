@@ -14,6 +14,8 @@ import { Routes } from "constants/routes";
 import { theme } from "theme";
 
 import Arrow from "assets/icons/product/arrow.svg";
+import GraySquareIcon from "assets/icons/product/gray_square_icon.svg";
+import RedCheckMarkIcon from "assets/icons/product/red_check_mark_icon.svg";
 
 import BasketState from "atoms/basket";
 
@@ -113,11 +115,48 @@ const Product = () => {
           {
             ...menuItem,
             count: count,
+            productId: itemId,
           },
         ],
       };
     });
-  }, [menuItem, count, setBasketAtoms]);
+  }, [menuItem, count, setBasketAtoms, itemId]);
+
+  const addModifierToAtom = useCallback(
+    (modifiersId) => () => {
+      const modifiers = menuItem.modifiers.find(
+        (currentValue) => currentValue._id === modifiersId
+      );
+
+      setBasketAtoms((oldBasket) => {
+        return {
+          ...oldBasket,
+          modifiers: [
+            ...oldBasket.modifiers,
+            {
+              ...modifiers,
+              productId: itemId,
+            },
+          ],
+        };
+      });
+    },
+    [menuItem.modifiers, setBasketAtoms, itemId]
+  );
+
+  const removingModifierToAtom = useCallback(
+    (modifiersId) => () => {
+      setBasketAtoms((oldBasket) => {
+        return {
+          ...oldBasket,
+          modifiers: oldBasket.modifiers.filter(
+            (currentValue) => currentValue._id !== modifiersId
+          ),
+        };
+      });
+    },
+    [setBasketAtoms]
+  );
 
   return (
     <Flex height={1} width={1} overflowY="auto" overflowX="hidden">
@@ -132,6 +171,7 @@ const Product = () => {
           <s.MainInformation
             direction="column"
             p={theme.spacing(1)}
+            pb="0"
             height={1}
             width={1}
             boxSizing="border-box"
@@ -162,6 +202,51 @@ const Product = () => {
               </Text>
             </Flex>
             <Text color="var(--light-grey)">{menuItem.description}</Text>
+            {inTheBasket && !!menuItem.modifiers.length && (
+              <Flex
+                mt={theme.spacing(2)}
+                width={1}
+                height={1}
+                direction="column"
+              >
+                <Text color="var(--text-grey)">
+                  {translations["extra add-ons"]}
+                </Text>
+                {menuItem.modifiers.map((currentModifiers) => (
+                  <Flex
+                    justifyContent="space-between"
+                    width={1}
+                    key={currentModifiers._id}
+                    mt={theme.spacing(1)}
+                  >
+                    <Flex>
+                      <Flex mr={theme.spacing(1)}>
+                        {basketAtoms.modifiers.find(
+                          (m) => m._id === currentModifiers._id
+                        ) ? (
+                          <RedCheckMarkIcon
+                            onClick={removingModifierToAtom(
+                              currentModifiers._id
+                            )}
+                          />
+                        ) : (
+                          <GraySquareIcon
+                            onClick={addModifierToAtom(currentModifiers._id)}
+                          />
+                        )}
+                      </Flex>
+                      <Text color="var(--light-grey)">
+                        {currentModifiers.name}
+                      </Text>
+                    </Flex>
+                    <Text color="var(--main-color)">
+                      {currentModifiers.price}$
+                    </Text>
+                  </Flex>
+                ))}
+              </Flex>
+            )}
+
             <Flex
               width={1}
               flex={1}

@@ -108,7 +108,14 @@ const Basket = () => {
         },
         body: JSON.stringify(basketAtoms),
       }).finally(() => {
-        setBasketAtoms({ personCount: 1, order: [] });
+        setBasketAtoms((oldBasket) => {
+          return {
+            ...oldBasket,
+            personCount: 1,
+            order: [],
+            modifiers: [],
+          };
+        });
         setLocation(`/restaurant/${restaurantId}/${tableId}`);
       });
     } catch (err) {
