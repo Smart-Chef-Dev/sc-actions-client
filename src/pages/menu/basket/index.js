@@ -18,8 +18,7 @@ import { Routes } from "constants/routes";
 
 import Icon from "assets/icons/basket/icon.svg";
 import BasketIcon from "assets/icons/basket/basket-icon.svg";
-import RedCheckMarkIcon from "assets/icons/product/red_check_mark_icon.svg";
-import GraySquareIcon from "assets/icons/product/gray_square_icon.svg";
+import Addons from "../../../components/addons";
 
 const Basket = () => {
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
@@ -153,66 +152,6 @@ const Basket = () => {
     }, 0);
   }, []);
 
-  const addModifierToAtom = useCallback(
-    (modifiersId, productId) => () => {
-      setBasketAtoms((oldBasket) => {
-        return {
-          ...oldBasket,
-          order: oldBasket.order.map((currentOrder) => {
-            if (currentOrder._id === productId) {
-              return {
-                ...currentOrder,
-                modifiers: currentOrder.modifiers.map((currentModifiers) => {
-                  if (currentModifiers._id === modifiersId) {
-                    return {
-                      ...currentModifiers,
-                      isIncludedInOrder: true,
-                    };
-                  }
-
-                  return currentModifiers;
-                }),
-              };
-            }
-
-            return currentOrder;
-          }),
-        };
-      });
-    },
-    [setBasketAtoms]
-  );
-
-  const removingModifierToAtom = useCallback(
-    (modifiersId, productId) => () => {
-      setBasketAtoms((oldBasket) => {
-        return {
-          ...oldBasket,
-          order: oldBasket.order.map((currentOrder) => {
-            if (currentOrder._id === productId) {
-              return {
-                ...currentOrder,
-                modifiers: currentOrder.modifiers.map((currentModifiers) => {
-                  if (currentModifiers._id === modifiersId) {
-                    return {
-                      ...currentModifiers,
-                      isIncludedInOrder: false,
-                    };
-                  }
-
-                  return currentModifiers;
-                }),
-              };
-            }
-
-            return currentOrder;
-          }),
-        };
-      });
-    },
-    [setBasketAtoms]
-  );
-
   const expandItem = useCallback(
     (productId, isModifiers) => () => {
       if (!isModifiers) {
@@ -285,13 +224,13 @@ const Basket = () => {
           </Flex>
           <Divider />
         </Flex>
-        {basketAtoms.order.map((currentValue) => (
-          <Flex key={currentValue._id} width={1} direction="column">
+        {basketAtoms.order.map((currentOrder) => (
+          <Flex key={currentOrder._id} width={1} direction="column">
             <SwipeDelete
-              itemId={currentValue._id}
+              itemId={currentOrder._id}
               onPreRemove={setPreRemoveItemId}
             >
-              {preRemoveItemId === currentValue._id ? (
+              {preRemoveItemId === currentOrder._id ? (
                 <Flex width={1} height={1} position="relative">
                   <s.RemoteComponent
                     p={theme.spacing(1)}
@@ -299,11 +238,11 @@ const Basket = () => {
                     alignItems="center"
                   >
                     <s.Preview
-                      src={currentValue.pictureUrl}
-                      alt={currentValue.name}
+                      src={currentOrder.pictureUrl}
+                      alt={currentOrder.name}
                       onClick={expandItem(
-                        currentValue._id,
-                        !!currentValue.modifiers.length
+                        currentOrder._id,
+                        !!currentOrder.modifiers.length
                       )}
                     />
                     <Text
@@ -311,11 +250,11 @@ const Basket = () => {
                       pl={theme.spacing(1)}
                       width={1}
                       onClick={expandItem(
-                        currentValue._id,
-                        !!currentValue.modifiers.length
+                        currentOrder._id,
+                        !!currentOrder.modifiers.length
                       )}
                     >
-                      {currentValue.name}
+                      {currentOrder.name}
                     </Text>
                     <Flex
                       directio="row-reverse"
@@ -324,15 +263,15 @@ const Basket = () => {
                       justifyContent="flex-end"
                     >
                       <Counter
-                        reduceCount={changeOrderItemCount(-1, currentValue._id)}
+                        reduceCount={changeOrderItemCount(-1, currentOrder._id)}
                         enlargeCount={changeOrderItemCount(
                           +1,
-                          currentValue._id
+                          currentOrder._id
                         )}
-                        count={currentValue.count}
+                        count={currentOrder.count}
                       />
-                      {currentValue.modifiers.length &&
-                      currentValue.modifiers.find(
+                      {currentOrder.modifiers.length &&
+                      currentOrder.modifiers.find(
                         (m) => m.isIncludedInOrder
                       ) ? (
                         <Flex
@@ -341,13 +280,13 @@ const Basket = () => {
                           alignItems="center"
                         >
                           <Text>
-                            {calculateSumOfModifiers(currentValue.modifiers)}$
+                            {calculateSumOfModifiers(currentOrder.modifiers)}$
                           </Text>
                           <Text>+</Text>
-                          <Text>{currentValue.price}$</Text>
+                          <Text>{currentOrder.price}$</Text>
                         </Flex>
                       ) : (
-                        <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
+                        <Text pl={theme.spacing(2)}>{currentOrder.price}$</Text>
                       )}
                     </Flex>
                   </s.RemoteComponent>
@@ -364,11 +303,11 @@ const Basket = () => {
               ) : (
                 <Flex p={theme.spacing(1)} width={1} alignItems="center">
                   <s.Preview
-                    src={currentValue.pictureUrl}
-                    alt={currentValue.name}
+                    src={currentOrder.pictureUrl}
+                    alt={currentOrder.name}
                     onClick={expandItem(
-                      currentValue._id,
-                      !!currentValue.modifiers.length
+                      currentOrder._id,
+                      !!currentOrder.modifiers.length
                     )}
                   />
                   <Text
@@ -376,11 +315,11 @@ const Basket = () => {
                     pl={theme.spacing(1)}
                     width={1}
                     onClick={expandItem(
-                      currentValue._id,
-                      !!currentValue.modifiers.length
+                      currentOrder._id,
+                      !!currentOrder.modifiers.length
                     )}
                   >
-                    {currentValue.name}
+                    {currentOrder.name}
                   </Text>
                   <Flex
                     directio="row-reverse"
@@ -389,78 +328,33 @@ const Basket = () => {
                     justifyContent="flex-end"
                   >
                     <Counter
-                      reduceCount={changeOrderItemCount(-1, currentValue._id)}
-                      enlargeCount={changeOrderItemCount(+1, currentValue._id)}
-                      count={currentValue.count}
+                      reduceCount={changeOrderItemCount(-1, currentOrder._id)}
+                      enlargeCount={changeOrderItemCount(+1, currentOrder._id)}
+                      count={currentOrder.count}
                     />
-                    {currentValue.modifiers.length &&
-                    currentValue.modifiers.find((m) => m.isIncludedInOrder) ? (
+                    {currentOrder.modifiers.length &&
+                    currentOrder.modifiers.find((m) => m.isIncludedInOrder) ? (
                       <Flex
                         direction="column"
                         ml={theme.spacing(2)}
                         alignItems="center"
                       >
                         <Text>
-                          {calculateSumOfModifiers(currentValue.modifiers)}$
+                          {calculateSumOfModifiers(currentOrder.modifiers)}$
                         </Text>
                         <Text>+</Text>
-                        <Text>{currentValue.price}$</Text>
+                        <Text>{currentOrder.price}$</Text>
                       </Flex>
                     ) : (
-                      <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
+                      <Text pl={theme.spacing(2)}>{currentOrder.price}$</Text>
                     )}
                   </Flex>
                 </Flex>
               )}
             </SwipeDelete>
-            {unfoldedItemId === currentValue._id &&
-              !!currentValue.modifiers.length && (
-                <Flex
-                  px={theme.spacing(1)}
-                  mb={theme.spacing(1)}
-                  width={1}
-                  direction="column"
-                  boxSizing="border-box"
-                >
-                  <Text color="var(--text-grey)">
-                    {translations["extra_add_ons"]}
-                  </Text>
-                  {currentValue.modifiers.map((currentModifiers) => (
-                    <Flex
-                      justifyContent="space-between"
-                      width={1}
-                      key={currentModifiers._id}
-                      mt={theme.spacing(1)}
-                    >
-                      <Flex>
-                        <Flex mr={theme.spacing(1)}>
-                          {currentModifiers.isIncludedInOrder ? (
-                            <RedCheckMarkIcon
-                              onClick={removingModifierToAtom(
-                                currentModifiers._id,
-                                currentValue._id
-                              )}
-                            />
-                          ) : (
-                            <GraySquareIcon
-                              onClick={addModifierToAtom(
-                                currentModifiers._id,
-                                currentValue._id
-                              )}
-                            />
-                          )}
-                        </Flex>
-                        <Text color="var(--light-grey)">
-                          {currentModifiers.name}
-                        </Text>
-                      </Flex>
-                      <Text color="var(--main-color)">
-                        {currentModifiers.price}$
-                      </Text>
-                    </Flex>
-                  ))}
-                </Flex>
-              )}
+            {unfoldedItemId === currentOrder._id && (
+              <Addons order={currentOrder} />
+            )}
             <Divider ml={theme.spacing(1)} />
           </Flex>
         ))}
