@@ -2,5 +2,7 @@
   "my_order": "Мой заказ",
   "count_of_persons": "Количество человек",
   "total": "Общая стоимость:",
-  "confirm_order": "Оформить заказ"
+  "confirm_order": "Оформить заказ",
+  "order_is_confirmed": "Заказ подтвержден",
+  "chefs_started_preparing_order": "Наши повара приступили к приготовлению вашего заказа."
 }
