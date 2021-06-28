@@ -19,7 +19,7 @@ const SimpleLayout = ({ children }) => {
             overflowX="hidden"
             position="relative"
           >
-            <DarkModeSwitcher position="absolute" />
+            <DarkModeSwitcher/>
             {children}
           </Flex>
           <Divider />
