@@ -9,6 +9,7 @@ import { Text } from "components/text";
 import { Img } from "components/img";
 import { Divider } from "components/divider";
 import Navigation from "./components/navigation";
+import NotificationWithIconAndText from "components/notificationWithTexts";
 
 import { useTranslation } from "contexts/translation-context";
 import { theme } from "theme";
@@ -17,6 +18,8 @@ import Arrow from "assets/icons/expanded-menu/arrow.svg";
 import Basket from "assets/icons/expanded-menu/basket.svg";
 
 import BasketState from "atoms/basket";
+
+import { useNotifications } from "hooks/useNotifications";
 
 const ExpandedMenu = () => {
   const [, { restaurantId, categoryId, tableId }] = useRoute(
@@ -34,6 +37,12 @@ const ExpandedMenu = () => {
   const {
     strings: { expandedMenu: translations },
   } = useTranslation();
+
+  const { renderNotification, showNotification } = useNotifications(
+    <NotificationWithIconAndText
+      texts={[translations["product_added_to_order"]]}
+    />
+  );
 
   useEffect(() => {
     async function getData() {
@@ -96,6 +105,7 @@ const ExpandedMenu = () => {
         return;
       }
 
+      showNotification();
       setBasketAtoms((oldOrder) => {
         return {
           ...oldOrder,
@@ -109,11 +119,12 @@ const ExpandedMenu = () => {
         };
       });
     },
-    [setBasketAtoms, basketAtoms]
+    [setBasketAtoms, basketAtoms, showNotification]
   );
 
   return (
     <Flex direction="column" height={1} width={1}>
+      {renderNotification()}
       <s.Arrow alignItems="center" onClick={handleArrowClick}>
         <Arrow />
         <Text color="var(--text-grey)" fontSize={theme.fontSize(2)}>

@@ -11,6 +11,7 @@ import Button from "components/button";
 import SwipeDelete from "./components/swipe-delete";
 import BasketState from "atoms/basket";
 import Counter from "components/counter";
+import NotificationWithIconAndText from "components/notificationWithTexts";
 import { useTranslation } from "contexts/translation-context";
 
 import { theme } from "theme";
@@ -18,6 +19,10 @@ import { Routes } from "constants/routes";
 
 import Icon from "assets/icons/basket/icon.svg";
 import BasketIcon from "assets/icons/basket/basket-icon.svg";
+
+import { useNotifications } from "hooks/useNotifications";
+
+const durationOfNotificationMs = 3000;
 
 const Basket = () => {
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
@@ -31,6 +36,16 @@ const Basket = () => {
   const {
     strings: { basket: translations },
   } = useTranslation();
+
+  const { renderNotification, showNotification } = useNotifications(
+    <NotificationWithIconAndText
+      texts={[
+        translations["order_is_confirmed"],
+        translations["chefs_started_preparing_order"],
+      ]}
+    />,
+    durationOfNotificationMs
+  );
 
   const totalCost = useMemo(() => {
     return basketAtoms.order
@@ -108,8 +123,12 @@ const Basket = () => {
         },
         body: JSON.stringify(basketAtoms),
       }).finally(() => {
+        showNotification();
         setBasketAtoms({ personCount: 1, order: [] });
-        setLocation(`/restaurant/${restaurantId}/${tableId}`);
+        setTimeout(
+          () => setLocation(`/restaurant/${restaurantId}/${tableId}`),
+          durationOfNotificationMs
+        );
       });
     } catch (err) {
       setIsDisable(false);
@@ -122,11 +141,13 @@ const Basket = () => {
     setIsDisable,
     basketAtoms,
     setBasketAtoms,
+    showNotification,
   ]);
 
   return (
     <Flex direction="column" height={1} width={1} boxSizing="border-box">
       <Flex height={1} weight={1} flex={1}>
+        {renderNotification()}
         <Text
           fontSize={theme.fontSize(3)}
           fontWeight="bold"
