@@ -125,11 +125,10 @@ const Menu = () => {
         {!isError &&
           category.map((currentCategory) => (
             <Flex key={currentCategory._id} direction="column" width={1}>
-              <Flex width={1}>
+              <Flex width={1} onClick={redirectToCategory(currentCategory._id)}>
                 <Text
                   fontSize={theme.fontSize(2)}
                   fontWeight="bold"
-                  onClick={redirectToCategory(currentCategory._id)}
                 >
                   {currentCategory.name}
                 </Text>
@@ -141,7 +140,7 @@ const Menu = () => {
                   direction="row-reverse"
                   alignItems="center"
                 >
-                  <Arrow onClick={redirectToCategory(currentCategory._id)} />
+                  <Arrow />
                 </Flex>
               </Flex>
               <Flex
