@@ -115,33 +115,40 @@ const Product = () => {
           {
             ...menuItem,
             count: count,
-            productId: itemId,
           },
         ],
       };
     });
-  }, [menuItem, count, setBasketAtoms, itemId]);
+  }, [menuItem, count, setBasketAtoms]);
 
   const addModifierToAtom = useCallback(
     (modifiersId) => () => {
-      const modifiers = menuItem.modifiers.find(
-        (currentValue) => currentValue._id === modifiersId
-      );
-
       setBasketAtoms((oldBasket) => {
         return {
           ...oldBasket,
-          modifiers: [
-            ...oldBasket.modifiers,
-            {
-              ...modifiers,
-              productId: itemId,
-            },
-          ],
+          order: oldBasket.order.map((currentOrder) => {
+            if (currentOrder._id === itemId) {
+              return {
+                ...currentOrder,
+                modifiers: currentOrder.modifiers.map((currentModifiers) => {
+                  if (currentModifiers._id === modifiersId) {
+                    return {
+                      ...currentModifiers,
+                      isIncludedInOrder: true,
+                    };
+                  }
+
+                  return currentModifiers;
+                }),
+              };
+            }
+
+            return currentOrder;
+          }),
         };
       });
     },
-    [menuItem.modifiers, setBasketAtoms, itemId]
+    [setBasketAtoms, itemId]
   );
 
   const removingModifierToAtom = useCallback(
@@ -149,13 +156,29 @@ const Product = () => {
       setBasketAtoms((oldBasket) => {
         return {
           ...oldBasket,
-          modifiers: oldBasket.modifiers.filter(
-            (currentValue) => currentValue._id !== modifiersId
-          ),
+          order: oldBasket.order.map((currentOrder) => {
+            if (currentOrder._id === itemId) {
+              return {
+                ...currentOrder,
+                modifiers: currentOrder.modifiers.map((currentModifiers) => {
+                  if (currentModifiers._id === modifiersId) {
+                    return {
+                      ...currentModifiers,
+                      isIncludedInOrder: false,
+                    };
+                  }
+
+                  return currentModifiers;
+                }),
+              };
+            }
+
+            return currentOrder;
+          }),
         };
       });
     },
-    [setBasketAtoms]
+    [setBasketAtoms, itemId]
   );
 
   return (
@@ -202,50 +225,55 @@ const Product = () => {
               </Text>
             </Flex>
             <Text color="var(--light-grey)">{menuItem.description}</Text>
-            {inTheBasket && !!menuItem.modifiers.length && (
-              <Flex
-                mt={theme.spacing(2)}
-                width={1}
-                height={1}
-                direction="column"
-              >
-                <Text color="var(--text-grey)">
-                  {translations["extra add-ons"]}
-                </Text>
-                {menuItem.modifiers.map((currentModifiers) => (
-                  <Flex
-                    justifyContent="space-between"
-                    width={1}
-                    key={currentModifiers._id}
-                    mt={theme.spacing(1)}
-                  >
-                    <Flex>
-                      <Flex mr={theme.spacing(1)}>
-                        {basketAtoms.modifiers.find(
-                          (m) => m._id === currentModifiers._id
-                        ) ? (
-                          <RedCheckMarkIcon
-                            onClick={removingModifierToAtom(
-                              currentModifiers._id
-                            )}
-                          />
-                        ) : (
-                          <GraySquareIcon
-                            onClick={addModifierToAtom(currentModifiers._id)}
-                          />
-                        )}
-                      </Flex>
-                      <Text color="var(--light-grey)">
-                        {currentModifiers.name}
+            {inTheBasket &&
+              !!menuItem.modifiers.length &&
+              basketAtoms.order.map(
+                (currentOrder) =>
+                  currentOrder._id === itemId && (
+                    <Flex
+                      mt={theme.spacing(2)}
+                      width={1}
+                      height={1}
+                      direction="column"
+                    >
+                      <Text color="var(--text-grey)">
+                        {translations["extra_add_ons"]}
                       </Text>
+                      {currentOrder.modifiers.map((currentModifiers) => (
+                        <Flex
+                          justifyContent="space-between"
+                          width={1}
+                          key={currentModifiers._id}
+                          mt={theme.spacing(1)}
+                        >
+                          <Flex>
+                            <Flex mr={theme.spacing(1)}>
+                              {currentModifiers.isIncludedInOrder ? (
+                                <RedCheckMarkIcon
+                                  onClick={removingModifierToAtom(
+                                    currentModifiers._id
+                                  )}
+                                />
+                              ) : (
+                                <GraySquareIcon
+                                  onClick={addModifierToAtom(
+                                    currentModifiers._id
+                                  )}
+                                />
+                              )}
+                            </Flex>
+                            <Text color="var(--light-grey)">
+                              {currentModifiers.name}
+                            </Text>
+                          </Flex>
+                          <Text color="var(--main-color)">
+                            {currentModifiers.price}$
+                          </Text>
+                        </Flex>
+                      ))}
                     </Flex>
-                    <Text color="var(--main-color)">
-                      {currentModifiers.price}$
-                    </Text>
-                  </Flex>
-                ))}
-              </Flex>
-            )}
+                  )
+              )}
 
             <Flex
               width={1}

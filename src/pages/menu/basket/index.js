@@ -18,11 +18,14 @@ import { Routes } from "constants/routes";
 
 import Icon from "assets/icons/basket/icon.svg";
 import BasketIcon from "assets/icons/basket/basket-icon.svg";
+import RedCheckMarkIcon from "assets/icons/product/red_check_mark_icon.svg";
+import GraySquareIcon from "assets/icons/product/gray_square_icon.svg";
 
 const Basket = () => {
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
 
   const [preRemoveItemId, setPreRemoveItemId] = useState(null);
+  const [unfoldedItemId, setUnfoldedItemId] = useState(null);
   const [isDisable, setIsDisable] = useState(!basketAtoms.order.length);
 
   const [, setLocation] = useLocation();
@@ -34,11 +37,22 @@ const Basket = () => {
 
   const totalCost = useMemo(() => {
     return basketAtoms.order
-      .reduce(
-        (previousValues, currentValue) =>
-          previousValues + currentValue.price * currentValue.count,
-        0
-      )
+      .reduce((previousOrder, currentOrder) => {
+        const modifiers = currentOrder.modifiers.reduce(
+          (previousModifiers, currentModifier) => {
+            if (currentModifier.isIncludedInOrder) {
+              return previousModifiers + +currentModifier.price;
+            }
+
+            return previousModifiers;
+          },
+          0
+        );
+
+        return (
+          previousOrder + modifiers + +currentOrder.price * currentOrder.count
+        );
+      }, 0)
       .toFixed(1);
   }, [basketAtoms]);
 
@@ -113,7 +127,6 @@ const Basket = () => {
             ...oldBasket,
             personCount: 1,
             order: [],
-            modifiers: [],
           };
         });
         setLocation(`/restaurant/${restaurantId}/${tableId}`);
@@ -130,6 +143,88 @@ const Basket = () => {
     basketAtoms,
     setBasketAtoms,
   ]);
+
+  const calculateSumOfModifiers = useCallback((modifiers) => {
+    return modifiers.reduce((previousValues, currentValue) => {
+      if (currentValue.isIncludedInOrder) {
+        return previousValues + +currentValue.price;
+      }
+      return previousValues;
+    }, 0);
+  }, []);
+
+  const addModifierToAtom = useCallback(
+    (modifiersId, productId) => () => {
+      setBasketAtoms((oldBasket) => {
+        return {
+          ...oldBasket,
+          order: oldBasket.order.map((currentOrder) => {
+            if (currentOrder._id === productId) {
+              return {
+                ...currentOrder,
+                modifiers: currentOrder.modifiers.map((currentModifiers) => {
+                  if (currentModifiers._id === modifiersId) {
+                    return {
+                      ...currentModifiers,
+                      isIncludedInOrder: true,
+                    };
+                  }
+
+                  return currentModifiers;
+                }),
+              };
+            }
+
+            return currentOrder;
+          }),
+        };
+      });
+    },
+    [setBasketAtoms]
+  );
+
+  const removingModifierToAtom = useCallback(
+    (modifiersId, productId) => () => {
+      setBasketAtoms((oldBasket) => {
+        return {
+          ...oldBasket,
+          order: oldBasket.order.map((currentOrder) => {
+            if (currentOrder._id === productId) {
+              return {
+                ...currentOrder,
+                modifiers: currentOrder.modifiers.map((currentModifiers) => {
+                  if (currentModifiers._id === modifiersId) {
+                    return {
+                      ...currentModifiers,
+                      isIncludedInOrder: false,
+                    };
+                  }
+
+                  return currentModifiers;
+                }),
+              };
+            }
+
+            return currentOrder;
+          }),
+        };
+      });
+    },
+    [setBasketAtoms]
+  );
+
+  const expandItem = useCallback(
+    (productId, isModifiers) => () => {
+      if (!isModifiers) {
+        return;
+      }
+
+      unfoldedItemId === productId
+        ? setUnfoldedItemId(null)
+        : setUnfoldedItemId(productId);
+    },
+    [unfoldedItemId]
+  );
 
   return (
     <Flex direction="column" height={1} width={1} boxSizing="border-box">
@@ -206,11 +301,19 @@ const Basket = () => {
                     <s.Preview
                       src={currentValue.pictureUrl}
                       alt={currentValue.name}
+                      onClick={expandItem(
+                        currentValue._id,
+                        !!currentValue.modifiers.length
+                      )}
                     />
                     <Text
                       fontSize={theme.fontSize(0)}
                       pl={theme.spacing(1)}
                       width={1}
+                      onClick={expandItem(
+                        currentValue._id,
+                        !!currentValue.modifiers.length
+                      )}
                     >
                       {currentValue.name}
                     </Text>
@@ -228,7 +331,24 @@ const Basket = () => {
                         )}
                         count={currentValue.count}
                       />
-                      <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
+                      {currentValue.modifiers.length &&
+                      currentValue.modifiers.find(
+                        (m) => m.isIncludedInOrder
+                      ) ? (
+                        <Flex
+                          direction="column"
+                          ml={theme.spacing(2)}
+                          alignItems="center"
+                        >
+                          <Text>
+                            {calculateSumOfModifiers(currentValue.modifiers)}$
+                          </Text>
+                          <Text>+</Text>
+                          <Text>{currentValue.price}$</Text>
+                        </Flex>
+                      ) : (
+                        <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
+                      )}
                     </Flex>
                   </s.RemoteComponent>
                   <s.DeleteButton
@@ -246,11 +366,19 @@ const Basket = () => {
                   <s.Preview
                     src={currentValue.pictureUrl}
                     alt={currentValue.name}
+                    onClick={expandItem(
+                      currentValue._id,
+                      !!currentValue.modifiers.length
+                    )}
                   />
                   <Text
                     fontSize={theme.fontSize(0)}
                     pl={theme.spacing(1)}
                     width={1}
+                    onClick={expandItem(
+                      currentValue._id,
+                      !!currentValue.modifiers.length
+                    )}
                   >
                     {currentValue.name}
                   </Text>
@@ -265,11 +393,74 @@ const Basket = () => {
                       enlargeCount={changeOrderItemCount(+1, currentValue._id)}
                       count={currentValue.count}
                     />
-                    <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
+                    {currentValue.modifiers.length &&
+                    currentValue.modifiers.find((m) => m.isIncludedInOrder) ? (
+                      <Flex
+                        direction="column"
+                        ml={theme.spacing(2)}
+                        alignItems="center"
+                      >
+                        <Text>
+                          {calculateSumOfModifiers(currentValue.modifiers)}$
+                        </Text>
+                        <Text>+</Text>
+                        <Text>{currentValue.price}$</Text>
+                      </Flex>
+                    ) : (
+                      <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
+                    )}
                   </Flex>
                 </Flex>
               )}
             </SwipeDelete>
+            {unfoldedItemId === currentValue._id &&
+              !!currentValue.modifiers.length && (
+                <Flex
+                  px={theme.spacing(1)}
+                  mb={theme.spacing(1)}
+                  width={1}
+                  direction="column"
+                  boxSizing="border-box"
+                >
+                  <Text color="var(--text-grey)">
+                    {translations["extra_add_ons"]}
+                  </Text>
+                  {currentValue.modifiers.map((currentModifiers) => (
+                    <Flex
+                      justifyContent="space-between"
+                      width={1}
+                      key={currentModifiers._id}
+                      mt={theme.spacing(1)}
+                    >
+                      <Flex>
+                        <Flex mr={theme.spacing(1)}>
+                          {currentModifiers.isIncludedInOrder ? (
+                            <RedCheckMarkIcon
+                              onClick={removingModifierToAtom(
+                                currentModifiers._id,
+                                currentValue._id
+                              )}
+                            />
+                          ) : (
+                            <GraySquareIcon
+                              onClick={addModifierToAtom(
+                                currentModifiers._id,
+                                currentValue._id
+                              )}
+                            />
+                          )}
+                        </Flex>
+                        <Text color="var(--light-grey)">
+                          {currentModifiers.name}
+                        </Text>
+                      </Flex>
+                      <Text color="var(--main-color)">
+                        {currentModifiers.price}$
+                      </Text>
+                    </Flex>
+                  ))}
+                </Flex>
+              )}
             <Divider ml={theme.spacing(1)} />
           </Flex>
         ))}

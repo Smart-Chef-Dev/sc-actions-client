@@ -25,6 +25,7 @@ SwipeDelete.propTypes = {
   ]).isRequired,
   itemId: PropTypes.string,
   onPreRemove: PropTypes.func,
+  onUnfoldedItemId: PropTypes.func,
 };
 
 export default memo(SwipeDelete);
