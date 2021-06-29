@@ -7,6 +7,8 @@ import MenuIconDedicated from "assets/icons/menu-tabs/menu-icon-dedicated.svg";
 import BasketIcon from "assets/icons/menu-tabs/icon-basket.svg";
 import BasketIconDedicated from "assets/icons/menu-tabs/icon-basket-dedicated.svg";
 
+import ExitIcon from "assets/icons/menu-tabs/icon-exit.svg";
+
 import { Routes } from "constants/routes";
 import { Flex } from "components/flex";
 import { theme } from "theme";
@@ -64,6 +66,29 @@ const MenuTabs = () => {
     productParams,
   ]);
 
+  const goToTheActions = useCallback(() => {
+    if (menu) {
+      setLocation(`/${menuParams.restaurantId}/${menuParams.tableId}`);
+    } else if (expandedMenu) {
+      setLocation(
+        `/${expandedMenuParams.restaurantId}/${expandedMenuParams.tableId}`
+      );
+    } else if (productParams) {
+      setLocation(`/${productParams.restaurantId}/${productParams.tableId}`);
+    } else if (basket) {
+      setLocation(`/${basketParams.restaurantId}/${basketParams.tableId}`);
+    }
+  }, [
+    setLocation,
+    expandedMenu,
+    expandedMenuParams,
+    basket,
+    basketParams,
+    menuParams,
+    menu,
+    productParams,
+  ]);
+
   return (
     <>
       {menu || expandedMenu || product ? (
@@ -85,6 +110,10 @@ const MenuTabs = () => {
           <BasketIcon fill="var(--main-text-color)" onClick={goToTheOrder} />
         </Flex>
       )}
+
+      <Flex p={theme.spacing(1)}>
+        <ExitIcon fill="var(--main-text-color)" onClick={goToTheActions} />
+      </Flex>
     </>
   );
 };

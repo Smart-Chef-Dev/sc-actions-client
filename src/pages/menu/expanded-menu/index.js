@@ -127,7 +127,7 @@ const ExpandedMenu = () => {
   return (
     <Flex direction="column" height={1} width={1}>
       {renderNotification()}
-      <s.Arrow alignItems="center">
+      <s.Arrow alignItems="center" onClick={handleArrowClick}>
         <Arrow onClick={handleArrowClick} />
         <Text color="var(--text-grey)" fontSize={theme.fontSize(2)}>
           {translations["menu"]}
