@@ -16,6 +16,7 @@ import { useTranslation } from "contexts/translation-context";
 import Arrow from "assets/icons/main-menu/arrow.svg";
 
 import BasketState from "atoms/basket";
+import { formatCurrency } from "utils/formatCurrency";
 
 const Menu = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.MENU);
@@ -182,7 +183,10 @@ const Menu = () => {
                                 {currentMenuItems.name}
                               </s.ProductName>
                               <Text color="var(--text-grey)">
-                                {currentMenuItems.price}$
+                                {formatCurrency(
+                                  currentCategory.restaurant.currencyCode,
+                                  currentMenuItems.price
+                                )}
                               </Text>
                             </Flex>
                           </Flex>
