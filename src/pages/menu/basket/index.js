@@ -8,11 +8,11 @@ import { Text } from "components/text";
 import { Img } from "components/img";
 import { Divider } from "components/divider";
 import Button from "components/button";
-import Counter from "components/counter";
 import SwipeDelete from "./components/swipe-delete";
-
 import BasketState from "atoms/basket";
+import Counter from "components/counter";
 import { useTranslation } from "contexts/translation-context";
+
 import { theme } from "theme";
 import { Routes } from "constants/routes";
 import { formatCurrency } from "utils/formatCurrency";
