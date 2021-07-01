@@ -10,6 +10,8 @@ import { useRestaurant } from "hooks/useRestaurant";
 import ActionComponent from "./action-component";
 import DoneIcon from "assets/icons/actions/done-icon.svg";
 
+import sendAction from "services/sendAction";
+
 const Actions = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.ACTIONS);
   const { isLoading, restaurant } = useRestaurant(restaurantId);
@@ -22,19 +24,21 @@ const Actions = () => {
   );
   const { renderScreenBlock, attemptsWrapper } = useScreenBlock();
 
-  const sendAction = useMutation((id) =>
-    fetch(`/api/message/${restaurantId}/${tableId}/${id}`, {
-      method: "POST",
-    })
-  );
+  const sendActionMutation = useMutation(sendAction);
 
   const handleClick = useCallback(
     (id) => async () => {
       showNotification();
       attemptsWrapper();
-      sendAction.mutate(id);
+      sendActionMutation.mutate({ restaurantId, tableId, id });
     },
-    [showNotification, sendAction, attemptsWrapper]
+    [
+      showNotification,
+      sendActionMutation,
+      attemptsWrapper,
+      restaurantId,
+      tableId,
+    ]
   );
 
   return !isLoading ? (

@@ -1,14 +1,16 @@
 import { useEffect } from "react";
+import { useQuery } from "react-query";
 
 import { useErrorContext } from "pages/error-boundary";
-import { useQuery } from "react-query";
+
+import getRestaurantById from "services/getRestaurantById";
 
 export const useRestaurant = (restaurantId) => {
   const { handleError } = useErrorContext();
 
   const { data, isError, isLoading } = useQuery(
-    ["restaurant", restaurantId],
-    () => fetch(`/api/restaurant/${restaurantId}`).then((res) => res.json())
+    ["restaurant", { restaurantId }],
+    getRestaurantById
   );
 
   useEffect(() => {

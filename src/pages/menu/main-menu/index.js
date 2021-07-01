@@ -18,20 +18,17 @@ import Arrow from "assets/icons/main-menu/arrow.svg";
 
 import BasketState from "atoms/basket";
 
+import getAllCategories from "services/getAllCategories";
+import getAllMenuItems from "services/getAllMenuItems";
+
 const Menu = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.MENU);
   const [, setLocation] = useLocation();
 
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
 
-  const category = useQuery("category", () =>
-    fetch(`/api/restaurant/${restaurantId}/category`).then((res) => res.json())
-  );
-  const menuItems = useQuery("menuItems", () =>
-    fetch(`/api/restaurant/${restaurantId}/menu-items`).then((res) =>
-      res.json()
-    )
-  );
+  const category = useQuery(["category", { restaurantId }], getAllCategories);
+  const menuItems = useQuery(["menuItems", { restaurantId }], getAllMenuItems);
 
   const {
     strings: { mainMenu: translations },

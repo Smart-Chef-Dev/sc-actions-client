@@ -1,5 +1,6 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { useLocation, useRoute } from "wouter";
+import { useQuery } from "react-query";
 import { useRecoilState } from "recoil";
 import { styled } from "@linaria/react";
 
@@ -16,7 +17,8 @@ import { theme } from "theme";
 import Arrow from "assets/icons/product/arrow.svg";
 
 import BasketState from "atoms/basket";
-import { useQuery } from "react-query";
+
+import getMenuItemsById from "services/getMenuItemsById";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
@@ -30,8 +32,9 @@ const Product = () => {
     strings: { product: translations },
   } = useTranslation();
 
-  const { data, isError, isLoading } = useQuery(["menuItem", itemId], () =>
-    fetch(`/api/menu/${itemId}`).then((res) => res.json())
+  const { data, isError, isLoading } = useQuery(
+    ["menuItem", { itemId }],
+    getMenuItemsById
   );
 
   const inTheBasket = useMemo(() => {

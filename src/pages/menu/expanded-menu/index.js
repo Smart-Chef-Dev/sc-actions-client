@@ -19,6 +19,9 @@ import Basket from "assets/icons/expanded-menu/basket.svg";
 
 import BasketState from "atoms/basket";
 
+import getAllCategories from "services/getAllCategories";
+import getMenuItemByCategoryId from "services/getMenuItemByCategoryId";
+
 const ExpandedMenu = () => {
   const [, { restaurantId, categoryId, tableId }] = useRoute(
     Routes.EXPANDED_MENU
@@ -31,11 +34,10 @@ const ExpandedMenu = () => {
     strings: { expandedMenu: translations },
   } = useTranslation();
 
-  const category = useQuery("category", () =>
-    fetch(`/api/restaurant/${restaurantId}/category`).then((res) => res.json())
-  );
-  const menuItems = useQuery("menuItems", () =>
-    fetch(`/api/category/${categoryId}/menu-item`).then((res) => res.json())
+  const category = useQuery(["category", { restaurantId }], getAllCategories);
+  const menuItems = useQuery(
+    ["menuItems", { categoryId }],
+    getMenuItemByCategoryId
   );
 
   const handleArrowClick = useCallback(() => {
