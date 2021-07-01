@@ -1,6 +1,7 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useLocation, useRoute } from "wouter";
+import { useMutation } from "react-query";
 import { styled } from "@linaria/react";
 
 import { Flex } from "components/flex";
@@ -27,6 +28,16 @@ const Basket = () => {
 
   const [, setLocation] = useLocation();
   const [, { restaurantId, tableId }] = useRoute(Routes.BASKET);
+
+  const sendOrder = useMutation((newOrder) =>
+    fetch(`/api/message/${restaurantId}/${tableId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newOrder),
+    })
+  );
 
   const {
     strings: { basket: translations },
@@ -101,13 +112,7 @@ const Basket = () => {
   const submitOrder = useCallback(() => {
     try {
       setIsDisable(true);
-      fetch(`/api/message/${restaurantId}/${tableId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(basketAtoms),
-      }).finally(() => {
+      sendOrder.mutateAsync(basketAtoms).finally(() => {
         setBasketAtoms({ personCount: 1, order: [] });
         setLocation(`/restaurant/${restaurantId}/${tableId}`);
       });
@@ -116,6 +121,7 @@ const Basket = () => {
       console.log(err);
     }
   }, [
+    sendOrder,
     restaurantId,
     tableId,
     setLocation,

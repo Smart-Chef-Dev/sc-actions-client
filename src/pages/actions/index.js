@@ -1,4 +1,5 @@
 import { memo, useCallback, useMemo } from "react";
+import { useMutation } from "react-query";
 import { useRoute } from "wouter";
 
 import { Routes } from "constants/routes";
@@ -21,15 +22,19 @@ const Actions = () => {
   );
   const { renderScreenBlock, attemptsWrapper } = useScreenBlock();
 
+  const sendAction = useMutation((id) =>
+    fetch(`/api/message/${restaurantId}/${tableId}/${id}`, {
+      method: "POST",
+    })
+  );
+
   const handleClick = useCallback(
     (id) => async () => {
       showNotification();
       attemptsWrapper();
-      await fetch(`/api/message/${restaurantId}/${tableId}/${id}`, {
-        method: "POST",
-      });
+      sendAction.mutate(id);
     },
-    [attemptsWrapper, restaurantId, showNotification, tableId]
+    [showNotification, sendAction, attemptsWrapper]
   );
 
   return !isLoading ? (

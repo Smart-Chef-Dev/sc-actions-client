@@ -1,6 +1,7 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback } from "react";
 import { useRoute, useLocation } from "wouter";
 import { useRecoilState } from "recoil";
+import { useQuery } from "react-query";
 import { styled } from "@linaria/react";
 
 import { Routes } from "constants/routes";
@@ -24,56 +25,18 @@ const ExpandedMenu = () => {
   );
   const [, setLocation] = useLocation();
 
-  const [category, setCategory] = useState([]);
-  const [menuItems, setMenuItems] = useState([]);
-
-  const [isError, setIsError] = useState(false);
-
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
 
   const {
     strings: { expandedMenu: translations },
   } = useTranslation();
 
-  useEffect(() => {
-    async function getData() {
-      const response = await fetch(`/api/restaurant/${restaurantId}/category`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        setIsError(!response.ok);
-        return;
-      }
-
-      return setCategory(await response.json());
-    }
-
-    getData();
-  }, [restaurantId]);
-
-  useEffect(() => {
-    async function getData() {
-      const response = await fetch(`/api/category/${categoryId}/menu-item`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        setIsError(!response.ok);
-        return;
-      }
-
-      return setMenuItems(await response.json());
-    }
-
-    getData();
-  }, [categoryId]);
+  const category = useQuery("category", () =>
+    fetch(`/api/restaurant/${restaurantId}/category`).then((res) => res.json())
+  );
+  const menuItems = useQuery("menuItems", () =>
+    fetch(`/api/category/${categoryId}/menu-item`).then((res) => res.json())
+  );
 
   const handleArrowClick = useCallback(() => {
     setLocation(`/restaurant/${restaurantId}/${tableId}`);
@@ -120,99 +83,105 @@ const ExpandedMenu = () => {
           {translations["menu"]}
         </Text>
       </s.Arrow>
-      {!isError && !!menuItems.length && (
-        <Flex direction="column" height={1} width={1}>
-          <Flex
-            direction="column"
-            pl={theme.spacing(1)}
-            width={1}
-            flex={1}
-            height={1}
-            boxSizing="border-box"
-          >
-            <Text
-              fontSize={theme.fontSize(3)}
-              mt={theme.spacing(3)}
-              mb={theme.spacing(1)}
-              fontWeight="bold"
+      {!category.isError &&
+        !menuItems.isError &&
+        !category.isLoading &&
+        !menuItems.isLoading && (
+          <Flex direction="column" height={1} width={1}>
+            <Flex
+              direction="column"
+              pl={theme.spacing(1)}
+              width={1}
+              flex={1}
+              height={1}
+              boxSizing="border-box"
             >
-              {menuItems[0].category.name}
-            </Text>
-            <Divider />
-            <Navigation category={category} currentCategory={categoryId} />
-          </Flex>
-          <Flex
-            boxSizing="border-box"
-            px={theme.spacing(1)}
-            overflowY="auto"
-            width={1}
-            height={1}
-          >
-            <Flex direction="column" width={1} height={1}>
-              {menuItems.map((currentValue) => (
-                <s.Container
-                  key={currentValue._id}
-                  mb={theme.spacing(1)}
-                  width={1}
-                >
-                  <s.IconBasket onClick={addProductToOrder(currentValue)}>
-                    <Basket />
-                  </s.IconBasket>
-                  <Flex
-                    direction="column"
-                    height={1}
+              <Text
+                fontSize={theme.fontSize(3)}
+                mt={theme.spacing(3)}
+                mb={theme.spacing(1)}
+                fontWeight="bold"
+              >
+                {menuItems.data[0].category.name}
+              </Text>
+              <Divider />
+              <Navigation
+                category={category.data}
+                currentCategory={categoryId}
+              />
+            </Flex>
+            <Flex
+              boxSizing="border-box"
+              px={theme.spacing(1)}
+              overflowY="auto"
+              width={1}
+              height={1}
+            >
+              <Flex direction="column" width={1} height={1}>
+                {menuItems.data.map((currentValue) => (
+                  <s.Container
+                    key={currentValue._id}
+                    mb={theme.spacing(1)}
                     width={1}
-                    onClick={handleItemClick(currentValue._id)}
                   >
-                    <Img
-                      src={currentValue.pictureUrl}
-                      alt={currentValue.name}
-                      borderRadius="12px 12px 0 0"
-                      width={1}
+                    <s.IconBasket onClick={addProductToOrder(currentValue)}>
+                      <Basket />
+                    </s.IconBasket>
+                    <Flex
+                      direction="column"
                       height={1}
-                    />
-                    <Text
-                      p={theme.spacing(1)}
-                      color="var(--text-grey)"
-                      textTransform="uppercase"
+                      width={1}
+                      onClick={handleItemClick(currentValue._id)}
                     >
-                      {currentValue.category.name}
-                    </Text>
-                    <Text
-                      fontFamily="Actor"
-                      pl={theme.spacing(1)}
-                      fontSize={theme.fontSize(1)}
-                    >
-                      {currentValue.name}
-                    </Text>
-                    <Flex width={1}>
-                      <Text
-                        alignItems="center"
-                        pl={theme.spacing(1)}
-                        height={1}
+                      <Img
+                        src={currentValue.pictureUrl}
+                        alt={currentValue.name}
+                        borderRadius="12px 12px 0 0"
                         width={1}
+                        height={1}
+                      />
+                      <Text
+                        p={theme.spacing(1)}
                         color="var(--text-grey)"
-                        fontSize={theme.fontSize(0)}
+                        textTransform="uppercase"
                       >
-                        {`${currentValue.weight} ${translations["g"]}`}
+                        {currentValue.category.name}
                       </Text>
-                      <Flex direction="row-reverse" width={1}>
+                      <Text
+                        fontFamily="Actor"
+                        pl={theme.spacing(1)}
+                        fontSize={theme.fontSize(1)}
+                      >
+                        {currentValue.name}
+                      </Text>
+                      <Flex width={1}>
                         <Text
-                          m={theme.spacing(1)}
-                          fontSize={theme.fontSize(2)}
-                          fontWeight="bold"
+                          alignItems="center"
+                          pl={theme.spacing(1)}
+                          height={1}
+                          width={1}
+                          color="var(--text-grey)"
+                          fontSize={theme.fontSize(0)}
                         >
-                          {currentValue.price}$
+                          {`${currentValue.weight} ${translations["g"]}`}
                         </Text>
+                        <Flex direction="row-reverse" width={1}>
+                          <Text
+                            m={theme.spacing(1)}
+                            fontSize={theme.fontSize(2)}
+                            fontWeight="bold"
+                          >
+                            {currentValue.price}$
+                          </Text>
+                        </Flex>
                       </Flex>
                     </Flex>
-                  </Flex>
-                </s.Container>
-              ))}
+                  </s.Container>
+                ))}
+              </Flex>
             </Flex>
           </Flex>
-        </Flex>
-      )}
+        )}
     </Flex>
   );
 };

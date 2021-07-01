@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useLocation, useRoute } from "wouter";
 import { useRecoilState } from "recoil";
 import { styled } from "@linaria/react";
@@ -16,15 +16,13 @@ import { theme } from "theme";
 import Arrow from "assets/icons/product/arrow.svg";
 
 import BasketState from "atoms/basket";
+import { useQuery } from "react-query";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
   const [, setLocation] = useLocation();
 
-  const [menuItem, setMenuItem] = useState({});
   const [count, setCount] = useState(1);
-
-  const [isError, setIsError] = useState(false);
 
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
 
@@ -32,25 +30,9 @@ const Product = () => {
     strings: { product: translations },
   } = useTranslation();
 
-  useEffect(() => {
-    async function getData() {
-      const response = await fetch(`/api/menu/${itemId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        setIsError(!response.ok);
-        return;
-      }
-
-      return setMenuItem(await response.json());
-    }
-
-    getData();
-  }, [restaurantId, itemId]);
+  const { data, isError, isLoading } = useQuery(["menuItem", itemId], () =>
+    fetch(`/api/menu/${itemId}`).then((res) => res.json())
+  );
 
   const inTheBasket = useMemo(() => {
     return !!basketAtoms.order.find(
@@ -111,23 +93,23 @@ const Product = () => {
         order: [
           ...oldBasket.order,
           {
-            ...menuItem,
+            ...data,
             count: count,
           },
         ],
       };
     });
-  }, [menuItem, count, setBasketAtoms]);
+  }, [data, count, setBasketAtoms]);
 
   return (
     <Flex height={1} width={1} overflowY="auto" overflowX="hidden">
-      {!isError && !!menuItem._id && (
+      {!isLoading && !isError && (
         <Flex direction="column" height={1} width={1}>
           <s.Arrow>
             <Arrow onClick={handleArrowClick} />
           </s.Arrow>
           <Flex width={1} height={0.5} flex={1}>
-            <s.Photo src={menuItem.pictureUrl} alt={menuItem.name} width={1} />
+            <s.Photo src={data.pictureUrl} alt={data.name} width={1} />
           </Flex>
           <s.MainInformation
             direction="column"
@@ -136,9 +118,9 @@ const Product = () => {
             width={1}
             boxSizing="border-box"
           >
-            {menuItem.time && (
+            {data.time && (
               <s.Time>
-                <Text>{`~ ${menuItem.time} ${translations["min"]}`}</Text>
+                <Text>{`~ ${data.time} ${translations["min"]}`}</Text>
               </s.Time>
             )}
             <Text
@@ -146,26 +128,26 @@ const Product = () => {
               textTransform="uppercase"
               pb={theme.spacing(1)}
             >
-              {menuItem.category.name}
+              {data.category.name}
             </Text>
             <Text fontSize={theme.fontSize(3)} pb={theme.spacing(1)}>
-              {menuItem.name}
+              {data.name}
             </Text>
             <Flex
               justifyContent="space-between"
               width={1}
               pb={theme.spacing(1)}
             >
-              {menuItem.weight && (
+              {data.weight && (
                 <Text color="var(--light-grey)" height={1} alignItems="center">
-                  {`${translations["weight"]} ${menuItem.weight} ${translations["g"]}`}
+                  {`${translations["weight"]} ${data.weight} ${translations["g"]}`}
                 </Text>
               )}
               <Text color="#4cd964" fontSize="2rem">
-                {menuItem.price}$
+                {data.price}$
               </Text>
             </Flex>
-            <Text color="var(--light-grey)">{menuItem.description}</Text>
+            <Text color="var(--light-grey)">{data.description}</Text>
             <Flex
               width={1}
               flex={1}

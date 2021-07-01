@@ -1,6 +1,7 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { useLocation, useRoute } from "wouter";
 import { useRecoilState } from "recoil";
+import { useQuery } from "react-query";
 import { styled } from "@linaria/react";
 
 import { Routes } from "constants/routes";
@@ -21,12 +22,16 @@ const Menu = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.MENU);
   const [, setLocation] = useLocation();
 
-  const [category, setCategory] = useState([]);
-  const [menuItems, setMenuItems] = useState([]);
-
-  const [isError, setIsError] = useState(false);
-
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
+
+  const category = useQuery("category", () =>
+    fetch(`/api/restaurant/${restaurantId}/category`).then((res) => res.json())
+  );
+  const menuItems = useQuery("menuItems", () =>
+    fetch(`/api/restaurant/${restaurantId}/menu-items`).then((res) =>
+      res.json()
+    )
+  );
 
   const {
     strings: { mainMenu: translations },
@@ -47,49 +52,6 @@ const Menu = () => {
     // should only be called when the page is refreshed
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    async function getData() {
-      const response = await fetch(`/api/restaurant/${restaurantId}/category`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        setIsError(!response.ok);
-        return;
-      }
-
-      return setCategory(await response.json());
-    }
-
-    getData();
-  }, [restaurantId]);
-
-  useEffect(() => {
-    category.map(async (currentValue) => {
-      const response = await fetch(
-        `/api/category/${currentValue._id}/menu-item`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        setIsError(!response.ok);
-        return;
-      }
-
-      const body = await response.json();
-
-      setMenuItems((oldMenu) => [...oldMenu, ...body]);
-    });
-  }, [restaurantId, category]);
 
   const handleArrowClick = useCallback(
     (categoryId) => () => {
@@ -123,8 +85,11 @@ const Menu = () => {
       </Text>
       <Divider mb={theme.spacing(1)} />
       <Flex direction="column" overflowY="auto" overflowX="hidden" width={1}>
-        {!isError &&
-          category.map((currentCategory) => (
+        {!category.isLoading &&
+          !menuItems.isLoading &&
+          !category.isError &&
+          !menuItems.isError &&
+          category.data.map((currentCategory) => (
             <Flex key={currentCategory._id} direction="column" width={1}>
               <Flex width={1}>
                 <Text fontSize={theme.fontSize(2)} fontWeight="bold">
@@ -149,8 +114,8 @@ const Menu = () => {
                 height={1}
               >
                 <Flex overflowX="auto">
-                  {!!menuItems.length &&
-                    menuItems.map(
+                  {!menuItems.isLoading &&
+                    menuItems.data.map(
                       (currentMenuItems) =>
                         currentMenuItems.category._id ===
                           currentCategory._id && (
