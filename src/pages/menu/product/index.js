@@ -9,6 +9,7 @@ import { Img } from "components/img";
 import { Text } from "components/text";
 import Button from "components/button";
 import Counter from "components/counter";
+import Loader from "components/loader";
 
 import { useTranslation } from "contexts/translation-context";
 import { Routes } from "constants/routes";
@@ -104,9 +105,9 @@ const Product = () => {
     });
   }, [data, count, setBasketAtoms]);
 
-  return (
+  return !isLoading ? (
     <Flex height={1} width={1} overflowY="auto" overflowX="hidden">
-      {!isLoading && !isError && (
+      {!isError && (
         <Flex direction="column" height={1} width={1}>
           <s.Arrow>
             <Arrow onClick={handleArrowClick} />
@@ -186,6 +187,8 @@ const Product = () => {
         </Flex>
       )}
     </Flex>
+  ) : (
+    <Loader />
   );
 };
 

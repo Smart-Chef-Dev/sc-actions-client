@@ -10,6 +10,7 @@ import { Img } from "components/img";
 import { Text } from "components/text";
 import { Divider } from "components/divider";
 import ImageContainer from "components/image";
+import Loader from "components/loader";
 
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
@@ -64,7 +65,7 @@ const Menu = () => {
     [setLocation, restaurantId, tableId]
   );
 
-  return (
+  return !category.isLoading && !menuItems.isLoading ? (
     <Flex
       direction="column"
       pl={theme.spacing(1)}
@@ -82,9 +83,7 @@ const Menu = () => {
       </Text>
       <Divider mb={theme.spacing(1)} />
       <Flex direction="column" overflowY="auto" overflowX="hidden" width={1}>
-        {!category.isLoading &&
-          !menuItems.isLoading &&
-          !category.isError &&
+        {!category.isError &&
           !menuItems.isError &&
           category.data.map((currentCategory) => (
             <Flex key={currentCategory._id} direction="column" width={1}>
@@ -111,45 +110,43 @@ const Menu = () => {
                 height={1}
               >
                 <Flex overflowX="auto">
-                  {!menuItems.isLoading &&
-                    menuItems.data.map(
-                      (currentMenuItems) =>
-                        currentMenuItems.category._id ===
-                          currentCategory._id && (
-                          <Flex
-                            key={currentMenuItems._id}
-                            pr={theme.spacing(1)}
-                            pb={theme.spacing(1)}
-                          >
-                            <Flex direction="column">
-                              <ImageContainer
-                                src={currentMenuItems.pictureUrl}
-                                preSrc={currentMenuItems.pictureLqipPreview}
-                              >
-                                {(src) => (
-                                  <s.Preview
-                                    src={src}
-                                    alt={currentMenuItems.name}
-                                    loading="lazy"
-                                    borderRadius="10%"
-                                    mb={theme.spacing(1)}
-                                    onClick={handleItemClick(
-                                      currentMenuItems._id
-                                    )}
-                                  />
-                                )}
-                              </ImageContainer>
+                  {menuItems.data.map(
+                    (currentMenuItems) =>
+                      currentMenuItems.category._id === currentCategory._id && (
+                        <Flex
+                          key={currentMenuItems._id}
+                          pr={theme.spacing(1)}
+                          pb={theme.spacing(1)}
+                        >
+                          <Flex direction="column">
+                            <ImageContainer
+                              src={currentMenuItems.pictureUrl}
+                              preSrc={currentMenuItems.pictureLqipPreview}
+                            >
+                              {(src) => (
+                                <s.Preview
+                                  src={src}
+                                  alt={currentMenuItems.name}
+                                  loading="lazy"
+                                  borderRadius="10%"
+                                  mb={theme.spacing(1)}
+                                  onClick={handleItemClick(
+                                    currentMenuItems._id
+                                  )}
+                                />
+                              )}
+                            </ImageContainer>
 
-                              <s.ProductName>
-                                {currentMenuItems.name}
-                              </s.ProductName>
-                              <Text color="var(--text-grey)">
-                                {currentMenuItems.price}$
-                              </Text>
-                            </Flex>
+                            <s.ProductName>
+                              {currentMenuItems.name}
+                            </s.ProductName>
+                            <Text color="var(--text-grey)">
+                              {currentMenuItems.price}$
+                            </Text>
                           </Flex>
-                        )
-                    )}
+                        </Flex>
+                      )
+                  )}
                 </Flex>
               </Flex>
               <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
@@ -157,6 +154,8 @@ const Menu = () => {
           ))}
       </Flex>
     </Flex>
+  ) : (
+    <Loader />
   );
 };
 
