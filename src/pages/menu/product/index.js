@@ -171,7 +171,9 @@ const Product = () => {
               basketAtoms.order.map(
                 (currentOrder) =>
                   currentOrder._id === itemId && (
-                    <Addons key={currentOrder} order={currentOrder} />
+                    <Flex my={theme.spacing(1)} width={1}>
+                      <Addons key={currentOrder} order={currentOrder} />
+                    </Flex>
                   )
               )}
             <Flex

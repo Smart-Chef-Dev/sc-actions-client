@@ -8,9 +8,14 @@ import RedCheckMarkIcon from "../assets/icons/product/red_check_mark_icon.svg";
 import GraySquareIcon from "../assets/icons/product/gray_square_icon.svg";
 import { useRecoilState } from "recoil";
 import BasketState from "../atoms/basket";
+import { useTranslation } from "../contexts/translation-context";
 
 const Addons = ({ order }) => {
   const [, setBasketAtoms] = useRecoilState(BasketState);
+
+  const {
+    strings: { addons: translations },
+  } = useTranslation();
 
   const addModifierToAtom = useCallback(
     (modifiersId, productId) => () => {
@@ -73,14 +78,8 @@ const Addons = ({ order }) => {
   );
 
   return (
-    <Flex
-      px={theme.spacing(1)}
-      mb={theme.spacing(1)}
-      width={1}
-      direction="column"
-      boxSizing="border-box"
-    >
-      <Text color="var(--text-grey)">extra_add_ons</Text>
+    <Flex width={1} direction="column">
+      <Text color="var(--text-grey)">{translations["extra_add_ons"]}</Text>
       {order.modifiers.map((currentModifiers) => (
         <Flex
           justifyContent="space-between"
@@ -89,23 +88,34 @@ const Addons = ({ order }) => {
           mt={theme.spacing(1)}
         >
           <Flex>
-            <Flex mr={theme.spacing(1)}>
+            <Flex>
               {currentModifiers.isIncludedInOrder ? (
-                <RedCheckMarkIcon
+                <Flex
                   onClick={removingModifierToAtom(
                     currentModifiers._id,
                     order._id
                   )}
-                />
+                >
+                  <RedCheckMarkIcon />
+                  <Text color="var(--light-grey)" ml={theme.spacing(1)}>
+                    {currentModifiers.name}
+                  </Text>
+                </Flex>
               ) : (
-                <GraySquareIcon
+                <Flex
                   onClick={addModifierToAtom(currentModifiers._id, order._id)}
-                />
+                >
+                  <GraySquareIcon />
+                  <Text color="var(--light-grey)" ml={theme.spacing(1)}>
+                    {currentModifiers.name}
+                  </Text>
+                </Flex>
               )}
             </Flex>
-            <Text color="var(--light-grey)">{currentModifiers.name}</Text>
           </Flex>
-          <Text color="var(--main-color)">{currentModifiers.price}$</Text>
+          {!!currentModifiers.price && (
+            <Text color="var(--main-color)">{currentModifiers.price}$</Text>
+          )}
         </Flex>
       ))}
     </Flex>

@@ -353,7 +353,14 @@ const Basket = () => {
               )}
             </SwipeDelete>
             {unfoldedItemId === currentOrder._id && (
-              <Addons order={currentOrder} />
+              <Flex
+                px={theme.spacing(1)}
+                width={1}
+                boxSizing="border-box"
+                my={theme.spacing(1)}
+              >
+                <Addons order={currentOrder} />
+              </Flex>
             )}
             <Divider ml={theme.spacing(1)} />
           </Flex>
