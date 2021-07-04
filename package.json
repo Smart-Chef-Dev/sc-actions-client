@@ -14,7 +14,7 @@
     "date-fns": "^2.22.1",
     "file-saver": "^2.0.5",
     "jszip": "^3.6.0",
-    "konva": "^7.2.5",
+    "konva": "^8.1.1",
     "prop-types": "^15.7.2",
     "qrcode.react": "^1.0.1",
     "react": "^17.0.2",
