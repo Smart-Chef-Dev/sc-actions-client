@@ -75,7 +75,7 @@
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/plugin-transform-react-jsx": "^7.14.5",
-    "@linaria/webpack-loader": "^3.0.0-beta.6",
+    "@linaria/webpack-loader": "^3.0.0-beta.7",
     "@svgr/webpack": "^5.5.0",
     "@typescript-eslint/parser": "^4.28.0",
     "babel-loader": "^8.2.2",

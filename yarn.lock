@@ -2126,7 +2126,7 @@
     "@linaria/preeval" "^3.0.0-beta.7"
     babel-plugin-transform-react-remove-prop-types "^0.4.24"
 
-"@linaria/webpack-loader@^3.0.0-beta.6":
+"@linaria/webpack-loader@^3.0.0-beta.7":
   version "3.0.0-beta.7"
   resolved "https://registry.yarnpkg.com/@linaria/webpack-loader/-/webpack-loader-3.0.0-beta.7.tgz#6aab05654f901b3dd78707f5d8e287f62b67ec8b"
   integrity sha512-tYR+PVAqUEPsOUGeD1jOvpaX3UeBQIvh6JmX5ziYr0faBwOwabmjszCYrQ2FVonpHBsjs6zB1KtG+yUTgSygGA==
