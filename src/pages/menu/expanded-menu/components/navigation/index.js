@@ -1,12 +1,13 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useLocation } from "wouter";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { theme } from "theme";
+import { Divider } from "components/divider";
 
-const Navigation = ({ category, currentCategory }) => {
+const Navigation = ({ category, currentCategoryId }) => {
   const [, setLocation] = useLocation();
 
   const changeCategory = useCallback(
@@ -16,33 +17,57 @@ const Navigation = ({ category, currentCategory }) => {
     [setLocation]
   );
 
+  const currentCategory = useMemo(
+    () =>
+      category.find((currentValue) => currentValue._id === currentCategoryId),
+    [currentCategoryId, category]
+  );
+
   return (
-    <Flex overflowX="auto" width={1}>
-      {category.map((currentValue) => (
-        <Flex key={currentValue._id}>
-          <Flex p={theme.spacing(1)}>
-            {currentCategory === currentValue._id ? (
-              <Text onClick={changeCategory(currentValue._id)}>
-                {currentValue.name}
-              </Text>
-            ) : (
-              <Text
-                onClick={changeCategory(currentValue._id)}
-                color="var(--text-grey)"
-              >
-                {currentValue.name}
-              </Text>
-            )}
+    <Flex
+      direction="column"
+      pl={theme.spacing(1)}
+      width={1}
+      flex={1}
+      height={1}
+      boxSizing="border-box"
+    >
+      <Text
+        fontSize={theme.fontSize(3)}
+        mt={theme.spacing(3)}
+        mb={theme.spacing(1)}
+        fontWeight="bold"
+      >
+        {currentCategory.name}
+      </Text>
+      <Divider />
+      <Flex overflowX="auto" width={1}>
+        {category.map((currentValue) => (
+          <Flex key={currentValue._id}>
+            <Flex p={theme.spacing(1)}>
+              {currentCategoryId === currentValue._id ? (
+                <Text onClick={changeCategory(currentValue._id)}>
+                  {currentValue.name}
+                </Text>
+              ) : (
+                <Text
+                  onClick={changeCategory(currentValue._id)}
+                  color="var(--text-grey)"
+                >
+                  {currentValue.name}
+                </Text>
+              )}
+            </Flex>
           </Flex>
-        </Flex>
-      ))}
+        ))}
+      </Flex>
     </Flex>
   );
 };
 
 Navigation.propTypes = {
   category: PropTypes.array,
-  currentCategory: PropTypes.string,
+  currentCategoryId: PropTypes.string,
 };
 
 export default memo(Navigation);
