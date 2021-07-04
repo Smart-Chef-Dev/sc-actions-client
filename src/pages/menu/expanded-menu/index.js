@@ -1,6 +1,7 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback } from "react";
 import { useRoute, useLocation } from "wouter";
 import { useRecoilState } from "recoil";
+import { useQuery } from "react-query";
 import { styled } from "@linaria/react";
 
 import { Routes } from "constants/routes";
@@ -8,6 +9,7 @@ import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Img } from "components/img";
 import { Divider } from "components/divider";
+import Loader from "components/loader";
 import Navigation from "./components/navigation";
 
 import { useTranslation } from "contexts/translation-context";
@@ -18,16 +20,14 @@ import Basket from "assets/icons/expanded-menu/basket.svg";
 
 import BasketState from "atoms/basket";
 
+import getAllCategories from "services/getAllCategories";
+import getMenuItemsByCategoryId from "services/getMenuItemsByCategoryId";
+
 const ExpandedMenu = () => {
   const [, { restaurantId, categoryId, tableId }] = useRoute(
     Routes.EXPANDED_MENU
   );
   const [, setLocation] = useLocation();
-
-  const [category, setCategory] = useState([]);
-  const [menuItems, setMenuItems] = useState([]);
-
-  const [isError, setIsError] = useState(false);
 
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
 
@@ -35,45 +35,11 @@ const ExpandedMenu = () => {
     strings: { expandedMenu: translations },
   } = useTranslation();
 
-  useEffect(() => {
-    async function getData() {
-      const response = await fetch(`/api/restaurant/${restaurantId}/category`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        setIsError(!response.ok);
-        return;
-      }
-
-      return setCategory(await response.json());
-    }
-
-    getData();
-  }, [restaurantId]);
-
-  useEffect(() => {
-    async function getData() {
-      const response = await fetch(`/api/category/${categoryId}/menu-item`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        setIsError(!response.ok);
-        return;
-      }
-
-      return setMenuItems(await response.json());
-    }
-
-    getData();
-  }, [categoryId]);
+  const category = useQuery(["categories", { restaurantId }], getAllCategories);
+  const menuItems = useQuery(
+    ["menuItems", { categoryId }],
+    getMenuItemsByCategoryId
+  );
 
   const handleArrowClick = useCallback(() => {
     setLocation(`/restaurant/${restaurantId}/${tableId}`);
@@ -112,7 +78,7 @@ const ExpandedMenu = () => {
     [setBasketAtoms, basketAtoms]
   );
 
-  return (
+  return !menuItems.isLoading && !category.isLoading ? (
     <Flex direction="column" height={1} width={1}>
       <s.Arrow alignItems="center" onClick={handleArrowClick}>
         <Arrow />
@@ -120,7 +86,7 @@ const ExpandedMenu = () => {
           {translations["menu"]}
         </Text>
       </s.Arrow>
-      {!isError && !!menuItems.length && (
+      {!category.isError && !menuItems.isError && (
         <Flex direction="column" height={1} width={1}>
           <Flex
             direction="column"
@@ -136,10 +102,10 @@ const ExpandedMenu = () => {
               mb={theme.spacing(1)}
               fontWeight="bold"
             >
-              {menuItems[0].category.name}
+              {menuItems.data[0].category.name}
             </Text>
             <Divider />
-            <Navigation category={category} currentCategory={categoryId} />
+            <Navigation category={category.data} currentCategory={categoryId} />
           </Flex>
           <Flex
             boxSizing="border-box"
@@ -149,7 +115,7 @@ const ExpandedMenu = () => {
             height={1}
           >
             <Flex direction="column" width={1} height={1}>
-              {menuItems.map((currentValue) => (
+              {menuItems.data.map((currentValue) => (
                 <s.Container
                   key={currentValue._id}
                   mb={theme.spacing(1)}
@@ -214,6 +180,8 @@ const ExpandedMenu = () => {
         </Flex>
       )}
     </Flex>
+  ) : (
+    <Loader />
   );
 };
 const s = {

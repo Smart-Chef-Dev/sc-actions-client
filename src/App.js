@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Switch } from "wouter";
 import { styled } from "@linaria/react";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import ErrorBoundary from "pages/error-boundary";
 import { Routes } from "constants/routes";
@@ -10,6 +11,8 @@ import SimpleLayout from "components/SimpleLayout";
 import Loader from "components/loader";
 import DarkModeContext from "contexts/dark-mode-context";
 import { TranslationContext } from "contexts/translation-context";
+
+const queryClient = new QueryClient();
 
 const RestaurantLogin = lazy(() =>
   import("pages/restaurant-login" /* webpackChunkName: "restaurant-login" */)
@@ -36,55 +39,57 @@ const Basket = lazy(() =>
 function App() {
   return (
     <s.Container>
-      <TranslationContext>
-        <DarkModeContext>
-          <Suspense fallback={<Loader />}>
-            <ErrorBoundary>
-              <Switch>
-                <Route
-                  path={Routes.PRODUCT}
-                  component={Product}
-                  layout={SimpleLayout}
-                  needMenu={true}
-                />
-                <Route
-                  path={Routes.BASKET}
-                  component={Basket}
-                  layout={SimpleLayout}
-                  needMenu={true}
-                />
-                <Route
-                  path={Routes.MENU}
-                  component={Menu}
-                  layout={SimpleLayout}
-                  needMenu={true}
-                />
-                <Route
-                  path={Routes.EXPANDED_MENU}
-                  component={ExpandedMenu}
-                  layout={SimpleLayout}
-                  needMenu={true}
-                />
-                <Route
-                  path={Routes.QR_CODE_BUILDER}
-                  component={QrCodeBuilder}
-                  layout={SimpleLayout}
-                />
-                <Route
-                  path={Routes.RESTAURANT_LOGIN}
-                  component={RestaurantLogin}
-                  layout={MainLayout}
-                />
-                <Route
-                  path={Routes.ACTIONS}
-                  component={Actions}
-                  layout={MainLayout}
-                />
-              </Switch>
-            </ErrorBoundary>
-          </Suspense>
-        </DarkModeContext>
-      </TranslationContext>
+      <QueryClientProvider client={queryClient}>
+        <TranslationContext>
+          <DarkModeContext>
+            <Suspense fallback={<Loader />}>
+              <ErrorBoundary>
+                <Switch>
+                  <Route
+                    path={Routes.PRODUCT}
+                    component={Product}
+                    layout={SimpleLayout}
+                    needMenu={true}
+                  />
+                  <Route
+                    path={Routes.BASKET}
+                    component={Basket}
+                    layout={SimpleLayout}
+                    needMenu={true}
+                  />
+                  <Route
+                    path={Routes.MENU}
+                    component={Menu}
+                    layout={SimpleLayout}
+                    needMenu={true}
+                  />
+                  <Route
+                    path={Routes.EXPANDED_MENU}
+                    component={ExpandedMenu}
+                    layout={SimpleLayout}
+                    needMenu={true}
+                  />
+                  <Route
+                    path={Routes.QR_CODE_BUILDER}
+                    component={QrCodeBuilder}
+                    layout={SimpleLayout}
+                  />
+                  <Route
+                    path={Routes.RESTAURANT_LOGIN}
+                    component={RestaurantLogin}
+                    layout={MainLayout}
+                  />
+                  <Route
+                    path={Routes.ACTIONS}
+                    component={Actions}
+                    layout={MainLayout}
+                  />
+                </Switch>
+              </ErrorBoundary>
+            </Suspense>
+          </DarkModeContext>
+        </TranslationContext>
+      </QueryClientProvider>
     </s.Container>
   );
 }

@@ -1,4 +1,5 @@
 import { memo, useCallback, useMemo } from "react";
+import { useMutation } from "react-query";
 import { useRoute } from "wouter";
 
 import { Routes } from "constants/routes";
@@ -8,6 +9,8 @@ import { useScreenBlock } from "hooks/useScreenBlock";
 import { useRestaurant } from "hooks/useRestaurant";
 import ActionComponent from "./action-component";
 import DoneIcon from "assets/icons/actions/done-icon.svg";
+
+import sendAction from "services/sendAction";
 
 const Actions = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.ACTIONS);
@@ -21,15 +24,21 @@ const Actions = () => {
   );
   const { renderScreenBlock, attemptsWrapper } = useScreenBlock();
 
+  const sendActionMutation = useMutation(sendAction);
+
   const handleClick = useCallback(
     (id) => async () => {
       showNotification();
       attemptsWrapper();
-      await fetch(`/api/message/${restaurantId}/${tableId}/${id}`, {
-        method: "POST",
-      });
+      sendActionMutation.mutate({ restaurantId, tableId, id });
     },
-    [attemptsWrapper, restaurantId, showNotification, tableId]
+    [
+      showNotification,
+      sendActionMutation,
+      attemptsWrapper,
+      restaurantId,
+      tableId,
+    ]
   );
 
   return !isLoading ? (
