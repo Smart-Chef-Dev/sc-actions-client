@@ -1,7 +1,7 @@
-import { memo, useCallback } from "react";
+import { Fragment, memo, useCallback, useMemo } from "react";
 import { useRecoilState } from "recoil";
 import { useLocation } from "wouter";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
 
@@ -14,7 +14,11 @@ import { theme } from "theme";
 import Basket from "assets/icons/expanded-menu/basket.svg";
 import BasketState from "atoms/basket";
 import { useTranslation } from "contexts/translation-context";
-import getMenuItemsByCategoryId from "services/getMenuItemsByCategoryId";
+
+import getMenuItemsByCategoryIdInLimit from "services/getMenuItemsByCategoryIdInLimit";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+const numberOfPagesPerDownload = 5;
 
 const MenuItem = ({ restaurantId, tableId, categoryId }) => {
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
@@ -24,9 +28,21 @@ const MenuItem = ({ restaurantId, tableId, categoryId }) => {
     strings: { expandedMenu: translations },
   } = useTranslation();
 
-  const menuItems = useQuery(
-    ["menuItems", { categoryId }],
-    getMenuItemsByCategoryId
+  const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    ["menuItemsPages", { categoryId }],
+    getMenuItemsByCategoryIdInLimit,
+    {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.totalPages <= lastPage.page) {
+          return false;
+        }
+
+        return {
+          page: lastPage.page,
+          limit: numberOfPagesPerDownload,
+        };
+      },
+    }
   );
 
   const handleItemClick = useCallback(
@@ -62,72 +78,97 @@ const MenuItem = ({ restaurantId, tableId, categoryId }) => {
     [setBasketAtoms, basketAtoms]
   );
 
-  return !menuItems.isLoading ? (
+  const dataLength = useMemo(
+    () =>
+      !isLoading &&
+      data.pages.reduce(
+        (previousValues, currentValue) =>
+          previousValues + currentValue.items.length,
+        0
+      ),
+    [data, isLoading]
+  );
+
+  console.log(data);
+
+  return !isLoading ? (
     <Flex
       boxSizing="border-box"
       px={theme.spacing(1)}
       overflowY="auto"
       width={1}
       height={1}
+      id={`scrollMenuItems(${categoryId})`}
     >
-      <Flex direction="column" width={1} height={1}>
-        {menuItems.data.map((currentValue) => (
-          <s.Container key={currentValue._id} mb={theme.spacing(1)} width={1}>
-            <s.IconBasket onClick={addProductToOrder(currentValue)}>
-              <Basket />
-            </s.IconBasket>
-            <Flex
-              direction="column"
-              height={1}
-              width={1}
-              onClick={handleItemClick(currentValue._id)}
-            >
-              <Img
-                src={currentValue.pictureUrl}
-                alt={currentValue.name}
-                borderRadius="12px 12px 0 0"
-                width={1}
-                height={1}
-              />
-              <Text
-                p={theme.spacing(1)}
-                color="var(--text-grey)"
-                textTransform="uppercase"
-              >
-                {currentValue.category.name}
-              </Text>
-              <Text
-                fontFamily="Actor"
-                pl={theme.spacing(1)}
-                fontSize={theme.fontSize(1)}
-              >
-                {currentValue.name}
-              </Text>
-              <Flex width={1}>
-                <Text
-                  alignItems="center"
-                  pl={theme.spacing(1)}
-                  height={1}
+      <InfiniteScroll
+        dataLength={dataLength}
+        next={fetchNextPage}
+        hasMore={!!hasNextPage}
+        scrollableTarget={`scrollMenuItems(${categoryId})`}
+        style={{ overflow: undefined }}
+        loader={<div>Loading...</div>}
+      >
+        <Flex direction="column" width={1} height={1}>
+          {data.pages.map((page, i) => (
+            <Fragment key={i}>
+              {page.items.map((currentMenuItems) => (
+                <s.Container
+                  key={currentMenuItems._id}
+                  mb={theme.spacing(1)}
                   width={1}
-                  color="var(--text-grey)"
-                  fontSize={theme.fontSize(0)}
                 >
-                  {`${currentValue.weight} ${translations["g"]}`}
-                </Text>
-                <Flex direction="row-reverse" width={1}>
-                  <Text
-                    m={theme.spacing(1)}
-                    fontSize={theme.fontSize(2)}
-                    fontWeight="bold"
+                  <s.IconBasket onClick={addProductToOrder(currentMenuItems)}>
+                    <Basket />
+                  </s.IconBasket>
+                  <Flex
+                    direction="column"
+                    height={1}
+                    width={1}
+                    onClick={handleItemClick(currentMenuItems._id)}
                   >
-                    {currentValue.price}$
-                  </Text>
-                </Flex>
-              </Flex>
-            </Flex>
-          </s.Container>
-        ))}
-      </Flex>
+                    <Img
+                      src={currentMenuItems.pictureUrl}
+                      alt={currentMenuItems.name}
+                      borderRadius="12px 12px 0 0"
+                      width={1}
+                      height={1}
+                    />
+                    <Text
+                      p={theme.spacing(1)}
+                      color="var(--text-grey)"
+                      textTransform="uppercase"
+                    >
+                      {currentMenuItems.category.name}
+                    </Text>
+                    <Text
+                      fontFamily="Actor"
+                      pl={theme.spacing(1)}
+                      fontSize={theme.fontSize(1)}
+                    >
+                      {currentMenuItems.name}
+                    </Text>
+                    <Flex
+                      width={1}
+                      justifyContent="space-between"
+                      p={theme.spacing(1)}
+                      boxSizing="border-box"
+                      alignItems="center"
+                    >
+                      <Text
+                        color="var(--text-grey)"
+                        fontSize={theme.fontSize(0)}
+                      >{`${currentMenuItems.weight} ${translations["g"]}`}</Text>
+                      <Text fontWeight="bold" fontSize={theme.fontSize(2)}>
+                        {currentMenuItems.price}$
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </s.Container>
+              ))}
+            </Fragment>
+          ))}
+        </Flex>
+      </InfiniteScroll>
     </Flex>
   ) : (
     <Loader />
