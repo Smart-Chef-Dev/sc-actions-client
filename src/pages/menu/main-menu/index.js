@@ -1,5 +1,5 @@
 import { memo, useEffect } from "react";
-import { useRoute } from "wouter";
+import { useLocation, useRoute } from "wouter";
 import { useRecoilState } from "recoil";
 
 import { Routes } from "constants/routes";
@@ -13,15 +13,23 @@ import { useTranslation } from "contexts/translation-context";
 import BasketState from "atoms/basket";
 
 import Category from "./components/category";
+import { useQuery } from "react-query";
+import getAllCategories from "../../../services/getAllCategories";
 
 const Menu = () => {
-  const [, { restaurantId }] = useRoute(Routes.MENU);
-
-  const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
+  const [, { restaurantId, tableId }] = useRoute(Routes.MENU);
+  const [, setLocation] = useLocation();
 
   const {
     strings: { mainMenu: translations },
   } = useTranslation();
+
+  const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
+
+  const categories = useQuery(
+    ["categories", { restaurantId }],
+    getAllCategories
+  );
 
   useEffect(() => {
     if (
@@ -56,7 +64,12 @@ const Menu = () => {
         {translations["menu"]}
       </Text>
       <Divider mb={theme.spacing(1)} />
-      <Category />
+      <Category
+        restaurantId={restaurantId}
+        tableId={tableId}
+        onLocation={setLocation}
+        categories={categories}
+      />
     </Flex>
   );
 };

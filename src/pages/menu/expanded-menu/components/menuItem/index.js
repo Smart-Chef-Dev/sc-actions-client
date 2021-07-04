@@ -1,55 +1,33 @@
 import { Fragment, memo, useCallback, useMemo } from "react";
-import { useRecoilState } from "recoil";
-import { useLocation } from "wouter";
-import { useInfiniteQuery } from "react-query";
 import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import { Img } from "components/img";
 import { Text } from "components/text";
-import Loader from "components/loader";
 
 import { theme } from "theme";
 import Basket from "assets/icons/expanded-menu/basket.svg";
-import BasketState from "atoms/basket";
-import { useTranslation } from "contexts/translation-context";
 
-import getMenuItemsByCategoryIdInLimit from "services/getMenuItemsByCategoryIdInLimit";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const numberOfPagesPerDownload = 5;
-
-const MenuItem = ({ restaurantId, tableId, categoryId }) => {
-  const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
-  const [, setLocation] = useLocation();
-
-  const {
-    strings: { expandedMenu: translations },
-  } = useTranslation();
-
-  const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    ["menuItemsPages", { categoryId }],
-    getMenuItemsByCategoryIdInLimit,
-    {
-      getNextPageParam: (lastPage) => {
-        if (lastPage.totalPages <= lastPage.page) {
-          return false;
-        }
-
-        return {
-          page: lastPage.page,
-          limit: numberOfPagesPerDownload,
-        };
-      },
-    }
-  );
+const MenuItem = ({
+  restaurantId,
+  tableId,
+  categoryId,
+  menuItems,
+  basketAtoms,
+  onBasketAtoms,
+  translations,
+  onLocation,
+}) => {
+  const { data, isLoading, fetchNextPage, hasNextPage } = menuItems;
 
   const handleItemClick = useCallback(
     (itemId) => () => {
-      setLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
+      onLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
     },
-    [setLocation, restaurantId, tableId]
+    [onLocation, restaurantId, tableId]
   );
 
   const addProductToOrder = useCallback(
@@ -62,7 +40,7 @@ const MenuItem = ({ restaurantId, tableId, categoryId }) => {
         return;
       }
 
-      setBasketAtoms((oldOrder) => {
+      onBasketAtoms((oldOrder) => {
         return {
           ...oldOrder,
           order: [
@@ -75,7 +53,7 @@ const MenuItem = ({ restaurantId, tableId, categoryId }) => {
         };
       });
     },
-    [setBasketAtoms, basketAtoms]
+    [onBasketAtoms, basketAtoms]
   );
 
   const dataLength = useMemo(
@@ -89,9 +67,7 @@ const MenuItem = ({ restaurantId, tableId, categoryId }) => {
     [data, isLoading]
   );
 
-  console.log(data);
-
-  return !isLoading ? (
+  return (
     <Flex
       boxSizing="border-box"
       px={theme.spacing(1)}
@@ -170,8 +146,6 @@ const MenuItem = ({ restaurantId, tableId, categoryId }) => {
         </Flex>
       </InfiniteScroll>
     </Flex>
-  ) : (
-    <Loader />
   );
 };
 
@@ -190,9 +164,14 @@ const s = {
 };
 
 MenuItem.propTypes = {
+  menuItems: PropTypes.object,
   restaurantId: PropTypes.string,
   tableId: PropTypes.string,
   categoryId: PropTypes.string,
+  basketAtoms: PropTypes.object,
+  onBasketAtoms: PropTypes.func,
+  translations: PropTypes.object,
+  onLocation: PropTypes.func,
 };
 
 export default memo(MenuItem);

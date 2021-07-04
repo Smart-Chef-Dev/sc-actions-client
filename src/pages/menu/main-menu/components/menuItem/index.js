@@ -1,7 +1,6 @@
 import { Fragment, memo, useCallback, useMemo } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useInfiniteQuery } from "react-query";
-import { useLocation, useRoute } from "wouter";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
 
@@ -11,16 +10,12 @@ import ImageContainer from "components/image";
 import { Img } from "components/img";
 
 import { theme } from "theme";
-import { Routes } from "constants/routes";
 
 import getMenuItemsByCategoryIdInLimit from "services/getMenuItemsByCategoryIdInLimit";
 
 const numberOfPagesPerDownload = 5;
 
-const MenuItem = ({ categoryId }) => {
-  const [, { restaurantId, tableId }] = useRoute(Routes.MENU);
-  const [, setLocation] = useLocation();
-
+const MenuItem = ({ categoryId, restaurantId, tableId, onLocation }) => {
   const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
     ["menuItemsPages", { categoryId }],
     getMenuItemsByCategoryIdInLimit,
@@ -51,9 +46,9 @@ const MenuItem = ({ categoryId }) => {
 
   const handleItemClick = useCallback(
     (itemId) => () => {
-      setLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
+      onLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
     },
-    [setLocation, restaurantId, tableId]
+    [onLocation, restaurantId, tableId]
   );
 
   return (
@@ -108,6 +103,9 @@ const MenuItem = ({ categoryId }) => {
 
 MenuItem.propTypes = {
   categoryId: PropTypes.string,
+  restaurantId: PropTypes.string,
+  tableId: PropTypes.string,
+  onLocation: PropTypes.func,
 };
 
 const s = {

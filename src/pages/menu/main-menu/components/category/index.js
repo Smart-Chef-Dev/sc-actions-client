@@ -1,6 +1,4 @@
 import { memo, useCallback } from "react";
-import { useLocation, useRoute } from "wouter";
-import { useQuery } from "react-query";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
@@ -9,26 +7,19 @@ import Loader from "components/loader";
 import MenuItem from "pages/menu/main-menu/components/menuItem/index";
 
 import { theme } from "theme";
-import { Routes } from "constants/routes";
 
 import Arrow from "assets/icons/main-menu/arrow.svg";
 
-import getAllCategories from "services/getAllCategories";
+import PropTypes from "prop-types";
 
-const Category = () => {
-  const [, setLocation] = useLocation();
-  const [, { restaurantId, tableId }] = useRoute(Routes.MENU);
-
-  const { isError, isLoading, data } = useQuery(
-    ["categories", { restaurantId }],
-    getAllCategories
-  );
+const Category = ({ restaurantId, tableId, onLocation, categories }) => {
+  const { isError, isLoading, data } = categories;
 
   const handleArrowClick = useCallback(
     (categoryId) => () => {
-      setLocation(`/restaurant/${restaurantId}/${tableId}/${categoryId}`);
+      onLocation(`/restaurant/${restaurantId}/${tableId}/${categoryId}`);
     },
-    [setLocation, restaurantId, tableId]
+    [onLocation, restaurantId, tableId]
   );
 
   return !isLoading ? (
@@ -58,7 +49,12 @@ const Category = () => {
               width={1}
               height={1}
             >
-              <MenuItem categoryId={currentCategory._id} />
+              <MenuItem
+                categoryId={currentCategory._id}
+                restaurantId={restaurantId}
+                tableId={tableId}
+                onLocation={onLocation}
+              />
             </Flex>
             <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
           </Flex>
@@ -69,6 +65,13 @@ const Category = () => {
       <Loader />
     </>
   );
+};
+
+Category.propTypes = {
+  restaurantId: PropTypes.string,
+  tableId: PropTypes.string,
+  onLocation: PropTypes.func,
+  categories: PropTypes.object,
 };
 
 export default memo(Category);

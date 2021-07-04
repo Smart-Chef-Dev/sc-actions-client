@@ -1,5 +1,4 @@
 import { memo, useCallback, useMemo } from "react";
-import { useLocation } from "wouter";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
@@ -7,14 +6,12 @@ import { Text } from "components/text";
 import { theme } from "theme";
 import { Divider } from "components/divider";
 
-const Navigation = ({ category, currentCategoryId }) => {
-  const [, setLocation] = useLocation();
-
+const Navigation = ({ category, currentCategoryId, onLocation }) => {
   const changeCategory = useCallback(
     (categoryId) => () => {
-      setLocation(categoryId);
+      onLocation(categoryId);
     },
-    [setLocation]
+    [onLocation]
   );
 
   const currentCategory = useMemo(
@@ -68,6 +65,7 @@ const Navigation = ({ category, currentCategoryId }) => {
 Navigation.propTypes = {
   category: PropTypes.array,
   currentCategoryId: PropTypes.string,
+  onLocation: PropTypes.func,
 };
 
 export default memo(Navigation);
