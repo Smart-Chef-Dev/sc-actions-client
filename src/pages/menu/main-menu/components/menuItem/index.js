@@ -55,7 +55,6 @@ const MenuItem = ({ categoryId }) => {
                   />
                 )}
               </ImageContainer>
-
               <s.ProductName>{currentMenuItems.name}</s.ProductName>
               <Text color="var(--text-grey)">{currentMenuItems.price}$</Text>
             </Flex>

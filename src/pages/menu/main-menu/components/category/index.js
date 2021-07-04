@@ -31,7 +31,7 @@ const Category = () => {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    ["categories", { restaurantId }],
+    ["categories_pages", { restaurantId }],
     getAllCategoriesInLimit,
     {
       getNextPageParam: (lastPage) => {
@@ -53,8 +53,6 @@ const Category = () => {
     },
     [setLocation, restaurantId, tableId]
   );
-
-  console.log(data);
 
   const dataLength = useMemo(
     () =>
