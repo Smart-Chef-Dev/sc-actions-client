@@ -2115,7 +2115,7 @@
   dependencies:
     "@linaria/babel-preset" "^3.0.0-beta.7"
 
-"@linaria/react@^3.0.0-beta.4":
+"@linaria/react@^3.0.0-beta.7":
   version "3.0.0-beta.7"
   resolved "https://registry.yarnpkg.com/@linaria/react/-/react-3.0.0-beta.7.tgz#a1983acd752cda5c0b740735b9112a663dfd180d"
   integrity sha512-sAup35gSRuenwbziPhp1hmkfziY72BS9jr5Lp0GQ9NRG5fnxYBQ36TY4rrGE09mSBjw/uq2i7XsvYL8MNm1f1Q==
