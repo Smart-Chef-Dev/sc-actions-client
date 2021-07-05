@@ -1,20 +1,20 @@
 import { memo, useEffect } from "react";
 import { useLocation, useRoute } from "wouter";
 import { useRecoilState } from "recoil";
+import { useQuery } from "react-query";
 
 import { Routes } from "constants/routes";
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Divider } from "components/divider";
+import Loader from "components/loader";
+import Categories from "./components/categories";
 
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
 
 import BasketState from "atoms/basket";
-
-import Category from "./components/category";
-import { useQuery } from "react-query";
-import getAllCategories from "../../../services/getAllCategories";
+import getAllCategories from "services/getAllCategories";
 
 const Menu = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.MENU);
@@ -47,7 +47,7 @@ const Menu = () => {
     // eslint-disable-next-line
   }, []);
 
-  return (
+  return !categories.isLoading ? (
     <Flex
       direction="column"
       pl={theme.spacing(1)}
@@ -56,21 +56,28 @@ const Menu = () => {
       width={1}
       boxSizing="border-box"
     >
-      <Text
-        fontSize={theme.fontSize(3)}
-        fontWeight="bold"
-        mb={theme.spacing(1)}
-      >
-        {translations["menu"]}
-      </Text>
-      <Divider mb={theme.spacing(1)} />
-      <Category
+      <Flex height={1} width={1} direction="column" flex={1}>
+        <Text
+          fontSize={theme.fontSize(3)}
+          fontWeight="bold"
+          mb={theme.spacing(1)}
+        >
+          {translations["menu"]}
+        </Text>
+        <Divider mb={theme.spacing(1)} />
+      </Flex>
+
+      <Categories
         restaurantId={restaurantId}
         tableId={tableId}
         onLocation={setLocation}
         categories={categories}
       />
     </Flex>
+  ) : (
+    <>
+      <Loader />
+    </>
   );
 };
 

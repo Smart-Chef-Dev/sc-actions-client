@@ -28,6 +28,8 @@
     "react-query": "^3.18.1",
     "react-scripts": "4.0.3",
     "react-swipeable": "^6.1.2",
+    "react-virtualized-auto-sizer": "^1.0.5",
+    "react-window": "^1.8.6",
     "recoil": "^0.3.1",
     "recoil-persist": "^2.5.0",
     "use-image": "^1.0.7",
