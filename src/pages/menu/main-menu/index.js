@@ -124,7 +124,7 @@ const Menu = () => {
       <Divider mb={theme.spacing(1)} />
       <Flex direction="column" overflowY="auto" overflowX="hidden" width={1}>
         {!isError &&
-          category.map((currentCategory) => (
+          category.map((currentCategory, index) => (
             <Flex key={currentCategory._id} direction="column" width={1}>
               <Flex width={1}>
                 <Text fontSize={theme.fontSize(2)} fontWeight="bold">
@@ -190,7 +190,9 @@ const Menu = () => {
                     )}
                 </Flex>
               </Flex>
-              <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
+              {index !== category.length - 1 && (
+                <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
+              )}
             </Flex>
           ))}
       </Flex>
