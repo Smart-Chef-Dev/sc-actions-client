@@ -8,21 +8,21 @@ import { Flex } from "./flex";
 import IncreaseCount from "assets/icons/counter/increase_count.svg";
 import DecreaseCount from "assets/icons/counter/decrease_count.svg";
 
-const Counter = ({ reduceCount, enlargeCount, count }) => {
+const Counter = ({ decreaseCount, increaseCount, count }) => {
   return (
     <Flex height={1} alignItems="center">
-      <DecreaseCount onClick={reduceCount} />
+      <DecreaseCount onClick={decreaseCount} />
       <Text fontSize={theme.fontSize(3)} mx={theme.spacing(1)}>
         {count}
       </Text>
-      <IncreaseCount onClick={enlargeCount} />
+      <IncreaseCount onClick={increaseCount} />
     </Flex>
   );
 };
 
 Counter.propTypes = {
-  reduceCount: PropTypes.func,
-  enlargeCount: PropTypes.func,
+  decreaseCount: PropTypes.func,
+  increaseCount: PropTypes.func,
   count: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 

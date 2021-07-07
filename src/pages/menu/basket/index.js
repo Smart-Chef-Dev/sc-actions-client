@@ -174,8 +174,8 @@ const Basket = () => {
             >
               <Flex>
                 <Counter
-                  reduceCount={changeNumberOfPeople(-1)}
-                  enlargeCount={changeNumberOfPeople(+1)}
+                  decreaseCount={changeNumberOfPeople(-1)}
+                  increaseCount={changeNumberOfPeople(+1)}
                   count={basketAtoms.personCount}
                 />
               </Flex>
@@ -214,8 +214,11 @@ const Basket = () => {
                       justifyContent="flex-end"
                     >
                       <Counter
-                        reduceCount={changeOrderItemCount(-1, currentValue._id)}
-                        enlargeCount={changeOrderItemCount(
+                        decreaseCount={changeOrderItemCount(
+                          -1,
+                          currentValue._id
+                        )}
+                        increaseCount={changeOrderItemCount(
                           +1,
                           currentValue._id
                         )}
@@ -254,8 +257,8 @@ const Basket = () => {
                     justifyContent="flex-end"
                   >
                     <Counter
-                      reduceCount={changeOrderItemCount(-1, currentValue._id)}
-                      enlargeCount={changeOrderItemCount(+1, currentValue._id)}
+                      decreaseCount={changeOrderItemCount(-1, currentValue._id)}
+                      increaseCount={changeOrderItemCount(+1, currentValue._id)}
                       count={currentValue.count}
                     />
                     <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
