@@ -1,34 +1,51 @@
-import { memo } from "react";
-import { FixedSizeList } from "react-window";
+import { createRef, memo, useCallback, useState } from "react";
+import { VariableSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import Category from "../category";
 
+const listRef = createRef();
+
 const Categories = ({ restaurantId, tableId, onLocation, categories }) => {
+  const [itemsSizes, setItemsSizes] = useState([]);
+
+  const getItemSize = useCallback(
+    (index) => {
+      const itemSize = itemsSizes.find((itemSize) => itemSize.index === index);
+      return itemSize ? itemSize.size : 270;
+    },
+    [itemsSizes]
+  );
+
   return (
     <Flex height={1} width={1}>
       <AutoSizer>
         {({ height, width }) => (
-          <FixedSizeList
+          <List
             height={height}
+            ref={listRef}
             itemCount={categories.data.length}
-            itemSize={270}
+            itemSize={getItemSize}
             width={width}
-            itemData={{
-              restaurantId,
-              tableId,
-              categories,
-              onLocation,
-            }}
           >
-            {({ index, style, data }) => (
+            {({ index, style }) => (
               <Flex direction="column" style={style}>
-                <Category {...data} category={data.categories.data[index]} />
+                <Category
+                  category={categories.data[index]}
+                  listRef={listRef}
+                  index={index}
+                  onItemsSizes={setItemsSizes}
+                  itemsSizes={itemsSizes}
+                  restaurantId={restaurantId}
+                  tableId={tableId}
+                  categories={categories}
+                  onLocation={onLocation}
+                />
               </Flex>
             )}
-          </FixedSizeList>
+          </List>
         )}
       </AutoSizer>
     </Flex>

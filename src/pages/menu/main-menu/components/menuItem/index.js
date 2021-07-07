@@ -1,6 +1,5 @@
 import { Fragment, memo, useCallback, useMemo } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useInfiniteQuery } from "react-query";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
 
@@ -11,27 +10,14 @@ import { Img } from "components/img";
 
 import { theme } from "theme";
 
-import getMenuItemsByCategoryIdInLimit from "services/getMenuItemsByCategoryIdInLimit";
-
-const numberOfPagesPerDownload = 5;
-
-const MenuItem = ({ categoryId, restaurantId, tableId, onLocation }) => {
-  const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    ["menuItemsPages", { categoryId }],
-    getMenuItemsByCategoryIdInLimit,
-    {
-      getNextPageParam: (lastPage) => {
-        if (lastPage.totalPages <= lastPage.page) {
-          return false;
-        }
-
-        return {
-          page: lastPage.page,
-          limit: numberOfPagesPerDownload,
-        };
-      },
-    }
-  );
+const MenuItem = ({
+  categoryId,
+  restaurantId,
+  tableId,
+  onLocation,
+  menuItems,
+}) => {
+  const { data, isLoading, fetchNextPage, hasNextPage } = menuItems;
 
   const dataLength = useMemo(
     () =>
@@ -106,6 +92,7 @@ MenuItem.propTypes = {
   restaurantId: PropTypes.string,
   tableId: PropTypes.string,
   onLocation: PropTypes.func,
+  menuItems: PropTypes.object,
 };
 
 const s = {

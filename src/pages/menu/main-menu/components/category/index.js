@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect, useMemo } from "react";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
@@ -10,7 +10,85 @@ import { theme } from "theme";
 import Arrow from "assets/icons/main-menu/arrow.svg";
 
 import PropTypes from "prop-types";
-const Category = ({ restaurantId, tableId, onLocation, category }) => {
+import { useInfiniteQuery } from "react-query";
+import getMenuItemsByCategoryIdInLimit from "../../../../../services/getMenuItemsByCategoryIdInLimit";
+const numberOfPagesPerDownload = 5;
+
+const Category = ({
+  restaurantId,
+  tableId,
+  onLocation,
+  category,
+  listRef,
+  index,
+  onItemsSizes,
+  itemsSizes,
+}) => {
+  const menuItems = useInfiniteQuery(
+    ["menuItemsPages", { categoryId: category._id }],
+    getMenuItemsByCategoryIdInLimit,
+    {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.totalPages <= lastPage.page) {
+          return false;
+        }
+
+        return {
+          page: lastPage.page,
+          limit: numberOfPagesPerDownload,
+        };
+      },
+    }
+  );
+
+  const allPages = useMemo(
+    () =>
+      !menuItems.isLoading &&
+      menuItems.data.pages.reduce(
+        (previousValues, currentValue) => [
+          ...previousValues,
+          ...currentValue.items,
+        ],
+        []
+      ),
+    [menuItems]
+  );
+
+  const longestName = useMemo(
+    () =>
+      !menuItems.isLoading &&
+      allPages.reduce(
+        (previousValues, currentValue) =>
+          currentValue.name.length > previousValues
+            ? currentValue.name.length
+            : previousValues,
+        0
+      ),
+    [menuItems, allPages]
+  );
+
+  useEffect(() => {
+    const itemSize = itemsSizes.find((itemSize) => itemSize.index === index);
+
+    if (!itemSize && longestName) {
+      onItemsSizes([...itemsSizes, { size: 270 + longestName, index: index }]);
+      listRef.current.resetAfterIndex(index);
+      return;
+    }
+
+    if (itemSize && itemSize.size - longestName !== 270) {
+      onItemsSizes((oldValue) =>
+        oldValue.map((currentValue) =>
+          currentValue.index === index
+            ? { size: 270 + longestName, index: index }
+            : currentValue
+        )
+      );
+
+      listRef.current.resetAfterIndex(index);
+    }
+  }, [listRef, index, longestName, itemsSizes, onItemsSizes]);
+
   const handleArrowClick = useCallback(
     (categoryId) => () => {
       onLocation(`/restaurant/${restaurantId}/${tableId}/${categoryId}`);
@@ -48,6 +126,7 @@ const Category = ({ restaurantId, tableId, onLocation, category }) => {
             restaurantId={restaurantId}
             tableId={tableId}
             onLocation={onLocation}
+            menuItems={menuItems}
           />
         </Flex>
         <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
@@ -61,6 +140,10 @@ Category.propTypes = {
   tableId: PropTypes.string,
   onLocation: PropTypes.func,
   category: PropTypes.object,
+  listRef: PropTypes.object,
+  onItemsSizes: PropTypes.func,
+  itemsSizes: PropTypes.array,
+  index: PropTypes.string,
 };
 
 export default memo(Category);
