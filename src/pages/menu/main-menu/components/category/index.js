@@ -1,5 +1,6 @@
-import { createRef, memo, useCallback, useEffect } from "react";
+import { memo, useCallback } from "react";
 import { useInfiniteQuery } from "react-query";
+import { useInView } from "react-intersection-observer";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
@@ -13,9 +14,13 @@ import Arrow from "assets/icons/main-menu/arrow.svg";
 import getMenuItemsByCategoryIdInLimit from "services/getMenuItemsByCategoryIdInLimit";
 
 const numberOfPagesPerDownload = 5;
-const menuItemRef = createRef();
 
 const Category = ({ restaurantId, tableId, onLocation, category }) => {
+  const { ref, inView } = useInView({
+    threshold: 0,
+    triggerOnce: true,
+  });
+
   const menuItems = useInfiniteQuery(
     ["menuItemsPages", { categoryId: category._id }],
     getMenuItemsByCategoryIdInLimit,
@@ -41,7 +46,7 @@ const Category = ({ restaurantId, tableId, onLocation, category }) => {
   );
 
   return (
-    <Flex direction="column" width={1}>
+    <Flex direction="column" width={1} ref={ref}>
       <Flex width={1}>
         <Text fontSize={theme.fontSize(2)} fontWeight="bold">
           {category.name}
@@ -64,14 +69,15 @@ const Category = ({ restaurantId, tableId, onLocation, category }) => {
         width={1}
         height={1}
       >
-        <MenuItem
-          categoryId={category._id}
-          restaurantId={restaurantId}
-          tableId={tableId}
-          onLocation={onLocation}
-          menuItems={menuItems}
-          menuItemRef={menuItemRef}
-        />
+        {inView && (
+          <MenuItem
+            categoryId={category._id}
+            restaurantId={restaurantId}
+            tableId={tableId}
+            onLocation={onLocation}
+            menuItems={menuItems}
+          />
+        )}
       </Flex>
       <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
     </Flex>

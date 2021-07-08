@@ -7,7 +7,6 @@ import { Flex } from "components/flex";
 import { Text } from "components/text";
 import ImageContainer from "components/image";
 import { Img } from "components/img";
-
 import { theme } from "theme";
 
 const MenuItem = ({
@@ -16,7 +15,6 @@ const MenuItem = ({
   tableId,
   onLocation,
   menuItems,
-  menuItemRef,
 }) => {
   const { data, isLoading, fetchNextPage, hasNextPage } = menuItems;
 
@@ -40,12 +38,7 @@ const MenuItem = ({
 
   return (
     !isLoading && (
-      <Flex
-        width={1}
-        overflowX="auto"
-        id={`scrollMenuItems(${categoryId})`}
-        ref={menuItemRef}
-      >
+      <Flex width={1} overflowX="auto" id={`scrollMenuItems(${categoryId})`}>
         <InfiniteScroll
           dataLength={dataLength}
           next={fetchNextPage}
@@ -99,7 +92,6 @@ MenuItem.propTypes = {
   tableId: PropTypes.string,
   onLocation: PropTypes.func,
   menuItems: PropTypes.object,
-  menuItemRef: PropTypes.object,
 };
 
 const s = {
