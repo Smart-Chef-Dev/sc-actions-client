@@ -16,6 +16,7 @@ const MenuItem = ({
   tableId,
   onLocation,
   menuItems,
+  menuItemRef,
 }) => {
   const { data, isLoading, fetchNextPage, hasNextPage } = menuItems;
 
@@ -39,7 +40,12 @@ const MenuItem = ({
 
   return (
     !isLoading && (
-      <Flex width={1} overflowX="auto" id={`scrollMenuItems(${categoryId})`}>
+      <Flex
+        width={1}
+        overflowX="auto"
+        id={`scrollMenuItems(${categoryId})`}
+        ref={menuItemRef}
+      >
         <InfiniteScroll
           dataLength={dataLength}
           next={fetchNextPage}
@@ -93,6 +99,7 @@ MenuItem.propTypes = {
   tableId: PropTypes.string,
   onLocation: PropTypes.func,
   menuItems: PropTypes.object,
+  menuItemRef: PropTypes.object,
 };
 
 const s = {

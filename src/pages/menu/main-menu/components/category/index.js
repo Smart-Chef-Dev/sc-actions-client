@@ -1,18 +1,19 @@
-import { memo, useCallback, useEffect, useMemo } from "react";
+import { createRef, memo, useCallback, useEffect } from "react";
+import { useInfiniteQuery } from "react-query";
+import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Divider } from "components/divider";
 import MenuItem from "pages/menu/main-menu/components/menuItem/index";
-
 import { theme } from "theme";
 
 import Arrow from "assets/icons/main-menu/arrow.svg";
 
-import PropTypes from "prop-types";
-import { useInfiniteQuery } from "react-query";
-import getMenuItemsByCategoryIdInLimit from "../../../../../services/getMenuItemsByCategoryIdInLimit";
+import getMenuItemsByCategoryIdInLimit from "services/getMenuItemsByCategoryIdInLimit";
+
 const numberOfPagesPerDownload = 5;
+const menuItemRef = createRef();
 
 const Category = ({
   restaurantId,
@@ -23,7 +24,6 @@ const Category = ({
   index,
   onItemsSizes,
   itemsSizes,
-  elementSizeWithoutText,
 }) => {
   const menuItems = useInfiniteQuery(
     ["menuItemsPages", { categoryId: category._id }],
@@ -42,56 +42,27 @@ const Category = ({
     }
   );
 
-  const allPages = useMemo(
-    () =>
-      !menuItems.isLoading &&
-      menuItems.data.pages.reduce(
-        (previousValues, currentValue) => [
-          ...previousValues,
-          ...currentValue.items,
-        ],
-        []
-      ),
-    [menuItems]
-  );
-
-  const longestName = useMemo(
-    () =>
-      !menuItems.isLoading &&
-      allPages.reduce(
-        (previousValues, currentValue) =>
-          currentValue.name.length > previousValues
-            ? currentValue.name.length
-            : previousValues,
-        0
-      ),
-    [menuItems, allPages]
-  );
-
   useEffect(() => {
     const itemSize = itemsSizes.find((itemSize) => itemSize.index === index);
+    const height = menuItemRef?.current?.offsetHeight + 26 + 48;
 
-    if (!itemSize && longestName) {
-      onItemsSizes([
-        ...itemsSizes,
-        { size: elementSizeWithoutText + longestName, index: index },
-      ]);
-      listRef.current.resetAfterIndex(index);
+    if (!itemSize && height) {
+      onItemsSizes([...itemsSizes, { size: height, index: index }]);
+      listRef.current.resetAfterIndex(index, true);
       return;
     }
 
-    if (itemSize && itemSize.size - longestName !== elementSizeWithoutText) {
+    if (itemSize?.size < height) {
       onItemsSizes((oldValue) =>
         oldValue.map((currentValue) =>
           currentValue.index === index
-            ? { size: elementSizeWithoutText + longestName, index: index }
+            ? { size: height, index: index }
             : currentValue
         )
       );
-
-      listRef.current.resetAfterIndex(index);
+      listRef.current.resetAfterIndex(index, true);
     }
-  }, [listRef, index, longestName, itemsSizes, onItemsSizes]);
+  });
 
   const handleArrowClick = useCallback(
     (categoryId) => () => {
@@ -131,6 +102,7 @@ const Category = ({
             tableId={tableId}
             onLocation={onLocation}
             menuItems={menuItems}
+            menuItemRef={menuItemRef}
           />
         </Flex>
         <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
@@ -147,7 +119,7 @@ Category.propTypes = {
   listRef: PropTypes.object,
   onItemsSizes: PropTypes.func,
   itemsSizes: PropTypes.array,
-  index: PropTypes.string,
+  index: PropTypes.number,
   elementSizeWithoutText: PropTypes.number,
 };
 
