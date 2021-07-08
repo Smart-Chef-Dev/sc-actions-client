@@ -55,6 +55,7 @@ const Menu = () => {
       height={1}
       width={1}
       boxSizing="border-box"
+      overflowY="hidden"
     >
       <Flex height={1} width={1} direction="column" flex={1}>
         <Text
