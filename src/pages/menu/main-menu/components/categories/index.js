@@ -8,13 +8,14 @@ import Category from "../category";
 
 const listRef = createRef();
 
+const elementSizeWithoutText = 270;
 const Categories = ({ restaurantId, tableId, onLocation, categories }) => {
   const [itemsSizes, setItemsSizes] = useState([]);
 
   const getItemSize = useCallback(
     (index) => {
       const itemSize = itemsSizes.find((itemSize) => itemSize.index === index);
-      return itemSize ? itemSize.size : 270;
+      return itemSize ? itemSize.size : elementSizeWithoutText;
     },
     [itemsSizes]
   );
@@ -42,6 +43,7 @@ const Categories = ({ restaurantId, tableId, onLocation, categories }) => {
                   tableId={tableId}
                   categories={categories}
                   onLocation={onLocation}
+                  elementSizeWithoutText={elementSizeWithoutText}
                 />
               </Flex>
             )}

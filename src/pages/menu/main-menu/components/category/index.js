@@ -23,6 +23,7 @@ const Category = ({
   index,
   onItemsSizes,
   itemsSizes,
+  elementSizeWithoutText,
 }) => {
   const menuItems = useInfiniteQuery(
     ["menuItemsPages", { categoryId: category._id }],
@@ -71,16 +72,19 @@ const Category = ({
     const itemSize = itemsSizes.find((itemSize) => itemSize.index === index);
 
     if (!itemSize && longestName) {
-      onItemsSizes([...itemsSizes, { size: 270 + longestName, index: index }]);
+      onItemsSizes([
+        ...itemsSizes,
+        { size: elementSizeWithoutText + longestName, index: index },
+      ]);
       listRef.current.resetAfterIndex(index);
       return;
     }
 
-    if (itemSize && itemSize.size - longestName !== 270) {
+    if (itemSize && itemSize.size - longestName !== elementSizeWithoutText) {
       onItemsSizes((oldValue) =>
         oldValue.map((currentValue) =>
           currentValue.index === index
-            ? { size: 270 + longestName, index: index }
+            ? { size: elementSizeWithoutText + longestName, index: index }
             : currentValue
         )
       );
@@ -144,6 +148,7 @@ Category.propTypes = {
   onItemsSizes: PropTypes.func,
   itemsSizes: PropTypes.array,
   index: PropTypes.string,
+  elementSizeWithoutText: PropTypes.number,
 };
 
 export default memo(Category);
