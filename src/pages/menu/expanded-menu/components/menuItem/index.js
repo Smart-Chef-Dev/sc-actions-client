@@ -1,15 +1,16 @@
 import { Fragment, memo, useCallback, useMemo } from "react";
 import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import { Flex } from "components/flex";
 import { Img } from "components/img";
 import { Text } from "components/text";
-
 import { theme } from "theme";
+
 import Basket from "assets/icons/expanded-menu/basket.svg";
 
-import InfiniteScroll from "react-infinite-scroll-component";
+import "pages/menu/expanded-menu/infinite-scroll-component__outerdiv.css";
 
 const MenuItem = ({
   restaurantId,
@@ -68,46 +69,38 @@ const MenuItem = ({
   );
 
   return (
-    <Flex
-      boxSizing="border-box"
-      px={theme.spacing(1)}
-      overflowY="auto"
-      width={1}
-      height={1}
-      id={`scrollMenuItems(${categoryId})`}
-    >
-      <InfiniteScroll
-        dataLength={dataLength}
-        next={fetchNextPage}
-        hasMore={!!hasNextPage}
-        scrollableTarget={`scrollMenuItems(${categoryId})`}
-        style={{ overflow: undefined }}
-        loader={<div>Loading...</div>}
-      >
-        <Flex direction="column" width={1} height={1}>
+    !menuItems.isLoading && (
+      <Flex height={1} width={1} direction="column" mx={theme.spacing(1)}>
+        <InfiniteScroll
+          dataLength={dataLength}
+          next={fetchNextPage}
+          hasMore={!!hasNextPage}
+          scrollableTarget={`scrollMenuItems(${categoryId})`}
+          style={{ overflow: undefined, width: "100%" }}
+          loader={<div>Loading...</div>}
+        >
           {data.pages.map((page, i) => (
             <Fragment key={i}>
               {page.items.map((currentMenuItems) => (
                 <s.Container
                   key={currentMenuItems._id}
-                  mb={theme.spacing(1)}
                   width={1}
+                  direction="column"
+                  mb={theme.spacing(1)}
                 >
                   <s.IconBasket onClick={addProductToOrder(currentMenuItems)}>
                     <Basket />
                   </s.IconBasket>
                   <Flex
-                    direction="column"
-                    height={1}
-                    width={1}
                     onClick={handleItemClick(currentMenuItems._id)}
+                    direction="column"
+                    width={1}
                   >
                     <Img
                       src={currentMenuItems.pictureUrl}
                       alt={currentMenuItems.name}
                       borderRadius="12px 12px 0 0"
                       width={1}
-                      height={1}
                     />
                     <Text
                       p={theme.spacing(1)}
@@ -143,9 +136,9 @@ const MenuItem = ({
               ))}
             </Fragment>
           ))}
-        </Flex>
-      </InfiniteScroll>
-    </Flex>
+        </InfiniteScroll>
+      </Flex>
+    )
   );
 };
 

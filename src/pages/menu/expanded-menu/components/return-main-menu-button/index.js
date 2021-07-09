@@ -1,5 +1,4 @@
 import { memo, useCallback } from "react";
-import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
 
 import { Text } from "components/text";
@@ -19,21 +18,17 @@ const ReturnMainMenuButton = ({
   }, [onLocation, restaurantId, tableId]);
 
   return (
-    <s.Arrow alignItems="center" onClick={handleArrowClick}>
+    <Flex
+      onClick={handleArrowClick}
+      ml={theme.spacing(1)}
+      mt={theme.spacing(1)}
+    >
       <Arrow />
       <Text color="var(--text-grey)" fontSize={theme.fontSize(2)}>
         {translations["menu"]}
       </Text>
-    </s.Arrow>
+    </Flex>
   );
-};
-
-const s = {
-  Arrow: styled(Flex)`
-    position: absolute;
-    left: 8px;
-    top: 12px;
-  `,
 };
 
 ReturnMainMenuButton.propTypes = {

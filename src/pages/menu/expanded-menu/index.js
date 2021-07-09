@@ -5,10 +5,9 @@ import { useRecoilState } from "recoil";
 
 import { Routes } from "constants/routes";
 import { Flex } from "components/flex";
-import Loader from "components/loaders";
 import Navigation from "./components/navigation";
 import MenuItem from "./components/menuItem";
-import ReturnMainMenuButton from "./components/returnMainMenuButton";
+import ReturnMainMenuButton from "./components/return-main-menu-button";
 
 import getAllCategories from "services/getAllCategories";
 import getMenuItemsByCategoryIdInLimit from "services/getMenuItemsByCategoryIdInLimit";
@@ -29,7 +28,10 @@ const ExpandedMenu = () => {
   } = useTranslation();
 
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
-  const category = useQuery(["categories", { restaurantId }], getAllCategories);
+  const categories = useQuery(
+    ["categories", { restaurantId }],
+    getAllCategories
+  );
   const menuItems = useInfiniteQuery(
     ["menuItemsPages", { categoryId }],
     getMenuItemsByCategoryIdInLimit,
@@ -47,20 +49,35 @@ const ExpandedMenu = () => {
     }
   );
 
-  return !category.isLoading && !menuItems.isLoading ? (
-    <Flex direction="column" height={1} width={1}>
-      <ReturnMainMenuButton
-        restaurantId={restaurantId}
-        tableId={tableId}
-        translations={translations}
-        onLocation={setLocation}
-      />
-      <Flex direction="column" height={1} width={1}>
+  return (
+    <Flex
+      direction="column"
+      height={1}
+      width={1}
+      overflowY="hidden"
+      overflowX="hidden"
+    >
+      <Flex height={1} width={1} flex={1}>
+        <ReturnMainMenuButton
+          restaurantId={restaurantId}
+          tableId={tableId}
+          translations={translations}
+          onLocation={setLocation}
+        />
+      </Flex>
+      <Flex height={1} width={1} flex={1}>
         <Navigation
-          category={category.data}
+          categories={categories}
           currentCategoryId={categoryId}
           onLocation={setLocation}
         />
+      </Flex>
+      <Flex
+        height={1}
+        width={1}
+        overflowY="auto"
+        id={`scrollMenuItems(${categoryId})`}
+      >
         <MenuItem
           menuItems={menuItems}
           restaurantId={restaurantId}
@@ -73,8 +90,6 @@ const ExpandedMenu = () => {
         />
       </Flex>
     </Flex>
-  ) : (
-    <Loader />
   );
 };
 

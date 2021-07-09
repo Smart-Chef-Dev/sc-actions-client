@@ -6,7 +6,9 @@ import { Text } from "components/text";
 import { theme } from "theme";
 import { Divider } from "components/divider";
 
-const Navigation = ({ category, currentCategoryId, onLocation }) => {
+const Navigation = ({ categories, currentCategoryId, onLocation }) => {
+  const { data, isLoading } = categories;
+
   const changeCategory = useCallback(
     (categoryId) => () => {
       onLocation(categoryId);
@@ -14,56 +16,61 @@ const Navigation = ({ category, currentCategoryId, onLocation }) => {
     [onLocation]
   );
 
-  const currentCategory = useMemo(
+  const category = useMemo(
     () =>
-      category.find((currentValue) => currentValue._id === currentCategoryId),
-    [currentCategoryId, category]
+      !isLoading &&
+      data.find((currentValue) => currentValue._id === currentCategoryId),
+    [currentCategoryId, data, isLoading]
   );
 
   return (
-    <Flex
-      direction="column"
-      pl={theme.spacing(1)}
-      width={1}
-      flex={1}
-      height={1}
-      boxSizing="border-box"
-    >
-      <Text
-        fontSize={theme.fontSize(3)}
-        mt={theme.spacing(3)}
-        mb={theme.spacing(1)}
-        fontWeight="bold"
-      >
-        {currentCategory.name}
-      </Text>
-      <Divider />
-      <Flex overflowX="auto" width={1}>
-        {category.map((currentValue) => (
-          <Flex key={currentValue._id}>
-            <Flex p={theme.spacing(1)}>
-              {currentCategoryId === currentValue._id ? (
-                <Text onClick={changeCategory(currentValue._id)}>
-                  {currentValue.name}
+    !isLoading && (
+      <Flex direction="column" height={1} width={1}>
+        <Flex
+          height={1}
+          width={1}
+          direction="column"
+          ml={theme.spacing(1)}
+          flex={1}
+        >
+          <Text
+            fontSize={theme.fontSize(3)}
+            fontWeight="bold"
+            my={theme.spacing(1)}
+          >
+            {category.name}
+          </Text>
+          <Divider />
+        </Flex>
+        <Flex height={1} width={1} pl={theme.spacing(1)} boxSizing="border-box">
+          <Flex overflowX="auto">
+            {data.map((currentCategory) =>
+              currentCategoryId === currentCategory._id ? (
+                <Text
+                  onClick={changeCategory(currentCategory._id)}
+                  p={theme.spacing(1)}
+                >
+                  {currentCategory.name}
                 </Text>
               ) : (
                 <Text
-                  onClick={changeCategory(currentValue._id)}
+                  onClick={changeCategory(currentCategory._id)}
                   color="var(--text-grey)"
+                  p={theme.spacing(1)}
                 >
-                  {currentValue.name}
+                  {currentCategory.name}
                 </Text>
-              )}
-            </Flex>
+              )
+            )}
           </Flex>
-        ))}
+        </Flex>
       </Flex>
-    </Flex>
+    )
   );
 };
 
 Navigation.propTypes = {
-  category: PropTypes.array,
+  categories: PropTypes.array,
   currentCategoryId: PropTypes.string,
   onLocation: PropTypes.func,
 };
