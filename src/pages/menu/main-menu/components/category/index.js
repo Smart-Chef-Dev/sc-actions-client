@@ -1,5 +1,4 @@
 import { memo, useCallback } from "react";
-import { useInfiniteQuery } from "react-query";
 import { useInView } from "react-intersection-observer";
 import PropTypes from "prop-types";
 
@@ -11,32 +10,11 @@ import { theme } from "theme";
 
 import Arrow from "assets/icons/main-menu/arrow.svg";
 
-import getMenuItemsByCategoryIdInLimit from "services/getMenuItemsByCategoryIdInLimit";
-
-const numberOfPagesPerDownload = 5;
-
 const Category = ({ restaurantId, tableId, onLocation, category }) => {
   const { ref, inView } = useInView({
     threshold: 0,
     triggerOnce: true,
   });
-
-  const menuItems = useInfiniteQuery(
-    ["menuItemsPages", { categoryId: category._id }],
-    getMenuItemsByCategoryIdInLimit,
-    {
-      getNextPageParam: (lastPage) => {
-        if (lastPage.totalPages <= lastPage.page) {
-          return false;
-        }
-
-        return {
-          page: lastPage.page,
-          limit: numberOfPagesPerDownload,
-        };
-      },
-    }
-  );
 
   const handleArrowClick = useCallback(
     (categoryId) => () => {
@@ -75,7 +53,6 @@ const Category = ({ restaurantId, tableId, onLocation, category }) => {
             restaurantId={restaurantId}
             tableId={tableId}
             onLocation={onLocation}
-            menuItems={menuItems}
           />
         )}
       </Flex>

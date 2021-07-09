@@ -6,7 +6,7 @@ import Category from "../category";
 
 const Categories = ({ restaurantId, tableId, onLocation, categories }) => {
   return (
-    <Flex width={1} direction="column" overflowY="auto">
+    <Flex width={1} direction="column" overflowY="auto" overflowX="hidden">
       {categories.data.map((currentCategory) => (
         <Category
           key={currentCategory._id}
