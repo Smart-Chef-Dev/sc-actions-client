@@ -9,7 +9,7 @@ import { Img } from "components/img";
 import { Text } from "components/text";
 import Button from "components/button";
 import Counter from "components/counter";
-import Loader from "components/loader";
+import Loader from "components/loaders";
 
 import { useTranslation } from "contexts/translation-context";
 import { Routes } from "constants/routes";

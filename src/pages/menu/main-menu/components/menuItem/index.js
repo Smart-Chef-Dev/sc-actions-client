@@ -8,9 +8,11 @@ import { Flex } from "components/flex";
 import { Text } from "components/text";
 import ImageContainer from "components/image";
 import { Img } from "components/img";
+import MenuItemLoaders from "components/loaders/main-menu/menu-items-loaders";
 import { theme } from "theme";
 
 import getMenuItemsByCategoryIdInLimit from "services/getMenuItemsByCategoryIdInLimit";
+
 const numberOfPagesPerDownload = 5;
 
 const MenuItem = ({ categoryId, restaurantId, tableId, onLocation }) => {
@@ -49,53 +51,53 @@ const MenuItem = ({ categoryId, restaurantId, tableId, onLocation }) => {
     [onLocation, restaurantId, tableId]
   );
 
-  return (
-    !isLoading && (
-      <Flex width={1} overflowX="auto" id={`scrollMenuItems(${categoryId})`}>
-        <InfiniteScroll
-          dataLength={dataLength}
-          next={fetchNextPage}
-          hasMore={!!hasNextPage}
-          loader={<div>Loading...</div>}
-          scrollableTarget={`scrollMenuItems(${categoryId})`}
-          style={{ overflowY: "hidden", display: "flex" }}
-        >
-          {data.pages.map((page, i) => (
-            <Fragment key={i}>
-              {page.items.map((currentMenuItems) => (
-                <Flex
-                  key={currentMenuItems._id}
-                  pr={theme.spacing(1)}
-                  pb={theme.spacing(1)}
-                >
-                  <Flex direction="column">
-                    <ImageContainer
-                      src={currentMenuItems.pictureUrl}
-                      preSrc={currentMenuItems.pictureLqipPreview}
-                    >
-                      {(src) => (
-                        <s.Preview
-                          src={src}
-                          alt={currentMenuItems.name}
-                          loading="lazy"
-                          borderRadius="10%"
-                          mb={theme.spacing(1)}
-                          onClick={handleItemClick(currentMenuItems._id)}
-                        />
-                      )}
-                    </ImageContainer>
-                    <s.ProductName>{currentMenuItems.name}</s.ProductName>
-                    <Text color="var(--text-grey)">
-                      {currentMenuItems.price}$
-                    </Text>
-                  </Flex>
+  return !isLoading ? (
+    <Flex width={1} overflowX="auto" id={`scrollMenuItems(${categoryId})`}>
+      <InfiniteScroll
+        dataLength={dataLength}
+        next={fetchNextPage}
+        hasMore={!!hasNextPage}
+        loader={<MenuItemLoaders quantity={1} />}
+        scrollableTarget={`scrollMenuItems(${categoryId})`}
+        style={{ overflowY: "hidden", display: "flex" }}
+      >
+        {data.pages.map((page, i) => (
+          <Fragment key={i}>
+            {page.items.map((currentMenuItems) => (
+              <Flex
+                key={currentMenuItems._id}
+                pr={theme.spacing(1)}
+                pb={theme.spacing(1)}
+              >
+                <Flex direction="column">
+                  <ImageContainer
+                    src={currentMenuItems.pictureUrl}
+                    preSrc={currentMenuItems.pictureLqipPreview}
+                  >
+                    {(src) => (
+                      <s.Preview
+                        src={src}
+                        alt={currentMenuItems.name}
+                        loading="lazy"
+                        borderRadius="10%"
+                        mb={theme.spacing(1)}
+                        onClick={handleItemClick(currentMenuItems._id)}
+                      />
+                    )}
+                  </ImageContainer>
+                  <s.ProductName>{currentMenuItems.name}</s.ProductName>
+                  <Text color="var(--text-grey)">
+                    {currentMenuItems.price}$
+                  </Text>
                 </Flex>
-              ))}
-            </Fragment>
-          ))}
-        </InfiniteScroll>
-      </Flex>
-    )
+              </Flex>
+            ))}
+          </Fragment>
+        ))}
+      </InfiniteScroll>
+    </Flex>
+  ) : (
+    <MenuItemLoaders quantity={7} />
   );
 };
 

@@ -3,7 +3,7 @@ import { useMutation } from "react-query";
 import { useRoute } from "wouter";
 
 import { Routes } from "constants/routes";
-import Loader from "components/loader";
+import Loader from "components/loaders";
 import { useNotifications } from "hooks/useNotifications";
 import { useScreenBlock } from "hooks/useScreenBlock";
 import { useRestaurant } from "hooks/useRestaurant";

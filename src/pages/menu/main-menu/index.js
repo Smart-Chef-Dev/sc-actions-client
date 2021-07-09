@@ -7,7 +7,6 @@ import { Routes } from "constants/routes";
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Divider } from "components/divider";
-import Loader from "components/loader";
 import Categories from "./components/categories";
 
 import { theme } from "theme";
@@ -47,7 +46,7 @@ const Menu = () => {
     // eslint-disable-next-line
   }, []);
 
-  return !categories.isLoading ? (
+  return (
     <Flex
       direction="column"
       pl={theme.spacing(1)}
@@ -75,10 +74,6 @@ const Menu = () => {
         categories={categories}
       />
     </Flex>
-  ) : (
-    <>
-      <Loader />
-    </>
   );
 };
 

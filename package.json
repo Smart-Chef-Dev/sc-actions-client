@@ -19,6 +19,7 @@
     "qrcode.react": "^1.0.1",
     "react": "^17.0.2",
     "react-colorful": "^5.2.2",
+    "react-content-loader": "^6.0.3",
     "react-dom": "^17.0.2",
     "react-ga": "^3.3.0",
     "react-images-upload": "^1.2.8",

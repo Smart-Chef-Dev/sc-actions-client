@@ -9,6 +9,7 @@ import MenuItem from "pages/menu/main-menu/components/menuItem/index";
 import { theme } from "theme";
 
 import Arrow from "assets/icons/main-menu/arrow.svg";
+import { styled } from "@linaria/react";
 
 const Category = ({ restaurantId, tableId, onLocation, category }) => {
   const { ref, inView } = useInView({
@@ -47,13 +48,15 @@ const Category = ({ restaurantId, tableId, onLocation, category }) => {
         width={1}
         height={1}
       >
-        {inView && (
+        {inView ? (
           <MenuItem
             categoryId={category._id}
             restaurantId={restaurantId}
             tableId={tableId}
             onLocation={onLocation}
           />
+        ) : (
+          <Placeholder />
         )}
       </Flex>
       <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
@@ -67,5 +70,9 @@ Category.propTypes = {
   onLocation: PropTypes.func,
   category: PropTypes.object,
 };
+
+const Placeholder = styled(Flex)`
+  min-height: 135px;
+`;
 
 export default memo(Category);

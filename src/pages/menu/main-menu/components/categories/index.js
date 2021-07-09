@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import Category from "../category";
+import CategoriesLoader from "components/loaders/main-menu/categories-loader";
 
 const Categories = ({ restaurantId, tableId, onLocation, categories }) => {
-  return (
+  return !categories.isLoading ? (
     <Flex width={1} direction="column" overflowY="auto" overflowX="hidden">
       {categories.data.map((currentCategory) => (
         <Category
@@ -16,6 +17,10 @@ const Categories = ({ restaurantId, tableId, onLocation, categories }) => {
           onLocation={onLocation}
         />
       ))}
+    </Flex>
+  ) : (
+    <Flex direction="column" height={1} overflowX="hidden">
+      <CategoriesLoader quantity={7} />
     </Flex>
   );
 };

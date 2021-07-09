@@ -8,7 +8,7 @@ import { Routes } from "constants/routes";
 import Route from "components/Route";
 import MainLayout from "components/MainLayout";
 import SimpleLayout from "components/SimpleLayout";
-import Loader from "components/loader";
+import Loader from "components/loaders";
 import DarkModeContext from "contexts/dark-mode-context";
 import { TranslationContext } from "contexts/translation-context";
 
