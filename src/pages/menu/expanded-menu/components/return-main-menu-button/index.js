@@ -22,9 +22,14 @@ const ReturnMainMenuButton = ({
       onClick={handleArrowClick}
       ml={theme.spacing(1)}
       mt={theme.spacing(1)}
+      alignItems="center"
     >
-      <Arrow />
-      <Text color="var(--text-grey)" fontSize={theme.fontSize(2)}>
+      <Arrow fill="var(--main-text-color)" />
+      <Text
+        color="var(--text-grey)"
+        fontSize={theme.fontSize(2)}
+        ml={theme.spacing(1)}
+      >
         {translations["menu"]}
       </Text>
     </Flex>

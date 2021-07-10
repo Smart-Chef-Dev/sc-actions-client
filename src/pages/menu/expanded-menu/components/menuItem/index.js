@@ -7,6 +7,7 @@ import { Flex } from "components/flex";
 import { Img } from "components/img";
 import { Text } from "components/text";
 import { theme } from "theme";
+import MenuItemLoaders from "components/loaders/expanded-menu/menu-items-loaders";
 
 import Basket from "assets/icons/expanded-menu/basket.svg";
 
@@ -68,77 +69,84 @@ const MenuItem = ({
     [data, isLoading]
   );
 
-  return (
-    !menuItems.isLoading && (
-      <Flex height={1} width={1} direction="column" mx={theme.spacing(1)}>
-        <InfiniteScroll
-          dataLength={dataLength}
-          next={fetchNextPage}
-          hasMore={!!hasNextPage}
-          scrollableTarget={`scrollMenuItems(${categoryId})`}
-          style={{ overflow: undefined, width: "100%" }}
-          loader={<div>Loading...</div>}
-        >
-          {data.pages.map((page, i) => (
-            <Fragment key={i}>
-              {page.items.map((currentMenuItems) => (
-                <s.Container
-                  key={currentMenuItems._id}
-                  width={1}
+  return !menuItems.isLoading ? (
+    <Flex height={1} width={1} direction="column" mx={theme.spacing(1)}>
+      <InfiniteScroll
+        dataLength={dataLength}
+        next={fetchNextPage}
+        hasMore={!!hasNextPage}
+        scrollableTarget={`scrollMenuItems(${categoryId})`}
+        style={{ overflow: undefined, width: "100%" }}
+        loader={<MenuItemLoaders quantity={1} />}
+      >
+        {data.pages.map((page, i) => (
+          <Fragment key={i}>
+            {page.items.map((currentMenuItems) => (
+              <s.Container
+                key={currentMenuItems._id}
+                width={1}
+                direction="column"
+                mb={theme.spacing(1)}
+              >
+                <s.IconBasket onClick={addProductToOrder(currentMenuItems)}>
+                  <Basket />
+                </s.IconBasket>
+                <Flex
+                  onClick={handleItemClick(currentMenuItems._id)}
                   direction="column"
-                  mb={theme.spacing(1)}
+                  width={1}
                 >
-                  <s.IconBasket onClick={addProductToOrder(currentMenuItems)}>
-                    <Basket />
-                  </s.IconBasket>
-                  <Flex
-                    onClick={handleItemClick(currentMenuItems._id)}
-                    direction="column"
+                  <Img
+                    src={currentMenuItems.pictureUrl}
+                    alt={currentMenuItems.name}
+                    borderRadius="12px 12px 0 0"
                     width={1}
+                  />
+                  <Text
+                    p={theme.spacing(1)}
+                    color="var(--text-grey)"
+                    textTransform="uppercase"
                   >
-                    <Img
-                      src={currentMenuItems.pictureUrl}
-                      alt={currentMenuItems.name}
-                      borderRadius="12px 12px 0 0"
-                      width={1}
-                    />
+                    {currentMenuItems.category.name}
+                  </Text>
+                  <Text
+                    fontFamily="Actor"
+                    pl={theme.spacing(1)}
+                    fontSize={theme.fontSize(1)}
+                  >
+                    {currentMenuItems.name}
+                  </Text>
+                  <Flex
+                    width={1}
+                    justifyContent="space-between"
+                    p={theme.spacing(1)}
+                    boxSizing="border-box"
+                    alignItems="center"
+                  >
                     <Text
-                      p={theme.spacing(1)}
                       color="var(--text-grey)"
-                      textTransform="uppercase"
-                    >
-                      {currentMenuItems.category.name}
+                      fontSize={theme.fontSize(0)}
+                    >{`${currentMenuItems.weight} ${translations["g"]}`}</Text>
+                    <Text fontWeight="bold" fontSize={theme.fontSize(2)}>
+                      {currentMenuItems.price}$
                     </Text>
-                    <Text
-                      fontFamily="Actor"
-                      pl={theme.spacing(1)}
-                      fontSize={theme.fontSize(1)}
-                    >
-                      {currentMenuItems.name}
-                    </Text>
-                    <Flex
-                      width={1}
-                      justifyContent="space-between"
-                      p={theme.spacing(1)}
-                      boxSizing="border-box"
-                      alignItems="center"
-                    >
-                      <Text
-                        color="var(--text-grey)"
-                        fontSize={theme.fontSize(0)}
-                      >{`${currentMenuItems.weight} ${translations["g"]}`}</Text>
-                      <Text fontWeight="bold" fontSize={theme.fontSize(2)}>
-                        {currentMenuItems.price}$
-                      </Text>
-                    </Flex>
                   </Flex>
-                </s.Container>
-              ))}
-            </Fragment>
-          ))}
-        </InfiniteScroll>
-      </Flex>
-    )
+                </Flex>
+              </s.Container>
+            ))}
+          </Fragment>
+        ))}
+      </InfiniteScroll>
+    </Flex>
+  ) : (
+    <Flex
+      width={1}
+      direction="column"
+      px={theme.spacing(1)}
+      boxSizing="border-box"
+    >
+      <MenuItemLoaders quantity={7} />
+    </Flex>
   );
 };
 
