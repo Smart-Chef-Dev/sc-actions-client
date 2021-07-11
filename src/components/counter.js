@@ -5,17 +5,17 @@ import { Text } from "./text";
 import { theme } from "theme";
 import { Flex } from "./flex";
 
-import IncreaseCount from "assets/icons/counter/increase_count.svg";
-import DecreaseCount from "assets/icons/counter/decrease_count.svg";
+import PlusIcon from "assets/icons/counter/plus_icon.svg";
+import MinusIcon from "assets/icons/counter/minus_icon.svg";
 
 const Counter = ({ decreaseCount, increaseCount, count }) => {
   return (
     <Flex height={1} alignItems="center">
-      <DecreaseCount onClick={decreaseCount} />
+      <MinusIcon onClick={decreaseCount} />
       <Text fontSize={theme.fontSize(3)} mx={theme.spacing(1)}>
         {count}
       </Text>
-      <IncreaseCount onClick={increaseCount} />
+      <PlusIcon onClick={increaseCount} />
     </Flex>
   );
 };
