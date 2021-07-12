@@ -8,6 +8,7 @@ import { Img } from "components/img";
 import { Text } from "components/text";
 import { theme } from "theme";
 import MenuItemLoaders from "components/loaders/expanded-menu/menu-items-loaders";
+import ImageContainer from "components/image";
 
 import Basket from "assets/icons/expanded-menu/basket.svg";
 
@@ -96,12 +97,20 @@ const MenuItem = ({
                   direction="column"
                   width={1}
                 >
-                  <Img
+                  <ImageContainer
                     src={currentMenuItems.pictureUrl}
-                    alt={currentMenuItems.name}
-                    borderRadius="12px 12px 0 0"
-                    width={1}
-                  />
+                    preSrc={currentMenuItems.pictureLqipPreview}
+                  >
+                    {(src) => (
+                      <Img
+                        src={src}
+                        alt={currentMenuItems.name}
+                        loading="lazy"
+                        borderRadius="12px 12px 0 0"
+                        width={1}
+                      />
+                    )}
+                  </ImageContainer>
                   <Text
                     p={theme.spacing(1)}
                     color="var(--text-grey)"
