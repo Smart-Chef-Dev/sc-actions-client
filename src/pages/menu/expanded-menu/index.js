@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { createRef, memo } from "react";
 import { useRoute, useLocation } from "wouter";
 import { useInfiniteQuery, useQuery } from "react-query";
 import { useRecoilState } from "recoil";
@@ -16,6 +16,8 @@ import BasketState from "atoms/basket";
 import { useTranslation } from "contexts/translation-context";
 
 const numberOfPagesPerDownload = 5;
+
+const menuItemsRef = createRef();
 
 const ExpandedMenu = () => {
   const [, { restaurantId, categoryId, tableId }] = useRoute(
@@ -73,10 +75,11 @@ const ExpandedMenu = () => {
         />
       </Flex>
       <Flex
+        ref={menuItemsRef}
         height={1}
         width={1}
         overflowY="auto"
-        id={`scrollMenuItems(${categoryId})`}
+        id={`menuItems(${categoryId})`}
       >
         <MenuItem
           menuItems={menuItems}
@@ -87,6 +90,7 @@ const ExpandedMenu = () => {
           onBasketAtoms={setBasketAtoms}
           translations={translations}
           onLocation={setLocation}
+          menuItemsRef={menuItemsRef}
         />
       </Flex>
     </Flex>

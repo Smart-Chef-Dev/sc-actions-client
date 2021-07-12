@@ -1,4 +1,4 @@
-import { Fragment, memo, useCallback, useMemo } from "react";
+import { Fragment, memo, useCallback, useEffect, useMemo } from "react";
 import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -12,7 +12,7 @@ import ImageContainer from "components/image";
 
 import Basket from "assets/icons/expanded-menu/basket.svg";
 
-import "pages/menu/expanded-menu/infinite-scroll-component__outerdiv.css";
+import "pages/menu/expanded-menu/infinite-scroll-component.css";
 
 const MenuItem = ({
   restaurantId,
@@ -23,8 +23,29 @@ const MenuItem = ({
   onBasketAtoms,
   translations,
   onLocation,
+  menuItemsRef,
 }) => {
   const { data, isLoading, fetchNextPage, hasNextPage } = menuItems;
+
+  const dataLength = useMemo(
+    () =>
+      !isLoading &&
+      data.pages.reduce(
+        (previousValues, currentValue) =>
+          previousValues + currentValue.items.length,
+        0
+      ),
+    [data, isLoading]
+  );
+
+  useEffect(() => {
+    menuItemsRef.current.scrollTo({
+      top: 0,
+    });
+
+    // should only fire when categoryId changes
+    // eslint-disable-next-line
+  }, [categoryId]);
 
   const handleItemClick = useCallback(
     (itemId) => () => {
@@ -59,24 +80,13 @@ const MenuItem = ({
     [onBasketAtoms, basketAtoms]
   );
 
-  const dataLength = useMemo(
-    () =>
-      !isLoading &&
-      data.pages.reduce(
-        (previousValues, currentValue) =>
-          previousValues + currentValue.items.length,
-        0
-      ),
-    [data, isLoading]
-  );
-
   return !menuItems.isLoading ? (
     <Flex height={1} width={1} direction="column" mx={theme.spacing(1)}>
       <InfiniteScroll
         dataLength={dataLength}
         next={fetchNextPage}
         hasMore={!!hasNextPage}
-        scrollableTarget={`scrollMenuItems(${categoryId})`}
+        scrollableTarget={`menuItems(${categoryId})`}
         style={{ overflow: undefined, width: "100%" }}
         loader={<MenuItemLoaders quantity={1} />}
       >
@@ -181,6 +191,7 @@ MenuItem.propTypes = {
   basketAtoms: PropTypes.object,
   onBasketAtoms: PropTypes.func,
   translations: PropTypes.object,
+  menuItemsRef: PropTypes.object,
   onLocation: PropTypes.func,
 };
 
