@@ -1,5 +1,6 @@
 import { Fragment, memo, useCallback, useEffect, useMemo } from "react";
 import { styled } from "@linaria/react";
+import { css } from "@linaria/core";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -87,7 +88,7 @@ const MenuItem = ({
         next={fetchNextPage}
         hasMore={!!hasNextPage}
         scrollableTarget={`menuItems(${categoryId})`}
-        style={{ overflow: undefined, width: "100%" }}
+        className={infiniteScrollClass}
         loader={<MenuItemLoaders quantity={1} />}
       >
         {data.pages.map((page, i) => (
@@ -182,6 +183,11 @@ const s = {
     border-radius: 16px;
   `,
 };
+
+const infiniteScrollClass = css`
+  overflow: visible !important;
+  width: 100%;
+`;
 
 MenuItem.propTypes = {
   menuItems: PropTypes.object,

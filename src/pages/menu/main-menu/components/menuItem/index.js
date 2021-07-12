@@ -3,6 +3,7 @@ import { useInfiniteQuery } from "react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
+import { css } from "@linaria/core";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
@@ -57,9 +58,9 @@ const MenuItem = ({ categoryId, restaurantId, tableId, onLocation }) => {
         dataLength={dataLength}
         next={fetchNextPage}
         hasMore={!!hasNextPage}
-        loader={<MenuItemLoaders quantity={1} />}
         scrollableTarget={`scrollMenuItems(${categoryId})`}
-        style={{ overflowY: "hidden", display: "flex" }}
+        loader={<MenuItemLoaders quantity={1} />}
+        className={infiniteScrollComponent}
       >
         {data.pages.map((page, i) => (
           <Fragment key={i}>
@@ -100,6 +101,10 @@ const MenuItem = ({ categoryId, restaurantId, tableId, onLocation }) => {
     <MenuItemLoaders quantity={7} />
   );
 };
+
+const infiniteScrollComponent = css`
+  display: flex;
+`;
 
 MenuItem.propTypes = {
   categoryId: PropTypes.string,
