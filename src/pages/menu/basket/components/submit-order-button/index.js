@@ -67,7 +67,7 @@ SubmitOrderButton.propTypes = {
   translations: PropTypes.object,
   restaurantId: PropTypes.string,
   tableId: PropTypes.string,
-  onLocation: PropTypes.string,
+  onLocation: PropTypes.func,
   totalCost: PropTypes.string,
 };
 

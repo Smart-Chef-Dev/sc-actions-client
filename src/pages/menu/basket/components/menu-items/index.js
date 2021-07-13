@@ -177,7 +177,7 @@ const s = {
 MenuItems.propTypes = {
   basketAtoms: PropTypes.object,
   onBasketAtoms: PropTypes.func,
-  translations: PropTypes.string,
+  translations: PropTypes.object,
   totalCost: PropTypes.string,
 };
 
