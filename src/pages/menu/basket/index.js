@@ -37,19 +37,19 @@ const Basket = () => {
   const totalCost = useMemo(() => {
     return basketAtoms.order
       .reduce((previousOrder, currentOrder) => {
-        const modifiers = currentOrder.modifiers.reduce(
-          (previousModifiers, currentModifier) => {
+        const addons = currentOrder.addons.reduce(
+          (previousAddons, currentModifier) => {
             if (currentModifier.isIncludedInOrder) {
-              return previousModifiers + +currentModifier.price;
+              return previousAddons + +currentModifier.price;
             }
 
-            return previousModifiers;
+            return previousAddons;
           },
           0
         );
 
         return (
-          previousOrder + modifiers + +currentOrder.price * currentOrder.count
+          previousOrder + addons + +currentOrder.price * currentOrder.count
         );
       }, 0)
       .toFixed(1);
@@ -143,8 +143,8 @@ const Basket = () => {
     setBasketAtoms,
   ]);
 
-  const calculateSumOfModifiers = useCallback((modifiers) => {
-    return modifiers.reduce((previousValues, currentValue) => {
+  const calculateSumOfAddons = useCallback((addons) => {
+    return addons.reduce((previousValues, currentValue) => {
       if (currentValue.isIncludedInOrder) {
         return previousValues + +currentValue.price;
       }
@@ -153,8 +153,8 @@ const Basket = () => {
   }, []);
 
   const expandItem = useCallback(
-    (productId, isModifiers) => () => {
-      if (!isModifiers) {
+    (productId, isAddons) => () => {
+      if (!isAddons) {
         return;
       }
 
@@ -242,7 +242,7 @@ const Basket = () => {
                       alt={currentOrder.name}
                       onClick={expandItem(
                         currentOrder._id,
-                        !!currentOrder.modifiers.length
+                        !!currentOrder.addons.length
                       )}
                     />
                     <Text
@@ -251,7 +251,7 @@ const Basket = () => {
                       width={1}
                       onClick={expandItem(
                         currentOrder._id,
-                        !!currentOrder.modifiers.length
+                        !!currentOrder.addons.length
                       )}
                     >
                       {currentOrder.name}
@@ -270,17 +270,15 @@ const Basket = () => {
                         )}
                         count={currentOrder.count}
                       />
-                      {currentOrder.modifiers.length &&
-                      currentOrder.modifiers.find(
-                        (m) => m.isIncludedInOrder
-                      ) ? (
+                      {currentOrder.addons.length &&
+                      currentOrder.addons.find((m) => m.isIncludedInOrder) ? (
                         <Flex
                           direction="column"
                           ml={theme.spacing(2)}
                           alignItems="center"
                         >
                           <Text>
-                            {calculateSumOfModifiers(currentOrder.modifiers)}$
+                            {calculateSumOfAddons(currentOrder.addons)}$
                           </Text>
                           <Text>+</Text>
                           <Text>{currentOrder.price}$</Text>
@@ -307,7 +305,7 @@ const Basket = () => {
                     alt={currentOrder.name}
                     onClick={expandItem(
                       currentOrder._id,
-                      !!currentOrder.modifiers.length
+                      !!currentOrder.addons.length
                     )}
                   />
                   <Text
@@ -316,7 +314,7 @@ const Basket = () => {
                     width={1}
                     onClick={expandItem(
                       currentOrder._id,
-                      !!currentOrder.modifiers.length
+                      !!currentOrder.addons.length
                     )}
                   >
                     {currentOrder.name}
@@ -332,15 +330,15 @@ const Basket = () => {
                       enlargeCount={changeOrderItemCount(+1, currentOrder._id)}
                       count={currentOrder.count}
                     />
-                    {currentOrder.modifiers.length &&
-                    currentOrder.modifiers.find((m) => m.isIncludedInOrder) ? (
+                    {currentOrder.addons.length &&
+                    currentOrder.addons.find((m) => m.isIncludedInOrder) ? (
                       <Flex
                         direction="column"
                         ml={theme.spacing(2)}
                         alignItems="center"
                       >
                         <Text>
-                          {calculateSumOfModifiers(currentOrder.modifiers)}$
+                          {calculateSumOfAddons(currentOrder.addons)}$
                         </Text>
                         <Text>+</Text>
                         <Text>{currentOrder.price}$</Text>

@@ -18,7 +18,7 @@ const Addons = ({ order }) => {
   } = useTranslation();
 
   const addModifierToAtom = useCallback(
-    (modifiersId, productId) => () => {
+    (addonsId, productId) => () => {
       setBasketAtoms((oldBasket) => {
         return {
           ...oldBasket,
@@ -26,15 +26,15 @@ const Addons = ({ order }) => {
             if (currentOrder._id === productId) {
               return {
                 ...currentOrder,
-                modifiers: currentOrder.modifiers.map((currentModifiers) => {
-                  if (currentModifiers._id === modifiersId) {
+                addons: currentOrder.addons.map((currentAddons) => {
+                  if (currentAddons._id === addonsId) {
                     return {
-                      ...currentModifiers,
+                      ...currentAddons,
                       isIncludedInOrder: true,
                     };
                   }
 
-                  return currentModifiers;
+                  return currentAddons;
                 }),
               };
             }
@@ -48,7 +48,7 @@ const Addons = ({ order }) => {
   );
 
   const removingModifierToAtom = useCallback(
-    (modifiersId, productId) => () => {
+    (addonsId, productId) => () => {
       setBasketAtoms((oldBasket) => {
         return {
           ...oldBasket,
@@ -56,15 +56,15 @@ const Addons = ({ order }) => {
             if (currentOrder._id === productId) {
               return {
                 ...currentOrder,
-                modifiers: currentOrder.modifiers.map((currentModifiers) => {
-                  if (currentModifiers._id === modifiersId) {
+                addons: currentOrder.addons.map((currentAddons) => {
+                  if (currentAddons._id === addonsId) {
                     return {
-                      ...currentModifiers,
+                      ...currentAddons,
                       isIncludedInOrder: false,
                     };
                   }
 
-                  return currentModifiers;
+                  return currentAddons;
                 }),
               };
             }
@@ -80,41 +80,36 @@ const Addons = ({ order }) => {
   return (
     <Flex width={1} direction="column">
       <Text color="var(--text-grey)">{translations["extra_add_ons"]}</Text>
-      {order.modifiers.map((currentModifiers) => (
+      {order.addons.map((currentAddons) => (
         <Flex
           justifyContent="space-between"
           width={1}
-          key={currentModifiers._id}
+          key={currentAddons._id}
           mt={theme.spacing(1)}
         >
           <Flex>
             <Flex>
-              {currentModifiers.isIncludedInOrder ? (
+              {currentAddons.isIncludedInOrder ? (
                 <Flex
-                  onClick={removingModifierToAtom(
-                    currentModifiers._id,
-                    order._id
-                  )}
+                  onClick={removingModifierToAtom(currentAddons._id, order._id)}
                 >
                   <RedCheckMarkIcon />
                   <Text color="var(--light-grey)" ml={theme.spacing(1)}>
-                    {currentModifiers.name}
+                    {currentAddons.name}
                   </Text>
                 </Flex>
               ) : (
-                <Flex
-                  onClick={addModifierToAtom(currentModifiers._id, order._id)}
-                >
+                <Flex onClick={addModifierToAtom(currentAddons._id, order._id)}>
                   <GraySquareIcon />
                   <Text color="var(--light-grey)" ml={theme.spacing(1)}>
-                    {currentModifiers.name}
+                    {currentAddons.name}
                   </Text>
                 </Flex>
               )}
             </Flex>
           </Flex>
-          {!!currentModifiers.price && (
-            <Text color="var(--main-color)">{currentModifiers.price}$</Text>
+          {!!currentAddons.price && (
+            <Text color="var(--main-color)">{currentAddons.price}$</Text>
           )}
         </Flex>
       ))}

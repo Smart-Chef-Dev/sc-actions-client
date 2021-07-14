@@ -167,7 +167,7 @@ const Product = () => {
             </Flex>
             <Text color="var(--light-grey)">{menuItem.description}</Text>
             {inTheBasket &&
-              !!menuItem.modifiers.length &&
+              !!menuItem.addons.length &&
               basketAtoms.order.map(
                 (currentOrder) =>
                   currentOrder._id === itemId && (
