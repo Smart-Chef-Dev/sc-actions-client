@@ -66,7 +66,6 @@ const Menu = () => {
         </Text>
         <Divider mb={theme.spacing(1)} />
       </Flex>
-
       <Categories
         restaurantId={restaurantId}
         tableId={tableId}

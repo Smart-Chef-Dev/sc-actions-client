@@ -1,6 +1,6 @@
 const getMenuItemsByCategoryIdInLimit = ({
   queryKey,
-  pageParam = { page: 0, limit: 7 },
+  pageParam = { page: 0, limit: 13 },
 }) => {
   const [, { categoryId }] = queryKey;
 

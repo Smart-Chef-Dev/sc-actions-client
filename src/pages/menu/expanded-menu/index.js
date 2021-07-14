@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil";
 import { Routes } from "constants/routes";
 import { Flex } from "components/flex";
 import Navigation from "./components/navigation";
-import MenuItem from "./components/menuItem";
+import MenuItem from "./components/menu-item";
 import ReturnMainMenuButton from "./components/return-main-menu-button";
 
 import getAllCategories from "services/getAllCategories";
