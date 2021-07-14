@@ -8,6 +8,7 @@ import { Flex } from "components/flex";
 import { Img } from "components/img";
 import { Text } from "components/text";
 import { Divider } from "components/divider";
+import ImageContainer from "components/image";
 
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
@@ -90,7 +91,7 @@ const Menu = () => {
     });
   }, [restaurantId, category]);
 
-  const handleArrowClick = useCallback(
+  const redirectToCategory = useCallback(
     (categoryId) => () => {
       setLocation(`/restaurant/${restaurantId}/${tableId}/${categoryId}`);
     },
@@ -112,6 +113,7 @@ const Menu = () => {
       height={1}
       width={1}
       boxSizing="border-box"
+      overflowY="hidden"
     >
       <Text
         fontSize={theme.fontSize(3)}
@@ -123,9 +125,9 @@ const Menu = () => {
       <Divider mb={theme.spacing(1)} />
       <Flex direction="column" overflowY="auto" overflowX="hidden" width={1}>
         {!isError &&
-          category.map((currentCategory) => (
+          category.map((currentCategory, index) => (
             <Flex key={currentCategory._id} direction="column" width={1}>
-              <Flex width={1}>
+              <Flex width={1} onClick={redirectToCategory(currentCategory._id)}>
                 <Text fontSize={theme.fontSize(2)} fontWeight="bold">
                   {currentCategory.name}
                 </Text>
@@ -137,7 +139,7 @@ const Menu = () => {
                   direction="row-reverse"
                   alignItems="center"
                 >
-                  <Arrow onClick={handleArrowClick(currentCategory._id)} />
+                  <Arrow />
                 </Flex>
               </Flex>
               <Flex
@@ -159,13 +161,24 @@ const Menu = () => {
                             pb={theme.spacing(1)}
                           >
                             <Flex direction="column">
-                              <s.Preview
+                              <ImageContainer
                                 src={currentMenuItems.pictureUrl}
-                                alt={currentMenuItems.name}
-                                borderRadius="10%"
-                                mb={theme.spacing(1)}
-                                onClick={handleItemClick(currentMenuItems._id)}
-                              />
+                                preSrc={currentMenuItems.pictureLqipPreview}
+                              >
+                                {(src) => (
+                                  <s.Preview
+                                    src={src}
+                                    alt={currentMenuItems.name}
+                                    loading="lazy"
+                                    borderRadius="10%"
+                                    mb={theme.spacing(1)}
+                                    onClick={handleItemClick(
+                                      currentMenuItems._id
+                                    )}
+                                  />
+                                )}
+                              </ImageContainer>
+
                               <s.ProductName>
                                 {currentMenuItems.name}
                               </s.ProductName>
@@ -178,7 +191,9 @@ const Menu = () => {
                     )}
                 </Flex>
               </Flex>
-              <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
+              {index !== category.length - 1 && (
+                <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
+              )}
             </Flex>
           ))}
       </Flex>
