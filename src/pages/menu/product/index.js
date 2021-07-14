@@ -78,10 +78,21 @@ const Product = () => {
     [count]
   );
 
+  const removeOrder = useCallback(() => {
+    setBasketAtoms((oldOrder) => {
+      return {
+        ...oldOrder,
+        order: oldOrder.order.filter(
+          (currentValue) => currentValue._id !== itemId
+        ),
+      };
+    });
+  }, [itemId, setBasketAtoms]);
+
   const changeOrderItemCount = useCallback(
     (diff) => () => {
       if (countInBasket + diff <= 0) {
-        return;
+        return removeOrder();
       }
 
       setBasketAtoms((oldOrder) => {
@@ -98,7 +109,7 @@ const Product = () => {
         };
       });
     },
-    [setBasketAtoms, countInBasket, itemId]
+    [setBasketAtoms, countInBasket, itemId, removeOrder]
   );
 
   const handleArrowClick = useCallback(() => {
@@ -137,9 +148,11 @@ const Product = () => {
             width={1}
             boxSizing="border-box"
           >
-            <s.Time>
-              <Text>{`~ ${menuItem.time} ${translations["min"]}`}</Text>
-            </s.Time>
+            {menuItem.time && (
+              <s.Time>
+                <Text>{`~ ${menuItem.time} ${translations["min"]}`}</Text>
+              </s.Time>
+            )}
             <Text
               color="var(--text-grey)"
               textTransform="uppercase"
@@ -155,9 +168,11 @@ const Product = () => {
               width={1}
               pb={theme.spacing(1)}
             >
-              <Text color="var(--light-grey)" height={1} alignItems="center">
-                {`${translations["weight"]} ${menuItem.weight} ${translations["g"]}`}
-              </Text>
+              {menuItem.weight && (
+                <Text color="var(--light-grey)" height={1} alignItems="center">
+                  {`${translations["weight"]} ${menuItem.weight} ${translations["g"]}`}
+                </Text>
+              )}
               <Text color="#4cd964" fontSize="2rem">
                 {formatCurrency(
                   menuItem.category.restaurant.currencyCode,
