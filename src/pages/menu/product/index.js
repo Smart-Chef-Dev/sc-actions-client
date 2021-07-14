@@ -63,10 +63,21 @@ const Product = () => {
     [count]
   );
 
+  const removeOrder = useCallback(() => {
+    setBasketAtoms((oldOrder) => {
+      return {
+        ...oldOrder,
+        order: oldOrder.order.filter(
+          (currentValue) => currentValue._id !== itemId
+        ),
+      };
+    });
+  }, [itemId, setBasketAtoms]);
+
   const changeOrderItemCount = useCallback(
     (diff) => () => {
       if (countInBasket + diff <= 0) {
-        return;
+        return removeOrder();
       }
 
       setBasketAtoms((oldOrder) => {
@@ -83,7 +94,7 @@ const Product = () => {
         };
       });
     },
-    [setBasketAtoms, countInBasket, itemId]
+    [setBasketAtoms, countInBasket, itemId, removeOrder]
   );
 
   const handleArrowClick = useCallback(() => {
