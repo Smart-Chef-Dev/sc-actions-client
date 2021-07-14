@@ -122,6 +122,10 @@ const s = {
   `,
   ProductName: styled(Text)`
     max-width: 130px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   `,
 };
 
