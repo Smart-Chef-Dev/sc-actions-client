@@ -29,7 +29,7 @@ const DarkModeSwitcher = () => {
 };
 
 const Button = styled.button`
-  position: fixed;
+  position: absolute;
   top: 15px;
   right: 15px;
   width: 35px;

@@ -1,0 +1,11 @@
+{
+  "min_password": "Должно быть не менее 8 символов",
+  "max_password": "Не должен быть больше 25 символов",
+  "required": "Обязательное",
+  "validation_email": "Не корректный e-mail",
+  "email": "E-mail:",
+  "password": "Пароль:",
+  "sing_in": "Войти",
+  "sing_up": "Зарегистрироваться",
+  "incorrect_login_or_password": "Неверный логин или пароль"
+}

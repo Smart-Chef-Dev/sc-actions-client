@@ -33,6 +33,7 @@ export const globals = css`
       --light-grey: #00000066;
       --box-shadow: #0000003d;
       --black-layout-color: rgba(0, 0, 0, 0.7);
+      --error: #f36c6c;
     }
 
     [data-theme="dark"] {
