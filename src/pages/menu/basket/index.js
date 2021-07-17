@@ -15,6 +15,7 @@ import { useTranslation } from "contexts/translation-context";
 
 import { theme } from "theme";
 import { Routes } from "constants/routes";
+import { formatCurrency } from "utils/formatCurrency";
 
 import Icon from "assets/icons/basket/icon.svg";
 import BasketIcon from "assets/icons/basket/basket-icon.svg";
@@ -226,7 +227,12 @@ const Basket = () => {
                         )}
                         count={currentValue.count}
                       />
-                      <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
+                      <Text pl={theme.spacing(2)}>
+                        {formatCurrency(
+                          currentValue.category.restaurant.currencyCode,
+                          currentValue.price
+                        )}
+                      </Text>
                     </Flex>
                   </s.RemoteComponent>
                   <s.DeleteButton
@@ -263,7 +269,12 @@ const Basket = () => {
                       enlargeCount={changeOrderItemCount(+1, currentValue._id)}
                       count={currentValue.count}
                     />
-                    <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
+                    <Text pl={theme.spacing(2)}>
+                      {formatCurrency(
+                        currentValue.category.restaurant.currencyCode,
+                        currentValue.price
+                      )}
+                    </Text>
                   </Flex>
                 </Flex>
               )}
