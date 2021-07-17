@@ -10,7 +10,6 @@ import { Routes } from "constants/routes";
 import BasketState from "atoms/basket";
 import MenuItem from "./components/menu-item";
 import BackButton from "./components/back-button";
-import { formatCurrency } from "utils/formatCurrency";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);

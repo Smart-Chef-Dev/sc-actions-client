@@ -4,6 +4,10 @@ import PropTypes from "prop-types";
 import { theme } from "theme";
 import Button from "components/button";
 import { Flex } from "components/flex";
+import NotificationWithTexts from "components/notificationWithTexts";
+import { useNotifications } from "hooks/useNotifications";
+
+const durationOfNotificationMs = 3000;
 
 const SubmitOrderButton = ({
   basketAtoms,
@@ -16,6 +20,16 @@ const SubmitOrderButton = ({
 }) => {
   const [isDisable, setIsDisable] = useState(!basketAtoms.order.length);
 
+  const { renderNotification, showNotification } = useNotifications(
+    <NotificationWithTexts
+      texts={[
+        translations["order_is_confirmed"],
+        translations["chefs_started_preparing_order"],
+      ]}
+    />,
+    durationOfNotificationMs
+  );
+
   const submitOrder = useCallback(() => {
     try {
       setIsDisable(true);
@@ -26,8 +40,16 @@ const SubmitOrderButton = ({
         },
         body: JSON.stringify(basketAtoms),
       }).finally(() => {
-        onBasketAtoms({ personCount: 1, order: [] });
-        onLocation(`/restaurant/${restaurantId}/${tableId}`);
+        showNotification();
+        onBasketAtoms((oldBasket) => ({
+          ...oldBasket,
+          personCount: 1,
+          order: [],
+        }));
+        setTimeout(
+          () => onLocation(`/restaurant/${restaurantId}/${tableId}`),
+          durationOfNotificationMs
+        );
       });
     } catch (err) {
       setIsDisable(false);
@@ -40,6 +62,7 @@ const SubmitOrderButton = ({
     setIsDisable,
     basketAtoms,
     onBasketAtoms,
+    showNotification,
   ]);
 
   return (
@@ -54,6 +77,7 @@ const SubmitOrderButton = ({
       pt={theme.spacing(2)}
       p={theme.spacing(1)}
     >
+      {renderNotification()}
       <Button onClick={submitOrder} width={1} disabled={isDisable}>
         {`${translations["confirm_order"]} (${totalCost + "$"})`}
       </Button>
