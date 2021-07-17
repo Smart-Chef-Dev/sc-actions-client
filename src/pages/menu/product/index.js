@@ -8,17 +8,15 @@ import { Img } from "components/img";
 import { Text } from "components/text";
 import Button from "components/button";
 import Counter from "components/counter";
+import Addons from "components/addons";
 
 import { useTranslation } from "contexts/translation-context";
 import { Routes } from "constants/routes";
 import { theme } from "theme";
 
 import Arrow from "assets/icons/product/arrow.svg";
-// import GraySquareIcon from "assets/icons/product/gray_square_icon.svg";
-// import RedCheckMarkIcon from "assets/icons/product/red_check_mark_icon.svg";
 
 import BasketState from "atoms/basket";
-import Addons from "../../../components/addons";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);

@@ -1,14 +1,16 @@
 import { memo, useCallback } from "react";
+import { useRecoilState } from "recoil";
 import PropTypes from "prop-types";
 
 import { Text } from "./text";
-import { theme } from "theme";
 import { Flex } from "./flex";
-import RedCheckMarkIcon from "../assets/icons/product/red_check_mark_icon.svg";
-import GraySquareIcon from "../assets/icons/product/gray_square_icon.svg";
-import { useRecoilState } from "recoil";
-import BasketState from "../atoms/basket";
+import { theme } from "theme";
 import { useTranslation } from "../contexts/translation-context";
+
+import GraySquareIcon from "../assets/icons/product/gray_square_icon.svg";
+import RedCheckMarkIcon from "../assets/icons/product/check_marks_in_red_box.svg";
+
+import BasketState from "../atoms/basket";
 
 const Addons = ({ order }) => {
   const [, setBasketAtoms] = useRecoilState(BasketState);
@@ -17,8 +19,8 @@ const Addons = ({ order }) => {
     strings: { addons: translations },
   } = useTranslation();
 
-  const addModifierToAtom = useCallback(
-    (addonsId, productId) => () => {
+  const changeAddonState = useCallback(
+    (addonsId, productId, isAddonsAdded) => () => {
       setBasketAtoms((oldBasket) => {
         return {
           ...oldBasket,
@@ -30,37 +32,7 @@ const Addons = ({ order }) => {
                   if (currentAddons._id === addonsId) {
                     return {
                       ...currentAddons,
-                      isIncludedInOrder: true,
-                    };
-                  }
-
-                  return currentAddons;
-                }),
-              };
-            }
-
-            return currentOrder;
-          }),
-        };
-      });
-    },
-    [setBasketAtoms]
-  );
-
-  const removingModifierToAtom = useCallback(
-    (addonsId, productId) => () => {
-      setBasketAtoms((oldBasket) => {
-        return {
-          ...oldBasket,
-          order: oldBasket.order.map((currentOrder) => {
-            if (currentOrder._id === productId) {
-              return {
-                ...currentOrder,
-                addons: currentOrder.addons.map((currentAddons) => {
-                  if (currentAddons._id === addonsId) {
-                    return {
-                      ...currentAddons,
-                      isIncludedInOrder: false,
+                      isIncludedInOrder: isAddonsAdded,
                     };
                   }
 
@@ -91,7 +63,11 @@ const Addons = ({ order }) => {
             <Flex>
               {currentAddons.isIncludedInOrder ? (
                 <Flex
-                  onClick={removingModifierToAtom(currentAddons._id, order._id)}
+                  onClick={changeAddonState(
+                    currentAddons._id,
+                    order._id,
+                    false
+                  )}
                 >
                   <RedCheckMarkIcon />
                   <Text color="var(--light-grey)" ml={theme.spacing(1)}>
@@ -99,7 +75,9 @@ const Addons = ({ order }) => {
                   </Text>
                 </Flex>
               ) : (
-                <Flex onClick={addModifierToAtom(currentAddons._id, order._id)}>
+                <Flex
+                  onClick={changeAddonState(currentAddons._id, order._id, true)}
+                >
                   <GraySquareIcon />
                   <Text color="var(--light-grey)" ml={theme.spacing(1)}>
                     {currentAddons.name}

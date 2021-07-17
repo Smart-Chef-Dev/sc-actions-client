@@ -11,6 +11,7 @@ import Button from "components/button";
 import SwipeDelete from "./components/swipe-delete";
 import BasketState from "atoms/basket";
 import Counter from "components/counter";
+import Addons from "components/addons";
 import { useTranslation } from "contexts/translation-context";
 
 import { theme } from "theme";
@@ -18,7 +19,6 @@ import { Routes } from "constants/routes";
 
 import Icon from "assets/icons/basket/icon.svg";
 import BasketIcon from "assets/icons/basket/basket-icon.svg";
-import Addons from "../../../components/addons";
 
 const Basket = () => {
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
