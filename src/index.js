@@ -35,6 +35,7 @@ export const globals = css`
       --loader-background-color: #ede8e8;
       --loader-foreground-color: #dfd7d7;
       --black-layout-color: rgba(0, 0, 0, 0.7);
+      --error: #f36c6c;
     }
 
     [data-theme="dark"] {

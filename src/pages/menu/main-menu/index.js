@@ -13,7 +13,9 @@ import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
 
 import BasketState from "atoms/basket";
+
 import getAllCategories from "services/getAllCategories";
+import { formatCurrency } from "utils/formatCurrency";
 
 const Menu = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.MENU);

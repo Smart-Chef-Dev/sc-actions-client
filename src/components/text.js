@@ -7,6 +7,7 @@ export const Text = styled(Flex)`
   text-transform: ${(props) => props.textTransform ?? "none"};
   font-family: ${(props) => props.fontFamily ?? "Arial"};
   font-weight: ${(props) => props.fontWeight ?? "normal"};
+  text-align: ${(props) => props.textAlign ?? "auto"};
 
   color: ${(props) => props.color ?? "var(--main-text-color)"};
 `;
