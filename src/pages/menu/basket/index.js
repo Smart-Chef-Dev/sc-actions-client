@@ -292,7 +292,7 @@ const Basket = () => {
                       <Counter
                         decreaseCount={changeOrderItemCount(
                           -1,
-                          currentValue._id
+                          currentOrder._id
                         )}
                         increaseCount={changeOrderItemCount(
                           +1,
@@ -309,14 +309,14 @@ const Basket = () => {
                         >
                           <Text>
                             {formatCurrency(
-                              currentValue.category.restaurant.currencyCode,
+                              currentOrder.category.restaurant.currencyCode,
                               calculateSumOfAddons(currentOrder.addons)
                             )}
-                          </Text>   
+                          </Text>
                           <Text>+</Text>
                           <Text>
                             {formatCurrency(
-                              currentValue.category.restaurant.currencyCode,
+                              currentOrder.category.restaurant.currencyCode,
                               currentOrder.price
                             )}
                           </Text>
@@ -324,7 +324,7 @@ const Basket = () => {
                       ) : (
                         <Text pl={theme.spacing(2)}>
                           {formatCurrency(
-                            currentValue.category.restaurant.currencyCode,
+                            currentOrder.category.restaurant.currencyCode,
                             currentOrder.price
                           )}
                         </Text>
@@ -369,8 +369,8 @@ const Basket = () => {
                     justifyContent="flex-end"
                   >
                     <Counter
-                      decreaseCount={changeOrderItemCount(-1, currentValue._id)}
-                      increaseCount={changeOrderItemCount(+1, currentValue._id)}
+                      decreaseCount={changeOrderItemCount(-1, currentOrder._id)}
+                      increaseCount={changeOrderItemCount(+1, currentOrder._id)}
                       count={currentOrder.count}
                     />
                     {currentOrder.addons.length &&
@@ -382,14 +382,14 @@ const Basket = () => {
                       >
                         <Text>
                           {formatCurrency(
-                            currentValue.category.restaurant.currencyCode,
+                            currentOrder.category.restaurant.currencyCode,
                             calculateSumOfAddons(currentOrder.addons)
                           )}
                         </Text>
                         <Text>+</Text>
                         <Text>
                           {formatCurrency(
-                            currentValue.category.restaurant.currencyCode,
+                            currentOrder.category.restaurant.currencyCode,
                             currentOrder.price
                           )}
                         </Text>
@@ -397,8 +397,8 @@ const Basket = () => {
                     ) : (
                       <Text pl={theme.spacing(2)}>
                         {formatCurrency(
-                          currentValue.category.restaurant.currencyCode,
-                          currentValue.price
+                          currentOrder.category.restaurant.currencyCode,
+                          currentOrder.price
                         )}
                       </Text>
                     )}

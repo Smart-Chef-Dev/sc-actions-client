@@ -179,7 +179,6 @@ const Menu = () => {
                                   />
                                 )}
                               </ImageContainer>
-
                               <s.ProductName>
                                 {currentMenuItems.name}
                               </s.ProductName>
