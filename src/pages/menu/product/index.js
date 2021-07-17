@@ -193,10 +193,10 @@ const Product = () => {
                 mb={theme.spacing(1)}
               >
                 <Counter
-                  reduceCount={
+                  decreaseCount={
                     inTheBasket ? changeOrderItemCount(-1) : changeCount(-1)
                   }
-                  enlargeCount={
+                  increaseCount={
                     inTheBasket ? changeOrderItemCount(+1) : changeCount(+1)
                   }
                   count={inTheBasket ? countInBasket : count}
