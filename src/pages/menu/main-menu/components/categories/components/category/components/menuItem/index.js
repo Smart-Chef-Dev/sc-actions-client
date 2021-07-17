@@ -12,14 +12,22 @@ import { Img } from "components/img";
 import MenuItemLoaders from "components/loaders/main-menu/menu-items-loaders";
 import { theme } from "theme";
 
-import getMenuItemsByCategoryIdInLimit from "services/menuItems-service/getMenuItemsByCategoryIdInLimit";
+import {
+  MenuItemsServices,
+  MenuItemsServicesRouters,
+} from "services/menuItemsService";
 
 const numberOfPagesPerDownload = 5;
 
 const MenuItem = ({ categoryId, restaurantId, tableId, onLocation }) => {
   const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
     ["menuItemsPages", { categoryId }],
-    getMenuItemsByCategoryIdInLimit,
+    ({ pageParam }) =>
+      MenuItemsServices({
+        categoryId,
+        service: MenuItemsServicesRouters.GET_MENU_ITEMS_BY_ID_IN_LIMIT,
+        pageParam,
+      }),
     {
       getNextPageParam: (lastPage) => {
         if (lastPage.totalPages <= lastPage.page) {

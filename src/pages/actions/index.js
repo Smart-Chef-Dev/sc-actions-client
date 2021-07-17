@@ -10,7 +10,10 @@ import { useRestaurant } from "hooks/useRestaurant";
 import ActionComponent from "./action-component";
 import DoneIcon from "assets/icons/actions/done-icon.svg";
 
-import sendAction from "services/messenger-service/sendAction";
+import {
+  MessengerService,
+  MessengerServicesRouters,
+} from "services/messengerService";
 
 const Actions = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.ACTIONS);
@@ -24,13 +27,18 @@ const Actions = () => {
   );
   const { renderScreenBlock, attemptsWrapper } = useScreenBlock();
 
-  const sendActionMutation = useMutation(sendAction);
+  const sendActionMutation = useMutation(MessengerService);
 
   const handleClick = useCallback(
     (id) => async () => {
       showNotification();
       attemptsWrapper();
-      sendActionMutation.mutate({ restaurantId, tableId, id });
+      sendActionMutation.mutate({
+        restaurantId,
+        tableId,
+        id,
+        service: MessengerServicesRouters.SEND_ACTION,
+      });
     },
     [
       showNotification,

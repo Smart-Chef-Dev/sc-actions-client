@@ -12,8 +12,10 @@ import { Routes } from "constants/routes";
 import BasketState from "atoms/basket";
 import MenuItem from "./components/menu-item";
 import BackButton from "./components/back-button";
-
-import getMenuItemsById from "services/menuItems-service/getMenuItemsById";
+import {
+  MenuItemsServices,
+  MenuItemsServicesRouters,
+} from "../../../services/menuItemsService";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
@@ -25,9 +27,11 @@ const Product = () => {
     strings: { product: translations },
   } = useTranslation();
 
-  const { data, isError, isLoading } = useQuery(
-    ["menuItem", { itemId }],
-    getMenuItemsById
+  const { data, isError, isLoading } = useQuery(["menuItem", { itemId }], () =>
+    MenuItemsServices({
+      itemId,
+      service: MenuItemsServicesRouters.GET_MENU_ITEMS_BY_ID,
+    })
   );
 
   return !isLoading ? (

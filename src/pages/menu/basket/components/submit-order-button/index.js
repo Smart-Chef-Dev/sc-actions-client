@@ -8,7 +8,10 @@ import { Flex } from "components/flex";
 import NotificationWithTexts from "components/notificationWithTexts";
 
 import { useNotifications } from "hooks/useNotifications";
-import sendOrder from "services/messenger-service/sendOrder";
+import {
+  MessengerService,
+  MessengerServicesRouters,
+} from "services/messengerService";
 
 const durationOfNotificationMs = 3000;
 
@@ -22,7 +25,7 @@ const SubmitOrderButton = ({
   totalCost,
 }) => {
   const [isDisable, setIsDisable] = useState(!basketAtoms.order.length);
-  const sendOrderMutation = useMutation(sendOrder);
+  const sendOrderMutation = useMutation(MessengerService);
 
   const { renderNotification, showNotification } = useNotifications(
     <NotificationWithTexts
@@ -38,7 +41,12 @@ const SubmitOrderButton = ({
     try {
       setIsDisable(true);
       sendOrderMutation
-        .mutateAsync({ order: basketAtoms, restaurantId, tableId })
+        .mutateAsync({
+          order: basketAtoms,
+          service: MessengerServicesRouters.SEND_ORDER,
+          restaurantId,
+          tableId,
+        })
         .finally(() => {
           showNotification();
           onBasketAtoms((oldBasket) => ({
