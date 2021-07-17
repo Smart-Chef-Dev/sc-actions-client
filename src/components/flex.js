@@ -47,15 +47,6 @@ export const Box = styled.div`
   box-sizing: ${(props) => props.boxSizing ?? "content-box"};
 
   position: ${(props) => props.position ?? "static"};
-
-  &::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #929eaa;
-  }
 `;
 
 export const Flex = styled(Box)`
