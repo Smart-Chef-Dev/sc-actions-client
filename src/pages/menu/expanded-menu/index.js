@@ -9,8 +9,8 @@ import Navigation from "./components/navigation";
 import MenuItem from "./components/menu-item";
 import ReturnMainMenuButton from "./components/return-main-menu-button";
 
-import getAllCategories from "services/getAllCategories";
-import getMenuItemsByCategoryIdInLimit from "services/getMenuItemsByCategoryIdInLimit";
+import getAllCategories from "services/categories-service/getAllCategories";
+import getMenuItemsByCategoryIdInLimit from "services/menuItems-service/getMenuItemsByCategoryIdInLimit";
 
 import { useTranslation } from "contexts/translation-context";
 

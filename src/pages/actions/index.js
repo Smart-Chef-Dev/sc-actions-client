@@ -10,7 +10,7 @@ import { useRestaurant } from "hooks/useRestaurant";
 import ActionComponent from "./action-component";
 import DoneIcon from "assets/icons/actions/done-icon.svg";
 
-import sendAction from "services/sendAction";
+import sendAction from "services/messenger-service/sendAction";
 
 const Actions = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.ACTIONS);

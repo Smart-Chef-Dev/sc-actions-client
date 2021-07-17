@@ -14,7 +14,7 @@ import { useTranslation } from "contexts/translation-context";
 
 import BasketState from "atoms/basket";
 
-import getAllCategories from "services/getAllCategories";
+import getAllCategories from "services/categories-service/getAllCategories";
 
 const Menu = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.MENU);

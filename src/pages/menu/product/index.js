@@ -13,7 +13,7 @@ import BasketState from "atoms/basket";
 import MenuItem from "./components/menu-item";
 import BackButton from "./components/back-button";
 
-import getMenuItemsById from "services/getMenuItemsById";
+import getMenuItemsById from "services/menuItems-service/getMenuItemsById";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);

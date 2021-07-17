@@ -12,7 +12,7 @@ import { Img } from "components/img";
 import MenuItemLoaders from "components/loaders/main-menu/menu-items-loaders";
 import { theme } from "theme";
 
-import getMenuItemsByCategoryIdInLimit from "services/getMenuItemsByCategoryIdInLimit";
+import getMenuItemsByCategoryIdInLimit from "services/menuItems-service/getMenuItemsByCategoryIdInLimit";
 
 const numberOfPagesPerDownload = 5;
 

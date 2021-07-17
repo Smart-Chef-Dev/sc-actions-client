@@ -8,7 +8,7 @@ import { Flex } from "components/flex";
 import NotificationWithTexts from "components/notificationWithTexts";
 
 import { useNotifications } from "hooks/useNotifications";
-import sendOrder from "services/sendOrder";
+import sendOrder from "services/messenger-service/sendOrder";
 
 const durationOfNotificationMs = 3000;
 
