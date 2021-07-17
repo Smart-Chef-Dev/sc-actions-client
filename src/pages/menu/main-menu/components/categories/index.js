@@ -7,7 +7,13 @@ import CategoriesLoader from "components/loaders/main-menu/categories-loader";
 
 const Categories = ({ restaurantId, tableId, onLocation, categories }) => {
   return !categories.isLoading ? (
-    <Flex width={1} direction="column" overflowY="auto" overflowX="hidden">
+    <Flex
+      width={1}
+      height={1}
+      direction="column"
+      overflowY="auto"
+      overflowX="hidden"
+    >
       {categories.data.map((currentCategory) => (
         <Category
           key={currentCategory._id}

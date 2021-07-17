@@ -8,12 +8,10 @@ import { Flex } from "components/flex";
 import Navigation from "./components/navigation";
 import MenuItem from "./components/menu-item";
 import ReturnMainMenuButton from "./components/return-main-menu-button";
-import NotificationWithIconAndText from "components/notificationWithTexts";
 
 import getAllCategories from "services/getAllCategories";
 import getMenuItemsByCategoryIdInLimit from "services/getMenuItemsByCategoryIdInLimit";
 
-import BasketState from "atoms/basket";
 import { useTranslation } from "contexts/translation-context";
 
 const numberOfPagesPerDownload = 5;
@@ -21,9 +19,6 @@ const numberOfPagesPerDownload = 5;
 const menuItemsRef = createRef();
 
 import BasketState from "atoms/basket";
-import { formatCurrency } from "utils/formatCurrency";
-
-import { useNotifications } from "hooks/useNotifications";
 
 const ExpandedMenu = () => {
   const [, { restaurantId, categoryId, tableId }] = useRoute(
@@ -36,7 +31,7 @@ const ExpandedMenu = () => {
   } = useTranslation();
 
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
-  
+
   const categories = useQuery(
     ["categories", { restaurantId }],
     getAllCategories

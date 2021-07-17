@@ -1,11 +1,14 @@
 import { memo, useCallback, useState } from "react";
+import { useMutation } from "react-query";
 import PropTypes from "prop-types";
 
 import { theme } from "theme";
 import Button from "components/button";
 import { Flex } from "components/flex";
 import NotificationWithTexts from "components/notificationWithTexts";
+
 import { useNotifications } from "hooks/useNotifications";
+import sendOrder from "services/sendOrder";
 
 const durationOfNotificationMs = 3000;
 
@@ -19,6 +22,7 @@ const SubmitOrderButton = ({
   totalCost,
 }) => {
   const [isDisable, setIsDisable] = useState(!basketAtoms.order.length);
+  const sendOrderMutation = useMutation(sendOrder);
 
   const { renderNotification, showNotification } = useNotifications(
     <NotificationWithTexts
@@ -33,24 +37,20 @@ const SubmitOrderButton = ({
   const submitOrder = useCallback(() => {
     try {
       setIsDisable(true);
-      fetch(`/api/message/${restaurantId}/${tableId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(basketAtoms),
-      }).finally(() => {
-        showNotification();
-        onBasketAtoms((oldBasket) => ({
-          ...oldBasket,
-          personCount: 1,
-          order: [],
-        }));
-        setTimeout(
-          () => onLocation(`/restaurant/${restaurantId}/${tableId}`),
-          durationOfNotificationMs
-        );
-      });
+      sendOrderMutation
+        .mutateAsync({ order: basketAtoms, restaurantId, tableId })
+        .finally(() => {
+          showNotification();
+          onBasketAtoms((oldBasket) => ({
+            ...oldBasket,
+            personCount: 1,
+            order: [],
+          }));
+          setTimeout(
+            () => onLocation(`/restaurant/${restaurantId}/${tableId}`),
+            durationOfNotificationMs
+          );
+        });
     } catch (err) {
       setIsDisable(false);
       console.log(err);
@@ -63,6 +63,7 @@ const SubmitOrderButton = ({
     basketAtoms,
     onBasketAtoms,
     showNotification,
+    sendOrderMutation,
   ]);
 
   return (

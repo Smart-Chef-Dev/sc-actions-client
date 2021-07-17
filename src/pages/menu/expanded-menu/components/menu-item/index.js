@@ -10,10 +10,13 @@ import { Text } from "components/text";
 import { theme } from "theme";
 import MenuItemLoaders from "components/loaders/expanded-menu/menu-items-loaders";
 import ImageContainer from "components/image";
+import NotificationWithTexts from "components/notificationWithTexts";
 
 import Basket from "assets/icons/expanded-menu/basket.svg";
 
 import "pages/menu/expanded-menu/infinite-scroll-component.css";
+
+import { useNotifications } from "hooks/useNotifications";
 
 const MenuItem = ({
   restaurantId,
@@ -27,6 +30,10 @@ const MenuItem = ({
   menuItemsRef,
 }) => {
   const { data, isLoading, fetchNextPage, hasNextPage } = menuItems;
+
+  const { renderNotification, showNotification } = useNotifications(
+    <NotificationWithTexts texts={[translations["product_added_to_order"]]} />
+  );
 
   const dataLength = useMemo(
     () =>
@@ -65,6 +72,7 @@ const MenuItem = ({
         return;
       }
 
+      showNotification();
       onBasketAtoms((oldOrder) => {
         return {
           ...oldOrder,
@@ -78,11 +86,12 @@ const MenuItem = ({
         };
       });
     },
-    [onBasketAtoms, basketAtoms]
+    [onBasketAtoms, basketAtoms, showNotification]
   );
 
   return !menuItems.isLoading ? (
     <Flex height={1} width={1} direction="column" mx={theme.spacing(1)}>
+      {renderNotification()}
       <InfiniteScroll
         dataLength={dataLength}
         next={fetchNextPage}

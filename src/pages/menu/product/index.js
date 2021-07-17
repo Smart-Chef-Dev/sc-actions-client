@@ -1,13 +1,9 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo } from "react";
 import { useLocation, useRoute } from "wouter";
 import { useQuery } from "react-query";
 import { useRecoilState } from "recoil";
 
 import { Flex } from "components/flex";
-import { Img } from "components/img";
-import { Text } from "components/text";
-import Button from "components/button";
-import Counter from "components/counter";
 import Loader from "components/loaders";
 
 import { useTranslation } from "contexts/translation-context";
@@ -22,8 +18,6 @@ import getMenuItemsById from "services/getMenuItemsById";
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
   const [, setLocation] = useLocation();
-
-  const [count, setCount] = useState(1);
 
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
 
@@ -50,7 +44,7 @@ const Product = () => {
             itemId={itemId}
             basketAtoms={basketAtoms}
             onBasketAtoms={setBasketAtoms}
-            menuItem={menuItem}
+            menuItem={data}
           />
         </Flex>
       )}
