@@ -17,6 +17,7 @@ import { theme } from "theme";
 import Arrow from "assets/icons/product/arrow.svg";
 
 import BasketState from "atoms/basket";
+import { formatCurrency } from "utils/formatCurrency";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
@@ -78,10 +79,21 @@ const Product = () => {
     [count]
   );
 
+  const removeOrder = useCallback(() => {
+    setBasketAtoms((oldOrder) => {
+      return {
+        ...oldOrder,
+        order: oldOrder.order.filter(
+          (currentValue) => currentValue._id !== itemId
+        ),
+      };
+    });
+  }, [itemId, setBasketAtoms]);
+
   const changeOrderItemCount = useCallback(
     (diff) => () => {
       if (countInBasket + diff <= 0) {
-        return;
+        return removeOrder();
       }
 
       setBasketAtoms((oldOrder) => {
@@ -98,7 +110,7 @@ const Product = () => {
         };
       });
     },
-    [setBasketAtoms, countInBasket, itemId]
+    [setBasketAtoms, countInBasket, itemId, removeOrder]
   );
 
   const handleArrowClick = useCallback(() => {
@@ -138,9 +150,11 @@ const Product = () => {
             width={1}
             boxSizing="border-box"
           >
-            <s.Time>
-              <Text>{`~ ${menuItem.time} ${translations["min"]}`}</Text>
-            </s.Time>
+            {menuItem.time && (
+              <s.Time>
+                <Text>{`~ ${menuItem.time} ${translations["min"]}`}</Text>
+              </s.Time>
+            )}
             <Text
               color="var(--text-grey)"
               textTransform="uppercase"
@@ -156,11 +170,16 @@ const Product = () => {
               width={1}
               pb={theme.spacing(1)}
             >
-              <Text color="var(--light-grey)" height={1} alignItems="center">
-                {`${translations["weight"]} ${menuItem.weight} ${translations["g"]}`}
-              </Text>
+              {menuItem.weight && (
+                <Text color="var(--light-grey)" height={1} alignItems="center">
+                  {`${translations["weight"]} ${menuItem.weight} ${translations["g"]}`}
+                </Text>
+              )}
               <Text color="#4cd964" fontSize="2rem">
-                {menuItem.price}$
+                {formatCurrency(
+                  menuItem.category.restaurant.currencyCode,
+                  menuItem.price
+                )}
               </Text>
             </Flex>
             <Text color="var(--light-grey)">{menuItem.description}</Text>
@@ -186,10 +205,10 @@ const Product = () => {
                 mb={theme.spacing(1)}
               >
                 <Counter
-                  reduceCount={
+                  decreaseCount={
                     inTheBasket ? changeOrderItemCount(-1) : changeCount(-1)
                   }
-                  enlargeCount={
+                  increaseCount={
                     inTheBasket ? changeOrderItemCount(+1) : changeCount(+1)
                   }
                   count={inTheBasket ? countInBasket : count}

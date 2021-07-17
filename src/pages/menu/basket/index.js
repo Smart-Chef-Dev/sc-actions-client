@@ -12,13 +12,19 @@ import SwipeDelete from "./components/swipe-delete";
 import BasketState from "atoms/basket";
 import Counter from "components/counter";
 import Addons from "components/addons";
+import NotificationWithIconAndText from "components/notificationWithTexts";
 import { useTranslation } from "contexts/translation-context";
 
 import { theme } from "theme";
 import { Routes } from "constants/routes";
+import { formatCurrency } from "utils/formatCurrency";
 
 import Icon from "assets/icons/basket/icon.svg";
 import BasketIcon from "assets/icons/basket/basket-icon.svg";
+
+import { useNotifications } from "hooks/useNotifications";
+
+const durationOfNotificationMs = 3000;
 
 const Basket = () => {
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
@@ -33,6 +39,16 @@ const Basket = () => {
   const {
     strings: { basket: translations },
   } = useTranslation();
+
+  const { renderNotification, showNotification } = useNotifications(
+    <NotificationWithIconAndText
+      texts={[
+        translations["order_is_confirmed"],
+        translations["chefs_started_preparing_order"],
+      ]}
+    />,
+    durationOfNotificationMs
+  );
 
   const totalCost = useMemo(() => {
     return basketAtoms.order
@@ -69,7 +85,12 @@ const Basket = () => {
       );
 
       if (product.count + diff <= 0) {
-        return;
+        return setBasketAtoms((oldOrder) => ({
+          ...oldOrder,
+          order: oldOrder.order.filter(
+            (currentValue) => currentValue._id !== productId
+          ),
+        }));
       }
 
       setBasketAtoms((oldOrder) => {
@@ -121,6 +142,7 @@ const Basket = () => {
         },
         body: JSON.stringify(basketAtoms),
       }).finally(() => {
+        showNotification();
         setBasketAtoms((oldBasket) => {
           return {
             ...oldBasket,
@@ -128,7 +150,10 @@ const Basket = () => {
             order: [],
           };
         });
-        setLocation(`/restaurant/${restaurantId}/${tableId}`);
+        setTimeout(
+          () => setLocation(`/restaurant/${restaurantId}/${tableId}`),
+          durationOfNotificationMs
+        );
       });
     } catch (err) {
       setIsDisable(false);
@@ -141,6 +166,7 @@ const Basket = () => {
     setIsDisable,
     basketAtoms,
     setBasketAtoms,
+    showNotification,
   ]);
 
   const calculateSumOfAddons = useCallback((addons) => {
@@ -168,6 +194,7 @@ const Basket = () => {
   return (
     <Flex direction="column" height={1} width={1} boxSizing="border-box">
       <Flex height={1} weight={1} flex={1}>
+        {renderNotification()}
         <Text
           fontSize={theme.fontSize(3)}
           fontWeight="bold"
@@ -215,8 +242,8 @@ const Basket = () => {
             >
               <Flex>
                 <Counter
-                  reduceCount={changeNumberOfPeople(-1)}
-                  enlargeCount={changeNumberOfPeople(+1)}
+                  decreaseCount={changeNumberOfPeople(-1)}
+                  increaseCount={changeNumberOfPeople(+1)}
                   count={basketAtoms.personCount}
                 />
               </Flex>
@@ -263,8 +290,11 @@ const Basket = () => {
                       justifyContent="flex-end"
                     >
                       <Counter
-                        reduceCount={changeOrderItemCount(-1, currentOrder._id)}
-                        enlargeCount={changeOrderItemCount(
+                        decreaseCount={changeOrderItemCount(
+                          -1,
+                          currentValue._id
+                        )}
+                        increaseCount={changeOrderItemCount(
                           +1,
                           currentOrder._id
                         )}
@@ -278,13 +308,26 @@ const Basket = () => {
                           alignItems="center"
                         >
                           <Text>
-                            {calculateSumOfAddons(currentOrder.addons)}$
-                          </Text>
+                            {formatCurrency(
+                              currentValue.category.restaurant.currencyCode,
+                              calculateSumOfAddons(currentOrder.addons)
+                            )}
+                          </Text>   
                           <Text>+</Text>
-                          <Text>{currentOrder.price}$</Text>
+                          <Text>
+                            {formatCurrency(
+                              currentValue.category.restaurant.currencyCode,
+                              currentOrder.price
+                            )}
+                          </Text>
                         </Flex>
                       ) : (
-                        <Text pl={theme.spacing(2)}>{currentOrder.price}$</Text>
+                        <Text pl={theme.spacing(2)}>
+                          {formatCurrency(
+                            currentValue.category.restaurant.currencyCode,
+                            currentOrder.price
+                          )}
+                        </Text>
                       )}
                     </Flex>
                   </s.RemoteComponent>
@@ -326,8 +369,8 @@ const Basket = () => {
                     justifyContent="flex-end"
                   >
                     <Counter
-                      reduceCount={changeOrderItemCount(-1, currentOrder._id)}
-                      enlargeCount={changeOrderItemCount(+1, currentOrder._id)}
+                      decreaseCount={changeOrderItemCount(-1, currentValue._id)}
+                      increaseCount={changeOrderItemCount(+1, currentValue._id)}
                       count={currentOrder.count}
                     />
                     {currentOrder.addons.length &&
@@ -338,13 +381,26 @@ const Basket = () => {
                         alignItems="center"
                       >
                         <Text>
-                          {calculateSumOfAddons(currentOrder.addons)}$
+                          {formatCurrency(
+                            currentValue.category.restaurant.currencyCode,
+                            calculateSumOfAddons(currentOrder.addons)
+                          )}
                         </Text>
                         <Text>+</Text>
-                        <Text>{currentOrder.price}$</Text>
+                        <Text>
+                          {formatCurrency(
+                            currentValue.category.restaurant.currencyCode,
+                            currentOrder.price
+                          )}
+                        </Text>
                       </Flex>
                     ) : (
-                      <Text pl={theme.spacing(2)}>{currentOrder.price}$</Text>
+                      <Text pl={theme.spacing(2)}>
+                        {formatCurrency(
+                          currentValue.category.restaurant.currencyCode,
+                          currentValue.price
+                        )}
+                      </Text>
                     )}
                   </Flex>
                 </Flex>

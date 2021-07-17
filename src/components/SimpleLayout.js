@@ -10,16 +10,27 @@ import MenuTabs from "./menu-tabs";
 const SimpleLayout = ({ children }) => {
   return (
     <>
-      <DarkModeSwitcher />
       {children.props.needMenu ? (
         <Flex direction="column" width={1} height={1}>
-          <Flex height={1} width={1} overflowY="auto" overflowX="hidden">
+          <Flex
+            height={1}
+            width={1}
+            overflowY="auto"
+            overflowX="hidden"
+            position="relative"
+          >
+            <DarkModeSwitcher/>
             {children}
           </Flex>
           <Divider />
-          <Flex height={1} flex={1} width={1} justifyContent="space-around">
+          <s.MenuBar
+            height={1}
+            flex={1}
+            width={1}
+            justifyContent="space-around"
+          >
             <MenuTabs />
-          </Flex>
+          </s.MenuBar>
         </Flex>
       ) : (
         <s.Container>{children}</s.Container>
@@ -33,6 +44,10 @@ const s = {
     width: 100%;
     height: 100%;
   `,
+  MenuBar: styled(Flex)`
+    position: sticky;
+    top: 0;
+  `
 };
 
 SimpleLayout.propTypes = {
