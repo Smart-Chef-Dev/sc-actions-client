@@ -25,7 +25,13 @@ const Categories = ({ restaurantId, tableId, onLocation, categories }) => {
       ))}
     </Flex>
   ) : (
-    <Flex direction="column" height={1} overflowX="hidden">
+    <Flex
+      direction="column"
+      height={1}
+      width={1}
+      overflowX="hidden"
+      overflowY="hidden"
+    >
       <CategoriesLoader quantity={7} />
     </Flex>
   );

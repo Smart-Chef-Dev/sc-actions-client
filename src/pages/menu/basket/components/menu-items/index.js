@@ -86,8 +86,8 @@ const MenuItems = ({ basketAtoms, onBasketAtoms, translations, totalCost }) => {
                     justifyContent="flex-end"
                   >
                     <Counter
-                      reduceCount={changeOrderItemCount(-1, currentValue._id)}
-                      enlargeCount={changeOrderItemCount(+1, currentValue._id)}
+                      decreaseCount={changeOrderItemCount(-1, currentValue._id)}
+                      increaseCount={changeOrderItemCount(+1, currentValue._id)}
                       count={currentValue.count}
                     />
                     <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
@@ -123,8 +123,8 @@ const MenuItems = ({ basketAtoms, onBasketAtoms, translations, totalCost }) => {
                   justifyContent="flex-end"
                 >
                   <Counter
-                    reduceCount={changeOrderItemCount(-1, currentValue._id)}
-                    enlargeCount={changeOrderItemCount(+1, currentValue._id)}
+                    decreaseCount={changeOrderItemCount(-1, currentValue._id)}
+                    increaseCount={changeOrderItemCount(+1, currentValue._id)}
                     count={currentValue.count}
                   />
                   <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>

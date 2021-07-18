@@ -19,8 +19,8 @@ const MenuItemLoaders = ({ quantity }) =>
           foregroundColor="var(--loader-foreground-color)"
         >
           <rect x="0" y="0" rx="20" ry="20" width="135" height="105" />
-          <rect x="5" y="114" rx="0" ry="0" width="97" height="10" />
-          <rect x="5" y="133" rx="0" ry="0" width="13" height="10" />
+          <rect x="5" y="121" rx="0" ry="0" width="97" height="10" />
+          <rect x="5" y="136" rx="0" ry="0" width="13" height="10" />
         </ContentLoader>
       </Flex>
     ));

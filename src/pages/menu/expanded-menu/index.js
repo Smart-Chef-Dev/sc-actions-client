@@ -9,19 +9,13 @@ import Navigation from "./components/navigation";
 import MenuItem from "./components/menu-item";
 import ReturnMainMenuButton from "./components/return-main-menu-button";
 
-import categoriesService from "services/categoriesService";
-
+import { categoriesService } from "services/categoriesService";
 import { useTranslation } from "contexts/translation-context";
+import BasketState from "atoms/basket";
+import { getMenuItemsByCategoryIdInLimit } from "services/menuItemsService";
 
 const numberOfPagesPerDownload = 5;
-
 const menuItemsRef = createRef();
-
-import BasketState from "atoms/basket";
-import {
-  MenuItemsServices,
-  MenuItemsServiceRouters,
-} from "services/menuItemsService";
 
 const ExpandedMenu = () => {
   const [, { restaurantId, categoryId, tableId }] = useRoute(
@@ -41,12 +35,7 @@ const ExpandedMenu = () => {
   );
   const menuItems = useInfiniteQuery(
     ["menuItemsPages", { categoryId }],
-    ({ pageParam }) =>
-      MenuItemsServices({
-        categoryId,
-        service: MenuItemsServiceRouters.GET_MENU_ITEMS_BY_ID_IN_LIMIT,
-        pageParam,
-      }),
+    getMenuItemsByCategoryIdInLimit,
     {
       getNextPageParam: (lastPage) => {
         if (lastPage.totalPages <= lastPage.page) {

@@ -82,8 +82,10 @@ const ControlButtons = ({
     <Flex width={1} flex={1} direction="column-reverse" mt={theme.spacing(1)}>
       <Flex width={1} justifyContent="space-between" mb={theme.spacing(1)}>
         <Counter
-          reduceCount={inTheBasket ? changeOrderItemCount(-1) : changeCount(-1)}
-          enlargeCount={
+          decreaseCount={
+            inTheBasket ? changeOrderItemCount(-1) : changeCount(-1)
+          }
+          increaseCount={
             inTheBasket ? changeOrderItemCount(+1) : changeCount(+1)
           }
           count={inTheBasket ? countInBasket : count}

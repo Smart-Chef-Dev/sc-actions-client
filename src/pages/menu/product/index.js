@@ -5,17 +5,13 @@ import { useRecoilState } from "recoil";
 
 import { Flex } from "components/flex";
 import Loader from "components/loaders";
+import MenuItem from "./components/menu-item";
+import BackButton from "./components/back-button";
 
 import { useTranslation } from "contexts/translation-context";
 import { Routes } from "constants/routes";
-
 import BasketState from "atoms/basket";
-import MenuItem from "./components/menu-item";
-import BackButton from "./components/back-button";
-import {
-  MenuItemsServices,
-  MenuItemsServiceRouters,
-} from "services/menuItemsService";
+import { getMenuItemsById } from "services/menuItemsService";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
@@ -27,11 +23,9 @@ const Product = () => {
     strings: { product: translations },
   } = useTranslation();
 
-  const { data, isError, isLoading } = useQuery(["menuItem", { itemId }], () =>
-    MenuItemsServices({
-      itemId,
-      service: MenuItemsServiceRouters.GET_MENU_ITEMS_BY_ID,
-    })
+  const { data, isError, isLoading } = useQuery(
+    ["menuItem", { itemId }],
+    getMenuItemsById
   );
 
   return !isLoading ? (

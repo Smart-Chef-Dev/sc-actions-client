@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 
 import { useErrorContext } from "pages/error-boundary";
 
-import restaurantService from "services/restaurantService";
+import { restaurantService } from "services/restaurantService";
 
 export const useRestaurant = (restaurantId) => {
   const { handleError } = useErrorContext();

@@ -50,8 +50,8 @@ const PeopleCounter = ({ basketAtoms, onBasketAtoms, translations }) => {
         >
           <Flex>
             <Counter
-              reduceCount={changeNumberOfPeople(-1)}
-              enlargeCount={changeNumberOfPeople(+1)}
+              decreaseCount={changeNumberOfPeople(-1)}
+              increaseCount={changeNumberOfPeople(+1)}
               count={basketAtoms.personCount}
             />
           </Flex>
