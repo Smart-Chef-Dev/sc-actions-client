@@ -14,7 +14,7 @@ import { theme } from "theme";
 
 import {
   MenuItemsServices,
-  MenuItemsServicesRouters,
+  MenuItemsServiceRouters,
 } from "services/menuItemsService";
 
 const numberOfPagesPerDownload = 5;
@@ -25,7 +25,7 @@ const MenuItem = ({ categoryId, restaurantId, tableId, onLocation }) => {
     ({ pageParam }) =>
       MenuItemsServices({
         categoryId,
-        service: MenuItemsServicesRouters.GET_MENU_ITEMS_BY_ID_IN_LIMIT,
+        service: MenuItemsServiceRouters.GET_MENU_ITEMS_BY_ID_IN_LIMIT,
         pageParam,
       }),
     {

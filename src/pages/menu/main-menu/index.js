@@ -14,7 +14,7 @@ import { useTranslation } from "contexts/translation-context";
 
 import BasketState from "atoms/basket";
 
-import getAllCategories from "services/getAllCategories";
+import categoriesService from "services/categoriesService";
 
 const Menu = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.MENU);
@@ -28,7 +28,7 @@ const Menu = () => {
 
   const categories = useQuery(
     ["categories", { restaurantId }],
-    getAllCategories
+    categoriesService
   );
 
   useEffect(() => {

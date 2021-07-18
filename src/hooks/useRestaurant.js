@@ -3,14 +3,14 @@ import { useQuery } from "react-query";
 
 import { useErrorContext } from "pages/error-boundary";
 
-import getRestaurantById from "services/getRestaurantById";
+import restaurantService from "services/restaurantService";
 
 export const useRestaurant = (restaurantId) => {
   const { handleError } = useErrorContext();
 
   const { data, isError, isLoading } = useQuery(
     ["restaurant", { restaurantId }],
-    getRestaurantById
+    restaurantService
   );
 
   useEffect(() => {

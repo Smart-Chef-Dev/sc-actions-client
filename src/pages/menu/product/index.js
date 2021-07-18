@@ -14,8 +14,8 @@ import MenuItem from "./components/menu-item";
 import BackButton from "./components/back-button";
 import {
   MenuItemsServices,
-  MenuItemsServicesRouters,
-} from "../../../services/menuItemsService";
+  MenuItemsServiceRouters,
+} from "services/menuItemsService";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
@@ -30,7 +30,7 @@ const Product = () => {
   const { data, isError, isLoading } = useQuery(["menuItem", { itemId }], () =>
     MenuItemsServices({
       itemId,
-      service: MenuItemsServicesRouters.GET_MENU_ITEMS_BY_ID,
+      service: MenuItemsServiceRouters.GET_MENU_ITEMS_BY_ID,
     })
   );
 

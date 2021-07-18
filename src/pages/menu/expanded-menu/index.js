@@ -9,7 +9,7 @@ import Navigation from "./components/navigation";
 import MenuItem from "./components/menu-item";
 import ReturnMainMenuButton from "./components/return-main-menu-button";
 
-import getAllCategories from "services/getAllCategories";
+import categoriesService from "services/categoriesService";
 
 import { useTranslation } from "contexts/translation-context";
 
@@ -20,8 +20,8 @@ const menuItemsRef = createRef();
 import BasketState from "atoms/basket";
 import {
   MenuItemsServices,
-  MenuItemsServicesRouters,
-} from "../../../services/menuItemsService";
+  MenuItemsServiceRouters,
+} from "services/menuItemsService";
 
 const ExpandedMenu = () => {
   const [, { restaurantId, categoryId, tableId }] = useRoute(
@@ -37,14 +37,14 @@ const ExpandedMenu = () => {
 
   const categories = useQuery(
     ["categories", { restaurantId }],
-    getAllCategories
+    categoriesService
   );
   const menuItems = useInfiniteQuery(
     ["menuItemsPages", { categoryId }],
     ({ pageParam }) =>
       MenuItemsServices({
         categoryId,
-        service: MenuItemsServicesRouters.GET_MENU_ITEMS_BY_ID_IN_LIMIT,
+        service: MenuItemsServiceRouters.GET_MENU_ITEMS_BY_ID_IN_LIMIT,
         pageParam,
       }),
     {
