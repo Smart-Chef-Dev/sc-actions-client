@@ -22,6 +22,9 @@ import productRu from "./ru/product.json";
 import basketEn from "./en/basket.json";
 import basketRu from "./ru/basket.json";
 
+import addonsEn from "./en/addons.json";
+import addonsRu from "./ru/addons.json";
+
 export const languages = {
   en: {
     actions: actionsEn,
@@ -30,6 +33,7 @@ export const languages = {
     expandedMenu: expandedMenuEn,
     product: productEn,
     basket: basketEn,
+    addons: addonsEn,
     singIn: singInEn,
     singUp: singUpEn,
   },
@@ -42,5 +46,6 @@ export const languages = {
     expandedMenu: expandedMenuRu,
     product: productRu,
     basket: basketRu,
+    addons: addonsRu,
   },
 };
