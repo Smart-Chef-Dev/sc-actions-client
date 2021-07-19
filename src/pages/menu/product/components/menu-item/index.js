@@ -30,6 +30,7 @@ const MenuItem = ({
       <s.MainInformation
         direction="column"
         p={theme.spacing(1)}
+        pb={theme.spacing(0)}
         height={1}
         width={1}
         boxSizing="border-box"

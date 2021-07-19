@@ -32,6 +32,8 @@ export const globals = css`
       --text-grey: #c7c7cc;
       --light-grey: #00000066;
       --box-shadow: #0000003d;
+      --loader-background-color: #ede8e8;
+      --loader-foreground-color: #dfd7d7;
       --black-layout-color: rgba(0, 0, 0, 0.7);
       --error: #f36c6c;
     }
@@ -43,6 +45,8 @@ export const globals = css`
       --text: #000;
       --box-shadow: #ffffff3d;
       --light-grey: #c7c7cc;
+      --loader-background-color: #686c87;
+      --loader-foreground-color: #566586;
     }
 
     ::-webkit-scrollbar {

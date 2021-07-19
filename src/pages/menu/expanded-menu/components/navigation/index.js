@@ -1,48 +1,81 @@
-import { memo, useCallback } from "react";
-import { useLocation } from "wouter";
+import { Fragment, memo, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { theme } from "theme";
+import { Divider } from "components/divider";
+import CategoriesLoader from "components/loaders/expanded-menu/categories-loader";
 
-const Navigation = ({ category, currentCategory }) => {
-  const [, setLocation] = useLocation();
+const Navigation = ({ categories, currentCategoryId, onLocation }) => {
+  const { data, isLoading } = categories;
 
   const changeCategory = useCallback(
     (categoryId) => () => {
-      setLocation(categoryId);
+      onLocation(categoryId);
     },
-    [setLocation]
+    [onLocation]
   );
 
-  return (
-    <Flex overflowX="auto" width={1}>
-      {category.map((currentValue) => (
-        <Flex key={currentValue._id}>
-          <Flex p={theme.spacing(1)}>
-            {currentCategory === currentValue._id ? (
-              <Text onClick={changeCategory(currentValue._id)}>
-                {currentValue.name}
-              </Text>
-            ) : (
-              <Text
-                onClick={changeCategory(currentValue._id)}
-                color="var(--text-grey)"
-              >
-                {currentValue.name}
-              </Text>
-            )}
-          </Flex>
+  const category = useMemo(
+    () =>
+      !isLoading &&
+      data.find((currentValue) => currentValue._id === currentCategoryId),
+    [currentCategoryId, data, isLoading]
+  );
+
+  return !isLoading ? (
+    <Flex direction="column" height={1} width={1}>
+      <Flex
+        height={1}
+        width={1}
+        direction="column"
+        ml={theme.spacing(1)}
+        flex={1}
+      >
+        <Text
+          fontSize={theme.fontSize(3)}
+          fontWeight="bold"
+          my={theme.spacing(1)}
+        >
+          {category.name}
+        </Text>
+        <Divider />
+      </Flex>
+      <Flex height={1} width={1} pl={theme.spacing(1)} boxSizing="border-box">
+        <Flex overflowX="auto">
+          {data.map((currentCategory) => (
+            <Fragment key={currentCategory._id}>
+              {currentCategoryId === currentCategory._id ? (
+                <Text
+                  onClick={changeCategory(currentCategory._id)}
+                  p={theme.spacing(1)}
+                >
+                  {currentCategory.name}
+                </Text>
+              ) : (
+                <Text
+                  onClick={changeCategory(currentCategory._id)}
+                  color="var(--text-grey)"
+                  p={theme.spacing(1)}
+                >
+                  {currentCategory.name}
+                </Text>
+              )}
+            </Fragment>
+          ))}
         </Flex>
-      ))}
+      </Flex>
     </Flex>
+  ) : (
+    <CategoriesLoader quantity={12} />
   );
 };
 
 Navigation.propTypes = {
-  category: PropTypes.array,
-  currentCategory: PropTypes.string,
+  categories: PropTypes.object,
+  currentCategoryId: PropTypes.string,
+  onLocation: PropTypes.func,
 };
 
 export default memo(Navigation);

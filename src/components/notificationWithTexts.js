@@ -7,7 +7,7 @@ import { Flex } from "./flex";
 
 import DoneIcon from "assets/icons/actions/done-icon.svg";
 
-const notificationWithTexts = ({ texts }) => {
+const NotificationWithTexts = ({ texts }) => {
   return (
     <Flex direction="column">
       <Flex justifyContent="center" width={1} mb={theme.spacing(1)}>
@@ -29,8 +29,8 @@ const notificationWithTexts = ({ texts }) => {
   );
 };
 
-notificationWithTexts.propTypes = {
+NotificationWithTexts.propTypes = {
   texts: PropTypes.array,
 };
 
-export default memo(notificationWithTexts);
+export default memo(NotificationWithTexts);
