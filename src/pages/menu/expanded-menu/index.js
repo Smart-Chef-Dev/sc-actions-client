@@ -9,7 +9,7 @@ import Navigation from "./components/navigation";
 import MenuItem from "./components/menu-item";
 import ReturnMainMenuButton from "./components/return-main-menu-button";
 
-import { categoriesService } from "services/categoriesService";
+import { getAllCategories } from "services/categoriesService";
 import { useTranslation } from "contexts/translation-context";
 import BasketState from "atoms/basket";
 import { getMenuItemsByCategoryIdInLimit } from "services/menuItemsService";
@@ -31,7 +31,7 @@ const ExpandedMenu = () => {
 
   const categories = useQuery(
     ["categories", { restaurantId }],
-    categoriesService
+    getAllCategories
   );
   const menuItems = useInfiniteQuery(
     ["menuItemsPages", { categoryId }],
