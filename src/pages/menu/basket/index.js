@@ -27,11 +27,22 @@ const Basket = () => {
 
   const totalCost = useMemo(() => {
     return basketAtoms.order
-      .reduce(
-        (previousValues, currentValue) =>
-          previousValues + currentValue.price * currentValue.count,
-        0
-      )
+      .reduce((previousOrder, currentOrder) => {
+        const addons = currentOrder.addons.reduce(
+          (previousAddons, currentModifier) => {
+            if (currentModifier.isIncludedInOrder) {
+              return previousAddons + +currentModifier.price;
+            }
+
+            return previousAddons;
+          },
+          0
+        );
+
+        return (
+          previousOrder + addons + +currentOrder.price * currentOrder.count
+        );
+      }, 0)
       .toFixed(1);
   }, [basketAtoms]);
 

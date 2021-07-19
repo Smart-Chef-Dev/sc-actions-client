@@ -12,14 +12,9 @@ const ControlButtons = ({
   basketAtoms,
   itemId,
   menuItem,
+  inTheBasket,
 }) => {
   const [count, setCount] = useState(1);
-
-  const inTheBasket = useMemo(() => {
-    return !!basketAtoms.order.find(
-      (currentValue) => currentValue._id === itemId
-    );
-  }, [itemId, basketAtoms]);
 
   const countInBasket = useMemo(() => {
     const valueInBasket = basketAtoms.order.find(
@@ -110,6 +105,7 @@ ControlButtons.propTypes = {
   basketAtoms: PropTypes.object,
   itemId: PropTypes.string,
   menuItem: PropTypes.object,
+  inTheBasket: PropTypes.bool,
 };
 
 export default memo(ControlButtons);

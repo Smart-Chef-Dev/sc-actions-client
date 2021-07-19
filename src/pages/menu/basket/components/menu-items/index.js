@@ -9,11 +9,14 @@ import { Divider } from "components/divider";
 import { Img } from "components/img";
 import Counter from "components/counter";
 import SwipeDelete from "./components/swipe-delete";
+import AddonsBasket from "./components/addons-basket";
 
 import BasketIcon from "assets/icons/basket/basket-icon.svg";
+import { formatCurrency } from "utils/formatCurrency";
 
 const MenuItems = ({ basketAtoms, onBasketAtoms, translations, totalCost }) => {
   const [preRemoveItemId, setPreRemoveItemId] = useState(null);
+  const [unfoldedItemId, setUnfoldedItemId] = useState(null);
 
   const removeOrder = useCallback(() => {
     onBasketAtoms((oldOrder) => {
@@ -53,6 +56,28 @@ const MenuItems = ({ basketAtoms, onBasketAtoms, translations, totalCost }) => {
     [basketAtoms, onBasketAtoms]
   );
 
+  const calculateSumOfAddons = useCallback((addons) => {
+    return addons.reduce((previousValues, currentValue) => {
+      if (currentValue.isIncludedInOrder) {
+        return previousValues + +currentValue.price;
+      }
+      return previousValues;
+    }, 0);
+  }, []);
+
+  const expandItem = useCallback(
+    (productId, isAddons) => () => {
+      if (!isAddons) {
+        return;
+      }
+
+      unfoldedItemId === productId
+        ? setUnfoldedItemId(null)
+        : setUnfoldedItemId(productId);
+    },
+    [unfoldedItemId]
+  );
+
   return (
     <>
       {basketAtoms.order.map((currentValue) => (
@@ -71,11 +96,19 @@ const MenuItems = ({ basketAtoms, onBasketAtoms, translations, totalCost }) => {
                   <s.Preview
                     src={currentValue.pictureUrl}
                     alt={currentValue.name}
+                    onClick={expandItem(
+                      currentValue._id,
+                      !!currentValue.addons.length
+                    )}
                   />
                   <Text
                     fontSize={theme.fontSize(0)}
                     pl={theme.spacing(1)}
                     width={1}
+                    onClick={expandItem(
+                      currentValue._id,
+                      !!currentValue.addons.length
+                    )}
                   >
                     {currentValue.name}
                   </Text>
@@ -90,7 +123,35 @@ const MenuItems = ({ basketAtoms, onBasketAtoms, translations, totalCost }) => {
                       increaseCount={changeOrderItemCount(+1, currentValue._id)}
                       count={currentValue.count}
                     />
-                    <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
+                    {currentValue.addons.length &&
+                    currentValue.addons.find((m) => m.isIncludedInOrder) ? (
+                      <Flex
+                        direction="column"
+                        ml={theme.spacing(2)}
+                        alignItems="center"
+                      >
+                        <Text>
+                          {formatCurrency(
+                            currentValue.category.restaurant.currencyCode,
+                            calculateSumOfAddons(currentValue.addons)
+                          )}
+                        </Text>
+                        <Text>+</Text>
+                        <Text>
+                          {formatCurrency(
+                            currentValue.category.restaurant.currencyCode,
+                            currentValue.price
+                          )}
+                        </Text>
+                      </Flex>
+                    ) : (
+                      <Text pl={theme.spacing(2)}>
+                        {formatCurrency(
+                          currentValue.category.restaurant.currencyCode,
+                          currentValue.price
+                        )}
+                      </Text>
+                    )}
                   </Flex>
                 </s.RemoteComponent>
                 <s.DeleteButton
@@ -108,11 +169,19 @@ const MenuItems = ({ basketAtoms, onBasketAtoms, translations, totalCost }) => {
                 <s.Preview
                   src={currentValue.pictureUrl}
                   alt={currentValue.name}
+                  onClick={expandItem(
+                    currentValue._id,
+                    !!currentValue.addons.length
+                  )}
                 />
                 <Text
                   fontSize={theme.fontSize(0)}
                   pl={theme.spacing(1)}
                   width={1}
+                  onClick={expandItem(
+                    currentValue._id,
+                    !!currentValue.addons.length
+                  )}
                 >
                   {currentValue.name}
                 </Text>
@@ -132,6 +201,10 @@ const MenuItems = ({ basketAtoms, onBasketAtoms, translations, totalCost }) => {
               </Flex>
             )}
           </SwipeDelete>
+          <AddonsBasket
+            currentValue={currentValue}
+            unfoldedItemId={unfoldedItemId}
+          />
           <Divider ml={theme.spacing(1)} />
         </Flex>
       ))}

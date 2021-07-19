@@ -1,12 +1,13 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Img } from "components/img";
-import { theme } from "theme";
+import AddonsProduct from "./components/addons-product";
 import ControlButtons from "./components/control-buttons";
+import { theme } from "theme";
 
 const MenuItem = ({
   menuItem,
@@ -15,6 +16,12 @@ const MenuItem = ({
   basketAtoms,
   itemId,
 }) => {
+  const inTheBasket = useMemo(() => {
+    return !!basketAtoms.order.find(
+      (currentValue) => currentValue._id === itemId
+    );
+  }, [itemId, basketAtoms]);
+
   return (
     <>
       <Flex width={1} height={0.5} flex={1}>
@@ -54,12 +61,19 @@ const MenuItem = ({
           </Text>
         </Flex>
         <Text color="var(--light-grey)">{menuItem.description}</Text>
+        <AddonsProduct
+          menuItem={menuItem}
+          basketAtoms={basketAtoms}
+          itemId={itemId}
+          inTheBasket={inTheBasket}
+        />
         <ControlButtons
           translations={translations}
           onBasketAtoms={onBasketAtoms}
           menuItem={menuItem}
           basketAtoms={basketAtoms}
           itemId={itemId}
+          inTheBasket={inTheBasket}
         />
       </s.MainInformation>
     </>

@@ -23,9 +23,8 @@ const SingIn = () => {
     strings: { singIn: translations },
   } = useTranslation();
 
-  const [isCorrectPasswordAndLogin, setIsCorrectPasswordAndLogin] = useState(
-    false
-  );
+  const [isCorrectPasswordAndLogin, setIsCorrectPasswordAndLogin] =
+    useState(false);
 
   const [, setUserDataAtoms] = useRecoilState(UserDataState);
 

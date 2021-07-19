@@ -49,6 +49,15 @@ export const globals = css`
       --loader-foreground-color: #566586;
     }
 
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #929eaa;
+    }
+
     div#root {
       background-color: var(--main-bg-color);
     }
