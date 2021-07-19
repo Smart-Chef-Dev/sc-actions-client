@@ -45,6 +45,15 @@ export const globals = css`
       --light-grey: #c7c7cc;
     }
 
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #929eaa;
+    }
+
     div#root {
       background-color: var(--main-bg-color);
     }
