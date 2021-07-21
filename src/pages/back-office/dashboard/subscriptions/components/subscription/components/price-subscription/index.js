@@ -7,7 +7,7 @@ import { formatCurrency } from "utils/formatCurrency";
 
 const PriceSubscription = ({ price }) => {
   return (
-    <Text pb={theme.spacing(1)}>
+    <Text pb={theme.spacing(1)} color="var(--text-grey)">
       {`
       ${formatCurrency(price.currency.toUpperCase(), price.unit_amount / 100)}
        per ${price.recurring.interval}`}

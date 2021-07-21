@@ -15,6 +15,9 @@ import {
 } from "services/subscriptionsService";
 import { useRecoilState } from "recoil";
 import UserDataState from "atoms/user";
+import { Text } from "../../../../components/text";
+import { theme } from "../../../../theme";
+import { Divider } from "../../../../components/divider";
 
 const Dashboard = () => {
   const [userDataAtoms] = useRecoilState(UserDataState);
@@ -61,26 +64,45 @@ const Dashboard = () => {
   }, []);
 
   return !products.isLoading && !prices.isLoading ? (
-    <Flex height={1} width={1} overflowY="auto">
-      {sessionCanceled.renderNotification()}
-      {sessionSuccess.renderNotification()}
+    <Flex direction="column" height={1} width={1}>
       <Flex
-        flexWrap="wrap"
-        alignItems="center"
-        justifyContent="center"
         height={1}
         width={1}
+        flex={1}
+        direction="column"
+        pl={theme.spacing(1)}
       >
-        {products.data.data.map((currentProduct) => (
-          <Fragment key={currentProduct.id}>
-            <Subscription
-              product={currentProduct}
-              prices={prices}
-              userDataAtoms={userDataAtoms}
-              subscription={subscription}
-            />
-          </Fragment>
-        ))}
+        <Text
+          p={theme.spacing(1)}
+          pl={0}
+          fontSize={theme.fontSize(3)}
+          fontWeight="bold"
+        >
+          Subscriptions
+        </Text>
+        <Divider />
+      </Flex>
+      <Flex height={1} width={1} overflowY="auto">
+        {sessionCanceled.renderNotification()}
+        {sessionSuccess.renderNotification()}
+        <Flex
+          flexWrap="wrap"
+          alignItems="center"
+          justifyContent="center"
+          height={1}
+          width={1}
+        >
+          {products.data.data.map((currentProduct) => (
+            <Fragment key={currentProduct.id}>
+              <Subscription
+                product={currentProduct}
+                prices={prices}
+                userDataAtoms={userDataAtoms}
+                subscription={subscription}
+              />
+            </Fragment>
+          ))}
+        </Flex>
       </Flex>
     </Flex>
   ) : (

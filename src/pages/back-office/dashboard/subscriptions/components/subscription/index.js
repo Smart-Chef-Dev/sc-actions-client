@@ -21,7 +21,7 @@ const Subscription = ({ product, prices, userDataAtoms, subscription }) => {
     <Flex key={product.id} p={theme.spacing(1)}>
       <s.Container direction="column" alignItems="center" p={theme.spacing(1)}>
         <s.Preview src={product.images[0]} />
-        <Text pb={theme.spacing(1)} pt={theme.spacing(1)}>
+        <Text pb={theme.spacing(1)} pt={theme.spacing(1)} fontWeight="bold">
           {product.name}
         </Text>
         <Text pb={theme.spacing(1)} textAlign="center">
@@ -46,6 +46,7 @@ const s = {
   `,
   Preview: styled(Img)`
     border-radius: 16px;
+    max-width: 280px;
   `,
 };
 
