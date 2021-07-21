@@ -31,9 +31,9 @@ const notificationWithTexts = ({ texts, isDone = true }) => {
   );
 };
 
-notificationWithTexts.propTypes = {
+NotificationWithTexts.propTypes = {
   texts: PropTypes.array,
   isDone: PropTypes.bool,
 };
 
-export default memo(notificationWithTexts);
+export default memo(NotificationWithTexts);

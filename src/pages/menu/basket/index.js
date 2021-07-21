@@ -5,15 +5,15 @@ import { useLocation, useRoute } from "wouter";
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Divider } from "components/divider";
+import MenuItems from "./components/menu-items";
+import PeopleCounter from "./components/people-counter";
+import SubmitOrderButton from "./components/submit-order-button";
+
 import BasketState from "atoms/basket";
 import { useTranslation } from "contexts/translation-context";
 
 import { theme } from "theme";
 import { Routes } from "constants/routes";
-
-import MenuItems from "./components/menu-items";
-import PeopleCounter from "./components/people-counter";
-import SubmitOrderButton from "./components/submit-order-button";
 
 const Basket = () => {
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
@@ -27,11 +27,22 @@ const Basket = () => {
 
   const totalCost = useMemo(() => {
     return basketAtoms.order
-      .reduce(
-        (previousValues, currentValue) =>
-          previousValues + currentValue.price * currentValue.count,
-        0
-      )
+      .reduce((previousOrder, currentOrder) => {
+        const addons = currentOrder.addons.reduce(
+          (previousAddons, currentModifier) => {
+            if (currentModifier.isIncludedInOrder) {
+              return previousAddons + +currentModifier.price;
+            }
+
+            return previousAddons;
+          },
+          0
+        );
+
+        return (
+          previousOrder + addons + +currentOrder.price * currentOrder.count
+        );
+      }, 0)
       .toFixed(1);
   }, [basketAtoms]);
 

@@ -12,14 +12,9 @@ const ControlButtons = ({
   basketAtoms,
   itemId,
   menuItem,
+  inTheBasket,
 }) => {
   const [count, setCount] = useState(1);
-
-  const inTheBasket = useMemo(() => {
-    return !!basketAtoms.order.find(
-      (currentValue) => currentValue._id === itemId
-    );
-  }, [itemId, basketAtoms]);
 
   const countInBasket = useMemo(() => {
     const valueInBasket = basketAtoms.order.find(
@@ -82,8 +77,10 @@ const ControlButtons = ({
     <Flex width={1} flex={1} direction="column-reverse" mt={theme.spacing(1)}>
       <Flex width={1} justifyContent="space-between" mb={theme.spacing(1)}>
         <Counter
-          reduceCount={inTheBasket ? changeOrderItemCount(-1) : changeCount(-1)}
-          enlargeCount={
+          decreaseCount={
+            inTheBasket ? changeOrderItemCount(-1) : changeCount(-1)
+          }
+          increaseCount={
             inTheBasket ? changeOrderItemCount(+1) : changeCount(+1)
           }
           count={inTheBasket ? countInBasket : count}
@@ -108,6 +105,7 @@ ControlButtons.propTypes = {
   basketAtoms: PropTypes.object,
   itemId: PropTypes.string,
   menuItem: PropTypes.object,
+  inTheBasket: PropTypes.bool,
 };
 
 export default memo(ControlButtons);

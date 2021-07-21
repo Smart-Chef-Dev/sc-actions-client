@@ -1,52 +1,36 @@
-import { memo, useEffect, useState } from "react";
+import { memo } from "react";
 import { useLocation, useRoute } from "wouter";
+import { useQuery } from "react-query";
 import { useRecoilState } from "recoil";
 
 import { Flex } from "components/flex";
+import Loader from "components/loaders";
+import MenuItem from "./components/menu-item";
+import BackButton from "./components/back-button";
 
 import { useTranslation } from "contexts/translation-context";
 import { Routes } from "constants/routes";
-
 import BasketState from "atoms/basket";
-import MenuItem from "./components/menu-item";
-import BackButton from "./components/back-button";
+import { getMenuItemsById } from "services/menuItemsService";
 
 const Product = () => {
   const [, { restaurantId, itemId, tableId }] = useRoute(Routes.PRODUCT);
   const [, setLocation] = useLocation();
 
-  const [menuItem, setMenuItem] = useState({});
   const [basketAtoms, setBasketAtoms] = useRecoilState(BasketState);
-
-  const [isError, setIsError] = useState(false);
 
   const {
     strings: { product: translations },
   } = useTranslation();
 
-  useEffect(() => {
-    async function getData() {
-      const response = await fetch(`/api/menu/${itemId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  const { data, isError, isLoading } = useQuery(
+    ["menuItem", { itemId }],
+    getMenuItemsById
+  );
 
-      if (!response.ok) {
-        setIsError(!response.ok);
-        return;
-      }
-
-      return setMenuItem(await response.json());
-    }
-
-    getData();
-  }, [restaurantId, itemId]);
-
-  return (
+  return !isLoading ? (
     <Flex height={1} width={1} overflowY="auto" overflowX="hidden">
-      {!isError && !!menuItem._id && (
+      {!isError && (
         <Flex direction="column" height={1} width={1}>
           <BackButton
             onLocation={setLocation}
@@ -58,11 +42,13 @@ const Product = () => {
             itemId={itemId}
             basketAtoms={basketAtoms}
             onBasketAtoms={setBasketAtoms}
-            menuItem={menuItem}
+            menuItem={data}
           />
         </Flex>
       )}
     </Flex>
+  ) : (
+    <Loader />
   );
 };
 

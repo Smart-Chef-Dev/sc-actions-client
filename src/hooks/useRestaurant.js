@@ -1,28 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useQuery } from "react-query";
 
 import { useErrorContext } from "pages/error-boundary";
 
+import { getRestaurantById } from "services/restaurantService";
+
 export const useRestaurant = (restaurantId) => {
   const { handleError } = useErrorContext();
-  const [isLoading, setLoading] = useState(false);
-  const [restaurant, setRestaurant] = useState();
+
+  const { data, isError, isLoading } = useQuery(
+    ["restaurant", { restaurantId }],
+    getRestaurantById
+  );
 
   useEffect(() => {
     if (!restaurantId) {
       return handleError(new Error("restaurantId or tableId not provided"));
     }
 
-    setLoading(true);
-    (async () => {
-      const resp = await fetch(`/api/restaurant/${restaurantId}`);
-      if (!resp.ok) {
-        return handleError(new Error("Can't fetch actions"));
-      }
-      const data = await resp.json();
-      setRestaurant(data);
-      setLoading(false);
-    })();
-  }, [handleError, restaurantId]);
+    if (isError) {
+      return handleError(new Error("Can't fetch actions"));
+    }
+  }, [handleError, restaurantId, isError]);
 
-  return { isLoading, restaurant };
+  return { isLoading, restaurant: data };
 };
