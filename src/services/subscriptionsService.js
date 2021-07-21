@@ -2,7 +2,7 @@ export const getAllProducts = () =>
   fetch(`/api/products-stripe`).then((res) => res.json());
 
 export const getAllPrices = () =>
-  fetch(`/api/subscriptions/prices`).then((res) => res.json());
+  fetch(`/api/price-stripe`).then((res) => res.json());
 
 export const getSubscriptions = async ({ jwt }) => {
   const res = await fetch(`/api/subscriptions`, {

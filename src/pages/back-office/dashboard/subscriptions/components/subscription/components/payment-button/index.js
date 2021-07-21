@@ -20,7 +20,7 @@ const PaymentButton = ({
 
   const createSession = useCallback(async () => {
     const response = await fetch(
-      `/api/subscriptions/prices/${price.id}/create-checkout-session`,
+      `/api/price-stripe/${price.id}/create-checkout-session`,
       {
         method: "POST",
         headers: {
