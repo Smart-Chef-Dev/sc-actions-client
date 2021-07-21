@@ -8,7 +8,7 @@ import { Flex } from "./flex";
 import DoneIcon from "assets/icons/actions/done-icon.svg";
 import ProhibitedIcon from "assets/icons/actions/prohibited_icon.svg";
 
-const notificationWithTexts = ({ texts, isDone = true }) => {
+const NotificationWithTexts = ({ texts, isDone = true }) => {
   return (
     <Flex direction="column">
       <Flex justifyContent="center" width={1} mb={theme.spacing(1)}>

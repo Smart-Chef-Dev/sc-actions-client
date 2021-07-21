@@ -3,22 +3,22 @@ import { useQuery } from "react-query";
 import { useLocation } from "wouter";
 
 import { Flex } from "components/flex";
-import Loader from "components/loader";
 import NotificationWithIconAndText from "components/notificationWithTexts";
 import Subscription from "./components/subscription";
+import { Text } from "components/text";
+import { Divider } from "components/divider";
+import Loader from "components/loaders";
 
+import UserDataState from "atoms/user";
+import { theme } from "theme";
+import { useTranslation } from "contexts/translation-context";
 import { useNotifications } from "hooks/useNotifications";
 import {
   getAllPrices,
   getAllProducts,
   getSubscriptions,
-} from "services/subscriptionsService";
+} from "services/stripeService";
 import { useRecoilState } from "recoil";
-import UserDataState from "atoms/user";
-import { Text } from "../../../../components/text";
-import { theme } from "../../../../theme";
-import { Divider } from "../../../../components/divider";
-import { useTranslation } from "../../../../contexts/translation-context";
 
 const Dashboard = () => {
   const [userDataAtoms] = useRecoilState(UserDataState);
@@ -35,7 +35,7 @@ const Dashboard = () => {
 
   const sessionCanceled = useNotifications(
     <NotificationWithIconAndText
-      texts={["Подписка не оформлена"]}
+      texts={[translations["not_subscribed"]]}
       isDone={false}
     />,
     3000
@@ -43,7 +43,7 @@ const Dashboard = () => {
 
   const sessionSuccess = useNotifications(
     <NotificationWithIconAndText
-      texts={["Подписка оформлена успешно"]}
+      texts={[translations["subscribed_successfully"]]}
       isDone={true}
     />,
     3000
@@ -53,14 +53,16 @@ const Dashboard = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const purchase = urlParams.get("purchase");
 
-    if (purchase === "success") {
-      subscription.refetch();
-      sessionSuccess.showNotification();
-      setLocation(location);
-    }
-    if (purchase === "canceled") {
-      sessionCanceled.showNotification();
-      setLocation(location);
+    switch (purchase) {
+      case "success":
+        subscription.refetch();
+        sessionSuccess.showNotification();
+        setLocation(location);
+        break;
+      case "canceled":
+        sessionCanceled.showNotification();
+        setLocation(location);
+        break;
     }
 
     // should only be called when the page is refreshed

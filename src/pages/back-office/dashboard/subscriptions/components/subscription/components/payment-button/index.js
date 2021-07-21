@@ -1,6 +1,9 @@
 import { memo, useCallback, useMemo } from "react";
-import Button from "components/button";
+import { useMutation } from "react-query";
 import PropTypes from "prop-types";
+
+import Button from "components/button";
+import { createCheckoutSession } from "services/stripeService";
 
 const PaymentButton = ({
   price,
@@ -9,6 +12,7 @@ const PaymentButton = ({
   translations,
 }) => {
   const { data, isLoading, isError } = subscription;
+  const mutation = useMutation(createCheckoutSession);
 
   const subscriptionItems = useMemo(
     () =>
@@ -19,25 +23,16 @@ const PaymentButton = ({
   );
 
   const createSession = useCallback(async () => {
-    const response = await fetch(
-      `/api/price-stripe/${price.id}/create-checkout-session`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + userDataAtoms.jwt,
-        },
-      }
-    );
-
-    document.location = await response.text();
-  }, [price, userDataAtoms]);
+    document.location = await mutation.mutateAsync({
+      priceId: price.id,
+      jwt: userDataAtoms.jwt,
+    });
+  }, [price, userDataAtoms, mutation]);
 
   return (
     <>
       {subscriptionItems ? (
-        <Button onClick={createSession} disabled={true}>
-          {translations["current_subscription"]}
-        </Button>
+        <Button disabled={true}>{translations["current_subscription"]}</Button>
       ) : (
         <Button onClick={createSession}>{translations["arrange"]}</Button>
       )}

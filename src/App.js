@@ -48,8 +48,6 @@ const Dashboard = lazy(() =>
   )
 );
 
-const queryClient = new QueryClient();
-
 function App() {
   return (
     <s.Container>

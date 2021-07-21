@@ -16,5 +16,14 @@ export const getSubscriptions = async ({ jwt }) => {
   if (!res.ok) {
     throw body;
   }
+
   return body;
 };
+
+export const createCheckoutSession = ({ priceId, jwt }) =>
+  fetch(`/api/price-stripe/${priceId}/create-checkout-session`, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + jwt,
+    },
+  }).then((res) => res.text());

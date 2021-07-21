@@ -1,5 +1,7 @@
 {
   "subscriptions": "Subscriptions",
   "arrange": "Arrange",
-  "current_subscription": "Current subscription"
+  "current_subscription": "Current subscription",
+  "not_subscribed": "Not subscribed",
+  "subscribed_successfully": "Subscribed successfully"
 }

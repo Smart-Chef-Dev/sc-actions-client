@@ -1,5 +1,7 @@
 {
   "subscriptions": "Подписки",
   "arrange": "Оформить",
-  "current_subscription": "Текущая подписка"
+  "current_subscription": "Текущая подписка",
+  "not_subscribed": "Подписка не оформлена",
+  "subscribed_successfully": "Подписка оформлена успешно"
 }
