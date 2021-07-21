@@ -7,7 +7,7 @@ import {
   createCheckoutSession,
   deleteSubscriptions,
 } from "services/stripeService";
-import { useWarning } from "hooks/useWarning";
+import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 
 const PaymentButton = ({
   price,
@@ -37,7 +37,7 @@ const PaymentButton = ({
     onButtonsLocked,
   ]);
 
-  const { renderNotification, showNotification } = useWarning(
+  const { renderNotification, showNotification } = useConfirmationPopup(
     translations["cancellation_of_subscription"],
     cancelSubscription
   );
@@ -83,7 +83,7 @@ PaymentButton.propTypes = {
   subscription: PropTypes.object,
   translations: PropTypes.object,
   onButtonsLocked: PropTypes.func,
-  isButtonsLocked: PropTypes.func,
+  isButtonsLocked: PropTypes.bool,
 };
 
 export default memo(PaymentButton);

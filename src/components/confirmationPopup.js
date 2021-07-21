@@ -5,8 +5,13 @@ import Button from "./button";
 import { Flex } from "./flex";
 import { Text } from "./text";
 import { theme } from "../theme";
+import { useTranslation } from "../contexts/translation-context";
 
-const Warning = ({ text, onToggleHidden, continueButton }) => {
+const ConfirmationPopup = ({ text, onToggleHidden, continueButton }) => {
+  const {
+    strings: { confirmationPopup: translations },
+  } = useTranslation();
+
   const continueOperation = useCallback(() => {
     continueButton();
     onToggleHidden(true);
@@ -27,8 +32,8 @@ const Warning = ({ text, onToggleHidden, continueButton }) => {
         >
           {text}
         </Text>
-        <Button onClick={continueOperation}>Продолжить</Button>
-        <Button onClick={cancelOperation}>Отмена</Button>
+        <Button onClick={continueOperation}>{translations["continue"]}</Button>
+        <Button onClick={cancelOperation}>{translations["cancel"]}</Button>
       </Popup>
     </Container>
   );
@@ -55,10 +60,10 @@ const Popup = styled(Flex)`
   background: var(--main-bg-color);
 `;
 
-Warning.propTypes = {
+ConfirmationPopup.propTypes = {
   text: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
   onToggleHidden: PropTypes.func,
   continueButton: PropTypes.func,
 };
 
-export default memo(Warning);
+export default memo(ConfirmationPopup);

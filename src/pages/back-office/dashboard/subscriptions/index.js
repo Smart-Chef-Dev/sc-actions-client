@@ -37,7 +37,7 @@ const Dashboard = () => {
   const sessionCanceled = useNotifications(
     <NotificationWithIconAndText
       texts={[translations["not_subscribed"]]}
-      isDone={false}
+      iconWithDefault={false}
     />,
     3000
   );
@@ -45,7 +45,7 @@ const Dashboard = () => {
   const sessionSuccess = useNotifications(
     <NotificationWithIconAndText
       texts={[translations["subscribed_successfully"]]}
-      isDone={true}
+      iconWithDefault={true}
     />,
     3000
   );

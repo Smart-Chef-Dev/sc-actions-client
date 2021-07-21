@@ -1,14 +1,14 @@
 import { createPortal } from "react-dom";
 import { useCallback, useState } from "react";
-import Warning from "../components/warning";
+import ConfirmationPopup from "../components/confirmationPopup";
 
-export const useWarning = (text, continueButton) => {
+export const useConfirmationPopup = (text, continueButton) => {
   const [isHidden, toggleHidden] = useState(true);
 
   const renderNotification = useCallback(() => {
     return !isHidden
       ? createPortal(
-          <Warning
+          <ConfirmationPopup
             text={text}
             onToggleHidden={toggleHidden}
             continueButton={continueButton}
