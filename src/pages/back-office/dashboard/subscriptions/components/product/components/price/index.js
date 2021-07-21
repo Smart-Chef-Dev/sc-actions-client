@@ -5,7 +5,7 @@ import { Text } from "components/text";
 import { theme } from "theme";
 import { formatCurrency } from "utils/formatCurrency";
 
-const PriceSubscription = ({ price }) => {
+const Price = ({ price }) => {
   return (
     <Text pb={theme.spacing(1)} color="var(--text-grey)">
       {`
@@ -15,8 +15,8 @@ const PriceSubscription = ({ price }) => {
   );
 };
 
-PriceSubscription.propTypes = {
+Price.propTypes = {
   price: PropTypes.object,
 };
 
-export default memo(PriceSubscription);
+export default memo(Price);

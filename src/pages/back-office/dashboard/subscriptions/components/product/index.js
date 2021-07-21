@@ -5,11 +5,11 @@ import PropTypes from "prop-types";
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Img } from "components/img";
-import PriceSubscription from "./components/price-subscription";
 import PaymentButton from "./components/payment-button";
+import Price from "./components/price";
 import { theme } from "theme";
 
-const Subscription = ({
+const Product = ({
   product,
   prices,
   userDataAtoms,
@@ -33,7 +33,7 @@ const Subscription = ({
         <Text pb={theme.spacing(1)} textAlign="center">
           {product.description}
         </Text>
-        <PriceSubscription price={price} />
+        <Price price={price} />
         <PaymentButton
           price={price}
           userDataAtoms={userDataAtoms}
@@ -57,7 +57,7 @@ const s = {
   `,
 };
 
-Subscription.propTypes = {
+Product.propTypes = {
   product: PropTypes.object,
   prices: PropTypes.object,
   userDataAtoms: PropTypes.object,
@@ -65,4 +65,4 @@ Subscription.propTypes = {
   translations: PropTypes.object,
 };
 
-export default memo(Subscription);
+export default memo(Product);

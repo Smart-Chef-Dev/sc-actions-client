@@ -4,7 +4,7 @@ import { useLocation } from "wouter";
 
 import { Flex } from "components/flex";
 import NotificationWithIconAndText from "components/notificationWithTexts";
-import Subscription from "./components/subscription";
+import Product from "./components/product";
 import { Text } from "components/text";
 import { Divider } from "components/divider";
 import Loader from "components/loaders";
@@ -100,7 +100,7 @@ const Dashboard = () => {
         >
           {products.data.data.map((currentProduct) => (
             <Fragment key={currentProduct.id}>
-              <Subscription
+              <Product
                 product={currentProduct}
                 prices={prices}
                 userDataAtoms={userDataAtoms}
