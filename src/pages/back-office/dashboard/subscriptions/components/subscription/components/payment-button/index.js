@@ -2,7 +2,12 @@ import { memo, useCallback, useMemo } from "react";
 import Button from "components/button";
 import PropTypes from "prop-types";
 
-const PaymentButton = ({ price, userDataAtoms, subscription }) => {
+const PaymentButton = ({
+  price,
+  userDataAtoms,
+  subscription,
+  translations,
+}) => {
   const { data, isLoading, isError } = subscription;
 
   const subscriptionItems = useMemo(
@@ -31,10 +36,10 @@ const PaymentButton = ({ price, userDataAtoms, subscription }) => {
     <>
       {subscriptionItems ? (
         <Button onClick={createSession} disabled={true}>
-          Current subscription
+          {translations["current_subscription"]}
         </Button>
       ) : (
-        <Button onClick={createSession}>Pay</Button>
+        <Button onClick={createSession}>{translations["arrange"]}</Button>
       )}
     </>
   );
@@ -44,6 +49,7 @@ PaymentButton.propTypes = {
   price: PropTypes.object,
   userDataAtoms: PropTypes.object,
   subscription: PropTypes.object,
+  translations: PropTypes.object,
 };
 
 export default memo(PaymentButton);

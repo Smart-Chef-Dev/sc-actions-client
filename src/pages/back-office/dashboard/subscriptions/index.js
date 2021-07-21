@@ -18,10 +18,14 @@ import UserDataState from "atoms/user";
 import { Text } from "../../../../components/text";
 import { theme } from "../../../../theme";
 import { Divider } from "../../../../components/divider";
+import { useTranslation } from "../../../../contexts/translation-context";
 
 const Dashboard = () => {
   const [userDataAtoms] = useRecoilState(UserDataState);
   const [location, setLocation] = useLocation();
+  const {
+    strings: { subscription: translations },
+  } = useTranslation();
 
   const products = useQuery("productsStripe", getAllProducts);
   const prices = useQuery("pricesStripe", getAllPrices);
@@ -78,7 +82,7 @@ const Dashboard = () => {
           fontSize={theme.fontSize(3)}
           fontWeight="bold"
         >
-          Subscriptions
+          {translations["subscriptions"]}
         </Text>
         <Divider />
       </Flex>
@@ -99,6 +103,7 @@ const Dashboard = () => {
                 prices={prices}
                 userDataAtoms={userDataAtoms}
                 subscription={subscription}
+                translations={translations}
               />
             </Fragment>
           ))}

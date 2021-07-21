@@ -9,7 +9,13 @@ import PriceSubscription from "./components/price-subscription";
 import PaymentButton from "./components/payment-button";
 import { theme } from "theme";
 
-const Subscription = ({ product, prices, userDataAtoms, subscription }) => {
+const Subscription = ({
+  product,
+  prices,
+  userDataAtoms,
+  subscription,
+  translations,
+}) => {
   const { data } = prices;
 
   const price = useMemo(
@@ -32,6 +38,7 @@ const Subscription = ({ product, prices, userDataAtoms, subscription }) => {
           price={price}
           userDataAtoms={userDataAtoms}
           subscription={subscription}
+          translations={translations}
         />
       </s.Container>
     </Flex>
@@ -55,6 +62,7 @@ Subscription.propTypes = {
   prices: PropTypes.object,
   userDataAtoms: PropTypes.object,
   subscription: PropTypes.object,
+  translations: PropTypes.object,
 };
 
 export default memo(Subscription);
