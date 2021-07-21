@@ -15,6 +15,8 @@ const Product = ({
   userDataAtoms,
   subscription,
   translations,
+  onButtonsLocked,
+  isButtonsLocked,
 }) => {
   const { data } = prices;
 
@@ -39,6 +41,8 @@ const Product = ({
           userDataAtoms={userDataAtoms}
           subscription={subscription}
           translations={translations}
+          onButtonsLocked={onButtonsLocked}
+          isButtonsLocked={isButtonsLocked}
         />
       </s.Container>
     </Flex>
@@ -63,6 +67,8 @@ Product.propTypes = {
   userDataAtoms: PropTypes.object,
   subscription: PropTypes.object,
   translations: PropTypes.object,
+  onButtonsLocked: PropTypes.func,
+  isButtonsLocked: PropTypes.bool,
 };
 
 export default memo(Product);

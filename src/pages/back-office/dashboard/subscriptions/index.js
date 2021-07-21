@@ -1,4 +1,4 @@
-import { Fragment, memo, useEffect } from "react";
+import { Fragment, memo, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "wouter";
 
@@ -23,6 +23,7 @@ import { useRecoilState } from "recoil";
 const Dashboard = () => {
   const [userDataAtoms] = useRecoilState(UserDataState);
   const [location, setLocation] = useLocation();
+  const [isButtonsLocked, setButtonsLocked] = useState(false);
   const {
     strings: { subscription: translations },
   } = useTranslation();
@@ -106,6 +107,8 @@ const Dashboard = () => {
                 userDataAtoms={userDataAtoms}
                 subscription={subscription}
                 translations={translations}
+                onButtonsLocked={setButtonsLocked}
+                isButtonsLocked={isButtonsLocked}
               />
             </Fragment>
           ))}

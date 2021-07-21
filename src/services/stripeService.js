@@ -27,3 +27,11 @@ export const createCheckoutSession = ({ priceId, jwt }) =>
       Authorization: "Bearer " + jwt,
     },
   }).then((res) => res.text());
+
+export const deleteSubscriptions = ({ jwt }) =>
+  fetch(`/api/subscriptions`, {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + jwt,
+    },
+  });
