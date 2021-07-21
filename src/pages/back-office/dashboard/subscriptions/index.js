@@ -9,20 +9,22 @@ import Subscription from "./components/subscription";
 
 import { useNotifications } from "hooks/useNotifications";
 import {
-  getAllSubscriptions,
-  getAllSubscriptionsPrices,
+  getAllPrices,
+  getAllProducts,
+  getSubscriptions,
 } from "services/subscriptionsService";
+import { useRecoilState } from "recoil";
+import UserDataState from "atoms/user";
 
 const Dashboard = () => {
-  const subscriptions = useQuery("subscriptions", getAllSubscriptions);
-  const subscriptionsPrices = useQuery(
-    "subscriptionsPrices",
-    getAllSubscriptionsPrices
-  );
-
-  console.log(subscriptionsPrices);
-
+  const [userDataAtoms] = useRecoilState(UserDataState);
   const [location, setLocation] = useLocation();
+
+  const products = useQuery("productsStripe", getAllProducts);
+  const prices = useQuery("pricesStripe", getAllPrices);
+  const subscription = useQuery("subscription", () =>
+    getSubscriptions({ jwt: userDataAtoms.jwt })
+  );
 
   const sessionCanceled = useNotifications(
     <NotificationWithIconAndText
@@ -45,6 +47,7 @@ const Dashboard = () => {
     const purchase = urlParams.get("purchase");
 
     if (purchase === "success") {
+      subscription.refetch();
       sessionSuccess.showNotification();
       setLocation(location);
     }
@@ -57,7 +60,7 @@ const Dashboard = () => {
     // eslint-disable-next-line
   }, []);
 
-  return !subscriptions.isLoading && !subscriptionsPrices.isLoading ? (
+  return !products.isLoading && !prices.isLoading ? (
     <Flex height={1} width={1} overflowY="auto">
       {sessionCanceled.renderNotification()}
       {sessionSuccess.renderNotification()}
@@ -68,11 +71,13 @@ const Dashboard = () => {
         height={1}
         width={1}
       >
-        {subscriptions.data.data.map((currentSubscriptions) => (
-          <Fragment key={currentSubscriptions.id}>
+        {products.data.data.map((currentProduct) => (
+          <Fragment key={currentProduct.id}>
             <Subscription
-              subscription={currentSubscriptions}
-              subscriptionsPrices={subscriptionsPrices}
+              product={currentProduct}
+              prices={prices}
+              userDataAtoms={userDataAtoms}
+              subscription={subscription}
             />
           </Fragment>
         ))}

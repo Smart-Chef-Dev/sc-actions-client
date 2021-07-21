@@ -1,7 +1,20 @@
-export const getAllSubscriptions = () => {
-  return fetch(`/api/subscriptions`).then((res) => res.json());
-};
+export const getAllProducts = () =>
+  fetch(`/api/products-stripe`).then((res) => res.json());
 
-export const getAllSubscriptionsPrices = () => {
-  return fetch(`/api/subscriptions/prices`).then((res) => res.json());
+export const getAllPrices = () =>
+  fetch(`/api/subscriptions/prices`).then((res) => res.json());
+
+export const getSubscriptions = async ({ jwt }) => {
+  const res = await fetch(`/api/subscriptions`, {
+    headers: {
+      Authorization: "Bearer " + jwt,
+    },
+  });
+
+  const body = await res.json();
+
+  if (!res.ok) {
+    throw body;
+  }
+  return body;
 };

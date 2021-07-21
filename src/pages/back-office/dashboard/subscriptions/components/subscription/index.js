@@ -1,55 +1,38 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useMemo } from "react";
 import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
-import { useRecoilState } from "recoil";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
-import Button from "components/button";
 import { Img } from "components/img";
 import PriceSubscription from "./components/price-subscription";
+import PaymentButton from "./components/payment-button";
 import { theme } from "theme";
 
-import UserDataState from "atoms/user";
+const Subscription = ({ product, prices, userDataAtoms, subscription }) => {
+  const { data } = prices;
 
-const Subscription = ({ subscription, subscriptionsPrices }) => {
-  const [userDataAtoms] = useRecoilState(UserDataState);
-  const { data } = subscriptionsPrices;
-
-  const subscriptionPrice = useMemo(
-    () =>
-      data.data.find(
-        (currentValue) => currentValue.product === subscription.id
-      ),
-    [data, subscription]
+  const price = useMemo(
+    () => data.data.find((currentValue) => currentValue.product === product.id),
+    [data, product]
   );
 
-  const createSession = useCallback(async () => {
-    const response = await fetch(
-      `/api/subscriptions/prices/${subscriptionPrice.id}/create-checkout-session`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + userDataAtoms.jwt,
-        },
-      }
-    );
-
-    document.location = await response.text();
-  }, [subscriptionPrice, userDataAtoms]);
-
   return (
-    <Flex key={subscription.id} p={theme.spacing(1)}>
+    <Flex key={product.id} p={theme.spacing(1)}>
       <s.Container direction="column" alignItems="center" p={theme.spacing(1)}>
-        <s.Preview src={subscription.images[0]} />
+        <s.Preview src={product.images[0]} />
         <Text pb={theme.spacing(1)} pt={theme.spacing(1)}>
-          {subscription.name}
+          {product.name}
         </Text>
         <Text pb={theme.spacing(1)} textAlign="center">
-          {subscription.description}
+          {product.description}
         </Text>
-        <PriceSubscription subscriptionPrice={subscriptionPrice} />
-        <Button onClick={createSession}>Pay</Button>
+        <PriceSubscription price={price} />
+        <PaymentButton
+          price={price}
+          userDataAtoms={userDataAtoms}
+          subscription={subscription}
+        />
       </s.Container>
     </Flex>
   );
@@ -67,8 +50,10 @@ const s = {
 };
 
 Subscription.propTypes = {
+  product: PropTypes.object,
+  prices: PropTypes.object,
+  userDataAtoms: PropTypes.object,
   subscription: PropTypes.object,
-  subscriptionsPrices: PropTypes.object,
 };
 
 export default memo(Subscription);

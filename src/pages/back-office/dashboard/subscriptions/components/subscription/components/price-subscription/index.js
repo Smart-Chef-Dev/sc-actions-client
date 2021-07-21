@@ -5,22 +5,18 @@ import { Text } from "components/text";
 import { theme } from "theme";
 import { formatCurrency } from "utils/formatCurrency";
 
-const PriceSubscription = ({ subscriptionPrice }) => {
+const PriceSubscription = ({ price }) => {
   return (
     <Text pb={theme.spacing(1)}>
       {`
-      ${formatCurrency(
-        subscriptionPrice.currency.toUpperCase(),
-        subscriptionPrice.unit_amount / 100
-      )}
-       per ${subscriptionPrice.recurring.interval}`}
+      ${formatCurrency(price.currency.toUpperCase(), price.unit_amount / 100)}
+       per ${price.recurring.interval}`}
     </Text>
   );
 };
 
 PriceSubscription.propTypes = {
-  subscriptionId: PropTypes.string,
-  subscriptionPrice: PropTypes.object,
+  price: PropTypes.object,
 };
 
 export default memo(PriceSubscription);
