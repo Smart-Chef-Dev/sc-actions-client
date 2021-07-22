@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Img } from "components/img";
-import PaymentButton from "./components/payment-button";
-import Price from "./components/price";
+import PaymentButton from "./payment-button";
+import Price from "./price";
 import { theme } from "theme";
 
 const Product = ({
