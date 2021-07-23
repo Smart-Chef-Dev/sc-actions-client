@@ -1,11 +1,11 @@
 import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
-import { styled } from "@linaria/react";
 import Button from "./button";
 import { Flex } from "./flex";
 import { Text } from "./text";
 import { theme } from "../theme";
 import { useTranslation } from "../contexts/translation-context";
+import Notification from "./notification";
 
 const ConfirmationPopup = ({ text, onToggleHidden, continueButton }) => {
   const {
@@ -22,8 +22,8 @@ const ConfirmationPopup = ({ text, onToggleHidden, continueButton }) => {
   }, [onToggleHidden]);
 
   return (
-    <Container>
-      <Popup justifyContent="center" alignItems="center" direction="column">
+    <Notification background="var(--main-bg-color)">
+      <Flex direction="column">
         <Text
           justifyContent="center"
           alignItems="center"
@@ -32,36 +32,21 @@ const ConfirmationPopup = ({ text, onToggleHidden, continueButton }) => {
         >
           {text}
         </Text>
-        <Button onClick={continueOperation}>{translations["continue"]}</Button>
-        <Button onClick={cancelOperation}>{translations["cancel"]}</Button>
-      </Popup>
-    </Container>
+        <Flex width={1} justifyContent="center">
+          <Button onClick={continueOperation}>
+            {translations["continue"]}
+          </Button>
+        </Flex>
+        <Flex width={1} justifyContent="center">
+          <Button onClick={cancelOperation}>{translations["cancel"]}</Button>
+        </Flex>
+      </Flex>
+    </Notification>
   );
 };
 
-const Container = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: var(--black-layout-color);
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Popup = styled(Flex)`
-  width: 250px;
-  height: 200px;
-  border-radius: 25px;
-  align-items: center;
-  background: var(--main-bg-color);
-`;
-
 ConfirmationPopup.propTypes = {
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
+  text: PropTypes.string,
   onToggleHidden: PropTypes.func,
   continueButton: PropTypes.func,
 };

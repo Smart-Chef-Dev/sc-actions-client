@@ -21,7 +21,7 @@ const Product = ({
   const { data } = prices;
 
   const price = useMemo(
-    () => data.data.find((currentValue) => currentValue.product === product.id),
+    () => data.data.find((price) => price.product === product.id),
     [data, product]
   );
 

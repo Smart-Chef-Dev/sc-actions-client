@@ -57,15 +57,11 @@ const PaymentButton = ({
     });
   }, [price, userDataAtoms, createCheckoutSessionMutation]);
 
-  const showWarning = useCallback(() => {
-    showNotification();
-  }, [showNotification]);
-
   return (
     <>
       {renderNotification()}
       {subscriptionItems ? (
-        <Button onClick={showWarning} disabled={isButtonsLocked}>
+        <Button onClick={showNotification} disabled={isButtonsLocked}>
           {translations["current_subscription"]}
         </Button>
       ) : (
