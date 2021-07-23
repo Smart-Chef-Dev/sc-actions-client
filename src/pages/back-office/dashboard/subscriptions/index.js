@@ -1,6 +1,7 @@
 import { Fragment, memo, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "wouter";
+import { useRecoilState } from "recoil";
 
 import { Flex } from "components/flex";
 import NotificationWithIconAndText from "components/notificationWithTexts";
@@ -18,7 +19,7 @@ import {
   getAllProducts,
   getSubscriptions,
 } from "services/stripeService";
-import { useRecoilState } from "recoil";
+import ForbiddenIcon from "assets/icons/actions/forbidden_icon.svg";
 
 const Dashboard = () => {
   const [userDataAtoms] = useRecoilState(UserDataState);
@@ -37,7 +38,7 @@ const Dashboard = () => {
   const sessionCanceled = useNotifications(
     <NotificationWithIconAndText
       texts={[translations["not_subscribed"]]}
-      iconWithDefault={false}
+      Icon={ForbiddenIcon}
     />,
     3000
   );
@@ -45,7 +46,6 @@ const Dashboard = () => {
   const sessionSuccess = useNotifications(
     <NotificationWithIconAndText
       texts={[translations["subscribed_successfully"]]}
-      iconWithDefault={true}
     />,
     3000
   );

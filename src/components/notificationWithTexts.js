@@ -6,13 +6,12 @@ import { theme } from "theme";
 import { Flex } from "./flex";
 
 import DoneIcon from "assets/icons/actions/done-icon.svg";
-import ForbiddenIcon from "assets/icons/actions/forbidden_icon.svg";
 
-const NotificationWithTexts = ({ texts, iconWithDefault = true }) => {
+const NotificationWithTexts = ({ texts, Icon = DoneIcon }) => {
   return (
     <Flex direction="column">
       <Flex justifyContent="center" width={1} mb={theme.spacing(1)}>
-        {iconWithDefault ? <DoneIcon /> : <ForbiddenIcon />}
+        <Icon />
       </Flex>
       <Flex direction="column" alignItems="center">
         {texts.map((currentValue, index) => (
@@ -33,7 +32,7 @@ const NotificationWithTexts = ({ texts, iconWithDefault = true }) => {
 
 NotificationWithTexts.propTypes = {
   texts: PropTypes.array,
-  iconWithDefault: PropTypes.bool,
+  Icon: PropTypes.elementType,
 };
 
 export default memo(NotificationWithTexts);
