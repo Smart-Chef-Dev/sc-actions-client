@@ -8,8 +8,9 @@ export const fetchOptions = ({ method, body }) => {
     };
   }
 
-  const recoilPersist =
-    JSON.parse(localStorage.getItem("recoil-persist")) ?? "{}";
+  const recoilPersist = JSON.parse(
+    localStorage.getItem("recoil-persist") ?? "{}"
+  );
   const jwt = recoilPersist?.UserDataState?.jwt;
   if (jwt) {
     options.headers = {
