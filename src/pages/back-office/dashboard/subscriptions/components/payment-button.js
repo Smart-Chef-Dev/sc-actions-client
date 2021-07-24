@@ -11,7 +11,6 @@ import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 
 const PaymentButton = ({
   price,
-  userDataAtoms,
   subscription,
   translations,
   onButtonsLocked,
@@ -23,19 +22,12 @@ const PaymentButton = ({
 
   const cancelSubscription = useCallback(() => {
     onButtonsLocked(true);
-    deleteSubscriptionsMutation
-      .mutateAsync({ jwt: userDataAtoms.jwt })
-      .finally(() => {
-        subscription.remove();
-        subscription.refetch({ cancelRefetch: true });
-        onButtonsLocked(false);
-      });
-  }, [
-    deleteSubscriptionsMutation,
-    userDataAtoms,
-    subscription,
-    onButtonsLocked,
-  ]);
+    deleteSubscriptionsMutation.mutateAsync().finally(() => {
+      subscription.remove();
+      subscription.refetch({ cancelRefetch: true });
+      onButtonsLocked(false);
+    });
+  }, [deleteSubscriptionsMutation, subscription, onButtonsLocked]);
 
   const { renderNotification, showNotification } = useConfirmationPopup(
     translations["cancellation_of_subscription"],
@@ -53,9 +45,8 @@ const PaymentButton = ({
   const createSession = useCallback(async () => {
     document.location = await createCheckoutSessionMutation.mutateAsync({
       priceId: price.id,
-      jwt: userDataAtoms.jwt,
     });
-  }, [price, userDataAtoms, createCheckoutSessionMutation]);
+  }, [price, createCheckoutSessionMutation]);
 
   return (
     <>
@@ -75,7 +66,6 @@ const PaymentButton = ({
 
 PaymentButton.propTypes = {
   price: PropTypes.object,
-  userDataAtoms: PropTypes.object,
   subscription: PropTypes.object,
   translations: PropTypes.object,
   onButtonsLocked: PropTypes.func,

@@ -1,7 +1,6 @@
 import { Fragment, memo, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "wouter";
-import { useRecoilState } from "recoil";
 
 import { Flex } from "components/flex";
 import NotificationWithIconAndText from "components/notificationWithTexts";
@@ -10,7 +9,6 @@ import { Text } from "components/text";
 import { Divider } from "components/divider";
 import Loader from "components/loaders";
 
-import UserDataState from "atoms/user";
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
 import { useNotifications } from "hooks/useNotifications";
@@ -22,7 +20,6 @@ import {
 import ForbiddenIcon from "assets/icons/actions/forbidden_icon.svg";
 
 const Dashboard = () => {
-  const [userDataAtoms] = useRecoilState(UserDataState);
   const [location, setLocation] = useLocation();
   const [isButtonsLocked, setButtonsLocked] = useState(false);
   const {
@@ -31,9 +28,7 @@ const Dashboard = () => {
 
   const products = useQuery("productsStripe", getAllProducts);
   const prices = useQuery("pricesStripe", getAllPrices);
-  const subscription = useQuery("subscription", () =>
-    getSubscriptions({ jwt: userDataAtoms.jwt })
-  );
+  const subscription = useQuery("subscription", () => getSubscriptions());
 
   const sessionCanceled = useNotifications(
     <NotificationWithIconAndText
@@ -104,7 +99,6 @@ const Dashboard = () => {
               <Product
                 product={currentProduct}
                 prices={prices}
-                userDataAtoms={userDataAtoms}
                 subscription={subscription}
                 translations={translations}
                 onButtonsLocked={setButtonsLocked}

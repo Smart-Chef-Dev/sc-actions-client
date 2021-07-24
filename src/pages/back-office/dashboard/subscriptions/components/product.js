@@ -12,7 +12,6 @@ import { theme } from "theme";
 const Product = ({
   product,
   prices,
-  userDataAtoms,
   subscription,
   translations,
   onButtonsLocked,
@@ -38,7 +37,6 @@ const Product = ({
         <Price price={price} />
         <PaymentButton
           price={price}
-          userDataAtoms={userDataAtoms}
           subscription={subscription}
           translations={translations}
           onButtonsLocked={onButtonsLocked}
