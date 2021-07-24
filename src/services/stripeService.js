@@ -9,7 +9,7 @@ export const getAllPrices = () =>
 export const getSubscriptions = async () => {
   const res = await fetch(
     `/api/users/subscription`,
-    fetchOptions({ method: "GET", isJwt: true })
+    fetchOptions({ method: "GET" })
   );
 
   const body = await res.json();
@@ -24,11 +24,8 @@ export const getSubscriptions = async () => {
 export const createCheckoutSession = ({ priceId }) =>
   fetch(
     `/api/products-stripe/price/${priceId}/create-checkout-session`,
-    fetchOptions({ method: "POST", isJwt: true })
+    fetchOptions({ method: "POST" })
   ).then((res) => res.text());
 
 export const deleteSubscriptions = () =>
-  fetch(
-    `/api/users/subscription`,
-    fetchOptions({ method: "DELETE", isJwt: true })
-  );
+  fetch(`/api/users/subscription`, fetchOptions({ method: "DELETE" }));

@@ -1,4 +1,4 @@
-export const fetchOptions = ({ method, body, isJwt }) => {
+export const fetchOptions = ({ method, body }) => {
   const options = { method: method };
 
   if (body) {
@@ -8,10 +8,10 @@ export const fetchOptions = ({ method, body, isJwt }) => {
     };
   }
 
-  if (isJwt) {
-    const recoilPersist = JSON.parse(localStorage.getItem("recoil-persist"));
-    const jwt = recoilPersist?.UserDataState?.jwt ?? null;
-
+  const recoilPersist =
+    JSON.parse(localStorage.getItem("recoil-persist")) ?? "{}";
+  const jwt = recoilPersist?.UserDataState?.jwt;
+  if (jwt) {
     options.headers = {
       ...options.headers,
       Authorization: "Bearer " + jwt,
