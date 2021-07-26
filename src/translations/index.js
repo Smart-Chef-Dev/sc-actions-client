@@ -22,8 +22,14 @@ import productRu from "./ru/product.json";
 import basketEn from "./en/basket.json";
 import basketRu from "./ru/basket.json";
 
+import subscriptionEn from "./en/subscription.json";
+import subscriptionRu from "./ru/subscription.json";
+
 import addonsEn from "./en/addons.json";
 import addonsRu from "./ru/addons.json";
+
+import confirmationPopupEn from "./en/confirmation-popup.json";
+import confirmationPopupRu from "./ru/confirmation-popup.json";
 
 export const languages = {
   en: {
@@ -36,6 +42,8 @@ export const languages = {
     addons: addonsEn,
     singIn: singInEn,
     singUp: singUpEn,
+    subscription: subscriptionEn,
+    confirmationPopup: confirmationPopupEn,
   },
   ru: {
     actions: actionsRu,
@@ -46,6 +54,8 @@ export const languages = {
     expandedMenu: expandedMenuRu,
     product: productRu,
     basket: basketRu,
+    subscription: subscriptionRu,
     addons: addonsRu,
+    confirmationPopup: confirmationPopupRu,
   },
 };

@@ -23,8 +23,7 @@ const SingIn = () => {
     strings: { singIn: translations },
   } = useTranslation();
 
-  const [isCorrectPasswordAndLogin, setIsCorrectPasswordAndLogin] =
-    useState(false);
+  const [hasLoginError, setHasLoginError] = useState(false);
 
   const [, setUserDataAtoms] = useRecoilState(UserDataState);
 
@@ -60,7 +59,7 @@ const SingIn = () => {
         });
 
         if (response.status === 404) {
-          setIsCorrectPasswordAndLogin(true);
+          setHasLoginError(true);
           return;
         }
 
@@ -131,7 +130,7 @@ const SingIn = () => {
 
         <Flex direction="column" alignItems="center">
           <Button type="submit">{translations["sing_in"]}</Button>
-          {isCorrectPasswordAndLogin && (
+          {hasLoginError && (
             <ErrorText>{translations["incorrect_login_or_password"]}</ErrorText>
           )}
         </Flex>
