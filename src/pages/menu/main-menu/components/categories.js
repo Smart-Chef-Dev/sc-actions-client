@@ -2,7 +2,7 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
-import Category from "./components/category";
+import Category from "./category";
 import CategoriesLoader from "components/loaders/main-menu/categories-loader";
 
 const Categories = ({ restaurantId, tableId, onLocation, categories }) => {

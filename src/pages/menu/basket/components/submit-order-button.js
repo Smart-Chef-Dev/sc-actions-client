@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useMutation } from "react-query";
 import PropTypes from "prop-types";
 
@@ -9,6 +9,7 @@ import NotificationWithTexts from "components/notificationWithTexts";
 
 import { useNotifications } from "hooks/useNotifications";
 import { sendOrder } from "services/messagesService";
+import { formatCurrency } from "utils/formatCurrency";
 
 const durationOfNotificationMs = 3000;
 
@@ -32,6 +33,15 @@ const SubmitOrderButton = ({
       ]}
     />,
     durationOfNotificationMs
+  );
+
+  const price = useMemo(
+    () =>
+      formatCurrency(
+        basketAtoms.order[0]?.category.restaurant.currencyCode,
+        totalCost
+      ),
+    [basketAtoms, totalCost]
   );
 
   const submitOrder = useCallback(() => {
@@ -83,9 +93,15 @@ const SubmitOrderButton = ({
       p={theme.spacing(1)}
     >
       {renderNotification()}
-      <Button onClick={submitOrder} width={1} disabled={isDisable}>
-        {`${translations["confirm_order"]} (${totalCost + "$"})`}
-      </Button>
+      {!isDisable ? (
+        <Button onClick={submitOrder} width={1} disabled={isDisable}>
+          {`${translations["confirm_order"]} (${price})`}
+        </Button>
+      ) : (
+        <Button onClick={submitOrder} width={1} disabled={isDisable}>
+          {`${translations["confirm_order"]}`}
+        </Button>
+      )}
     </Flex>
   );
 };

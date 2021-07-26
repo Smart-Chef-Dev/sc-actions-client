@@ -13,10 +13,9 @@ import ImageContainer from "components/image";
 import NotificationWithTexts from "components/notificationWithTexts";
 
 import Basket from "assets/icons/expanded-menu/basket.svg";
-
 import "pages/menu/expanded-menu/infinite-scroll-component.css";
-
 import { useNotifications } from "hooks/useNotifications";
+import { formatCurrency } from "utils/formatCurrency";
 
 const MenuItem = ({
   restaurantId,
@@ -157,7 +156,10 @@ const MenuItem = ({
                       fontSize={theme.fontSize(0)}
                     >{`${currentMenuItems.weight} ${translations["g"]}`}</Text>
                     <Text fontWeight="bold" fontSize={theme.fontSize(2)}>
-                      {currentMenuItems.price}$
+                      {formatCurrency(
+                        currentMenuItems.category.restaurant.currencyCode,
+                        currentMenuItems.price
+                      )}
                     </Text>
                   </Flex>
                 </Flex>
