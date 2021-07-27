@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
-import { Divider } from "components/divider";
 import MenuItem from "pages/menu/main-menu/components/menuItem";
 import { theme } from "theme";
 
@@ -26,7 +25,7 @@ const Category = ({ restaurantId, tableId, onLocation, category }) => {
 
   return (
     <Flex direction="column" width={1} ref={ref}>
-      <Flex width={1}>
+      <Flex width={1} onClick={handleArrowClick(category._id)}>
         <Text fontSize={theme.fontSize(2)} fontWeight="bold">
           {category.name}
         </Text>
@@ -38,7 +37,7 @@ const Category = ({ restaurantId, tableId, onLocation, category }) => {
           direction="row-reverse"
           alignItems="center"
         >
-          <Arrow onClick={handleArrowClick(category._id)} />
+          <Arrow />
         </Flex>
       </Flex>
       <Flex
@@ -59,7 +58,6 @@ const Category = ({ restaurantId, tableId, onLocation, category }) => {
           <Placeholder />
         )}
       </Flex>
-      <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
     </Flex>
   );
 };
