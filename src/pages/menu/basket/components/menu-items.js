@@ -36,7 +36,12 @@ const MenuItems = ({ basketAtoms, onBasketAtoms, translations, totalCost }) => {
       );
 
       if (product.count + diff <= 0) {
-        return;
+        return onBasketAtoms((oldOrder) => ({
+          ...oldOrder,
+          order: oldOrder.order.filter(
+            (currentValue) => currentValue._id !== productId
+          ),
+        }));
       }
 
       onBasketAtoms((oldOrder) => {
