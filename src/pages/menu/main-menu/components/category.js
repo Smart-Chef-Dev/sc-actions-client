@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Divider } from "components/divider";
-import MenuItem from "pages/menu/main-menu/components/categories/components/category/components/menuItem";
+import MenuItem from "pages/menu/main-menu/components/menuItem";
 import { theme } from "theme";
 
 import Arrow from "assets/icons/main-menu/arrow.svg";

@@ -5,9 +5,10 @@ import PropTypes from "prop-types";
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { Img } from "components/img";
-import AddonsProduct from "./components/addons-product";
-import ControlButtons from "./components/control-buttons";
+import AddonsProduct from "./addons-product";
+import ControlButtons from "./control-buttons";
 import { theme } from "theme";
+import { formatCurrency } from "utils/formatCurrency";
 
 const MenuItem = ({
   menuItem,
@@ -57,7 +58,10 @@ const MenuItem = ({
             </Text>
           )}
           <Text color="#4cd964" fontSize="2rem">
-            {menuItem.price}$
+            {formatCurrency(
+              menuItem.category.restaurant.currencyCode,
+              menuItem.price
+            )}
           </Text>
         </Flex>
         <Text color="var(--light-grey)">{menuItem.description}</Text>

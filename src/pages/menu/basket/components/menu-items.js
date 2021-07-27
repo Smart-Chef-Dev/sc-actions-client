@@ -8,8 +8,8 @@ import { Text } from "components/text";
 import { Divider } from "components/divider";
 import { Img } from "components/img";
 import Counter from "components/counter";
-import SwipeDelete from "./components/swipe-delete";
-import AddonsBasket from "./components/addons-basket";
+import SwipeDelete from "./swipe-delete";
+import AddonsBasket from "./addons-basket";
 
 import BasketIcon from "assets/icons/basket/basket-icon.svg";
 import { formatCurrency } from "utils/formatCurrency";
@@ -36,7 +36,12 @@ const MenuItems = ({ basketAtoms, onBasketAtoms, translations, totalCost }) => {
       );
 
       if (product.count + diff <= 0) {
-        return;
+        return onBasketAtoms((oldOrder) => ({
+          ...oldOrder,
+          order: oldOrder.order.filter(
+            (currentValue) => currentValue._id !== productId
+          ),
+        }));
       }
 
       onBasketAtoms((oldOrder) => {
@@ -196,7 +201,12 @@ const MenuItems = ({ basketAtoms, onBasketAtoms, translations, totalCost }) => {
                     increaseCount={changeOrderItemCount(+1, currentValue._id)}
                     count={currentValue.count}
                   />
-                  <Text pl={theme.spacing(2)}>{currentValue.price}$</Text>
+                  <Text pl={theme.spacing(2)}>
+                    {formatCurrency(
+                      currentValue.category.restaurant.currencyCode,
+                      currentValue.price
+                    )}
+                  </Text>
                 </Flex>
               </Flex>
             )}
@@ -216,7 +226,12 @@ const MenuItems = ({ basketAtoms, onBasketAtoms, translations, totalCost }) => {
         boxSizing="border-box"
       >
         <Text fontWeight="bold">{translations["total"]}</Text>
-        <Text fontWeight="bold">{totalCost + "$"}</Text>
+        <Text fontWeight="bold">
+          {formatCurrency(
+            basketAtoms.order[0]?.category.restaurant.currencyCode,
+            totalCost
+          )}
+        </Text>
       </Flex>
     </>
   );

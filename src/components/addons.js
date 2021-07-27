@@ -11,6 +11,8 @@ import GraySquareIcon from "../assets/icons/product/gray_square_icon.svg";
 import RedCheckMarkIcon from "../assets/icons/product/check_marks_in_red_box.svg";
 
 import BasketState from "../atoms/basket";
+import { formatCurrency } from "../utils/formatCurrency";
+// import { formatCurrency } from "../utils/formatCurrency";
 
 const Addons = ({ order }) => {
   const [, setBasketAtoms] = useRecoilState(BasketState);
@@ -87,7 +89,12 @@ const Addons = ({ order }) => {
             </Flex>
           </Flex>
           {!!currentAddons.price && (
-            <Text color="var(--main-color)">{currentAddons.price}$</Text>
+            <Text color="var(--main-color)">
+              {formatCurrency(
+                order.category.restaurant.currencyCode,
+                currentAddons.price
+              )}
+            </Text>
           )}
         </Flex>
       ))}

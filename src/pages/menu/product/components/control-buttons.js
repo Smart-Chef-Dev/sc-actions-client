@@ -38,7 +38,12 @@ const ControlButtons = ({
   const changeOrderItemCount = useCallback(
     (diff) => () => {
       if (countInBasket + diff <= 0) {
-        return;
+        return onBasketAtoms((oldOrder) => ({
+          ...oldOrder,
+          order: oldOrder.order.filter(
+            (currentValue) => currentValue._id !== itemId
+          ),
+        }));
       }
 
       onBasketAtoms((oldOrder) => {
@@ -54,6 +59,7 @@ const ControlButtons = ({
           ),
         };
       });
+      setCount(1);
     },
     [onBasketAtoms, countInBasket, itemId]
   );

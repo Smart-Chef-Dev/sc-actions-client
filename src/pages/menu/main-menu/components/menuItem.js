@@ -13,6 +13,7 @@ import MenuItemLoaders from "components/loaders/main-menu/menu-items-loaders";
 import { theme } from "theme";
 
 import { getMenuItemsByCategoryIdInLimit } from "services/menuItemsService";
+import { formatCurrency } from "utils/formatCurrency";
 
 const numberOfPagesPerDownload = 5;
 
@@ -88,7 +89,10 @@ const MenuItem = ({ categoryId, restaurantId, tableId, onLocation }) => {
                   </ImageContainer>
                   <s.ProductName>{currentMenuItems.name}</s.ProductName>
                   <Text color="var(--text-grey)">
-                    {currentMenuItems.price}$
+                    {formatCurrency(
+                      currentMenuItems.category.restaurant.currencyCode,
+                      currentMenuItems.price
+                    )}
                   </Text>
                 </Flex>
               </Flex>
