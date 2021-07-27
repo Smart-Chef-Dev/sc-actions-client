@@ -151,10 +151,18 @@ const MenuItem = ({
                     boxSizing="border-box"
                     alignItems="center"
                   >
-                    <Text
-                      color="var(--text-grey)"
-                      fontSize={theme.fontSize(0)}
-                    >{`${currentMenuItems.weight} ${translations["g"]}`}</Text>
+                    {currentMenuItems.weight ? (
+                      <Text
+                        color="var(--text-grey)"
+                        fontSize={theme.fontSize(0)}
+                      >{`${currentMenuItems.weight} ${translations["g"]}`}</Text>
+                    ) : (
+                      <Text
+                        color="var(--text-grey)"
+                        fontSize={theme.fontSize(0)}
+                      >{``}</Text>
+                    )}
+
                     <Text fontWeight="bold" fontSize={theme.fontSize(2)}>
                       {formatCurrency(
                         currentMenuItems.category.restaurant.currencyCode,
