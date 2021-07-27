@@ -8,7 +8,7 @@ import { Img } from "components/img";
 import AddonsProduct from "./addons-product";
 import ControlButtons from "./control-buttons";
 import { theme } from "theme";
-import { formatCurrency } from "../../../../utils/formatCurrency";
+import { formatCurrency } from "utils/formatCurrency";
 
 const MenuItem = ({
   menuItem,
