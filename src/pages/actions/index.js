@@ -14,9 +14,19 @@ import { sendAction } from "services/messagesService";
 const Actions = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.ACTIONS);
   const { isLoading, restaurant } = useRestaurant(restaurantId);
-  const actions = useMemo(() => {
-    return restaurant?.actions ?? [];
-  }, [restaurant?.actions]);
+  const actions = useMemo(
+    () =>
+      restaurant?.actions &&
+      restaurant.actions.map((action) => {
+        if (action.type === "menu") {
+          action.link = `/restaurant/${restaurantId}/${tableId}`;
+          return action;
+        } else {
+          return action;
+        }
+      }),
+    [restaurant?.actions, restaurantId, tableId]
+  );
 
   const { renderNotification, showNotification } = useNotifications(
     <DoneIcon />
