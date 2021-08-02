@@ -21,9 +21,9 @@ const Actions = () => {
         if (action.type === "menu") {
           action.link = `/restaurant/${restaurantId}/${tableId}`;
           return action;
-        } else {
-          return action;
         }
+
+        return action;
       }),
     [restaurant?.actions, restaurantId, tableId]
   );
