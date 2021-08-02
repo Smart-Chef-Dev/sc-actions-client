@@ -9,7 +9,6 @@ import Loader from "components/loaders";
 import DarkModeContext from "contexts/dark-mode-context";
 import { TranslationContext } from "contexts/translation-context";
 import { AppPages } from "./constants/appPages";
-import PrivateRoute from "./components/private-route";
 
 const queryClient = new QueryClient();
 
@@ -24,11 +23,7 @@ function App() {
                 <Switch>
                   {AppPages.map((appPage, i) => (
                     <Fragment key={i}>
-                      {appPage.isPrivateRoute ? (
-                        <PrivateRoute {...appPage} />
-                      ) : (
-                        <Route {...appPage} />
-                      )}
+                      <Route {...appPage} />
                     </Fragment>
                   ))}
                 </Switch>
