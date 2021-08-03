@@ -11,13 +11,12 @@ import Icon from "assets/icons/basket/icon.svg";
 
 const PeopleCounter = ({ basketAtoms, onBasketAtoms, translations }) => {
   const changeNumberOfPeople = useCallback(
-    (diff) => () => {
-      if (basketAtoms.personCount + diff >= 1)
-        onBasketAtoms({
-          ...basketAtoms,
-          personCount: basketAtoms.personCount + diff,
-        });
-    },
+    (diff) => () =>
+      basketAtoms.personCount + diff >= 1 &&
+      onBasketAtoms({
+        ...basketAtoms,
+        personCount: basketAtoms.personCount + diff,
+      }),
     [basketAtoms, onBasketAtoms]
   );
 

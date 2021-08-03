@@ -18,9 +18,8 @@ const Category = ({ restaurantId, tableId, onLocation, category }) => {
   });
 
   const handleArrowClick = useCallback(
-    (categoryId) => () => {
-      onLocation(`/restaurant/${restaurantId}/${tableId}/${categoryId}`);
-    },
+    (categoryId) => () =>
+      onLocation(`/restaurant/${restaurantId}/${tableId}/${categoryId}`),
     [onLocation, restaurantId, tableId]
   );
 
