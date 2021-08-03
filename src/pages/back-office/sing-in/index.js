@@ -18,13 +18,7 @@ import UserDataState from "atoms/user";
 import { signInAccount } from "services/userService";
 
 const SingIn = () => {
-  const [, setLocation] = useLocation();
-  const {
-    strings: { singIn: translations },
-  } = useTranslation();
-
   const [hasLoginError, setHasLoginError] = useState(false);
-
   const [, setUserDataAtoms] = useRecoilState(UserDataState);
   const signInAccountMutation = useMutation(signInAccount);
   const [, setLocation] = useLocation();
