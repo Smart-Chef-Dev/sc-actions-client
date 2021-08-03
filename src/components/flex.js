@@ -54,5 +54,6 @@ export const Flex = styled(Box)`
   flex-direction: ${(props) => props.direction ?? "row"};
   justify-content: ${(props) => props.justifyContent ?? "start"};
   align-items: ${(props) => props.alignItems ?? "start"};
+  flex-wrap: ${(props) => props.flexWrap ?? "nowrap"};
   flex: ${(props) => props.flex ?? "0 1 auto"};
 `;
