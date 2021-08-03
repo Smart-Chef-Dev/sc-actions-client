@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { Flex } from "components/flex";
 import Category from "./category";
 import CategoriesLoader from "components/loaders/main-menu/categories-loader";
+import { Divider } from "components/divider";
+import { theme } from "theme";
 
 const Categories = ({ restaurantId, tableId, onLocation, categories }) => {
   return !categories.isLoading ? (
@@ -14,14 +16,19 @@ const Categories = ({ restaurantId, tableId, onLocation, categories }) => {
       overflowY="auto"
       overflowX="hidden"
     >
-      {categories.data.map((currentCategory) => (
-        <Category
-          key={currentCategory._id}
-          restaurantId={restaurantId}
-          tableId={tableId}
-          category={currentCategory}
-          onLocation={onLocation}
-        />
+      {categories.data.map((currentCategory, index) => (
+        <>
+          <Category
+            key={currentCategory._id}
+            restaurantId={restaurantId}
+            tableId={tableId}
+            category={currentCategory}
+            onLocation={onLocation}
+          />
+          {index !== categories.data.length - 1 && (
+            <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
+          )}
+        </>
       ))}
     </Flex>
   ) : (

@@ -2,10 +2,10 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
 
-const Notification = ({ text }) => {
+const Notification = ({ children, background }) => {
   return (
     <Container>
-      <Popup>{text}</Popup>
+      <Popup background={background}>{children}</Popup>
     </Container>
   );
 };
@@ -24,16 +24,21 @@ const Container = styled.div`
 `;
 
 const Popup = styled.div`
-  width: 200px;
-  height: 150px;
+  width: 250px;
+  height: 200px;
   border-radius: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: ${(props) => props.background ?? "00"};
 `;
 
 Notification.propTypes = {
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
+  background: PropTypes.string,
 };
 
 export default memo(Notification);

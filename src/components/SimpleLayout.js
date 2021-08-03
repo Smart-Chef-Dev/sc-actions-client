@@ -19,7 +19,7 @@ const SimpleLayout = ({ children }) => {
             overflowX="hidden"
             position="relative"
           >
-            <DarkModeSwitcher/>
+            <DarkModeSwitcher />
             {children}
           </Flex>
           <Divider />
@@ -33,7 +33,10 @@ const SimpleLayout = ({ children }) => {
           </s.MenuBar>
         </Flex>
       ) : (
-        <s.Container>{children}</s.Container>
+        <>
+          <DarkModeSwitcher />
+          <s.Container>{children}</s.Container>
+        </>
       )}
     </>
   );
@@ -47,7 +50,7 @@ const s = {
   MenuBar: styled(Flex)`
     position: sticky;
     top: 0;
-  `
+  `,
 };
 
 SimpleLayout.propTypes = {

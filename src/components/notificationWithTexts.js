@@ -7,17 +7,18 @@ import { Flex } from "./flex";
 
 import DoneIcon from "assets/icons/actions/done-icon.svg";
 
-const NotificationWithTexts = ({ texts }) => {
+const NotificationWithTexts = ({ texts, Icon = DoneIcon }) => {
   return (
     <Flex direction="column">
       <Flex justifyContent="center" width={1} mb={theme.spacing(1)}>
-        <DoneIcon />
+        <Icon />
       </Flex>
       <Flex direction="column" alignItems="center">
         {texts.map((currentValue, index) => (
           <Text
             key={index}
             color="#fff"
+            justify-content="center"
             textAlign="center"
             mb={theme.spacing(1)}
           >
@@ -31,6 +32,7 @@ const NotificationWithTexts = ({ texts }) => {
 
 NotificationWithTexts.propTypes = {
   texts: PropTypes.array,
+  Icon: PropTypes.elementType,
 };
 
 export default memo(NotificationWithTexts);
