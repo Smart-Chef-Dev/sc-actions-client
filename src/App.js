@@ -83,11 +83,6 @@ function App() {
                     component={MenuBuilder}
                     layout={BackOfficeLayout}
                   />
-                  <PrivateRoute
-                    path={Routes.MENU_BUILDER1}
-                    component={MenuBuilder}
-                    layout={BackOfficeLayout}
-                  />
                   <Route
                     path={Routes.PRODUCT}
                     component={Product}

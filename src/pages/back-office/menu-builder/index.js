@@ -5,7 +5,7 @@ import { Flex } from "components/flex";
 const MenuBuilder = () => {
   return (
     <Flex>
-      <p></p>
+      <p>Menu builder</p>
     </Flex>
   );
 };
