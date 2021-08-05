@@ -12,7 +12,7 @@ const Categories = ({ categories }) => {
 
   return (
     !isLoading && (
-      <CategoriesContainer width={1} direction="column">
+      <CategoriesContainer width={1} direction="column" overflowY="hidden">
         {data.map((category, i) => (
           <Fragment key={category._id}>
             <Category

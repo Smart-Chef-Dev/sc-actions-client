@@ -28,7 +28,7 @@ const Index = ({ children }) => {
             {selectedTab.name}
           </s.TabTitle>
         </Flex>
-        <s.ChildrenContainer height={1} width={1}>
+        <s.ChildrenContainer height={1} width={1} overflowY="hidden">
           {children}
         </s.ChildrenContainer>
       </Flex>

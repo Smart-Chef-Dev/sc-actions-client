@@ -18,7 +18,14 @@ const MenuBuilder = () => {
   );
 
   return (
-    <Flex width={1} p={theme.spacing(1)} direction="column">
+    <Flex
+      width={1}
+      height={1}
+      p={theme.spacing(1)}
+      direction="column"
+      overflowY="auto"
+      boxSizing="border-box"
+    >
       <Flex width={1} justifyContent="flex-end">
         <Button>CREATE CATEGORY</Button>
       </Flex>
