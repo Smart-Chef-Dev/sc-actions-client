@@ -8,6 +8,7 @@ import { Routes } from "constants/routes";
 import Route from "components/Route";
 import PrivateRoute from "components/private-route";
 import MainLayout from "components/MainLayout";
+import BackOfficeLayout from "components/backOfficeLayout";
 import SimpleLayout from "components/SimpleLayout";
 import Loader from "components/loaders";
 import DarkModeContext from "contexts/dark-mode-context";
@@ -47,6 +48,11 @@ const Dashboard = lazy(() =>
     "pages/back-office/dashboard/subscriptions" /* webpackChunkName: "dashboard" */
   )
 );
+const MenuBuilder = lazy(() =>
+  import(
+    "pages/back-office/menu-builder" /* webpackChunkName: "menu-builder" */
+  )
+);
 
 function App() {
   return (
@@ -71,6 +77,16 @@ function App() {
                     path={Routes.DASHBOARD}
                     component={Dashboard}
                     layout={SimpleLayout}
+                  />
+                  <PrivateRoute
+                    path={Routes.MENU_BUILDER}
+                    component={MenuBuilder}
+                    layout={BackOfficeLayout}
+                  />
+                  <PrivateRoute
+                    path={Routes.MENU_BUILDER1}
+                    component={MenuBuilder}
+                    layout={BackOfficeLayout}
                   />
                   <Route
                     path={Routes.PRODUCT}

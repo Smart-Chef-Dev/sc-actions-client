@@ -30,7 +30,8 @@ export const globals = css`
       --text: #fff;
       --color-for-selected-object: #e5e5ea;
       --text-grey: #c7c7cc;
-      --light-grey: #00000066;
+      --light-grey: #efeff4;
+      --grey: #00000066;
       --box-shadow: #0000003d;
       --loader-background-color: #ede8e8;
       --loader-foreground-color: #dfd7d7;
@@ -44,7 +45,7 @@ export const globals = css`
       --color-for-selected-object: #e5e5ea26;
       --text: #000;
       --box-shadow: #ffffff3d;
-      --light-grey: #c7c7cc;
+      --grey: #c7c7cc;
       --loader-background-color: #686c87;
       --loader-foreground-color: #566586;
     }
