@@ -1,4 +1,4 @@
-import { Fragment, memo } from "react";
+import { Fragment, memo, useCallback, useState } from "react";
 import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
 
@@ -9,13 +9,26 @@ import MenuTab from "./menu-tab";
 import { BackOfficeMenuTabs } from "constants/backOfficeMenuTabs";
 import { theme } from "theme";
 import SmallLogo from "assets/icons/logo/small_logo.svg";
+import MiddleLogo from "assets/icons/logo/middle_logo.svg";
 import LogOutIcon from "assets/icons/back-office/log_out_icon.svg";
 
 const MenuTabs = ({ selectedTab, onSelectedTab, onLocation, location }) => {
+  const [isTabMenuExpanded, setIsTabMenuExpanded] = useState(false);
+
+  const expandTabMenu = useCallback(() => setIsTabMenuExpanded(true), []);
+  const collapseTabMenu = useCallback(() => setIsTabMenuExpanded(false), []);
+
   return (
-    <s.MenuTabs direction="column" alignItems="center" width={1} height={1}>
+    <s.MenuTabs
+      direction="column"
+      alignItems="center"
+      width={1}
+      height={1}
+      onMouseEnter={expandTabMenu}
+      onMouseLeave={collapseTabMenu}
+    >
       <Flex height={1} flex={1} m={theme.spacing(1)} mb={theme.spacing(3)}>
-        <SmallLogo />
+        {isTabMenuExpanded ? <MiddleLogo /> : <SmallLogo />}
       </Flex>
       <Flex
         width={1}
@@ -32,13 +45,25 @@ const MenuTabs = ({ selectedTab, onSelectedTab, onLocation, location }) => {
                 onSelectedTab={onSelectedTab}
                 onLocation={onLocation}
                 location={location}
+                isTabMenuExpanded={isTabMenuExpanded}
               />
             </Fragment>
           ))}
         </Flex>
-        <s.MenuTab width={1} py={theme.spacing(1)} justifyContent="center">
-          <LogOutIcon />
-        </s.MenuTab>
+        {isTabMenuExpanded ? (
+          <s.MenuTab width={1} py={theme.spacing(1)} alignItems="center">
+            <Flex pl={theme.spacing(1)}>
+              <LogOutIcon />
+            </Flex>
+            <Text pl={theme.spacing(2)} color="var(--text-grey)">
+              Log out
+            </Text>
+          </s.MenuTab>
+        ) : (
+          <s.MenuTab width={1} py={theme.spacing(1)} justifyContent="center">
+            <LogOutIcon />
+          </s.MenuTab>
+        )}
       </Flex>
     </s.MenuTabs>
   );

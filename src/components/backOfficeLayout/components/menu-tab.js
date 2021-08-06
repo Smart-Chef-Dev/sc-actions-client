@@ -13,6 +13,7 @@ const MenuTab = ({
   selectedTab,
   onLocation,
   location,
+  isTabMenuExpanded,
 }) => {
   const [match] = useRoute(menuTab.route);
 
@@ -28,8 +29,29 @@ const MenuTab = ({
     onLocation(path + restaurantId);
   }, [menuTab, onLocation, location]);
 
-  return (
+  return isTabMenuExpanded ? (
     <Flex width={1} onClick={selectTab}>
+      {selectedTab.route === menuTab.route ? (
+        <s.SelectedTab
+          width={1}
+          py={theme.spacing(1)}
+          pl={theme.spacing(1)}
+          alignItems="center"
+        >
+          <menuTab.icon />
+          <Text pl={theme.spacing(2)} color="var(--text-grey)">
+            {menuTab.name}
+          </Text>
+        </s.SelectedTab>
+      ) : (
+        <s.Tab width={1} py={theme.spacing(1)} alignItems="center">
+          <menuTab.icon />
+          <Text pl={theme.spacing(2)}>{menuTab.name}</Text>
+        </s.Tab>
+      )}
+    </Flex>
+  ) : (
+    <Flex width={1} onClick={selectTab} alignItems="center">
       {selectedTab.route === menuTab.route ? (
         <s.SelectedTab width={1} justifyContent="center" py={theme.spacing(1)}>
           <menuTab.icon />
@@ -59,6 +81,7 @@ MenuTab.propTypes = {
   onSelectedTab: PropTypes.func,
   onLocation: PropTypes.func,
   location: PropTypes.string,
+  isTabMenuExpanded: PropTypes.bool,
 };
 
 export default memo(MenuTab);
