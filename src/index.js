@@ -30,6 +30,7 @@ export const globals = css`
       --text: #fff;
       --color-for-selected-object: #e5e5ea;
       --text-grey: #c7c7cc;
+      --label-color: #434c5f;
       --light-grey: #f5f5f8;
       --grey: #00000066;
       --box-shadow: #0000003d;

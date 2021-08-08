@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useQuery } from "react-query";
 import { useRoute } from "wouter";
 
@@ -8,6 +8,8 @@ import Categories from "./components/categories";
 import { theme } from "theme";
 import { Routes } from "constants/routes";
 import { getAllCategories } from "services/categoriesService";
+import { useConfirmationPopup } from "hooks/useConfirmationPopup";
+import AddCategoryPopup from "./components/add-category-popup";
 
 const MenuBuilder = () => {
   const [, { restaurantId }] = useRoute(Routes.MENU_BUILDER);
@@ -16,6 +18,16 @@ const MenuBuilder = () => {
     ["categories", { restaurantId }],
     getAllCategories
   );
+
+  const { renderNotification, showNotification } = useConfirmationPopup(
+    AddCategoryPopup,
+    "500px",
+    "350px"
+  );
+
+  const createCategory = useCallback(() => {
+    showNotification();
+  }, [showNotification]);
 
   return (
     <Flex
@@ -26,8 +38,9 @@ const MenuBuilder = () => {
       overflowY="auto"
       boxSizing="border-box"
     >
+      {renderNotification()}
       <Flex width={1} justifyContent="flex-end">
-        <Button>CREATE CATEGORY</Button>
+        <Button onClick={createCategory}>CREATE CATEGORY</Button>
       </Flex>
       <Flex width={1}>
         <Categories categories={categories} />

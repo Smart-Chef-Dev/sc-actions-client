@@ -1,22 +1,29 @@
 import { createPortal } from "react-dom";
 import { useCallback, useState } from "react";
-import ConfirmationPopup from "../components/confirmationPopup";
+import Notification from "../components/notification";
 
-export const useConfirmationPopup = (text, continueButton) => {
+export const useConfirmationPopup = (
+  Component,
+  width,
+  height,
+  componentProps = null
+) => {
   const [isHidden, toggleHidden] = useState(true);
 
   const renderNotification = useCallback(() => {
     return !isHidden
       ? createPortal(
-          <ConfirmationPopup
-            text={text}
-            onToggleHidden={toggleHidden}
-            continueButton={continueButton}
-          />,
+          <Notification
+            background="var(--main-bg-color)"
+            width={width}
+            height={height}
+          >
+            <Component {...componentProps} onToggleHidden={toggleHidden} />
+          </Notification>,
           document.body
         )
       : null;
-  }, [isHidden, text, continueButton]);
+  }, [isHidden, componentProps, width, height]);
 
   const showNotification = useCallback(() => {
     toggleHidden(false);
