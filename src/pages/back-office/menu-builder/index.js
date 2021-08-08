@@ -44,7 +44,7 @@ const MenuBuilder = () => {
         <Button onClick={createCategory}>CREATE CATEGORY</Button>
       </Flex>
       <Flex width={1}>
-        <Categories categories={categories} />
+        <Categories categories={categories} restaurantId={restaurantId} />
       </Flex>
     </Flex>
   );

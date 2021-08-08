@@ -21,3 +21,16 @@ export const addCategory = async ({ restaurantId, body }) => {
 
   return res.json();
 };
+
+export const deleteCategory = async ({ categoryId }) => {
+  const res = await fetch(
+    `/api/category/${categoryId}`,
+    fetchOptions({ method: "DELETE" })
+  );
+
+  if (!res.ok) {
+    throw { status: res.status };
+  }
+
+  return res.json();
+};

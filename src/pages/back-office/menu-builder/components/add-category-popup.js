@@ -17,7 +17,6 @@ const AddCategoryPopup = ({ onToggleHidden, restaurantId, categories }) => {
   const [error, setError] = useState(null);
 
   const queryClient = useQueryClient();
-
   const addCategoryMutation = useMutation(addCategory, {
     onSuccess: (data) => {
       queryClient.setQueryData(

@@ -6,7 +6,7 @@ import { Flex } from "components/flex";
 import Category from "./category";
 import { Divider } from "components/divider";
 
-const Categories = ({ categories }) => {
+const Categories = ({ categories, restaurantId }) => {
   const [expandedCategoryId, setExpandedCategoryId] = useState("");
   const { data, isLoading } = categories;
 
@@ -17,6 +17,8 @@ const Categories = ({ categories }) => {
           <Fragment key={category._id}>
             <Category
               category={category}
+              categories={data}
+              restaurantId={restaurantId}
               onExpandedCategoryId={setExpandedCategoryId}
               expandedCategoryId={expandedCategoryId}
             />
@@ -35,6 +37,7 @@ const CategoriesContainer = styled(Flex)`
 
 Categories.propTypes = {
   categories: PropTypes.object,
+  restaurantId: PropTypes.string,
 };
 
 export default memo(Categories);
