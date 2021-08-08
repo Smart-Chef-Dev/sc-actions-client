@@ -22,7 +22,8 @@ const MenuBuilder = () => {
   const { renderNotification, showNotification } = useConfirmationPopup(
     AddCategoryPopup,
     "500px",
-    "350px"
+    "380px",
+    { restaurantId, categories: categories.data }
   );
 
   const createCategory = useCallback(() => {

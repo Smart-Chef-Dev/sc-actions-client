@@ -1,17 +1,32 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
 import { useFormik } from "formik";
+import { useMutation, useQueryClient } from "react-query";
+import * as Yup from "yup";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import Input from "components/input";
 import Button from "components/button";
 import ErrorText from "components/error-text";
+import { addCategory } from "services/categoriesService";
 import { theme } from "theme";
-import * as Yup from "yup";
 
-const AddCategoryPopup = ({ onToggleHidden }) => {
+const AddCategoryPopup = ({ onToggleHidden, restaurantId, categories }) => {
+  const [error, setError] = useState(null);
+
+  const queryClient = useQueryClient();
+
+  const addCategoryMutation = useMutation(addCategory, {
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        ["categories", { restaurantId }],
+        [...categories, data]
+      );
+    },
+  });
+
   const initialValues = {
     name: "",
   };
@@ -25,10 +40,18 @@ const AddCategoryPopup = ({ onToggleHidden }) => {
     validationSchema: useMemo(() => SignupSchema, [SignupSchema]),
     onSubmit: useCallback(
       async (values) => {
-        console.log(values);
-        onToggleHidden(true);
+        try {
+          await addCategoryMutation.mutateAsync({
+            restaurantId,
+            body: values,
+          });
+
+          onToggleHidden(true);
+        } catch (err) {
+          setError(err);
+        }
       },
-      [onToggleHidden]
+      [onToggleHidden, addCategoryMutation, restaurantId]
     ),
   });
 
@@ -44,13 +67,16 @@ const AddCategoryPopup = ({ onToggleHidden }) => {
   }, [onToggleHidden]);
 
   return (
-    <Flex
-      direction="column"
-      width={1}
-      pt={theme.spacing(3)}
-      p={theme.spacing(4)}
-    >
-      <Form onSubmit={formik.handleSubmit}>
+    <Form onSubmit={formik.handleSubmit}>
+      <Flex
+        direction="column"
+        width={1}
+        height={1}
+        p={theme.spacing(4)}
+        pt={theme.spacing(3)}
+        boxSizing="border-box"
+        justifyContent="space-between"
+      >
         <Flex direction="column" width={1} alignItems="center">
           <Text
             fontWeight="bold"
@@ -59,46 +85,51 @@ const AddCategoryPopup = ({ onToggleHidden }) => {
           >
             Create Category
           </Text>
-          <Flex mb={theme.spacing(4)} width={1} direction="column">
-            <Text fontSize={theme.fontSize(0)} color="var(--label-color)">
-              CATEGORY NAME
-            </Text>
+          <Flex mb={theme.spacing(2)} width={1} direction="column">
             <Input
               id="name"
               type="string"
               placeholder="Enter name"
               onChange={handleChange("name")}
+              label="CATEGORY NAME"
               value={formik.values["name"]}
-              height="48px"
-              background="var(--main-bg-color)"
+              error={formik.errors.name}
             />
-            {formik.errors.name && <ErrorText>{formik.errors.name}</ErrorText>}
           </Flex>
         </Flex>
-        <Flex justifyContent="space-between">
+        <Flex mb={theme.spacing(1)} width={1} justifyContent="center">
+          {error?.status === 403 && (
+            <ErrorText>A category with the same name already exists</ErrorText>
+          )}
+        </Flex>
+        <Flex justifyContent="space-between" width={1}>
           <Button
+            background="var(--text-grey)"
             width="none"
             mb="0"
             onClick={cancelAddingCategory}
             type="button"
           >
-            Cancel
+            CANCEL
           </Button>
-          <Button width="none" mb="0" type="submit">
-            Create
+          <Button width="auto" mb="0" type="submit">
+            CREATE
           </Button>
         </Flex>
-      </Form>
-    </Flex>
+      </Flex>
+    </Form>
   );
 };
 
 const Form = styled.form`
   width: 100%;
+  height: 100%;
 `;
 
 AddCategoryPopup.propTypes = {
   onToggleHidden: PropTypes.func,
+  restaurantId: PropTypes.string,
+  categories: PropTypes.array,
 };
 
 export default memo(AddCategoryPopup);
