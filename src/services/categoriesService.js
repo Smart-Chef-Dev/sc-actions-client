@@ -34,3 +34,16 @@ export const deleteCategory = async ({ categoryId }) => {
 
   return res.json();
 };
+
+export const editCategory = async ({ categoryId, body }) => {
+  const res = await fetch(
+    `/api/category/${categoryId}/update`,
+    fetchOptions({ method: "POST", body: JSON.stringify(body) })
+  );
+
+  if (!res.ok) {
+    throw { status: res.status };
+  }
+
+  return res.json();
+};

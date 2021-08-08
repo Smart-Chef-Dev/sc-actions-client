@@ -8,8 +8,10 @@ import { theme } from "theme";
 import GrayTriangle from "assets/icons/back-office/gray_triangle.svg";
 import RedTriangle from "assets/icons/back-office/red_triangle.svg";
 import Basket from "assets/icons/back-office/basket.svg";
+import EditIcon from "assets/icons/back-office/edit_icon.svg";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import DeleteCategoryPopup from "./delete-category-popup";
+import EditCategoryPopup from "./edit-category-popup";
 
 const Category = ({
   category,
@@ -26,20 +28,32 @@ const Category = ({
     [category._id, onExpandedCategoryId]
   );
 
-  const { renderNotification, showNotification } = useConfirmationPopup(
+  const deleteCategoryPopup = useConfirmationPopup(
     DeleteCategoryPopup,
     "500px",
     "380px",
     { category: category, categories, restaurantId }
   );
 
+  const editCategoryPopup = useConfirmationPopup(
+    EditCategoryPopup,
+    "500px",
+    "380px",
+    { category: category, categories, restaurantId }
+  );
+
   const removeCategory = useCallback(() => {
-    showNotification();
-  }, [showNotification]);
+    deleteCategoryPopup.showNotification();
+  }, [deleteCategoryPopup]);
+
+  const editCategory = useCallback(() => {
+    editCategoryPopup.showNotification();
+  }, [editCategoryPopup]);
 
   return (
     <Flex width={1} direction="column" pb={0} boxSizing="border-box">
-      {renderNotification()}
+      {deleteCategoryPopup.renderNotification()}
+      {editCategoryPopup.renderNotification()}
       <Flex
         width={1}
         justifyContent="space-between"
@@ -51,6 +65,9 @@ const Category = ({
       >
         <Text>{category.name}</Text>
         <Flex alignItems="center">
+          <Flex mr={theme.spacing(1)} onClick={editCategory}>
+            <EditIcon />
+          </Flex>
           <Flex mr={theme.spacing(1)} onClick={removeCategory}>
             <Basket />
           </Flex>
