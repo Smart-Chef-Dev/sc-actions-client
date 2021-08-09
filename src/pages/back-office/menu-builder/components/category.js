@@ -180,7 +180,7 @@ const Category = ({
                   <EditIcon onClick={editCategory} />
                 </Flex>
                 <Flex mr={theme.spacing(1)}>
-                  <Basket onClick={removeCategory} />
+                  <Basket onClick={removeCategory} stroke="black" />
                 </Flex>
               </Flex>
               <RedTriangle />

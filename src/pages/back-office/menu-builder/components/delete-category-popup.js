@@ -67,7 +67,7 @@ const DeleteCategoryPopup = ({
       <Flex width={1} justifyContent="space-between">
         <Button
           background="var(--text-grey)"
-          width="none"
+          width="auto"
           mb="0"
           onClick={cancelRemovalCategory}
         >

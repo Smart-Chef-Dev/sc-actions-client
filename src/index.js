@@ -28,7 +28,8 @@ export const globals = css`
       --main-color: #ff2d55;
       --main-color-disabled: rgba(255, 45, 85, 0.5);
       --text: #fff;
-      --color-for-selected-object: #e5e5ea;
+      --grey-color-for-selected-object: #e5e5ea;
+      --red-color-for-selected-object: #f6ecf0;
       --text-grey: #c7c7cc;
       --label-color: #434c5f;
       --light-grey: #f5f5f8;
@@ -43,7 +44,7 @@ export const globals = css`
     [data-theme="dark"] {
       --main-bg-color: #434c5f;
       --main-text-color: #fff;
-      --color-for-selected-object: #e5e5ea26;
+      --grey-color-for-selected-object: #e5e5ea26;
       --text: #000;
       --box-shadow: #ffffff3d;
       --grey: #c7c7cc;

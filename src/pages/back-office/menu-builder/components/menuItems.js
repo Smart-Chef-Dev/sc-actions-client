@@ -14,10 +14,10 @@ const MenuItems = ({ menuItems }) => {
           <Fragment key={menuItem._id}>
             {(i + 1) % 2 !== 0 ? (
               <Flex background="var(--light-grey)" width={1}>
-                <MenuItem menuItem={menuItem} />
+                <MenuItem menuItem={menuItem} menuItems={data} index={i} />
               </Flex>
             ) : (
-              <MenuItem menuItem={menuItem} />
+              <MenuItem menuItem={menuItem} menuItems={data} index={i} />
             )}
           </Fragment>
         ))}

@@ -10,7 +10,7 @@ export const StyledInput = styled(Field)`
     props.error ? "1px solid var(--error)" : "1px solid #ddd"};
   background: ${(props) =>
     props.disabled
-      ? "var(--color-for-selected-object)"
+      ? "var(--grey-color-for-selected-object)"
       : "var(--main-bg-color)"};
   outline: none;
   font: inherit;
