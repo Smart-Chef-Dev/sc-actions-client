@@ -21,6 +21,7 @@ const Categories = ({ categories, restaurantId }) => {
               restaurantId={restaurantId}
               onExpandedCategoryId={setExpandedCategoryId}
               expandedCategoryId={expandedCategoryId}
+              index={i}
             />
             {i !== data.length - 1 && <Divider />}
           </Fragment>

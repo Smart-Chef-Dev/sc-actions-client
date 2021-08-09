@@ -1,17 +1,23 @@
 import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
+import { useMutation, useQueryClient } from "react-query";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import MenuItems from "./menuItems";
 import { theme } from "theme";
+
 import GrayTriangle from "assets/icons/back-office/gray_triangle.svg";
 import RedTriangle from "assets/icons/back-office/red_triangle.svg";
 import Basket from "assets/icons/back-office/basket.svg";
 import EditIcon from "assets/icons/back-office/edit_icon.svg";
+import UpArrow from "assets/icons/back-office/up_arrow.svg";
+import ArrowToDown from "assets/icons/back-office/arrow_to_down.svg";
+
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import DeleteCategoryPopup from "./delete-category-popup";
 import EditCategoryPopup from "./edit-category-popup";
+import { swapCategories } from "services/categoriesService";
 
 const Category = ({
   category,
@@ -19,7 +25,47 @@ const Category = ({
   expandedCategoryId,
   categories,
   restaurantId,
+  index,
 }) => {
+  const queryClient = useQueryClient();
+  const raiseCategoryMutation = useMutation(swapCategories, {
+    onSuccess: () => {
+      queryClient.setQueryData(
+        ["categories", { restaurantId }],
+        categories.map((currentCategory, i) => {
+          if (index - 1 === i) {
+            return category;
+          }
+
+          if (index === i) {
+            return categories[index - 1];
+          }
+
+          return currentCategory;
+        })
+      );
+    },
+  });
+
+  const omitCategoryMutation = useMutation(swapCategories, {
+    onSuccess: () => {
+      queryClient.setQueryData(
+        ["categories", { restaurantId }],
+        categories.map((currentCategory, i) => {
+          if (index + 1 === i) {
+            return category;
+          }
+
+          if (index === i) {
+            return categories[index + 1];
+          }
+
+          return currentCategory;
+        })
+      );
+    },
+  });
+
   const expandCategory = useCallback(
     () =>
       onExpandedCategoryId((oldExpandedCategoryId) =>
@@ -50,6 +96,28 @@ const Category = ({
     editCategoryPopup.showNotification();
   }, [editCategoryPopup]);
 
+  const raiseCategory = useCallback(async () => {
+    if (index === 0) {
+      return;
+    }
+
+    await raiseCategoryMutation.mutateAsync({
+      categoryId1: category._id,
+      categoryId2: categories[index - 1]._id,
+    });
+  }, [raiseCategoryMutation, category, categories, index]);
+
+  const omitCategory = useCallback(async () => {
+    if (index === categories.length - 1) {
+      return;
+    }
+
+    await omitCategoryMutation.mutateAsync({
+      categoryId1: category._id,
+      categoryId2: categories[index + 1]._id,
+    });
+  }, [omitCategoryMutation, category, categories, index]);
+
   return (
     <Flex width={1} direction="column" pb={0} boxSizing="border-box">
       {deleteCategoryPopup.renderNotification()}
@@ -58,26 +126,44 @@ const Category = ({
         width={1}
         justifyContent="space-between"
         alignItems="center"
-        onClick={expandCategory}
         p={theme.spacing(1)}
-        pl={theme.spacing(4)}
+        pl={theme.spacing(3)}
         boxSizing="border-box"
+        onClick={expandCategory}
       >
-        <Text>{category.name}</Text>
         <Flex alignItems="center">
-          <Flex mr={theme.spacing(1)} onClick={editCategory}>
-            <EditIcon />
+          <Flex
+            direction="column"
+            mr={theme.spacing(1)}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <UpArrow onClick={raiseCategory} />
+            <ArrowToDown onClick={omitCategory} />
           </Flex>
-          <Flex mr={theme.spacing(1)} onClick={removeCategory}>
-            <Basket />
-          </Flex>
-          <Flex>
-            {category._id === expandedCategoryId ? (
+          <Text>{category.name}</Text>
+        </Flex>
+        <Flex alignItems="center">
+          {category._id === expandedCategoryId ? (
+            <>
+              <Flex
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <Flex mr={theme.spacing(1)}>
+                  <EditIcon onClick={editCategory} />
+                </Flex>
+                <Flex mr={theme.spacing(1)}>
+                  <Basket onClick={removeCategory} />
+                </Flex>
+              </Flex>
               <RedTriangle />
-            ) : (
-              <GrayTriangle />
-            )}
-          </Flex>
+            </>
+          ) : (
+            <GrayTriangle />
+          )}
         </Flex>
       </Flex>
       {category._id === expandedCategoryId && (
@@ -93,6 +179,7 @@ Category.propTypes = {
   onExpandedCategoryId: PropTypes.func,
   expandedCategoryId: PropTypes.string,
   restaurantId: PropTypes.string,
+  index: PropTypes.number,
 };
 
 export default memo(Category);
