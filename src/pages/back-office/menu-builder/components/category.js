@@ -93,7 +93,8 @@ const Category = ({
   const addMenuItemPopup = useConfirmationPopup(
     AddMenuItemPopup,
     "900px",
-    "700px"
+    "700px",
+    { categories }
   );
 
   const removeCategory = useCallback(() => {

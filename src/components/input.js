@@ -1,8 +1,8 @@
 import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
-import { styled } from "@linaria/react";
-import { Text } from "./text";
 import ErrorText from "./error-text";
+import { StyledInput } from "./styled-input";
+import { InputLabel } from "./input-label";
 
 const Input = ({
   type = "text",
@@ -11,6 +11,7 @@ const Input = ({
   name,
   value,
   onChange,
+  height,
   placeholder = null,
 }) => {
   const handleChange = useCallback(
@@ -22,13 +23,14 @@ const Input = ({
 
   return (
     <>
-      {label && <s.Label htmlFor={name}>{label}</s.Label>}
-      <s.StyledInput
+      {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
+      <StyledInput
         type={type}
         name={name}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
+        height={height}
         error={!!error}
       />
       {error && <ErrorText>{error}</ErrorText>}
@@ -44,42 +46,7 @@ Input.propTypes = {
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
   error: PropTypes.string,
-};
-
-const s = {
-  StyledInput: styled.input`
-    display: block;
-    box-sizing: border-box;
-    width: 100%;
-    height: 48px;
-    border: ${(props) =>
-      props.error ? "1px solid var(--error)" : "1px solid #ddd"};
-    background: var(--main-bg-color);
-    outline: none;
-    font: inherit;
-    padding: 1rem;
-    border-radius: 3px;
-    font-size: 13px;
-    color: var(--label-color);
-
-    ::placeholder {
-      color: var(--text-grey);
-      font-size: 13px;
-    }
-
-    :focus {
-      border: ${(props) =>
-        props.error
-          ? "1px solid var(--error)"
-          : "1px solid var(--label-color)"};
-    }
-  `,
-  Label: styled(Text)`
-    color: var(--main-text-color);
-    font-size: 10px;
-    padding-bottom: 7px;
-    padding-right: 7px;
-  `,
+  height: PropTypes.string,
 };
 
 export default memo(Input);
