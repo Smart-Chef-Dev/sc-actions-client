@@ -24,7 +24,7 @@ const Option = styled.option`
 `;
 
 Select.propTypes = {
-  options: PropTypes.string,
+  options: PropTypes.array,
   name: PropTypes.string,
   label: PropTypes.string,
 };

@@ -26,6 +26,8 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
     price: "",
     description: "",
     category: "",
+    time: "",
+    weight: "",
   };
 
   const SignupSchema = Yup.object().shape({
@@ -44,7 +46,7 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
     onSubmit: useCallback(
       async (values) => {
         console.log(values);
-        // onToggleHidden(true);
+        onToggleHidden(true);
       },
       [onToggleHidden]
     ),
@@ -119,10 +121,13 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
                   </Flex>
                   <Flex direction="column" width={1}>
                     <Input
+                      id="time"
                       label="WAITING TIME, MIN"
                       type="number"
                       height="52px"
                       placeholder="0.00"
+                      value={formik.values["time"]}
+                      onChange={handleChange("time")}
                     />
                   </Flex>
                 </Flex>
@@ -133,10 +138,13 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
                   </Flex>
                   <Flex direction="column" width={1}>
                     <Input
+                      id="weight"
                       label="WEIGHT, G"
                       type="number"
                       height="52px"
                       placeholder="0.00"
+                      value={formik.values["weight"]}
+                      onChange={handleChange("weight")}
                     />
                   </Flex>
                 </Flex>

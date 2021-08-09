@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
-import { useFormik } from "formik";
+import { FormikProvider, useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import * as Yup from "yup";
 
@@ -66,57 +66,61 @@ const AddCategoryPopup = ({ onToggleHidden, restaurantId, categories }) => {
   }, [onToggleHidden]);
 
   return (
-    <Form onSubmit={formik.handleSubmit}>
-      <Flex
-        direction="column"
-        width={1}
-        height={1}
-        p={theme.spacing(4)}
-        pt={theme.spacing(3)}
-        boxSizing="border-box"
-        justifyContent="space-between"
-      >
-        <Flex direction="column" width={1} alignItems="center">
-          <Text
-            fontWeight="bold"
-            fontSize={theme.fontSize(3)}
-            mb={theme.spacing(4)}
-          >
-            Create Category
-          </Text>
-          <Flex mb={theme.spacing(2)} width={1} direction="column">
-            <Input
-              id="name"
-              type="string"
-              placeholder="Enter name"
-              onChange={handleChange("name")}
-              label="CATEGORY NAME"
-              value={formik.values["name"]}
-              error={formik.errors.name}
-            />
+    <FormikProvider value={formik}>
+      <Form onSubmit={formik.handleSubmit}>
+        <Flex
+          direction="column"
+          width={1}
+          height={1}
+          p={theme.spacing(4)}
+          pt={theme.spacing(3)}
+          boxSizing="border-box"
+          justifyContent="space-between"
+        >
+          <Flex direction="column" width={1} alignItems="center">
+            <Text
+              fontWeight="bold"
+              fontSize={theme.fontSize(3)}
+              mb={theme.spacing(4)}
+            >
+              Create Category
+            </Text>
+            <Flex mb={theme.spacing(2)} width={1} direction="column">
+              <Input
+                id="name"
+                type="string"
+                placeholder="Enter name"
+                onChange={handleChange("name")}
+                label="CATEGORY NAME"
+                value={formik.values["name"]}
+                error={formik.errors.name}
+              />
+            </Flex>
+          </Flex>
+          <Flex mb={theme.spacing(1)} width={1} justifyContent="center">
+            {error?.status === 403 && (
+              <ErrorText>
+                A category with the same name already exists
+              </ErrorText>
+            )}
+          </Flex>
+          <Flex justifyContent="space-between" width={1}>
+            <Button
+              background="var(--text-grey)"
+              width="none"
+              mb="0"
+              onClick={cancelAddingCategory}
+              type="button"
+            >
+              CANCEL
+            </Button>
+            <Button width="auto" mb="0" type="submit">
+              CREATE
+            </Button>
           </Flex>
         </Flex>
-        <Flex mb={theme.spacing(1)} width={1} justifyContent="center">
-          {error?.status === 403 && (
-            <ErrorText>A category with the same name already exists</ErrorText>
-          )}
-        </Flex>
-        <Flex justifyContent="space-between" width={1}>
-          <Button
-            background="var(--text-grey)"
-            width="none"
-            mb="0"
-            onClick={cancelAddingCategory}
-            type="button"
-          >
-            CANCEL
-          </Button>
-          <Button width="auto" mb="0" type="submit">
-            CREATE
-          </Button>
-        </Flex>
-      </Flex>
-    </Form>
+      </Form>
+    </FormikProvider>
   );
 };
 

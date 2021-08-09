@@ -165,6 +165,7 @@ const Category = ({
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
+                alignItems="flex-end"
               >
                 <Flex mr={theme.spacing(1)} alignItems="center">
                   <CreateItemIcon onClick={addMenuItem} />

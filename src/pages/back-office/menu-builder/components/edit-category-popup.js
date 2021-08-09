@@ -2,7 +2,7 @@ import { memo, useCallback, useMemo } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { styled } from "@linaria/react";
 import * as Yup from "yup";
-import { useFormik } from "formik";
+import { FormikProvider, useFormik } from "formik";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
@@ -70,52 +70,54 @@ const EditCategoryPopup = ({
   }, [onToggleHidden]);
 
   return (
-    <Form onSubmit={formik.handleSubmit}>
-      <Flex
-        direction="column"
-        width={1}
-        height={1}
-        p={theme.spacing(4)}
-        pt={theme.spacing(3)}
-        boxSizing="border-box"
-        justifyContent="space-between"
-      >
-        <Flex direction="column" width={1} alignItems="center">
-          <Text
-            fontWeight="bold"
-            fontSize={theme.fontSize(3)}
-            mb={theme.spacing(4)}
-          >
-            Edit Category
-          </Text>
-          <Flex mb={theme.spacing(2)} width={1} direction="column">
-            <Input
-              id="name"
-              type="string"
-              placeholder="Enter name"
-              onChange={handleChange("name")}
-              label="CATEGORY NAME"
-              value={formik.values["name"]}
-              error={formik.errors.name}
-            />
+    <FormikProvider value={formik}>
+      <Form onSubmit={formik.handleSubmit}>
+        <Flex
+          direction="column"
+          width={1}
+          height={1}
+          p={theme.spacing(4)}
+          pt={theme.spacing(3)}
+          boxSizing="border-box"
+          justifyContent="space-between"
+        >
+          <Flex direction="column" width={1} alignItems="center">
+            <Text
+              fontWeight="bold"
+              fontSize={theme.fontSize(3)}
+              mb={theme.spacing(4)}
+            >
+              Edit Category
+            </Text>
+            <Flex mb={theme.spacing(2)} width={1} direction="column">
+              <Input
+                id="name"
+                type="string"
+                placeholder="Enter name"
+                onChange={handleChange("name")}
+                label="CATEGORY NAME"
+                value={formik.values["name"]}
+                error={formik.errors.name}
+              />
+            </Flex>
+          </Flex>
+          <Flex justifyContent="space-between" width={1}>
+            <Button
+              background="var(--text-grey)"
+              width="none"
+              mb="0"
+              onClick={cancelAddingCategory}
+              type="button"
+            >
+              CANCEL
+            </Button>
+            <Button width="auto" mb="0" type="submit">
+              SAVE
+            </Button>
           </Flex>
         </Flex>
-        <Flex justifyContent="space-between" width={1}>
-          <Button
-            background="var(--text-grey)"
-            width="none"
-            mb="0"
-            onClick={cancelAddingCategory}
-            type="button"
-          >
-            CANCEL
-          </Button>
-          <Button width="auto" mb="0" type="submit">
-            SAVE
-          </Button>
-        </Flex>
-      </Flex>
-    </Form>
+      </Form>
+    </FormikProvider>
   );
 };
 
