@@ -78,6 +78,7 @@ const s = {
     color: var(--main-text-color);
     font-size: 10px;
     padding-bottom: 7px;
+    padding-right: 7px;
   `,
 };
 

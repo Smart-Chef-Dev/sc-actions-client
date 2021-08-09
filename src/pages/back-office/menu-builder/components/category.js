@@ -18,6 +18,8 @@ import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import DeleteCategoryPopup from "./delete-category-popup";
 import EditCategoryPopup from "./edit-category-popup";
 import { swapCategories } from "services/categoriesService";
+import AddMenuItemPopup from "./add-menu-item-popup";
+import CreateItemIcon from "assets/icons/back-office/create_item_icon.svg";
 
 const Category = ({
   category,
@@ -88,6 +90,12 @@ const Category = ({
     { category: category, categories, restaurantId }
   );
 
+  const addMenuItemPopup = useConfirmationPopup(
+    AddMenuItemPopup,
+    "900px",
+    "700px"
+  );
+
   const removeCategory = useCallback(() => {
     deleteCategoryPopup.showNotification();
   }, [deleteCategoryPopup]);
@@ -95,6 +103,10 @@ const Category = ({
   const editCategory = useCallback(() => {
     editCategoryPopup.showNotification();
   }, [editCategoryPopup]);
+
+  const addMenuItem = useCallback(() => {
+    addMenuItemPopup.showNotification();
+  }, [addMenuItemPopup]);
 
   const raiseCategory = useCallback(async () => {
     if (index === 0) {
@@ -122,6 +134,7 @@ const Category = ({
     <Flex width={1} direction="column" pb={0} boxSizing="border-box">
       {deleteCategoryPopup.renderNotification()}
       {editCategoryPopup.renderNotification()}
+      {addMenuItemPopup.renderNotification()}
       <Flex
         width={1}
         justifyContent="space-between"
@@ -152,6 +165,9 @@ const Category = ({
                   e.stopPropagation();
                 }}
               >
+                <Flex mr={theme.spacing(1)} alignItems="center">
+                  <CreateItemIcon onClick={addMenuItem} />
+                </Flex>
                 <Flex mr={theme.spacing(1)}>
                   <EditIcon onClick={editCategory} />
                 </Flex>
