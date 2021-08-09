@@ -1,6 +1,6 @@
 import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
@@ -20,6 +20,7 @@ import EditCategoryPopup from "./edit-category-popup";
 import { swapCategories } from "services/categoriesService";
 import AddMenuItemPopup from "./add-menu-item-popup";
 import CreateItemIcon from "assets/icons/back-office/create_item_icon.svg";
+import { getMenuItemsByCategoryId } from "services/menuItemsService";
 
 const Category = ({
   category,
@@ -29,6 +30,11 @@ const Category = ({
   restaurantId,
   index,
 }) => {
+  const menuItems = useQuery(
+    ["menuItems", { categoryId: category._id }],
+    getMenuItemsByCategoryId
+  );
+
   const queryClient = useQueryClient();
   const raiseCategoryMutation = useMutation(swapCategories, {
     onSuccess: () => {
@@ -94,7 +100,7 @@ const Category = ({
     AddMenuItemPopup,
     "900px",
     "700px",
-    { categories }
+    { categories, category, restaurantId, menuItems: menuItems.data }
   );
 
   const removeCategory = useCallback(() => {
@@ -185,7 +191,7 @@ const Category = ({
         </Flex>
       </Flex>
       {category._id === expandedCategoryId && (
-        <MenuItems categoryId={category._id} />
+        <MenuItems categoryId={category._id} menuItems={menuItems} />
       )}
     </Flex>
   );

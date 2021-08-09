@@ -1,9 +1,10 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { styled } from "@linaria/react";
 import * as Yup from "yup";
 import ImageUploader from "react-images-upload";
 import PropTypes from "prop-types";
 import { useFormik, FormikProvider } from "formik";
+import { useMutation, useQueryClient } from "react-query";
 
 import { Flex } from "components/flex";
 import { theme } from "theme";
@@ -13,10 +14,29 @@ import Button from "components/button";
 import { Checkbox } from "components/Checkbox";
 import Textarea from "components/textarea";
 import Select from "components/select";
+import { uploadFileInRestaurant } from "services/restaurantService";
+import { createMenuItem } from "services/menuItemsService";
 
-const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
+const AddMenuItemPopup = ({
+  onToggleHidden,
+  categories,
+  category,
+  restaurantId,
+  menuItems,
+}) => {
+  const queryClient = useQueryClient();
+  const [pictureFile, setPictureFile] = useState({});
+  const uploadFileInRestaurantMutation = useMutation(uploadFileInRestaurant);
+  const createMenuItemMutation = useMutation(createMenuItem, {
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        ["menuItems", { categoryId: category._id }],
+        [...menuItems, data]
+      );
+    },
+  });
   const onDrop = (picture) => {
-    console.log(picture);
+    setPictureFile(picture[0]);
   };
 
   const initialValues = {
@@ -25,14 +45,28 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
     name: "",
     price: "",
     description: "",
-    category: "",
+    category: category.name,
     time: "",
     weight: "",
   };
 
   const SignupSchema = Yup.object().shape({
     name: Yup.string().required("Required"),
-    price: Yup.string().required("Required"),
+    description: Yup.string().max(200),
+    price: Yup.number()
+      .min(0, "The price cannot be menu less than zero")
+      .max(999999, "The price cannot be more than 999999")
+      .required("Required"),
+    toggleTime: Yup.boolean(),
+    time: Yup.number().when("toggleTime", {
+      is: true,
+      then: Yup.number().required("Required"),
+    }),
+    toggleWeight: Yup.boolean(),
+    weight: Yup.number().when("toggleWeight", {
+      is: true,
+      then: Yup.number().required("Required"),
+    }),
   });
 
   const categoryName = useMemo(
@@ -45,10 +79,26 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
     validationSchema: useMemo(() => SignupSchema, [SignupSchema]),
     onSubmit: useCallback(
       async (values) => {
-        console.log(values);
+        const pictureUrl = await uploadFileInRestaurantMutation.mutateAsync({
+          restaurantId,
+          file: pictureFile,
+        });
+
+        await createMenuItemMutation.mutateAsync({
+          categoryId: category._id,
+          body: { ...values, pictureUrl },
+        });
+
         onToggleHidden(true);
       },
-      [onToggleHidden]
+      [
+        onToggleHidden,
+        uploadFileInRestaurantMutation,
+        createMenuItemMutation,
+        restaurantId,
+        pictureFile,
+        category,
+      ]
     ),
   });
 
@@ -62,8 +112,6 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
   const cancelAddingCategory = useCallback(() => {
     onToggleHidden(true);
   }, [onToggleHidden]);
-
-  console.log(formik.values);
 
   return (
     <FormikProvider value={formik}>
@@ -86,13 +134,14 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
               imgExtension={[".jpg", ".gif", ".png", ".gif"]}
               withIcon={false}
               withPreview={false}
+              singleImage={true}
               label=""
             />
           </Flex>
 
           <Flex height={1} width={1} mb={theme.spacing(3)}>
             <Flex height={1} width={1} mr={theme.spacing(1)} direction="column">
-              <Flex direction="column" width={1} mb={theme.spacing(1)}>
+              <Flex width={1} mb={theme.spacing(1)}>
                 <Input
                   id="name"
                   placeholder="Enter name"
@@ -100,6 +149,7 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
                   label="NAME"
                   value={formik.values["name"]}
                   onChange={handleChange("name")}
+                  error={formik.touched.name && formik.errors.name}
                 />
               </Flex>
 
@@ -111,6 +161,7 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
                   label="PRICE"
                   value={formik.values["price"]}
                   onChange={handleChange("price")}
+                  error={formik.touched.price && formik.errors.price}
                 />
               </Flex>
 
@@ -119,7 +170,7 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
                   <Flex mb={theme.spacing(1)} mr={theme.spacing(1)}>
                     <Checkbox type="checkbox" name="toggleTime" />
                   </Flex>
-                  <Flex direction="column" width={1}>
+                  <Flex width={1}>
                     <Input
                       id="time"
                       label="WAITING TIME, MIN"
@@ -128,6 +179,8 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
                       placeholder="0.00"
                       value={formik.values["time"]}
                       onChange={handleChange("time")}
+                      disabled={!formik.values["toggleTime"]}
+                      error={formik.touched.time && formik.errors.time}
                     />
                   </Flex>
                 </Flex>
@@ -136,7 +189,7 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
                   <Flex mb={theme.spacing(1)} mr={theme.spacing(1)}>
                     <Checkbox type="checkbox" name="toggleWeight" />
                   </Flex>
-                  <Flex direction="column" width={1}>
+                  <Flex width={1}>
                     <Input
                       id="weight"
                       label="WEIGHT, G"
@@ -145,6 +198,8 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
                       placeholder="0.00"
                       value={formik.values["weight"]}
                       onChange={handleChange("weight")}
+                      disabled={!formik.values["toggleWeight"]}
+                      error={formik.touched.weight && formik.errors.weight}
                     />
                   </Flex>
                 </Flex>
@@ -178,13 +233,20 @@ const AddMenuItemPopup = ({ onToggleHidden, categories }) => {
                   name="description"
                   label="DESCRIPTION"
                   placeholder="Enter text"
+                  error={
+                    formik.touched.description && formik.errors.description
+                  }
                 />
               </Flex>
             </Flex>
           </Flex>
 
           <Flex width={1} justifyContent="space-between">
-            <Button type="button" onClick={cancelAddingCategory}>
+            <Button
+              type="button"
+              onClick={cancelAddingCategory}
+              background="var(--text-grey)"
+            >
               Cancel
             </Button>
             <Button type="submit">Save</Button>
@@ -203,6 +265,9 @@ const Form = styled.form`
 AddMenuItemPopup.propTypes = {
   onToggleHidden: PropTypes.func,
   categories: PropTypes.array,
+  category: PropTypes.object,
+  restaurantId: PropTypes.string,
+  menuItems: PropTypes.array,
 };
 
 export default memo(AddMenuItemPopup);

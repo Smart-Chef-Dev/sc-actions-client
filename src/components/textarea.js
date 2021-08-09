@@ -2,8 +2,8 @@ import { memo } from "react";
 import { Field } from "formik";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
+
 import { Text } from "./text";
-import ErrorText from "./error-text";
 
 const Textarea = ({ name, label, error, placeholder }) => {
   return (
@@ -13,8 +13,8 @@ const Textarea = ({ name, label, error, placeholder }) => {
         component="textarea"
         name={name}
         placeholder={placeholder}
+        error={error}
       />
-      {error && <ErrorText>{error}</ErrorText>}
     </>
   );
 };

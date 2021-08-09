@@ -8,7 +8,10 @@ export const StyledInput = styled(Field)`
   height: ${(props) => props.height ?? "48px"};
   border: ${(props) =>
     props.error ? "1px solid var(--error)" : "1px solid #ddd"};
-  background: var(--main-bg-color);
+  background: ${(props) =>
+    props.disabled
+      ? "var(--color-for-selected-object)"
+      : "var(--main-bg-color)"};
   outline: none;
   font: inherit;
   padding: 1rem;

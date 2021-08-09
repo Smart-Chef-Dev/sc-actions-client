@@ -1,21 +1,16 @@
 import { Fragment, memo } from "react";
 import PropTypes from "prop-types";
-import { useQuery } from "react-query";
 
 import MenuItem from "./menuItem";
 import { Flex } from "components/flex";
-import { getMenuItemsByCategoryId } from "services/menuItemsService";
 
-const MenuItems = ({ categoryId }) => {
-  const menuItems = useQuery(
-    ["menuItems", { categoryId }],
-    getMenuItemsByCategoryId
-  );
+const MenuItems = ({ menuItems }) => {
+  const { isLoading, data } = menuItems;
 
   return (
-    !menuItems.isLoading && (
+    !isLoading && (
       <Flex direction="column" boxSizing="border-box" width={1}>
-        {menuItems.data.map((menuItem, i) => (
+        {data.map((menuItem, i) => (
           <Fragment key={menuItem._id}>
             {(i + 1) % 2 !== 0 ? (
               <Flex background="var(--light-grey)" width={1}>
@@ -32,7 +27,7 @@ const MenuItems = ({ categoryId }) => {
 };
 
 MenuItems.propTypes = {
-  categoryId: PropTypes.string,
+  menuItems: PropTypes.object,
 };
 
 export default memo(MenuItems);

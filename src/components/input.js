@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import ErrorText from "./error-text";
 import { StyledInput } from "./styled-input";
 import { InputLabel } from "./input-label";
+import { Flex } from "./flex";
+import { styled } from "@linaria/react";
 
 const Input = ({
   type = "text",
@@ -13,6 +15,7 @@ const Input = ({
   onChange,
   height,
   placeholder = null,
+  disabled = false,
 }) => {
   const handleChange = useCallback(
     (e) => {
@@ -22,7 +25,7 @@ const Input = ({
   );
 
   return (
-    <>
+    <Flex direction="column" width={1} height={1} position="relative">
       {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
       <StyledInput
         type={type}
@@ -32,11 +35,17 @@ const Input = ({
         placeholder={placeholder}
         height={height}
         error={!!error}
+        disabled={disabled}
       />
-      {error && <ErrorText>{error}</ErrorText>}
-    </>
+      {error && <ErrorTextInput>{error}</ErrorTextInput>}
+    </Flex>
   );
 };
+
+const ErrorTextInput = styled(ErrorText)`
+  position: absolute;
+  bottom: -13px;
+`;
 
 Input.propTypes = {
   type: PropTypes.string,
@@ -47,6 +56,7 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   error: PropTypes.string,
   height: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default memo(Input);
