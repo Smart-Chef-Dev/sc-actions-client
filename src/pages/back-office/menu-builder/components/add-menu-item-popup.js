@@ -44,6 +44,7 @@ const AddMenuItemPopup = ({
     },
     time: "",
     weight: "",
+    addons: [],
   };
 
   const formik = useFormik({

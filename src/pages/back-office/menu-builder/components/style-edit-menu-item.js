@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import ImageUploader from "react-images-upload";
 import { FormikProvider } from "formik";
@@ -6,12 +6,23 @@ import { FormikProvider } from "formik";
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import Input from "components/input";
-import { Checkbox } from "components/Checkbox";
+import { Checkbox } from "components/checkbox";
 import Textarea from "components/textarea";
 import Button from "components/button";
 import { Form } from "components/form";
 import SelectComponent from "components/select-component";
 import { theme } from "theme";
+import Multiselect from "components/multiselect";
+
+const addonOptions = [
+  { value: "aaa", label: "bbb" },
+  { value: 3, label: 3 },
+  { value: 4, label: 4 },
+  { value: 5, label: 5 },
+  { value: 6, label: 6 },
+  { value: 7, label: 7 },
+  { value: "Add New Addon", label: "add" },
+];
 
 const StyleEditMenuItem = ({
   formik,
@@ -19,6 +30,26 @@ const StyleEditMenuItem = ({
   onPictureFile,
   categories,
 }) => {
+  useEffect(() => {
+    const valueOfButtonAdding = addonOptions[addonOptions.length - 1].label;
+
+    const isNewAddonRequested = formik.values["addons"].find(
+      (selectedValue) => selectedValue.label === valueOfButtonAdding
+    );
+
+    if (isNewAddonRequested) {
+      console.log("Add New Addon");
+      formik.resetForm({
+        values: {
+          ...formik.values,
+          addons: formik.values["addons"].filter(
+            (selectedValue) => selectedValue.label !== valueOfButtonAdding
+          ),
+        },
+      });
+    }
+  }, [formik]);
+
   const categoryOptions = useMemo(
     () =>
       categories.map((currentCategory) => ({
@@ -149,13 +180,13 @@ const StyleEditMenuItem = ({
               </Flex>
 
               <Flex direction="column" width={1} mb={theme.spacing(1)}>
-                <SelectComponent
-                  placeholder="Select"
-                  options={categoryOptions}
-                  name="category"
-                  value={formik.values["category"]}
+                <Multiselect
+                  placeholder=""
+                  options={addonOptions}
+                  name="addons"
+                  value={formik.values["addons"]}
                   onFieldValue={formik.setFieldValue}
-                  label="CATEGORY"
+                  label="APPLY ADD-ONS"
                 />
               </Flex>
 
