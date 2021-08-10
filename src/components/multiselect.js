@@ -81,7 +81,7 @@ const Multiselect = ({
 Multiselect.propTypes = {
   options: PropTypes.array,
   name: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.array,
   onFieldValue: PropTypes.func,
   placeholder: PropTypes.string,
   label: PropTypes.string,
@@ -89,7 +89,7 @@ Multiselect.propTypes = {
 
 Control.propTypes = {
   getValue: PropTypes.func,
-  children: PropTypes.object,
+  children: PropTypes.array,
 };
 
 Option.propTypes = {

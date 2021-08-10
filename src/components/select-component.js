@@ -37,7 +37,7 @@ const SelectComponent = ({
 SelectComponent.propTypes = {
   options: PropTypes.array,
   name: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.object,
   onFieldValue: PropTypes.func,
   placeholder: PropTypes.string,
   label: PropTypes.string,

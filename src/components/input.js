@@ -34,7 +34,7 @@ const Input = ({
         onChange={handleChange}
         placeholder={placeholder}
         height={height}
-        error={!!error}
+        error={error}
         disabled={disabled}
       />
       {error && <ErrorTextInput>{error}</ErrorTextInput>}

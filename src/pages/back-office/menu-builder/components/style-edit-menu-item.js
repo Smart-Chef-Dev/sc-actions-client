@@ -110,7 +110,7 @@ const StyleEditMenuItem = ({
                   label="NAME"
                   value={formik.values["name"]}
                   onChange={handleChange("name")}
-                  error={formik.touched.name && formik.errors.name}
+                  error={formik.touched.name ? formik.errors.name : ""}
                 />
               </Flex>
 
@@ -122,7 +122,7 @@ const StyleEditMenuItem = ({
                   label="PRICE"
                   value={formik.values["price"]}
                   onChange={handleChange("price")}
-                  error={formik.touched.price && formik.errors.price}
+                  error={formik.touched.price ? formik.errors.price : ""}
                 />
               </Flex>
 
@@ -141,7 +141,7 @@ const StyleEditMenuItem = ({
                       value={formik.values["time"]}
                       onChange={handleChange("time")}
                       disabled={!formik.values["toggleTime"]}
-                      error={formik.touched.time && formik.errors.time}
+                      error={formik.touched.time ? formik.errors.time : ""}
                     />
                   </Flex>
                 </Flex>
@@ -160,7 +160,7 @@ const StyleEditMenuItem = ({
                       value={formik.values["weight"]}
                       onChange={handleChange("weight")}
                       disabled={!formik.values["toggleWeight"]}
-                      error={formik.touched.weight && formik.errors.weight}
+                      error={formik.touched.weight ? formik.errors.weight : ""}
                     />
                   </Flex>
                 </Flex>
@@ -201,7 +201,7 @@ const StyleEditMenuItem = ({
                   label="DESCRIPTION"
                   placeholder="Enter text"
                   error={
-                    formik.touched.description && formik.errors.description
+                    formik.touched.description ? formik.errors.description : ""
                   }
                 />
               </Flex>

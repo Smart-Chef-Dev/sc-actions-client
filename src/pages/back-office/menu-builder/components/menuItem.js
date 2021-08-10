@@ -83,7 +83,7 @@ const MenuItem = ({ menuItem, menuItems, index, categories }) => {
       onMouseEnter={expandTabMenu}
       onMouseLeave={collapseTabMenu}
       width={1}
-      background={menuItemInFocus && "var(--red-color-for-selected-object)"}
+      background={menuItemInFocus ? "var(--red-color-for-selected-object)" : ""}
       p={theme.spacing(1)}
       pl={theme.spacing(5)}
       boxSizing="border-box"
@@ -106,7 +106,7 @@ const MenuItem = ({ menuItem, menuItems, index, categories }) => {
         width={1}
         boxSizing="border-box"
         fontSize={theme.fontSize(0)}
-        color={!menuItemInFocus && "var(--text-grey)"}
+        color={!menuItemInFocus ? "var(--text-grey)" : ""}
       >
         {menuItem.name}
       </Text>
