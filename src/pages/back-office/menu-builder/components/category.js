@@ -35,6 +35,8 @@ const Category = ({
     getMenuItemsByCategoryId
   );
 
+  console.log(menuItems);
+
   const queryClient = useQueryClient();
   const raiseCategoryMutation = useMutation(swapCategories, {
     onSuccess: () => {
@@ -191,7 +193,11 @@ const Category = ({
         </Flex>
       </Flex>
       {category._id === expandedCategoryId && (
-        <MenuItems categoryId={category._id} menuItems={menuItems} />
+        <MenuItems
+          categoryId={category._id}
+          menuItems={menuItems}
+          categories={categories}
+        />
       )}
     </Flex>
   );

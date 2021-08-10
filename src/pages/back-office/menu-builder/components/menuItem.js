@@ -9,12 +9,12 @@ import { swapCategories } from "services/categoriesService";
 import UpArrow from "assets/icons/back-office/up_arrow.svg";
 import ArrowToDown from "assets/icons/back-office/arrow_to_down.svg";
 import { theme } from "theme";
-import Basket from "assets/icons/back-office/basket.svg";
-import { useConfirmationPopup } from "hooks/useConfirmationPopup";
-import DeleteMenuItemPopup from "./delete-menu-item-popup";
+import MenuItemControlButtons from "./menu-item-control-buttons";
 
-const MenuItem = ({ menuItem, menuItems, index }) => {
+const MenuItem = ({ menuItem, menuItems, index, categories }) => {
+  const [menuItemInFocus, setMenuItemInFocus] = useState(false);
   const queryClient = useQueryClient();
+
   const raiseMenuItemMutation = useMutation(swapCategories, {
     onSuccess: () => {
       queryClient.setQueryData(
@@ -53,15 +53,6 @@ const MenuItem = ({ menuItem, menuItems, index }) => {
     },
   });
 
-  const [menuItemInFocus, setMenuItemInFocus] = useState(false);
-
-  const deleteMenuItemPopup = useConfirmationPopup(
-    DeleteMenuItemPopup,
-    "500px",
-    "350px",
-    { menuItem, menuItems }
-  );
-
   const expandTabMenu = useCallback(() => setMenuItemInFocus(true), []);
   const collapseTabMenu = useCallback(() => setMenuItemInFocus(false), []);
 
@@ -87,10 +78,6 @@ const MenuItem = ({ menuItem, menuItems, index }) => {
     });
   }, [index, menuItems, omitMenuItemMutation, menuItem]);
 
-  const deleteMenuItem = useCallback(() => {
-    deleteMenuItemPopup.showNotification();
-  }, [deleteMenuItemPopup]);
-
   return (
     <Flex
       onMouseEnter={expandTabMenu}
@@ -102,7 +89,6 @@ const MenuItem = ({ menuItem, menuItems, index }) => {
       boxSizing="border-box"
       alignItems="center"
     >
-      {deleteMenuItemPopup.renderNotification()}
       <Flex direction="column" mr={theme.spacing(1)}>
         {menuItemInFocus ? (
           <Flex direction="column">
@@ -124,9 +110,12 @@ const MenuItem = ({ menuItem, menuItems, index }) => {
       >
         {menuItem.name}
       </Text>
-      <Flex>
-        {menuItemInFocus && <Basket stroke="red" onClick={deleteMenuItem} />}
-      </Flex>
+      <MenuItemControlButtons
+        menuItem={menuItem}
+        menuItems={menuItems}
+        menuItemInFocus={menuItemInFocus}
+        categories={categories}
+      />
     </Flex>
   );
 };
@@ -138,6 +127,7 @@ const NoFocusButtons = styled(Flex)`
 MenuItem.propTypes = {
   menuItem: PropTypes.object,
   menuItems: PropTypes.array,
+  categories: PropTypes.array,
   index: PropTypes.number,
 };
 

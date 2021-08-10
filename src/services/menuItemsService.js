@@ -54,3 +54,16 @@ export const deleteMenuItem = async ({ menuItemId }) => {
 
   return res.json();
 };
+
+export const editMenuItem = async ({ menuItemId, body }) => {
+  const res = await fetch(
+    `/api/menu/${menuItemId}/update`,
+    fetchOptions({ method: "POST", body: JSON.stringify(body) })
+  );
+
+  if (!res.ok) {
+    throw { status: res.status };
+  }
+
+  return res.json();
+};
