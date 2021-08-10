@@ -35,8 +35,6 @@ const Category = ({
     getMenuItemsByCategoryId
   );
 
-  console.log(menuItems);
-
   const queryClient = useQueryClient();
   const raiseCategoryMutation = useMutation(swapCategories, {
     onSuccess: () => {
@@ -102,7 +100,7 @@ const Category = ({
     AddMenuItemPopup,
     "900px",
     "700px",
-    { categories, category, restaurantId, menuItems: menuItems.data }
+    { categories, category, restaurantId }
   );
 
   const removeCategory = useCallback(() => {

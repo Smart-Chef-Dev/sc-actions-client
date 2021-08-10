@@ -7,10 +7,10 @@ import { Flex } from "components/flex";
 import { Text } from "components/text";
 import Input from "components/input";
 import { Checkbox } from "components/Checkbox";
-import Select from "components/select";
 import Textarea from "components/textarea";
 import Button from "components/button";
 import { Form } from "components/form";
+import SelectComponent from "components/select-component";
 import { theme } from "theme";
 
 const StyleEditMenuItem = ({
@@ -19,8 +19,12 @@ const StyleEditMenuItem = ({
   onPictureFile,
   categories,
 }) => {
-  const categoryName = useMemo(
-    () => categories.map((currentCategory) => currentCategory.name),
+  const categoryOptions = useMemo(
+    () =>
+      categories.map((currentCategory) => ({
+        value: currentCategory.name,
+        label: currentCategory.name,
+      })),
     [categories]
   );
 
@@ -134,18 +138,24 @@ const StyleEditMenuItem = ({
 
             <Flex width={1} height={1} ml={theme.spacing(1)} direction="column">
               <Flex direction="column" width={1} mb={theme.spacing(1)}>
-                <Select
+                <SelectComponent
+                  placeholder="Select"
+                  options={categoryOptions}
                   name="category"
+                  value={formik.values["category"]}
+                  onFieldValue={formik.setFieldValue}
                   label="CATEGORY"
-                  options={categoryName}
                 />
               </Flex>
 
               <Flex direction="column" width={1} mb={theme.spacing(1)}>
-                <Select
+                <SelectComponent
+                  placeholder="Select"
+                  options={categoryOptions}
                   name="category"
+                  value={formik.values["category"]}
+                  onFieldValue={formik.setFieldValue}
                   label="CATEGORY"
-                  options={categoryName}
                 />
               </Flex>
 

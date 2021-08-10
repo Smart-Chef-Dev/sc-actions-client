@@ -13,17 +13,21 @@ const AddMenuItemPopup = ({
   categories,
   category,
   restaurantId,
-  menuItems,
 }) => {
   const queryClient = useQueryClient();
   const [pictureFile, setPictureFile] = useState({});
 
   const uploadFileInRestaurantMutation = useMutation(uploadFileInRestaurant);
   const createMenuItemMutation = useMutation(createMenuItem, {
-    onSuccess: (data) => {
+    onSuccess: (data, queryVariables) => {
+      const dataInCache = queryClient.getQueryData([
+        "menuItems",
+        { categoryId: queryVariables.categoryId },
+      ]);
+
       queryClient.setQueryData(
-        ["menuItems", { categoryId: category._id }],
-        [...menuItems, data]
+        ["menuItems", { categoryId: queryVariables.categoryId }],
+        [...dataInCache, data]
       );
     },
   });
@@ -34,7 +38,10 @@ const AddMenuItemPopup = ({
     name: "",
     price: "",
     description: "",
-    category: category.name,
+    category: {
+      value: category.name,
+      label: category.name,
+    },
     time: "",
     weight: "",
   };
@@ -44,13 +51,17 @@ const AddMenuItemPopup = ({
     validationSchema: ConstructorMenuItemScheme,
     onSubmit: useCallback(
       async (values) => {
+        const categoryTmp = categories.find(
+          (currentCategory) => currentCategory.name === values.category.value
+        );
+
         const pictureUrl = await uploadFileInRestaurantMutation.mutateAsync({
           restaurantId,
           file: pictureFile,
         });
 
         await createMenuItemMutation.mutateAsync({
-          categoryId: category._id,
+          categoryId: categoryTmp._id,
           body: { ...values, pictureUrl },
         });
 
@@ -62,7 +73,7 @@ const AddMenuItemPopup = ({
         createMenuItemMutation,
         restaurantId,
         pictureFile,
-        category,
+        categories,
       ]
     ),
   });
@@ -82,7 +93,6 @@ AddMenuItemPopup.propTypes = {
   categories: PropTypes.array,
   category: PropTypes.object,
   restaurantId: PropTypes.string,
-  menuItems: PropTypes.array,
 };
 
 export default memo(AddMenuItemPopup);

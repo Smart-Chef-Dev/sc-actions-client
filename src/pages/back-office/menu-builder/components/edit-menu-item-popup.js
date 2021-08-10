@@ -14,7 +14,7 @@ const EditMenuItemPopup = ({
   menuItems,
 }) => {
   const queryClient = useQueryClient();
-  const [pictureFile, setPictureFile] = useState({});
+  const [, setPictureFile] = useState({});
 
   const editMenuItemMutation = useMutation(editMenuItem, {
     onSuccess: (data) => {
@@ -30,8 +30,6 @@ const EditMenuItemPopup = ({
       );
     },
   });
-
-  console.log(pictureFile);
 
   const initialValues = {
     name: menuItem.name,
@@ -49,10 +47,8 @@ const EditMenuItemPopup = ({
     validationSchema: ConstructorMenuItemScheme,
     onSubmit: useCallback(
       async (values) => {
-        console.log(categories);
-        console.log(values);
         const category = categories.find(
-          (category) => category.name === values.category
+          (category) => category.name === values.category.value
         );
         delete values.category;
         await editMenuItemMutation.mutateAsync({

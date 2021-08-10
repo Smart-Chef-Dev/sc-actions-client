@@ -31,6 +31,7 @@
     "react-localization": "^1.0.17",
     "react-query": "^3.19.0",
     "react-scripts": "4.0.3",
+    "react-select": "^4.3.1",
     "react-swipeable": "^6.1.2",
     "recoil": "^0.3.1",
     "recoil-persist": "^2.5.0",
