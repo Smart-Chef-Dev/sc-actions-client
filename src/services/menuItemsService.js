@@ -67,3 +67,11 @@ export const editMenuItem = async ({ menuItemId, body }) => {
 
   return res.json();
 };
+
+export const findAllMenuItems = ({ queryKey }) => {
+  const [, { restaurantId }] = queryKey;
+
+  return fetch(`/api/restaurant/${restaurantId}/menu-items`).then((res) =>
+    res.json()
+  );
+};

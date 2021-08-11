@@ -13,8 +13,6 @@ export const addCategory = async ({ restaurantId, body }) => {
     fetchOptions({ method: "POST", body: JSON.stringify(body) })
   );
 
-  console.log(res);
-
   if (!res.ok) {
     throw { status: res.status };
   }

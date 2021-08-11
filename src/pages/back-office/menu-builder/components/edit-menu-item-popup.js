@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useFormik } from "formik";
 
@@ -15,6 +15,16 @@ const EditMenuItemPopup = ({
 }) => {
   const queryClient = useQueryClient();
   const [, setPictureFile] = useState({});
+
+  const addons = useMemo(
+    () =>
+      menuItem.addons.map((a) => ({
+        ...a,
+        value: a.name,
+        label: a.name,
+      })),
+    [menuItem]
+  );
 
   const editMenuItemMutation = useMutation(editMenuItem, {
     onSuccess: (data) => {
@@ -40,6 +50,7 @@ const EditMenuItemPopup = ({
     time: menuItem.time,
     toggleWeight: !!menuItem.weight,
     weight: menuItem.weight,
+    addons: addons,
   };
 
   const formik = useFormik({
@@ -47,19 +58,25 @@ const EditMenuItemPopup = ({
     validationSchema: ConstructorMenuItemScheme,
     onSubmit: useCallback(
       async (values) => {
-        const category = categories.find(
-          (category) => category.name === values.category.value
-        );
-        delete values.category;
-        await editMenuItemMutation.mutateAsync({
-          menuItemId: menuItem._id,
-          body: { ...values, categoryId: category._id },
-        });
-        onToggleHidden(true);
+        try {
+          const category = categories.find(
+            (c) => c.name === values.category.value
+          );
+          delete values.category;
+          await editMenuItemMutation.mutateAsync({
+            menuItemId: menuItem._id,
+            body: { ...values, categoryId: category._id },
+          });
+          onToggleHidden(true);
+        } catch (err) {
+          console.log(err);
+        }
       },
       [onToggleHidden, menuItem, editMenuItemMutation, categories]
     ),
   });
+
+  console.log(formik.values);
 
   return (
     <StyleEditMenuItem

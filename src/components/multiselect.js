@@ -26,7 +26,7 @@ const Option = ({ ...props }) => {
     <components.Option {...props}>
       <Flex alignItems="center" justifyContent="space-between" width={1}>
         <label>{props.value}</label>
-        {props.value !== props.options[props.options.length - 1].value && (
+        {!props.data.isButton && (
           <Checkbox type="checkbox" checked={props.isSelected} />
         )}
       </Flex>
@@ -95,6 +95,8 @@ Control.propTypes = {
 Option.propTypes = {
   value: PropTypes.string,
   options: PropTypes.array,
+  data: PropTypes.object,
+  isButton: PropTypes.bool,
   isSelected: PropTypes.bool,
 };
 

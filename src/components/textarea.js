@@ -5,7 +5,7 @@ import { styled } from "@linaria/react";
 
 import { Text } from "./text";
 
-const Textarea = ({ name, label, error, placeholder }) => {
+const Textarea = ({ name, label, error, placeholder, id }) => {
   return (
     <>
       {label && <s.Label htmlFor={name}>{label}</s.Label>}
@@ -13,6 +13,7 @@ const Textarea = ({ name, label, error, placeholder }) => {
         component="textarea"
         name={name}
         placeholder={placeholder}
+        id={id}
         error={error}
       />
     </>
@@ -63,6 +64,7 @@ Textarea.propTypes = {
   error: PropTypes.string,
   placeholder: PropTypes.string,
   label: PropTypes.string,
+  id: PropTypes.string,
 };
 
 export default memo(Textarea);

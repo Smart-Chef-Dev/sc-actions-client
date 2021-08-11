@@ -13,16 +13,10 @@ import { Form } from "components/form";
 import SelectComponent from "components/select-component";
 import { theme } from "theme";
 import Multiselect from "components/multiselect";
-
-const addonOptions = [
-  { value: "aaa", label: "bbb" },
-  { value: 3, label: 3 },
-  { value: 4, label: 4 },
-  { value: 5, label: 5 },
-  { value: 6, label: 6 },
-  { value: 7, label: 7 },
-  { value: "Add New Addon", label: "add" },
-];
+import { useConfirmationPopup } from "hooks/useConfirmationPopup";
+import AddAddonPopup from "./add-addon-popup";
+import { useQuery } from "react-query";
+import { getRestaurantAddons } from "services/addonsService";
 
 const StyleEditMenuItem = ({
   formik,
@@ -30,25 +24,14 @@ const StyleEditMenuItem = ({
   onPictureFile,
   categories,
 }) => {
-  useEffect(() => {
-    const valueOfButtonAdding = addonOptions[addonOptions.length - 1].label;
+  const addons = useQuery(
+    ["addons", { restaurantId: categories[0].restaurant._id }],
+    getRestaurantAddons
+  );
 
-    const isNewAddonRequested = formik.values["addons"].find(
-      (selectedValue) => selectedValue.label === valueOfButtonAdding
-    );
-
-    if (isNewAddonRequested) {
-      console.log("Add New Addon");
-      formik.resetForm({
-        values: {
-          ...formik.values,
-          addons: formik.values["addons"].filter(
-            (selectedValue) => selectedValue.label !== valueOfButtonAdding
-          ),
-        },
-      });
-    }
-  }, [formik]);
+  const addAddonPopup = useConfirmationPopup(AddAddonPopup, "900px", "550px", {
+    restaurantId: categories[0].restaurant._id,
+  });
 
   const categoryOptions = useMemo(
     () =>
@@ -58,6 +41,51 @@ const StyleEditMenuItem = ({
       })),
     [categories]
   );
+
+  const addonOptions = useMemo(() => {
+    if (addons.isLoading) {
+      return;
+    }
+
+    const addonOptionsTmp = addons.data.map((addon) => ({
+      ...addon,
+      value: addon.name,
+      label: addon.name,
+    }));
+
+    return [
+      ...addonOptionsTmp,
+      {
+        value: "Add New Addon",
+        label: "add",
+        isButton: true,
+      },
+    ];
+  }, [addons]);
+
+  useEffect(() => {
+    if (!addonOptions) {
+      return;
+    }
+
+    const valueOfButtonAdding = addonOptions[addonOptions.length - 1].label;
+
+    const isNewAddonRequested = formik.values["addons"].find(
+      (selectedValue) => selectedValue.label === valueOfButtonAdding
+    );
+
+    if (isNewAddonRequested) {
+      addAddonPopup.showNotification();
+      formik.resetForm({
+        values: {
+          ...formik.values,
+          addons: formik.values["addons"].filter(
+            (selectedValue) => selectedValue.label !== valueOfButtonAdding
+          ),
+        },
+      });
+    }
+  }, [formik, addonOptions, addAddonPopup]);
 
   const onDrop = (picture) => {
     onPictureFile(picture[0]);
@@ -77,6 +105,7 @@ const StyleEditMenuItem = ({
   return (
     <FormikProvider value={formik}>
       <Form onSubmit={formik.handleSubmit}>
+        {addAddonPopup.renderNotification()}
         <Flex
           width={1}
           height={1}
