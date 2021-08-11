@@ -45,7 +45,7 @@ const EditMenuItemPopup = ({
     name: menuItem.name,
     price: menuItem.price,
     description: menuItem.description,
-    category: menuItem.category.name,
+    category: { value: menuItem.category.name, label: menuItem.category.name },
     toggleTime: !!menuItem.time,
     time: menuItem.time,
     toggleWeight: !!menuItem.weight,
@@ -75,8 +75,6 @@ const EditMenuItemPopup = ({
       [onToggleHidden, menuItem, editMenuItemMutation, categories]
     ),
   });
-
-  console.log(formik.values);
 
   return (
     <StyleEditMenuItem

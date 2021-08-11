@@ -36,11 +36,18 @@ export const createMenuItem = async ({ categoryId, body }) => {
   return res.json();
 };
 
-export const swapMenuItems = async ({ menuItemId1, menuItemId2 }) =>
-  await fetch(
+export const swapMenuItems = async ({ menuItemId1, menuItemId2 }) => {
+  const res = await fetch(
     `/api/category/${menuItemId1}/swap/${menuItemId2}`,
     fetchOptions({ method: "POST" })
   );
+
+  if (!res.ok) {
+    throw { status: res.status };
+  }
+
+  return res.json();
+};
 
 export const deleteMenuItem = async ({ menuItemId }) => {
   const res = await fetch(
