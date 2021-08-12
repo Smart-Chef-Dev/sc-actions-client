@@ -34,6 +34,9 @@ import confirmationPopupRu from "./ru/confirmation-popup.json";
 import menuBuilderEn from "./en/menu-builder.json";
 import menuBuilderRu from "./ru/menu-builder.json";
 
+import backOfficeLayoutEn from "./en/back-office-layout.json";
+import backOfficeLayoutRu from "./ru/back-office-layout.json";
+
 export const languages = {
   en: {
     actions: actionsEn,
@@ -48,6 +51,7 @@ export const languages = {
     subscription: subscriptionEn,
     confirmationPopup: confirmationPopupEn,
     menuBuilder: menuBuilderEn,
+    backOfficeLayout: backOfficeLayoutEn,
   },
   ru: {
     actions: actionsRu,
@@ -62,5 +66,6 @@ export const languages = {
     addons: addonsRu,
     confirmationPopup: confirmationPopupRu,
     menuBuilder: menuBuilderRu,
+    backOfficeLayout: backOfficeLayoutRu,
   },
 };

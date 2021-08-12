@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { FormikProvider, useFormik } from "formik";
 import PropTypes from "prop-types";
@@ -8,6 +8,7 @@ import { Text } from "components/text";
 import Input from "components/input";
 import Button from "components/button";
 import { Form } from "components/form";
+import ErrorText from "components/error-text";
 import { editCategory } from "services/categoriesService";
 import { ConstructorCategoryScheme } from "../yup-schemes/constructor-category-scheme";
 import { theme } from "theme";
@@ -19,6 +20,7 @@ const EditCategoryPopup = ({
   onToggleHidden,
   translations,
 }) => {
+  const [error, setError] = useState(null);
   const queryClient = useQueryClient();
   const addCategoryMutation = useMutation(editCategory, {
     onSuccess: (data) => {
@@ -49,7 +51,7 @@ const EditCategoryPopup = ({
 
           onToggleHidden(true);
         } catch (err) {
-          console.log(err);
+          setError(err);
         }
       },
       [onToggleHidden, addCategoryMutation, category]
@@ -98,6 +100,13 @@ const EditCategoryPopup = ({
                 error={formik.errors.name}
               />
             </Flex>
+          </Flex>
+          <Flex mb={theme.spacing(1)} width={1} justifyContent="center">
+            {error?.status === 403 && (
+              <ErrorText>
+                {translations["category_with_the_same_name_already_exists"]}
+              </ErrorText>
+            )}
           </Flex>
           <Flex justifyContent="space-between" width={1}>
             <Button

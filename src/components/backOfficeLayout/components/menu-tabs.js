@@ -12,7 +12,13 @@ import SmallLogo from "assets/icons/logo/small_logo.svg";
 import MiddleLogo from "assets/icons/logo/middle_logo.svg";
 import LogOutIcon from "assets/icons/back-office/log_out_icon.svg";
 
-const MenuTabs = ({ selectedTab, onSelectedTab, onLocation, location }) => {
+const MenuTabs = ({
+  selectedTab,
+  onSelectedTab,
+  onLocation,
+  location,
+  translations,
+}) => {
   const [isTabMenuExpanded, setIsTabMenuExpanded] = useState(false);
 
   const expandTabMenu = useCallback(() => setIsTabMenuExpanded(true), []);
@@ -46,6 +52,7 @@ const MenuTabs = ({ selectedTab, onSelectedTab, onLocation, location }) => {
                 onLocation={onLocation}
                 location={location}
                 isTabMenuExpanded={isTabMenuExpanded}
+                translations={translations}
               />
             </Fragment>
           ))}
@@ -56,7 +63,7 @@ const MenuTabs = ({ selectedTab, onSelectedTab, onLocation, location }) => {
               <LogOutIcon />
             </Flex>
             <Text pl={theme.spacing(2)} color="var(--text-grey)">
-              Log out
+              {translations["log_out"]}
             </Text>
           </s.MenuTab>
         ) : (
@@ -85,6 +92,7 @@ MenuTabs.propTypes = {
   onSelectedTab: PropTypes.func,
   onLocation: PropTypes.func,
   location: PropTypes.string,
+  translations: PropTypes.object,
 };
 
 export default memo(MenuTabs);

@@ -14,6 +14,7 @@ const MenuTab = ({
   onLocation,
   location,
   isTabMenuExpanded,
+  translations,
 }) => {
   const [match] = useRoute(menuTab.route);
 
@@ -40,13 +41,15 @@ const MenuTab = ({
         >
           <menuTab.icon />
           <Text pl={theme.spacing(2)} color="var(--text-grey)">
-            {menuTab.name}
+            {translations[menuTab.key_translation]}
           </Text>
         </s.SelectedTab>
       ) : (
         <s.Tab width={1} py={theme.spacing(1)} alignItems="center">
           <menuTab.icon />
-          <Text pl={theme.spacing(2)}>{menuTab.name}</Text>
+          <Text pl={theme.spacing(2)}>
+            {translations[menuTab.key_translation]}
+          </Text>
         </s.Tab>
       )}
     </Flex>
@@ -82,6 +85,7 @@ MenuTab.propTypes = {
   onLocation: PropTypes.func,
   location: PropTypes.string,
   isTabMenuExpanded: PropTypes.bool,
+  translations: PropTypes.object,
 };
 
 export default memo(MenuTab);

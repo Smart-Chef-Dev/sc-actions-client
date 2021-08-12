@@ -1,5 +1,4 @@
 import {
-  useEffect,
   useState,
   useCallback,
   useMemo,
@@ -38,23 +37,17 @@ export const TranslationContext = (props) => {
     strings.current.setLanguage(language);
   }, []);
 
-  useEffect(() => {
+  const value = useMemo(() => {
     strings.current = new LocalizedStrings(languages);
-
     const language = getOrDefault(Keys.CURRENT_LANGUAGE, DEFAULT_LANGUAGE);
-
     setLanguage(language);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  const value = useMemo(
-    () => ({
+    return {
       strings: strings.current,
       currentLanguage,
       setLanguage,
-    }),
-    [currentLanguage, setLanguage]
-  );
+    };
+  }, [currentLanguage, setLanguage]);
 
   return <Context.Provider value={value} {...props} />;
 };
