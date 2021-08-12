@@ -125,7 +125,7 @@ const StyleEditMenuItem = ({
           </Text>
           <Flex mb={theme.spacing(1)}>
             <UploadPhotoComponent
-              error={formik.errors?.pictureUrl}
+              error={formik.errors?.pictureUrl && formik.touched.pictureUrl}
               restaurantId={restaurantId}
               onFieldValue={formik.setFieldValue}
               pictureUrl={formik.values["pictureUrl"]}

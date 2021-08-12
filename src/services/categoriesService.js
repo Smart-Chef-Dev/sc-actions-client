@@ -55,6 +55,4 @@ export const swapCategories = async ({ categoryId1, categoryId2 }) => {
   if (!res.ok) {
     throw { status: res.status };
   }
-
-  return res.json();
 };

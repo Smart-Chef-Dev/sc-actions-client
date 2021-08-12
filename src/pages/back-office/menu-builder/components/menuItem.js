@@ -5,7 +5,7 @@ import { styled } from "@linaria/react";
 
 import { Text } from "components/text";
 import { Flex } from "components/flex";
-import { swapCategories } from "services/categoriesService";
+import { swapMenuItems } from "services/menuItemsService";
 import UpArrow from "assets/icons/back-office/up_arrow.svg";
 import ArrowToDown from "assets/icons/back-office/arrow_to_down.svg";
 import { theme } from "theme";
@@ -15,7 +15,7 @@ const MenuItem = ({ menuItem, menuItems, index, categories, translations }) => {
   const [menuItemInFocus, setMenuItemInFocus] = useState(false);
   const queryClient = useQueryClient();
 
-  const raiseMenuItemMutation = useMutation(swapCategories, {
+  const raiseMenuItemMutation = useMutation(swapMenuItems, {
     onSuccess: () => {
       queryClient.setQueryData(
         ["menuItems", { categoryId: menuItem.category._id }],
@@ -34,7 +34,7 @@ const MenuItem = ({ menuItem, menuItems, index, categories, translations }) => {
     },
   });
 
-  const omitMenuItemMutation = useMutation(swapCategories, {
+  const omitMenuItemMutation = useMutation(swapMenuItems, {
     onSuccess: () => {
       queryClient.setQueryData(
         ["menuItems", { categoryId: menuItem.category._id }],
@@ -62,7 +62,7 @@ const MenuItem = ({ menuItem, menuItems, index, categories, translations }) => {
     }
 
     await raiseMenuItemMutation.mutateAsync({
-      menuItemId1: menuItem,
+      menuItemId1: menuItem._id,
       menuItemId2: menuItems[index - 1]._id,
     });
   }, [index, menuItems, raiseMenuItemMutation, menuItem]);
@@ -73,7 +73,7 @@ const MenuItem = ({ menuItem, menuItems, index, categories, translations }) => {
     }
 
     await omitMenuItemMutation.mutateAsync({
-      menuItemId1: menuItem,
+      menuItemId1: menuItem._id,
       menuItemId2: menuItems[index + 1]._id,
     });
   }, [index, menuItems, omitMenuItemMutation, menuItem]);
