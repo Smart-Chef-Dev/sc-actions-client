@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import MenuItem from "./menuItem";
 import { Flex } from "components/flex";
 
-const MenuItems = ({ menuItems, categories }) => {
+const MenuItems = ({ menuItems, categories, translations }) => {
   const { isLoading, data } = menuItems;
 
   return (
@@ -19,6 +19,7 @@ const MenuItems = ({ menuItems, categories }) => {
                   menuItems={data}
                   index={i}
                   categories={categories}
+                  translations={translations}
                 />
               </Flex>
             ) : (
@@ -27,6 +28,7 @@ const MenuItems = ({ menuItems, categories }) => {
                 menuItems={data}
                 index={i}
                 categories={categories}
+                translations={translations}
               />
             )}
           </Fragment>
@@ -39,6 +41,7 @@ const MenuItems = ({ menuItems, categories }) => {
 MenuItems.propTypes = {
   menuItems: PropTypes.object,
   categories: PropTypes.array,
+  translations: PropTypes.object,
 };
 
 export default memo(MenuItems);

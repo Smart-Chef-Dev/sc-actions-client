@@ -8,7 +8,12 @@ import Button from "components/button";
 import { theme } from "theme";
 import { deleteMenuItem } from "services/menuItemsService";
 
-const DeleteMenuItemPopup = ({ menuItem, menuItems, onToggleHidden }) => {
+const DeleteMenuItemPopup = ({
+  menuItem,
+  menuItems,
+  onToggleHidden,
+  translations,
+}) => {
   const queryClient = useQueryClient();
   const deleteMenuItemMutation = useMutation(deleteMenuItem, {
     onSuccess: () => {
@@ -51,11 +56,13 @@ const DeleteMenuItemPopup = ({ menuItem, menuItems, onToggleHidden }) => {
           fontSize={theme.fontSize(3)}
           mb={theme.spacing(3)}
         >
-          Delete Item
+          {translations["delete_item"]}
         </Text>
-        <Text>Are you sure you want to delete</Text>
+        <Text>{translations["are_you_sure_you_want_to_delete"]}</Text>
         <Text color="var(--main-color)">{menuItem.name}</Text>
-        <Text>Deleted items cannot be recovered!</Text>
+        <Text textAlign="center">
+          {translations["deleted_items_cannot_be_recovered"]}
+        </Text>
       </Flex>
       <Flex width={1} justifyContent="space-between">
         <Button
@@ -64,10 +71,10 @@ const DeleteMenuItemPopup = ({ menuItem, menuItems, onToggleHidden }) => {
           mb="0"
           onClick={cancelRemovalMenuItem}
         >
-          Cancel
+          {translations["cancel"]}
         </Button>
         <Button width="auto" mb="0" onClick={removeMenuItem}>
-          Delete
+          {translations["delete"]}
         </Button>
       </Flex>
     </Flex>
@@ -78,6 +85,7 @@ DeleteMenuItemPopup.propTypes = {
   onToggleHidden: PropTypes.bool,
   menuItem: PropTypes.object,
   menuItems: PropTypes.array,
+  translations: PropTypes.object,
 };
 
 export default memo(DeleteMenuItemPopup);

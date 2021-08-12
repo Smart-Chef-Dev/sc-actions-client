@@ -1,9 +1,8 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
 import { FormikProvider, useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
-import * as Yup from "yup";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
@@ -12,8 +11,14 @@ import Button from "components/button";
 import ErrorText from "components/error-text";
 import { addCategory } from "services/categoriesService";
 import { theme } from "theme";
+import { ConstructorCategoryScheme } from "../yup-schemes/constructor-category-scheme";
 
-const AddCategoryPopup = ({ onToggleHidden, restaurantId, categories }) => {
+const AddCategoryPopup = ({
+  onToggleHidden,
+  restaurantId,
+  categories,
+  translations,
+}) => {
   const [error, setError] = useState(null);
 
   const queryClient = useQueryClient();
@@ -30,13 +35,9 @@ const AddCategoryPopup = ({ onToggleHidden, restaurantId, categories }) => {
     name: "",
   };
 
-  const SignupSchema = Yup.object().shape({
-    name: Yup.string().required("Required"),
-  });
-
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: useMemo(() => SignupSchema, [SignupSchema]),
+    validationSchema: ConstructorCategoryScheme(translations),
     onSubmit: useCallback(
       async (values) => {
         try {
@@ -83,15 +84,15 @@ const AddCategoryPopup = ({ onToggleHidden, restaurantId, categories }) => {
               fontSize={theme.fontSize(3)}
               mb={theme.spacing(4)}
             >
-              Create Category
+              {translations["create_category"]}
             </Text>
             <Flex mb={theme.spacing(2)} width={1} direction="column">
               <Input
                 id="name"
                 type="string"
-                placeholder="Enter name"
+                placeholder={translations["enter_name"]}
                 onChange={handleChange("name")}
-                label="CATEGORY NAME"
+                label={translations["category_name"]}
                 value={formik.values["name"]}
                 error={formik.errors.name}
               />
@@ -100,7 +101,7 @@ const AddCategoryPopup = ({ onToggleHidden, restaurantId, categories }) => {
           <Flex mb={theme.spacing(1)} width={1} justifyContent="center">
             {error?.status === 403 && (
               <ErrorText>
-                A category with the same name already exists
+                {translations["category_with_the_same_name_already_exists"]}
               </ErrorText>
             )}
           </Flex>
@@ -112,10 +113,10 @@ const AddCategoryPopup = ({ onToggleHidden, restaurantId, categories }) => {
               onClick={cancelAddingCategory}
               type="button"
             >
-              CANCEL
+              {translations["cancel"]}
             </Button>
             <Button width="auto" mb="0" type="submit">
-              CREATE
+              {translations["create"]}
             </Button>
           </Flex>
         </Flex>
@@ -133,6 +134,7 @@ AddCategoryPopup.propTypes = {
   onToggleHidden: PropTypes.func,
   restaurantId: PropTypes.string,
   categories: PropTypes.array,
+  translations: PropTypes.object,
 };
 
 export default memo(AddCategoryPopup);

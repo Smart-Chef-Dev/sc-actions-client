@@ -31,6 +31,9 @@ import addonsRu from "./ru/addons.json";
 import confirmationPopupEn from "./en/confirmation-popup.json";
 import confirmationPopupRu from "./ru/confirmation-popup.json";
 
+import menuBuilderEn from "./en/menu-builder.json";
+import menuBuilderRu from "./ru/menu-builder.json";
+
 export const languages = {
   en: {
     actions: actionsEn,
@@ -44,6 +47,7 @@ export const languages = {
     singUp: singUpEn,
     subscription: subscriptionEn,
     confirmationPopup: confirmationPopupEn,
+    menuBuilder: menuBuilderEn,
   },
   ru: {
     actions: actionsRu,
@@ -57,5 +61,6 @@ export const languages = {
     subscription: subscriptionRu,
     addons: addonsRu,
     confirmationPopup: confirmationPopupRu,
+    menuBuilder: menuBuilderRu,
   },
 };

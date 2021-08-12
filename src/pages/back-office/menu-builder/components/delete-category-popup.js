@@ -13,6 +13,7 @@ const DeleteCategoryPopup = ({
   onToggleHidden,
   restaurantId,
   categories,
+  translations,
 }) => {
   const queryClient = useQueryClient();
   const deleteCategoryMutation = useMutation(deleteCategory, {
@@ -56,13 +57,15 @@ const DeleteCategoryPopup = ({
           fontSize={theme.fontSize(3)}
           fontWeight="bold"
         >
-          Delete Category
+          {translations["delete_category"]}
         </Text>
         <Text mb={theme.spacing(1)} textAlign="center">
-          Are you sure you want to delete {category.name} and all category
-          items?
+          {translations["are_you_sure_you_want_to_delete_1"]} {category.name}
+          {translations["are_you_sure_you_want_to_delete_2"]}
         </Text>
-        <Text>Deleted data cannot be recovered!</Text>
+        <Text textAlign="center">
+          {translations["deleted_data_cannot_be_recovered"]}
+        </Text>
       </Flex>
       <Flex width={1} justifyContent="space-between">
         <Button
@@ -71,10 +74,10 @@ const DeleteCategoryPopup = ({
           mb="0"
           onClick={cancelRemovalCategory}
         >
-          Cancel
+          {translations["cancel"]}
         </Button>
         <Button width="auto" mb="0" onClick={removeCategory}>
-          Delete
+          {translations["delete"]}
         </Button>
       </Flex>
     </Flex>
@@ -86,6 +89,7 @@ DeleteCategoryPopup.propTypes = {
   category: PropTypes.object,
   categories: PropTypes.array,
   restaurantId: PropTypes.string,
+  translations: PropTypes.object,
 };
 
 export default memo(DeleteCategoryPopup);

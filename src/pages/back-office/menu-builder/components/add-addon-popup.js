@@ -25,7 +25,7 @@ const initialValues = {
   menuItems: [],
 };
 
-const AddAddonPopup = ({ onToggleHidden, restaurantId }) => {
+const AddAddonPopup = ({ onToggleHidden, restaurantId, translations }) => {
   const [isError, setError] = useState(false);
 
   const queryClient = useQueryClient();
@@ -58,7 +58,7 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId }) => {
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: ConstructorAddonScheme,
+    validationSchema: ConstructorAddonScheme(translations),
     onSubmit: useCallback(
       async (values) => {
         try {
@@ -118,7 +118,7 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId }) => {
             fontSize={theme.fontSize(2)}
             fontWeight="bold"
           >
-            Create Add-on
+            {translations["create_add_on"]}
           </Text>
 
           <Flex width={1} height={1}>
@@ -126,9 +126,9 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId }) => {
               <Flex width={1} mb={theme.spacing(1)}>
                 <Input
                   id="name"
-                  placeholder="Enter name"
+                  placeholder={translations["enter_name"]}
                   type="string"
-                  label="NAME"
+                  label={translations["name"]}
                   value={formik.values["name"]}
                   onChange={handleChange("name")}
                   error={formik.touched.name ? formik.errors.name : ""}
@@ -139,7 +139,7 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId }) => {
                   id="price"
                   placeholder="0.00"
                   type="string"
-                  label="PRICE"
+                  label={translations["price"]}
                   value={formik.values["price"]}
                   onChange={handleChange("price")}
                   error={formik.touched.price ? formik.errors.price : ""}
@@ -150,7 +150,7 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId }) => {
                   id="weight"
                   placeholder="0.00"
                   type="string"
-                  label="WEIGHT, G"
+                  label={translations["weight"]}
                   value={formik.values["weight"]}
                   onChange={handleChange("weight")}
                 />
@@ -160,17 +160,20 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId }) => {
             <Flex width={1} height={1} ml={theme.spacing(1)} direction="column">
               <Multiselect
                 placeholder=""
+                translations={translations}
                 options={menuItemOption}
                 name="menuItems"
                 value={formik.values["menuItems"]}
                 onFieldValue={formik.setFieldValue}
-                label="APPLY ADD-ON TO ITEM"
+                label={translations["apply_add_ons_to_item"]}
               />
             </Flex>
           </Flex>
           {isError && (
             <Flex mb={theme.spacing(1)} width={1} justifyContent="center">
-              <ErrorText>An add-on with the same name already exists</ErrorText>
+              <ErrorText>
+                {translations["An_add-on_with_same_name_already_exists"]}
+              </ErrorText>
             </Flex>
           )}
           <Flex width={1} justifyContent="space-between">
@@ -179,9 +182,9 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId }) => {
               onClick={cancelAddingCategory}
               background="var(--text-grey)"
             >
-              Cancel
+              {translations["cancel"]}
             </Button>
-            <Button type="submit">Save</Button>
+            <Button type="submit">{translations["create"]}</Button>
           </Flex>
         </Flex>
       </Form>
@@ -192,6 +195,7 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId }) => {
 AddAddonPopup.propTypes = {
   onToggleHidden: PropTypes.func,
   restaurantId: PropTypes.string,
+  translations: PropTypes.object,
 };
 
 export default memo(AddAddonPopup);

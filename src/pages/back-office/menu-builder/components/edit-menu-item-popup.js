@@ -12,6 +12,7 @@ const EditMenuItemPopup = ({
   menuItem,
   categories,
   menuItems,
+  translations,
 }) => {
   const queryClient = useQueryClient();
   const [, setPictureFile] = useState({});
@@ -55,7 +56,7 @@ const EditMenuItemPopup = ({
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: ConstructorMenuItemScheme,
+    validationSchema: ConstructorMenuItemScheme(translations),
     onSubmit: useCallback(
       async (values) => {
         try {
@@ -82,6 +83,7 @@ const EditMenuItemPopup = ({
       categories={categories}
       onToggleHidden={onToggleHidden}
       onPictureFile={setPictureFile}
+      translations={translations}
     />
   );
 };
@@ -91,6 +93,7 @@ EditMenuItemPopup.propTypes = {
   categories: PropTypes.array,
   menuItem: PropTypes.object,
   menuItems: PropTypes.array,
+  translations: PropTypes.object,
 };
 
 export default memo(EditMenuItemPopup);

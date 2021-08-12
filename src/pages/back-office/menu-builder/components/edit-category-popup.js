@@ -1,7 +1,5 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { styled } from "@linaria/react";
-import * as Yup from "yup";
 import { FormikProvider, useFormik } from "formik";
 import PropTypes from "prop-types";
 
@@ -9,14 +7,17 @@ import { Flex } from "components/flex";
 import { Text } from "components/text";
 import Input from "components/input";
 import Button from "components/button";
-import { theme } from "theme";
+import { Form } from "components/form";
 import { editCategory } from "services/categoriesService";
+import { ConstructorAddonScheme } from "../yup-schemes/constructor-addon-scheme";
+import { theme } from "theme";
 
 const EditCategoryPopup = ({
   category,
   categories,
   restaurantId,
   onToggleHidden,
+  translations,
 }) => {
   const queryClient = useQueryClient();
   const addCategoryMutation = useMutation(editCategory, {
@@ -34,15 +35,12 @@ const EditCategoryPopup = ({
     name: category.name,
   };
 
-  const SignupSchema = Yup.object().shape({
-    name: Yup.string().required("Required"),
-  });
-
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: useMemo(() => SignupSchema, [SignupSchema]),
+    validationSchema: ConstructorAddonScheme(translations),
     onSubmit: useCallback(
       async (values) => {
+        ``;
         try {
           await addCategoryMutation.mutateAsync({
             categoryId: category._id,
@@ -87,7 +85,7 @@ const EditCategoryPopup = ({
               fontSize={theme.fontSize(3)}
               mb={theme.spacing(4)}
             >
-              Edit Category
+              {translations["edit_category"]}
             </Text>
             <Flex mb={theme.spacing(2)} width={1} direction="column">
               <Input
@@ -95,7 +93,7 @@ const EditCategoryPopup = ({
                 type="string"
                 placeholder="Enter name"
                 onChange={handleChange("name")}
-                label="CATEGORY NAME"
+                label={translations["category_name"]}
                 value={formik.values["name"]}
                 error={formik.errors.name}
               />
@@ -109,10 +107,10 @@ const EditCategoryPopup = ({
               onClick={cancelAddingCategory}
               type="button"
             >
-              CANCEL
+              {translations["cancel"]}
             </Button>
             <Button width="auto" mb="0" type="submit">
-              SAVE
+              {translations["save"]}
             </Button>
           </Flex>
         </Flex>
@@ -121,16 +119,12 @@ const EditCategoryPopup = ({
   );
 };
 
-const Form = styled.form`
-  width: 100%;
-  height: 100%;
-`;
-
 EditCategoryPopup.propTypes = {
   category: PropTypes.object,
   restaurantId: PropTypes.string,
   categories: PropTypes.array,
   onToggleHidden: PropTypes.func,
+  translations: PropTypes.object,
 };
 
 export default memo(EditCategoryPopup);

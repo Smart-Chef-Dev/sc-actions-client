@@ -23,6 +23,7 @@ const StyleEditMenuItem = ({
   onToggleHidden,
   onPictureFile,
   categories,
+  translations,
 }) => {
   const addons = useQuery(
     ["addons", { restaurantId: categories[0].restaurant._id }],
@@ -31,6 +32,7 @@ const StyleEditMenuItem = ({
 
   const addAddonPopup = useConfirmationPopup(AddAddonPopup, "900px", "550px", {
     restaurantId: categories[0].restaurant._id,
+    translations,
   });
 
   const categoryOptions = useMemo(
@@ -56,12 +58,12 @@ const StyleEditMenuItem = ({
     return [
       ...addonOptionsTmp,
       {
-        value: "Add New Addon",
+        value: translations["add_new_addon"],
         label: "add",
         isButton: true,
       },
     ];
-  }, [addons]);
+  }, [addons, translations]);
 
   useEffect(() => {
     if (!addonOptions) {
@@ -115,7 +117,7 @@ const StyleEditMenuItem = ({
           boxSizing="border-box"
         >
           <Text fontWeight="bold" fontSize={theme.fontSize(2)}>
-            Create Item
+            {translations["create_item"]}
           </Text>
           <Flex mb={theme.spacing(1)}>
             <ImageUploader
@@ -134,9 +136,9 @@ const StyleEditMenuItem = ({
               <Flex width={1} mb={theme.spacing(1)}>
                 <Input
                   id="name"
-                  placeholder="Enter name"
+                  placeholder={translations["enter_name"]}
                   type="string"
-                  label="NAME"
+                  label={translations["name"]}
                   value={formik.values["name"]}
                   onChange={handleChange("name")}
                   error={formik.touched.name ? formik.errors.name : ""}
@@ -148,7 +150,7 @@ const StyleEditMenuItem = ({
                   id="price"
                   type="number"
                   placeholder="0.00"
-                  label="PRICE"
+                  label={translations["price"]}
                   value={formik.values["price"]}
                   onChange={handleChange("price")}
                   error={formik.touched.price ? formik.errors.price : ""}
@@ -163,7 +165,7 @@ const StyleEditMenuItem = ({
                   <Flex width={1}>
                     <Input
                       id="time"
-                      label="WAITING TIME, MIN"
+                      label={translations["time"]}
                       type="number"
                       height="52px"
                       placeholder="0.00"
@@ -182,7 +184,7 @@ const StyleEditMenuItem = ({
                   <Flex width={1}>
                     <Input
                       id="weight"
-                      label="WEIGHT, G"
+                      label={translations["weight"]}
                       type="number"
                       height="52px"
                       placeholder="0.00"
@@ -204,7 +206,7 @@ const StyleEditMenuItem = ({
                   name="category"
                   value={formik.values["category"]}
                   onFieldValue={formik.setFieldValue}
-                  label="CATEGORY"
+                  label={translations["category"]}
                 />
               </Flex>
 
@@ -215,7 +217,8 @@ const StyleEditMenuItem = ({
                   name="addons"
                   value={formik.values["addons"]}
                   onFieldValue={formik.setFieldValue}
-                  label="APPLY ADD-ONS"
+                  label={translations["apply_add_ons"]}
+                  translations={translations}
                 />
               </Flex>
 
@@ -227,8 +230,8 @@ const StyleEditMenuItem = ({
               >
                 <Textarea
                   name="description"
-                  label="DESCRIPTION"
-                  placeholder="Enter text"
+                  label={translations["description"]}
+                  placeholder={translations["enter_name"]}
                   error={
                     formik.touched.description ? formik.errors.description : ""
                   }
@@ -243,9 +246,9 @@ const StyleEditMenuItem = ({
               onClick={cancelAddingCategory}
               background="var(--text-grey)"
             >
-              Cancel
+              {translations["cancel"]}
             </Button>
-            <Button type="submit">Save</Button>
+            <Button type="submit">{translations["create"]}</Button>
           </Flex>
         </Flex>
       </Form>
@@ -258,6 +261,7 @@ StyleEditMenuItem.propTypes = {
   onToggleHidden: PropTypes.func,
   onPictureFile: PropTypes.func,
   categories: PropTypes.array,
+  translations: PropTypes.object,
 };
 
 export default memo(StyleEditMenuItem);

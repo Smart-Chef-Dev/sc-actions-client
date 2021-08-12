@@ -13,6 +13,7 @@ const AddMenuItemPopup = ({
   categories,
   category,
   restaurantId,
+  translations,
 }) => {
   const queryClient = useQueryClient();
   const [pictureFile, setPictureFile] = useState({});
@@ -49,7 +50,7 @@ const AddMenuItemPopup = ({
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: ConstructorMenuItemScheme,
+    validationSchema: ConstructorMenuItemScheme(translations),
     onSubmit: useCallback(
       async (values) => {
         const categoryTmp = categories.find(
@@ -85,6 +86,7 @@ const AddMenuItemPopup = ({
       categories={categories}
       onToggleHidden={onToggleHidden}
       onPictureFile={setPictureFile}
+      translations={translations}
     />
   );
 };
@@ -93,6 +95,7 @@ AddMenuItemPopup.propTypes = {
   onToggleHidden: PropTypes.func,
   categories: PropTypes.array,
   category: PropTypes.object,
+  translations: PropTypes.object,
   restaurantId: PropTypes.string,
 };
 

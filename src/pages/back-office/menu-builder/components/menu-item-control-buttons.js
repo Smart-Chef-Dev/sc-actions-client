@@ -14,19 +14,20 @@ const MenuItemControlButtons = ({
   menuItems,
   menuItemInFocus,
   categories,
+  translations,
 }) => {
   const deleteMenuItemPopup = useConfirmationPopup(
     DeleteMenuItemPopup,
     "500px",
     "350px",
-    { menuItem, menuItems }
+    { menuItem, menuItems, translations }
   );
 
   const editMenuItemPopup = useConfirmationPopup(
     EditMenuItemPopup,
     "900px",
     "700px",
-    { menuItem, menuItems, categories }
+    { menuItem, menuItems, categories, translations }
   );
 
   const deleteMenuItem = useCallback(() => {
@@ -60,6 +61,7 @@ MenuItemControlButtons.propTypes = {
   menuItems: PropTypes.array,
   categories: PropTypes.array,
   menuItemInFocus: PropTypes.bool,
+  translations: PropTypes.object,
 };
 
 export default memo(MenuItemControlButtons);

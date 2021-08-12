@@ -40,7 +40,7 @@ const Control = ({ ...props }) => {
   return (
     <components.Control {...props}>
       <Text ml={theme.spacing(1)} fontSize={theme.fontSize(0)}>
-        Select ({numberOfSelectedValues})
+        {props.selectProps.translations["select"]}({numberOfSelectedValues})
       </Text>
       {props.children}
     </components.Control>
@@ -54,6 +54,7 @@ const Multiselect = ({
   onFieldValue,
   placeholder,
   label,
+  translations,
 }) => {
   return (
     <>
@@ -68,6 +69,7 @@ const Multiselect = ({
         options={options}
         components={{ DropdownIndicatorSelect, Control, Option }}
         name={name}
+        translations={translations}
         styles={multiselectStyles}
         value={value}
         onChange={(option) => {
@@ -85,11 +87,14 @@ Multiselect.propTypes = {
   onFieldValue: PropTypes.func,
   placeholder: PropTypes.string,
   label: PropTypes.string,
+  translations: PropTypes.object,
 };
 
 Control.propTypes = {
   getValue: PropTypes.func,
   children: PropTypes.array,
+  selectProps: PropTypes.object,
+  translations: PropTypes.object,
 };
 
 Option.propTypes = {

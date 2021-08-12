@@ -11,7 +11,7 @@ import ArrowToDown from "assets/icons/back-office/arrow_to_down.svg";
 import { theme } from "theme";
 import MenuItemControlButtons from "./menu-item-control-buttons";
 
-const MenuItem = ({ menuItem, menuItems, index, categories }) => {
+const MenuItem = ({ menuItem, menuItems, index, categories, translations }) => {
   const [menuItemInFocus, setMenuItemInFocus] = useState(false);
   const queryClient = useQueryClient();
 
@@ -115,6 +115,7 @@ const MenuItem = ({ menuItem, menuItems, index, categories }) => {
         menuItems={menuItems}
         menuItemInFocus={menuItemInFocus}
         categories={categories}
+        translations={translations}
       />
     </Flex>
   );
@@ -128,6 +129,7 @@ MenuItem.propTypes = {
   menuItem: PropTypes.object,
   menuItems: PropTypes.array,
   categories: PropTypes.array,
+  translations: PropTypes.object,
   index: PropTypes.number,
 };
 

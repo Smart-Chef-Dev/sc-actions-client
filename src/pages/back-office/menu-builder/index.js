@@ -11,10 +11,15 @@ import { getAllCategories } from "services/categoriesService";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import AddCategoryPopup from "./components/add-category-popup";
 import { checkingUserAccess } from "services/restaurantService";
+import { useTranslation } from "../../../contexts/translation-context";
 
 const MenuBuilder = () => {
   const [, { restaurantId }] = useRoute(Routes.MENU_BUILDER);
   const [, setLocation] = useLocation();
+
+  const {
+    strings: { menuBuilder: translations },
+  } = useTranslation();
 
   const categories = useQuery(
     ["categories", { restaurantId }],
@@ -35,7 +40,7 @@ const MenuBuilder = () => {
     AddCategoryPopup,
     "500px",
     "380px",
-    { restaurantId, categories: categories.data }
+    { restaurantId, categories: categories.data, translations }
   );
 
   const createCategory = useCallback(() => {
@@ -54,10 +59,16 @@ const MenuBuilder = () => {
       >
         {renderNotification()}
         <Flex width={1} justifyContent="flex-end">
-          <Button onClick={createCategory}>CREATE CATEGORY</Button>
+          <Button onClick={createCategory} width="auto">
+            {translations["create_category_bold"]}
+          </Button>
         </Flex>
         <Flex width={1}>
-          <Categories categories={categories} restaurantId={restaurantId} />
+          <Categories
+            categories={categories}
+            restaurantId={restaurantId}
+            translations={translations}
+          />
         </Flex>
       </Flex>
     )

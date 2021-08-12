@@ -29,6 +29,7 @@ const Category = ({
   categories,
   restaurantId,
   index,
+  translations,
 }) => {
   const menuItems = useQuery(
     ["menuItems", { categoryId: category._id }],
@@ -86,21 +87,21 @@ const Category = ({
     DeleteCategoryPopup,
     "500px",
     "380px",
-    { category: category, categories, restaurantId }
+    { category: category, categories, restaurantId, translations }
   );
 
   const editCategoryPopup = useConfirmationPopup(
     EditCategoryPopup,
     "500px",
     "380px",
-    { category: category, categories, restaurantId }
+    { category: category, categories, restaurantId, translations }
   );
 
   const addMenuItemPopup = useConfirmationPopup(
     AddMenuItemPopup,
     "900px",
     "700px",
-    { categories, category, restaurantId }
+    { categories, category, restaurantId, translations }
   );
 
   const removeCategory = useCallback(() => {
@@ -195,6 +196,7 @@ const Category = ({
           categoryId={category._id}
           menuItems={menuItems}
           categories={categories}
+          translations={translations}
         />
       )}
     </Flex>
@@ -207,6 +209,7 @@ Category.propTypes = {
   onExpandedCategoryId: PropTypes.func,
   expandedCategoryId: PropTypes.string,
   restaurantId: PropTypes.string,
+  translations: PropTypes.object,
   index: PropTypes.number,
 };
 
