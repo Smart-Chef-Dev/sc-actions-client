@@ -1,6 +1,6 @@
 import { memo, useCallback, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { FormikProvider, useFormik } from "formik";
+import { useFormik } from "formik";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
@@ -70,61 +70,59 @@ const EditCategoryPopup = ({
   }, [onToggleHidden]);
 
   return (
-    <FormikProvider value={formik}>
-      <Form onSubmit={formik.handleSubmit}>
-        <Flex
-          direction="column"
-          width={1}
-          height={1}
-          p={theme.spacing(4)}
-          pt={theme.spacing(3)}
-          boxSizing="border-box"
-          justifyContent="space-between"
-        >
-          <Flex direction="column" width={1} alignItems="center">
-            <Text
-              fontWeight="bold"
-              fontSize={theme.fontSize(3)}
-              mb={theme.spacing(4)}
-            >
-              {translations["edit_category"]}
-            </Text>
-            <Flex mb={theme.spacing(2)} width={1} direction="column">
-              <Input
-                id="name"
-                type="string"
-                placeholder="Enter name"
-                onChange={handleChange("name")}
-                label={translations["category_name"]}
-                value={formik.values["name"]}
-                error={formik.errors.name}
-              />
-            </Flex>
-          </Flex>
-          <Flex mb={theme.spacing(1)} width={1} justifyContent="center">
-            {error?.status === 403 && (
-              <ErrorText>
-                {translations["category_with_the_same_name_already_exists"]}
-              </ErrorText>
-            )}
-          </Flex>
-          <Flex justifyContent="space-between" width={1}>
-            <Button
-              background="var(--text-grey)"
-              width="none"
-              mb="0"
-              onClick={cancelAddingCategory}
-              type="button"
-            >
-              {translations["cancel"]}
-            </Button>
-            <Button width="auto" mb="0" type="submit">
-              {translations["save"]}
-            </Button>
+    <Form onSubmit={formik.handleSubmit}>
+      <Flex
+        direction="column"
+        width={1}
+        height={1}
+        p={theme.spacing(4)}
+        pt={theme.spacing(3)}
+        boxSizing="border-box"
+        justifyContent="space-between"
+      >
+        <Flex direction="column" width={1} alignItems="center">
+          <Text
+            fontWeight="bold"
+            fontSize={theme.fontSize(3)}
+            mb={theme.spacing(4)}
+          >
+            {translations["edit_category"]}
+          </Text>
+          <Flex mb={theme.spacing(2)} width={1} direction="column">
+            <Input
+              name="name"
+              type="string"
+              placeholder="Enter name"
+              onChange={handleChange("name")}
+              label={translations["category_name"]}
+              value={formik.values["name"]}
+              error={formik.errors.name}
+            />
           </Flex>
         </Flex>
-      </Form>
-    </FormikProvider>
+        <Flex mb={theme.spacing(1)} width={1} justifyContent="center">
+          {error?.status === 403 && (
+            <ErrorText>
+              {translations["category_with_the_same_name_already_exists"]}
+            </ErrorText>
+          )}
+        </Flex>
+        <Flex justifyContent="space-between" width={1}>
+          <Button
+            background="var(--text-grey)"
+            width="none"
+            mb="0"
+            onClick={cancelAddingCategory}
+            type="button"
+          >
+            {translations["cancel"]}
+          </Button>
+          <Button width="auto" mb="0" type="submit">
+            {translations["save"]}
+          </Button>
+        </Flex>
+      </Flex>
+    </Form>
   );
 };
 

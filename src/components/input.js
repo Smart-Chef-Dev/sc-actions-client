@@ -8,7 +8,6 @@ import { styled } from "@linaria/react";
 
 const Input = ({
   type = "text",
-  id,
   label,
   error,
   name,
@@ -29,7 +28,6 @@ const Input = ({
     <Flex direction="column" width={1} height={1} position="relative">
       {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
       <StyledInput
-        id={id}
         type={type}
         name={name}
         value={value}
@@ -59,7 +57,6 @@ Input.propTypes = {
   error: PropTypes.string,
   height: PropTypes.string,
   disabled: PropTypes.bool,
-  id: PropTypes.string,
 };
 
 export default memo(Input);

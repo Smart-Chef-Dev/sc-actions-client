@@ -1,7 +1,6 @@
 import { styled } from "@linaria/react";
-import { Field } from "formik";
 
-export const StyledInput = styled(Field)`
+export const StyledInput = styled.input`
   display: block;
   box-sizing: border-box;
   width: 100%;

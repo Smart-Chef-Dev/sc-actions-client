@@ -55,7 +55,7 @@ const UploadPhotoComponent = ({
         )}
       </label>
       <s.Input
-        id="image"
+        name="image"
         type="file"
         accept="image/x-png,image/gif,image/jpeg"
         onChange={onChange}

@@ -1,7 +1,7 @@
 import { memo, useCallback, useState, useMemo } from "react";
 import { useRecoilState } from "recoil";
 import { useLocation } from "wouter";
-import { FormikProvider, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import Input from "components/input";
@@ -90,62 +90,58 @@ const SingIn = () => {
   }, [setLocation]);
 
   return (
-    <FormikProvider value={formik}>
-      <Flex direction="column" alignItems="center">
-        <Flex direction="column" mb={theme.spacing(1)}>
-          <Label>{translations["sing_in"]}</Label>
-        </Flex>
-
-        <form onSubmit={formik.handleSubmit}>
-          <Flex direction="column">
-            <Flex mb={theme.spacing(1)} direction="column">
-              <Flex direction="column">
-                <Input
-                  id="email"
-                  type="string"
-                  label={translations["email"]}
-                  value={formik.values["email"]}
-                  onChange={handleChange("email")}
-                />
-              </Flex>
-              {formik.touched.email && formik.errors.email ? (
-                <ErrorText>{formik.errors.email}</ErrorText>
-              ) : null}
-            </Flex>
-
-            <Flex mb={theme.spacing(1)} direction="column">
-              <Flex direction="column">
-                <Input
-                  id="password"
-                  type="password"
-                  label={translations["password"]}
-                  value={formik.values["password"]}
-                  onChange={handleChange("password")}
-                />
-              </Flex>
-              {formik.touched.password && formik.errors.password ? (
-                <ErrorText>{formik.errors.password}</ErrorText>
-              ) : null}
-            </Flex>
-          </Flex>
-
-          <Flex direction="column" alignItems="center">
-            <Button type="submit">{translations["sing_in"]}</Button>
-            {hasLoginError && (
-              <ErrorText>
-                {translations["incorrect_login_or_password"]}
-              </ErrorText>
-            )}
-          </Flex>
-        </form>
-
-        <Flex direction="column" mt={theme.spacing(1)}>
-          <Button onClick={handleSignInButtonClick}>
-            {translations["sing_up"]}
-          </Button>
-        </Flex>
+    <Flex direction="column" alignItems="center">
+      <Flex direction="column" mb={theme.spacing(1)}>
+        <Label>{translations["sing_in"]}</Label>
       </Flex>
-    </FormikProvider>
+
+      <form onSubmit={formik.handleSubmit}>
+        <Flex direction="column">
+          <Flex mb={theme.spacing(1)} direction="column">
+            <Flex direction="column">
+              <Input
+                name="email"
+                type="string"
+                label={translations["email"]}
+                value={formik.values["email"]}
+                onChange={handleChange("email")}
+              />
+            </Flex>
+            {formik.touched.email && formik.errors.email ? (
+              <ErrorText>{formik.errors.email}</ErrorText>
+            ) : null}
+          </Flex>
+
+          <Flex mb={theme.spacing(1)} direction="column">
+            <Flex direction="column">
+              <Input
+                name="password"
+                type="password"
+                label={translations["password"]}
+                value={formik.values["password"]}
+                onChange={handleChange("password")}
+              />
+            </Flex>
+            {formik.touched.password && formik.errors.password ? (
+              <ErrorText>{formik.errors.password}</ErrorText>
+            ) : null}
+          </Flex>
+        </Flex>
+
+        <Flex direction="column" alignItems="center">
+          <Button type="submit">{translations["sing_in"]}</Button>
+          {hasLoginError && (
+            <ErrorText>{translations["incorrect_login_or_password"]}</ErrorText>
+          )}
+        </Flex>
+      </form>
+
+      <Flex direction="column" mt={theme.spacing(1)}>
+        <Button onClick={handleSignInButtonClick}>
+          {translations["sing_up"]}
+        </Button>
+      </Flex>
+    </Flex>
   );
 };
 

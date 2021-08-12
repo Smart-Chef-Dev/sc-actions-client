@@ -93,7 +93,7 @@ const SingUp = () => {
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
               <Input
-                id="email"
+                name="email"
                 type="string"
                 label={translations["email"]}
                 value={formik.values["email"]}
@@ -108,7 +108,7 @@ const SingUp = () => {
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
               <Input
-                id="password"
+                name="password"
                 type="password"
                 label={translations["password"]}
                 value={formik.values["password"]}
@@ -123,7 +123,7 @@ const SingUp = () => {
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
               <Input
-                id="repeatPassword"
+                name="repeatPassword"
                 type="password"
                 label={translations["repeat_password"]}
                 value={formik.values["repeatPassword"]}
