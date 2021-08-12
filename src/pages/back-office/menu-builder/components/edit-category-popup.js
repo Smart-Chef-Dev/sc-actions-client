@@ -9,7 +9,7 @@ import Input from "components/input";
 import Button from "components/button";
 import { Form } from "components/form";
 import { editCategory } from "services/categoriesService";
-import { ConstructorAddonScheme } from "../yup-schemes/constructor-addon-scheme";
+import { ConstructorCategoryScheme } from "../yup-schemes/constructor-category-scheme";
 import { theme } from "theme";
 
 const EditCategoryPopup = ({
@@ -37,7 +37,7 @@ const EditCategoryPopup = ({
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: ConstructorAddonScheme(translations),
+    validationSchema: ConstructorCategoryScheme(translations),
     onSubmit: useCallback(
       async (values) => {
         ``;
