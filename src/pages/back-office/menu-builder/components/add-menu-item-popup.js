@@ -1,9 +1,8 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 
-import { uploadFileInRestaurant } from "services/restaurantService";
 import { createMenuItem } from "services/menuItemsService";
 import StyleEditMenuItem from "./style-edit-menu-item";
 import { ConstructorMenuItemScheme } from "../yup-schemes/constructor-menu-item-scheme";
@@ -12,13 +11,9 @@ const AddMenuItemPopup = ({
   onToggleHidden,
   categories,
   category,
-  restaurantId,
   translations,
 }) => {
   const queryClient = useQueryClient();
-  const [pictureFile, setPictureFile] = useState({});
-
-  const uploadFileInRestaurantMutation = useMutation(uploadFileInRestaurant);
   const createMenuItemMutation = useMutation(createMenuItem, {
     onSuccess: (data, queryVariables) => {
       const dataInCache = queryClient.getQueryData([
@@ -46,6 +41,7 @@ const AddMenuItemPopup = ({
     time: "",
     weight: "",
     addons: [],
+    pictureUrl: "",
   };
 
   const formik = useFormik({
@@ -57,26 +53,14 @@ const AddMenuItemPopup = ({
           (currentCategory) => currentCategory.name === values.category.value
         );
 
-        const pictureUrl = await uploadFileInRestaurantMutation.mutateAsync({
-          restaurantId,
-          file: pictureFile,
-        });
-
         await createMenuItemMutation.mutateAsync({
           categoryId: categoryTmp._id,
-          body: { ...values, pictureUrl },
+          body: { ...values },
         });
 
         onToggleHidden(true);
       },
-      [
-        onToggleHidden,
-        uploadFileInRestaurantMutation,
-        createMenuItemMutation,
-        restaurantId,
-        pictureFile,
-        categories,
-      ]
+      [onToggleHidden, createMenuItemMutation, categories]
     ),
   });
 
@@ -85,7 +69,6 @@ const AddMenuItemPopup = ({
       formik={formik}
       categories={categories}
       onToggleHidden={onToggleHidden}
-      onPictureFile={setPictureFile}
       translations={translations}
     />
   );

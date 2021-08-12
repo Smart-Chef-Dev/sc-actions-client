@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
-import ImageUploader from "react-images-upload";
 import { FormikProvider } from "formik";
+import { useQuery } from "react-query";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
@@ -15,23 +15,27 @@ import { theme } from "theme";
 import Multiselect from "components/multiselect";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import AddAddonPopup from "./add-addon-popup";
-import { useQuery } from "react-query";
 import { getRestaurantAddons } from "services/addonsService";
+import UploadPhotoComponent from "./upload-photo-component";
 
 const StyleEditMenuItem = ({
   formik,
   onToggleHidden,
-  onPictureFile,
   categories,
   translations,
 }) => {
+  const restaurantId = useMemo(
+    () => categories[0].restaurant._id,
+    [categories]
+  );
+
   const addons = useQuery(
-    ["addons", { restaurantId: categories[0].restaurant._id }],
+    ["addons", { restaurantId: restaurantId }],
     getRestaurantAddons
   );
 
   const addAddonPopup = useConfirmationPopup(AddAddonPopup, "900px", "550px", {
-    restaurantId: categories[0].restaurant._id,
+    restaurantId: restaurantId,
     translations,
   });
 
@@ -89,10 +93,6 @@ const StyleEditMenuItem = ({
     }
   }, [formik, addonOptions, addAddonPopup]);
 
-  const onDrop = (picture) => {
-    onPictureFile(picture[0]);
-  };
-
   const handleChange = useCallback(
     (fieldName) => (e) => {
       formik.setFieldValue(fieldName, e);
@@ -116,18 +116,20 @@ const StyleEditMenuItem = ({
           direction="column"
           boxSizing="border-box"
         >
-          <Text fontWeight="bold" fontSize={theme.fontSize(2)}>
+          <Text
+            fontWeight="bold"
+            fontSize={theme.fontSize(2)}
+            mb={theme.spacing(1)}
+          >
             {translations["create_item"]}
           </Text>
           <Flex mb={theme.spacing(1)}>
-            <ImageUploader
-              onChange={onDrop}
-              buttonText={"Choose images"}
-              imgExtension={[".jpg", ".gif", ".png", ".gif"]}
-              withIcon={false}
-              withPreview={false}
-              singleImage={true}
-              label=""
+            <UploadPhotoComponent
+              error={formik.errors?.pictureUrl}
+              restaurantId={restaurantId}
+              onFieldValue={formik.setFieldValue}
+              pictureUrl={formik.values["pictureUrl"]}
+              nameValue="pictureUrl"
             />
           </Flex>
 
@@ -262,6 +264,7 @@ StyleEditMenuItem.propTypes = {
   onPictureFile: PropTypes.func,
   categories: PropTypes.array,
   translations: PropTypes.object,
+  isPreviewError: PropTypes.bool,
 };
 
 export default memo(StyleEditMenuItem);

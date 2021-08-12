@@ -52,6 +52,7 @@ const EditMenuItemPopup = ({
     toggleWeight: !!menuItem.weight,
     weight: menuItem.weight,
     addons: addons,
+    pictureUrl: menuItem.pictureUrl,
   };
 
   const formik = useFormik({

@@ -18,5 +18,6 @@ export const ConstructorMenuItemScheme = (translations) => {
       is: true,
       then: Yup.number().required(translations["required"]),
     }),
+    pictureUrl: Yup.string().required(translations["required"]),
   });
 };
