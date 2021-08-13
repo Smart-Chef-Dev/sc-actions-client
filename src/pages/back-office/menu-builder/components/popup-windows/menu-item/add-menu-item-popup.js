@@ -5,15 +5,17 @@ import { useMutation, useQueryClient } from "react-query";
 
 import { createMenuItem } from "services/menuItemsService";
 import StyleEditMenuItem from "./style-edit-menu-item";
-import { ConstructorMenuItemScheme } from "../../yup-schemes/constructor-menu-item-scheme";
+import { ConstructorMenuItemScheme } from "../../../yup-schemes/constructor-menu-item-scheme";
 
 const AddMenuItemPopup = ({
   onToggleHidden,
-  categories,
   category,
   translations,
+  restaurantId,
 }) => {
   const queryClient = useQueryClient();
+  const categories = queryClient.getQueryData(["categories", { restaurantId }]);
+
   const createMenuItemMutation = useMutation(createMenuItem, {
     onSuccess: (data, queryVariables) => {
       const dataInCache = queryClient.getQueryData([
@@ -76,7 +78,6 @@ const AddMenuItemPopup = ({
 
 AddMenuItemPopup.propTypes = {
   onToggleHidden: PropTypes.func,
-  categories: PropTypes.array,
   category: PropTypes.object,
   translations: PropTypes.object,
   restaurantId: PropTypes.string,

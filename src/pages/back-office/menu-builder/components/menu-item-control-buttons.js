@@ -5,9 +5,9 @@ import { Flex } from "components/flex";
 import Basket from "assets/icons/back-office/basket.svg";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import EditIcon from "assets/icons/back-office/edit_icon.svg";
-import DeleteMenuItemPopup from "./popup-windows/delete-menu-item-popup";
-import { theme } from "theme";
-import EditMenuItemPopup from "./popup-windows/edit-menu-item-popup";
+import DeleteMenuItemPopup from "./popup-windows/menu-item/delete-menu-item-popup";
+import EditMenuItemPopup from "./popup-windows/menu-item/edit-menu-item-popup";
+import ControlButton from "./control-button";
 
 const MenuItemControlButtons = ({
   menuItem,
@@ -44,12 +44,12 @@ const MenuItemControlButtons = ({
       {editMenuItemPopup.renderNotification()}
       {menuItemInFocus && (
         <Flex>
-          <Flex>
-            <EditIcon onClick={editMenuItem} />
-          </Flex>
-          <Flex ml={theme.spacing(1)}>
-            <Basket stroke="red" onClick={deleteMenuItem} />
-          </Flex>
+          <ControlButton Icon={EditIcon} buttonAction={editMenuItem} />
+          <ControlButton
+            Icon={Basket}
+            buttonAction={deleteMenuItem}
+            stroke="red"
+          />
         </Flex>
       )}
     </Flex>

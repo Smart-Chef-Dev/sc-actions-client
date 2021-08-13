@@ -3,9 +3,14 @@ import PropTypes from "prop-types";
 
 import MenuItem from "./menuItem";
 import { Flex } from "components/flex";
+import { useQuery } from "react-query";
+import { getMenuItemsByCategoryId } from "../../../../services/menuItemsService";
 
-const MenuItems = ({ menuItems, categories, translations }) => {
-  const { isLoading, data } = menuItems;
+const MenuItems = ({ categories, translations, categoryId }) => {
+  const { isLoading, data } = useQuery(
+    ["menuItems", { categoryId }],
+    getMenuItemsByCategoryId
+  );
 
   return (
     !isLoading && (
@@ -42,6 +47,7 @@ MenuItems.propTypes = {
   menuItems: PropTypes.object,
   categories: PropTypes.array,
   translations: PropTypes.object,
+  categoryId: PropTypes.string,
 };
 
 export default memo(MenuItems);

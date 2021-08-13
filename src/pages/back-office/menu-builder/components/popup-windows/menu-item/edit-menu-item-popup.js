@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useFormik } from "formik";
 
 import StyleEditMenuItem from "./style-edit-menu-item";
-import { ConstructorMenuItemScheme } from "../../yup-schemes/constructor-menu-item-scheme";
+import { ConstructorMenuItemScheme } from "../../../yup-schemes/constructor-menu-item-scheme";
 import { useMutation, useQueryClient } from "react-query";
 import { editMenuItem } from "services/menuItemsService";
 

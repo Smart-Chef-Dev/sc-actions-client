@@ -1,63 +1,22 @@
-import { memo, useCallback, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { useFormik } from "formik";
+import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import Input from "components/input";
+import ErrorText from "components/error-text";
 import Button from "components/button";
 import { Form } from "components/form";
-import ErrorText from "components/error-text";
-import { editCategory } from "services/categoriesService";
-import { ConstructorCategoryScheme } from "../../yup-schemes/constructor-category-scheme";
 import { theme } from "theme";
 
-const EditCategoryPopup = ({
-  category,
-  categories,
-  restaurantId,
+const StyleConstructCategory = ({
+  formik,
+  heading,
   onToggleHidden,
   translations,
+  error,
+  buttonName,
 }) => {
-  const [error, setError] = useState(null);
-  const queryClient = useQueryClient();
-  const addCategoryMutation = useMutation(editCategory, {
-    onSuccess: (data) => {
-      queryClient.setQueryData(
-        ["categories", { restaurantId }],
-        categories.map((currentCategory) =>
-          currentCategory._id === category._id ? data : currentCategory
-        )
-      );
-    },
-  });
-
-  const initialValues = {
-    name: category.name,
-  };
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema: ConstructorCategoryScheme(translations),
-    onSubmit: useCallback(
-      async (values) => {
-        ``;
-        try {
-          await addCategoryMutation.mutateAsync({
-            categoryId: category._id,
-            body: values,
-          });
-
-          onToggleHidden(true);
-        } catch (err) {
-          setError(err);
-        }
-      },
-      [onToggleHidden, addCategoryMutation, category]
-    ),
-  });
-
   const handleChange = useCallback(
     (fieldName) => (e) => {
       formik.setFieldValue(fieldName, e);
@@ -86,13 +45,13 @@ const EditCategoryPopup = ({
             fontSize={theme.fontSize(3)}
             mb={theme.spacing(4)}
           >
-            {translations["edit_category"]}
+            {heading}
           </Text>
           <Flex mb={theme.spacing(2)} width={1} direction="column">
             <Input
               name="name"
               type="string"
-              placeholder="Enter name"
+              placeholder={translations["enter_name"]}
               onChange={handleChange("name")}
               label={translations["category_name"]}
               value={formik.values["name"]}
@@ -118,7 +77,7 @@ const EditCategoryPopup = ({
             {translations["cancel"]}
           </Button>
           <Button width="auto" mb="0" type="submit">
-            {translations["save"]}
+            {buttonName}
           </Button>
         </Flex>
       </Flex>
@@ -126,12 +85,13 @@ const EditCategoryPopup = ({
   );
 };
 
-EditCategoryPopup.propTypes = {
-  category: PropTypes.object,
-  restaurantId: PropTypes.string,
-  categories: PropTypes.array,
+StyleConstructCategory.propTypes = {
+  formik: PropTypes.object,
+  heading: PropTypes.string,
   onToggleHidden: PropTypes.func,
   translations: PropTypes.object,
+  error: PropTypes.bool,
+  buttonName: PropTypes.string,
 };
 
-export default memo(EditCategoryPopup);
+export default memo(StyleConstructCategory);

@@ -1,0 +1,91 @@
+import { memo, useCallback } from "react";
+import PropTypes from "prop-types";
+
+import { Flex } from "components/flex";
+import { useConfirmationPopup } from "hooks/useConfirmationPopup";
+import DeleteCategoryPopup from "./popup-windows/category/delete-category-popup";
+import EditCategoryPopup from "./popup-windows/category/edit-category-popup";
+import AddMenuItemPopup from "./popup-windows/menu-item/add-menu-item-popup";
+
+import CreateItemIcon from "assets/icons/back-office/create_item_icon.svg";
+import EditIcon from "assets/icons/back-office/edit_icon.svg";
+import Basket from "assets/icons/back-office/basket.svg";
+import RedTriangle from "assets/icons/back-office/red_triangle.svg";
+import GrayTriangle from "assets/icons/back-office/gray_triangle.svg";
+import ControlButton from "./control-button";
+import { theme } from "theme";
+
+const CategoryControlButtons = ({
+  category,
+  restaurantId,
+  translations,
+  expandedCategoryId,
+}) => {
+  const deleteCategoryPopup = useConfirmationPopup(
+    DeleteCategoryPopup,
+    "500px",
+    "380px",
+    { category, restaurantId, translations }
+  );
+
+  const editCategoryPopup = useConfirmationPopup(
+    EditCategoryPopup,
+    "500px",
+    "380px",
+    { category, restaurantId, translations }
+  );
+
+  const addMenuItemPopup = useConfirmationPopup(
+    AddMenuItemPopup,
+    "900px",
+    "700px",
+    { category, restaurantId, translations }
+  );
+
+  const removeCategory = useCallback(() => {
+    deleteCategoryPopup.showNotification();
+  }, [deleteCategoryPopup]);
+
+  const editCategory = useCallback(() => {
+    editCategoryPopup.showNotification();
+  }, [editCategoryPopup]);
+
+  const addMenuItem = useCallback(() => {
+    addMenuItemPopup.showNotification();
+  }, [addMenuItemPopup]);
+
+  return (
+    <>
+      {deleteCategoryPopup.renderNotification()}
+      {editCategoryPopup.renderNotification()}
+      {addMenuItemPopup.renderNotification()}
+      <Flex alignItems="center" mr={theme.spacing(1)}>
+        {category._id === expandedCategoryId ? (
+          <>
+            <Flex onClick={(e) => e.stopPropagation()} alignItems="flex-end">
+              <ControlButton Icon={CreateItemIcon} buttonAction={addMenuItem} />
+              <ControlButton Icon={EditIcon} buttonAction={editCategory} />
+              <ControlButton
+                Icon={Basket}
+                buttonAction={removeCategory}
+                stroke="black"
+              />
+            </Flex>
+            <RedTriangle />
+          </>
+        ) : (
+          <GrayTriangle />
+        )}
+      </Flex>
+    </>
+  );
+};
+
+CategoryControlButtons.propTypes = {
+  category: PropTypes.object,
+  expandedCategoryId: PropTypes.string,
+  restaurantId: PropTypes.string,
+  translations: PropTypes.object,
+};
+
+export default memo(CategoryControlButtons);

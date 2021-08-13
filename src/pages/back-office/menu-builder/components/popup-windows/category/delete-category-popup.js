@@ -12,15 +12,19 @@ const DeleteCategoryPopup = ({
   category,
   onToggleHidden,
   restaurantId,
-  categories,
   translations,
 }) => {
   const queryClient = useQueryClient();
   const deleteCategoryMutation = useMutation(deleteCategory, {
     onSuccess: () => {
+      const dataInCache = queryClient.getQueryData([
+        "categories",
+        { restaurantId },
+      ]);
+
       queryClient.setQueryData(
         ["categories", { restaurantId }],
-        categories.filter(
+        dataInCache.filter(
           (currentCategory) => currentCategory._id !== category._id
         )
       );
@@ -87,7 +91,6 @@ const DeleteCategoryPopup = ({
 DeleteCategoryPopup.propTypes = {
   onToggleHidden: PropTypes.func,
   category: PropTypes.object,
-  categories: PropTypes.array,
   restaurantId: PropTypes.string,
   translations: PropTypes.object,
 };

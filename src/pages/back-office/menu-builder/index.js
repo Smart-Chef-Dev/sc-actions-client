@@ -8,7 +8,7 @@ import { theme } from "theme";
 import { Routes } from "constants/routes";
 import { checkingUserAccess } from "services/restaurantService";
 import { useTranslation } from "contexts/translation-context";
-import CreateCategoryButton from "./components/popup-windows/create-category-button";
+import CreateCategoryButton from "./components/create-category-button";
 
 const MenuBuilder = () => {
   const [, { restaurantId }] = useRoute(Routes.MENU_BUILDER);
