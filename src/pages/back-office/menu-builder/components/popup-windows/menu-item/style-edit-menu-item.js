@@ -16,6 +16,7 @@ import AddAddonPopup from "../addon/add-addon-popup";
 import { getRestaurantAddons } from "services/addonsService";
 import UploadPhotoComponent from "../../upload-photo-component";
 import PopupWindowControlButton from "../popup-window-control-button";
+import { Form } from "components/form";
 
 const StyleEditMenuItem = ({
   formik,
@@ -101,141 +102,148 @@ const StyleEditMenuItem = ({
 
   return (
     <FormikProvider value={formik}>
-      {addAddonPopup.renderNotification()}
-      <Flex
-        width={1}
-        height={1}
-        p={theme.spacing(4)}
-        pb={theme.spacing(3)}
-        direction="column"
-        boxSizing="border-box"
-      >
-        <Text
-          fontWeight="bold"
-          fontSize={theme.fontSize(2)}
-          mb={theme.spacing(1)}
+      <Form onSubmit={formik.handleSubmit}>
+        {addAddonPopup.renderNotification()}
+        <Flex
+          width={1}
+          height={1}
+          p={theme.spacing(4)}
+          pb={theme.spacing(3)}
+          direction="column"
+          boxSizing="border-box"
         >
-          {translations["create_item"]}
-        </Text>
-        <Flex mb={theme.spacing(1)}>
-          <UploadPhotoComponent
-            error={formik.errors?.pictureUrl && formik.touched.pictureUrl}
-            restaurantId={restaurantId}
-            onFieldValue={formik.setFieldValue}
-            pictureUrl={formik.values["pictureUrl"]}
-            nameValue="pictureUrl"
+          <Text
+            fontWeight="bold"
+            fontSize={theme.fontSize(2)}
+            mb={theme.spacing(1)}
+          >
+            {translations["create_item"]}
+          </Text>
+          <Flex mb={theme.spacing(1)}>
+            <UploadPhotoComponent
+              error={formik.errors?.pictureUrl && formik.touched.pictureUrl}
+              restaurantId={restaurantId}
+              onFieldValue={formik.setFieldValue}
+              pictureUrl={formik.values["pictureUrl"]}
+              nameValue="pictureUrl"
+            />
+          </Flex>
+
+          <Flex height={1} width={1} mb={theme.spacing(3)}>
+            <Flex height={1} width={1} mr={theme.spacing(1)} direction="column">
+              <Flex width={1} mb={theme.spacing(1)}>
+                <Input
+                  name="name"
+                  placeholder={translations["enter_name"]}
+                  type="string"
+                  label={translations["name"]}
+                  value={formik.values["name"]}
+                  onChange={handleChange("name")}
+                  error={formik.touched.name ? formik.errors.name : ""}
+                />
+              </Flex>
+
+              <Flex direction="column" width={1} mb={theme.spacing(1)}>
+                <Input
+                  name="price"
+                  type="number"
+                  placeholder="0.00"
+                  label={translations["price"]}
+                  value={formik.values["price"]}
+                  onChange={handleChange("price")}
+                  error={formik.touched.price ? formik.errors.price : ""}
+                />
+              </Flex>
+
+              <Flex direction="column" width={1} mb={theme.spacing(1)}>
+                <Flex mb={theme.spacing(1)} alignItems="flex-end" width={1}>
+                  <Flex mb={theme.spacing(1)} mr={theme.spacing(1)}>
+                    <Checkbox type="checkbox" name="toggleTime" />
+                  </Flex>
+                  <Flex width={1}>
+                    <Input
+                      name="time"
+                      label={translations["time"]}
+                      type="number"
+                      height="52px"
+                      placeholder="0.00"
+                      value={formik.values["time"]}
+                      onChange={handleChange("time")}
+                      disabled={!formik.values["toggleTime"]}
+                      error={formik.touched.time ? formik.errors.time : ""}
+                    />
+                  </Flex>
+                </Flex>
+
+                <Flex alignItems="flex-end" width={1}>
+                  <Flex mb={theme.spacing(1)} mr={theme.spacing(1)}>
+                    <Checkbox type="checkbox" name="toggleWeight" />
+                  </Flex>
+                  <Flex width={1}>
+                    <Input
+                      name="weight"
+                      label={translations["weight"]}
+                      type="number"
+                      height="52px"
+                      placeholder="0.00"
+                      value={formik.values["weight"]}
+                      onChange={handleChange("weight")}
+                      disabled={!formik.values["toggleWeight"]}
+                      error={formik.touched.weight ? formik.errors.weight : ""}
+                    />
+                  </Flex>
+                </Flex>
+              </Flex>
+            </Flex>
+
+            <Flex width={1} height={1} ml={theme.spacing(1)} direction="column">
+              <Flex direction="column" width={1} mb={theme.spacing(1)}>
+                <SelectComponent
+                  placeholder="Select"
+                  options={categoryOptions}
+                  name="category"
+                  value={formik.values["category"]}
+                  onFieldValue={formik.setFieldValue}
+                  label={translations["category"]}
+                />
+              </Flex>
+
+              <Flex direction="column" width={1} mb={theme.spacing(1)}>
+                <Multiselect
+                  placeholder=""
+                  options={addonOptions}
+                  name="addons"
+                  value={formik.values["addons"]}
+                  onFieldValue={formik.setFieldValue}
+                  label={translations["apply_add_ons"]}
+                  translations={translations}
+                />
+              </Flex>
+
+              <Flex
+                direction="column"
+                width={1}
+                height={1}
+                mb={theme.spacing(1)}
+              >
+                <Textarea
+                  name="description"
+                  label={translations["description"]}
+                  placeholder={translations["enter_name"]}
+                  error={
+                    formik.touched.description ? formik.errors.description : ""
+                  }
+                />
+              </Flex>
+            </Flex>
+          </Flex>
+          <PopupWindowControlButton
+            onToggleHidden={onToggleHidden}
+            translations={translations}
+            buttonName={translations["create"]}
           />
         </Flex>
-
-        <Flex height={1} width={1} mb={theme.spacing(3)}>
-          <Flex height={1} width={1} mr={theme.spacing(1)} direction="column">
-            <Flex width={1} mb={theme.spacing(1)}>
-              <Input
-                name="name"
-                placeholder={translations["enter_name"]}
-                type="string"
-                label={translations["name"]}
-                value={formik.values["name"]}
-                onChange={handleChange("name")}
-                error={formik.touched.name ? formik.errors.name : ""}
-              />
-            </Flex>
-
-            <Flex direction="column" width={1} mb={theme.spacing(1)}>
-              <Input
-                name="price"
-                type="number"
-                placeholder="0.00"
-                label={translations["price"]}
-                value={formik.values["price"]}
-                onChange={handleChange("price")}
-                error={formik.touched.price ? formik.errors.price : ""}
-              />
-            </Flex>
-
-            <Flex direction="column" width={1} mb={theme.spacing(1)}>
-              <Flex mb={theme.spacing(1)} alignItems="flex-end" width={1}>
-                <Flex mb={theme.spacing(1)} mr={theme.spacing(1)}>
-                  <Checkbox type="checkbox" name="toggleTime" />
-                </Flex>
-                <Flex width={1}>
-                  <Input
-                    name="time"
-                    label={translations["time"]}
-                    type="number"
-                    height="52px"
-                    placeholder="0.00"
-                    value={formik.values["time"]}
-                    onChange={handleChange("time")}
-                    disabled={!formik.values["toggleTime"]}
-                    error={formik.touched.time ? formik.errors.time : ""}
-                  />
-                </Flex>
-              </Flex>
-
-              <Flex alignItems="flex-end" width={1}>
-                <Flex mb={theme.spacing(1)} mr={theme.spacing(1)}>
-                  <Checkbox type="checkbox" name="toggleWeight" />
-                </Flex>
-                <Flex width={1}>
-                  <Input
-                    name="weight"
-                    label={translations["weight"]}
-                    type="number"
-                    height="52px"
-                    placeholder="0.00"
-                    value={formik.values["weight"]}
-                    onChange={handleChange("weight")}
-                    disabled={!formik.values["toggleWeight"]}
-                    error={formik.touched.weight ? formik.errors.weight : ""}
-                  />
-                </Flex>
-              </Flex>
-            </Flex>
-          </Flex>
-
-          <Flex width={1} height={1} ml={theme.spacing(1)} direction="column">
-            <Flex direction="column" width={1} mb={theme.spacing(1)}>
-              <SelectComponent
-                placeholder="Select"
-                options={categoryOptions}
-                name="category"
-                value={formik.values["category"]}
-                onFieldValue={formik.setFieldValue}
-                label={translations["category"]}
-              />
-            </Flex>
-
-            <Flex direction="column" width={1} mb={theme.spacing(1)}>
-              <Multiselect
-                placeholder=""
-                options={addonOptions}
-                name="addons"
-                value={formik.values["addons"]}
-                onFieldValue={formik.setFieldValue}
-                label={translations["apply_add_ons"]}
-                translations={translations}
-              />
-            </Flex>
-
-            <Flex direction="column" width={1} height={1} mb={theme.spacing(1)}>
-              <Textarea
-                name="description"
-                label={translations["description"]}
-                placeholder={translations["enter_name"]}
-                error={
-                  formik.touched.description ? formik.errors.description : ""
-                }
-              />
-            </Flex>
-          </Flex>
-        </Flex>
-        <PopupWindowControlButton
-          onToggleHidden={onToggleHidden}
-          translations={translations}
-          buttonName={translations["create"]}
-        />
-      </Flex>
+      </Form>
     </FormikProvider>
   );
 };

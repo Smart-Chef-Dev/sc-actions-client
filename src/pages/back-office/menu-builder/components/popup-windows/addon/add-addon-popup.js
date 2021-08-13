@@ -16,6 +16,7 @@ import {
 import { ConstructorAddonScheme } from "pages/back-office/menu-builder/yup-schemes/constructor-addon-scheme";
 import { theme } from "theme";
 import PopupWindowControlButton from "../popup-window-control-button";
+import { Form } from "components/form";
 
 const initialValues = {
   name: "",
@@ -100,82 +101,84 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId, translations }) => {
 
   return (
     <FormikProvider value={formik}>
-      <Flex
-        width={1}
-        height={1}
-        boxSizing="border-box"
-        p={theme.spacing(4)}
-        direction="column"
-      >
-        <Text
-          mb={theme.spacing(4)}
-          fontSize={theme.fontSize(2)}
-          fontWeight="bold"
+      <Form onSubmit={formik.handleSubmit}>
+        <Flex
+          width={1}
+          height={1}
+          boxSizing="border-box"
+          p={theme.spacing(4)}
+          direction="column"
         >
-          {translations["create_add_on"]}
-        </Text>
+          <Text
+            mb={theme.spacing(4)}
+            fontSize={theme.fontSize(2)}
+            fontWeight="bold"
+          >
+            {translations["create_add_on"]}
+          </Text>
 
-        <Flex width={1} height={1}>
-          <Flex width={1} height={1} mr={theme.spacing(1)} direction="column">
-            <Flex width={1} mb={theme.spacing(1)}>
-              <Input
-                name="name"
-                placeholder={translations["enter_name"]}
-                type="string"
-                label={translations["name"]}
-                value={formik.values["name"]}
-                onChange={handleChange("name")}
-                error={formik.touched.name ? formik.errors.name : ""}
-              />
+          <Flex width={1} height={1}>
+            <Flex width={1} height={1} mr={theme.spacing(1)} direction="column">
+              <Flex width={1} mb={theme.spacing(1)}>
+                <Input
+                  name="name"
+                  placeholder={translations["enter_name"]}
+                  type="string"
+                  label={translations["name"]}
+                  value={formik.values["name"]}
+                  onChange={handleChange("name")}
+                  error={formik.touched.name ? formik.errors.name : ""}
+                />
+              </Flex>
+              <Flex width={1} mb={theme.spacing(1)}>
+                <Input
+                  name="price"
+                  placeholder="0.00"
+                  type="string"
+                  label={translations["price"]}
+                  value={formik.values["price"]}
+                  onChange={handleChange("price")}
+                  error={formik.touched.price ? formik.errors.price : ""}
+                />
+              </Flex>
+              <Flex width={1}>
+                <Input
+                  name="weight"
+                  placeholder="0.00"
+                  type="string"
+                  label={translations["weight"]}
+                  value={formik.values["weight"]}
+                  onChange={handleChange("weight")}
+                />
+              </Flex>
             </Flex>
-            <Flex width={1} mb={theme.spacing(1)}>
-              <Input
-                name="price"
-                placeholder="0.00"
-                type="string"
-                label={translations["price"]}
-                value={formik.values["price"]}
-                onChange={handleChange("price")}
-                error={formik.touched.price ? formik.errors.price : ""}
-              />
-            </Flex>
-            <Flex width={1}>
-              <Input
-                name="weight"
-                placeholder="0.00"
-                type="string"
-                label={translations["weight"]}
-                value={formik.values["weight"]}
-                onChange={handleChange("weight")}
+
+            <Flex width={1} height={1} ml={theme.spacing(1)} direction="column">
+              <Multiselect
+                placeholder=""
+                translations={translations}
+                options={menuItemOption}
+                name="menuItems"
+                value={formik.values["menuItems"]}
+                onFieldValue={formik.setFieldValue}
+                label={translations["apply_add_ons_to_item"]}
               />
             </Flex>
           </Flex>
-
-          <Flex width={1} height={1} ml={theme.spacing(1)} direction="column">
-            <Multiselect
-              placeholder=""
-              translations={translations}
-              options={menuItemOption}
-              name="menuItems"
-              value={formik.values["menuItems"]}
-              onFieldValue={formik.setFieldValue}
-              label={translations["apply_add_ons_to_item"]}
-            />
-          </Flex>
+          {isError && (
+            <Flex mb={theme.spacing(1)} width={1} justifyContent="center">
+              <ErrorText>
+                {translations["An_add-on_with_same_name_already_exists"]}
+              </ErrorText>
+            </Flex>
+          )}
+          <PopupWindowControlButton
+            onToggleHidden={onToggleHidden}
+            translations={translations}
+            buttonName={translations["create"]}
+          />
         </Flex>
-        {isError && (
-          <Flex mb={theme.spacing(1)} width={1} justifyContent="center">
-            <ErrorText>
-              {translations["An_add-on_with_same_name_already_exists"]}
-            </ErrorText>
-          </Flex>
-        )}
-        <PopupWindowControlButton
-          onToggleHidden={onToggleHidden}
-          translations={translations}
-          buttonName={translations["create"]}
-        />
-      </Flex>
+      </Form>
     </FormikProvider>
   );
 };
