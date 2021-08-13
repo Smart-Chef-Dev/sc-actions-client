@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "react-query";
 
 import { createMenuItem } from "services/menuItemsService";
 import StyleEditMenuItem from "./style-edit-menu-item";
-import { ConstructorMenuItemScheme } from "../yup-schemes/constructor-menu-item-scheme";
+import { ConstructorMenuItemScheme } from "../../yup-schemes/constructor-menu-item-scheme";
 
 const AddMenuItemPopup = ({
   onToggleHidden,

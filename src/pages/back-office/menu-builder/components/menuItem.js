@@ -1,82 +1,18 @@
 import { memo, useCallback, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
 import PropTypes from "prop-types";
-import { styled } from "@linaria/react";
 
 import { Text } from "components/text";
 import { Flex } from "components/flex";
 import { swapMenuItems } from "services/menuItemsService";
-import UpArrow from "assets/icons/back-office/up_arrow.svg";
-import ArrowToDown from "assets/icons/back-office/arrow_to_down.svg";
 import { theme } from "theme";
 import MenuItemControlButtons from "./menu-item-control-buttons";
+import SwapElement from "./swap-element";
 
 const MenuItem = ({ menuItem, menuItems, index, categories, translations }) => {
   const [menuItemInFocus, setMenuItemInFocus] = useState(false);
-  const queryClient = useQueryClient();
-
-  const raiseMenuItemMutation = useMutation(swapMenuItems, {
-    onSuccess: () => {
-      queryClient.setQueryData(
-        ["menuItems", { categoryId: menuItem.category._id }],
-        menuItems.map((currentCategory, i) => {
-          if (index - 1 === i) {
-            return menuItem;
-          }
-
-          if (index === i) {
-            return menuItems[index - 1];
-          }
-
-          return currentCategory;
-        })
-      );
-    },
-  });
-
-  const omitMenuItemMutation = useMutation(swapMenuItems, {
-    onSuccess: () => {
-      queryClient.setQueryData(
-        ["menuItems", { categoryId: menuItem.category._id }],
-        menuItems.map((currentMenuItem, i) => {
-          if (index + 1 === i) {
-            return menuItem;
-          }
-
-          if (index === i) {
-            return menuItems[index + 1];
-          }
-
-          return currentMenuItem;
-        })
-      );
-    },
-  });
 
   const expandTabMenu = useCallback(() => setMenuItemInFocus(true), []);
   const collapseTabMenu = useCallback(() => setMenuItemInFocus(false), []);
-
-  const raiseMenuItem = useCallback(async () => {
-    if (index === 0) {
-      return;
-    }
-
-    await raiseMenuItemMutation.mutateAsync({
-      menuItemId1: menuItem._id,
-      menuItemId2: menuItems[index - 1]._id,
-    });
-  }, [index, menuItems, raiseMenuItemMutation, menuItem]);
-
-  const omitMenuItem = useCallback(async () => {
-    if (index === menuItems.length - 1) {
-      return;
-    }
-
-    await omitMenuItemMutation.mutateAsync({
-      menuItemId1: menuItem._id,
-      menuItemId2: menuItems[index + 1]._id,
-    });
-  }, [index, menuItems, omitMenuItemMutation, menuItem]);
 
   return (
     <Flex
@@ -89,19 +25,13 @@ const MenuItem = ({ menuItem, menuItems, index, categories, translations }) => {
       boxSizing="border-box"
       alignItems="center"
     >
-      <Flex direction="column" mr={theme.spacing(1)}>
-        {menuItemInFocus ? (
-          <Flex direction="column">
-            <UpArrow onClick={raiseMenuItem} />
-            <ArrowToDown onClick={omitMenuItem} />
-          </Flex>
-        ) : (
-          <NoFocusButtons direction="column">
-            <UpArrow />
-            <ArrowToDown />
-          </NoFocusButtons>
-        )}
-      </Flex>
+      <SwapElement
+        index={index}
+        element={menuItem}
+        isButtonsDisplay={menuItemInFocus}
+        swapService={swapMenuItems}
+        queryKey={["menuItems", { categoryId: menuItem.category._id }]}
+      />
       <Text
         width={1}
         boxSizing="border-box"
@@ -120,10 +50,6 @@ const MenuItem = ({ menuItem, menuItems, index, categories, translations }) => {
     </Flex>
   );
 };
-
-const NoFocusButtons = styled(Flex)`
-  opacity: 0;
-`;
 
 MenuItem.propTypes = {
   menuItem: PropTypes.object,

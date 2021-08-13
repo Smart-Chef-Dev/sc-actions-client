@@ -1,40 +1,38 @@
 import { memo, useCallback, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { useFormik } from "formik";
 import PropTypes from "prop-types";
+import { styled } from "@linaria/react";
+import { useFormik } from "formik";
+import { useMutation, useQueryClient } from "react-query";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import Input from "components/input";
 import Button from "components/button";
-import { Form } from "components/form";
 import ErrorText from "components/error-text";
-import { editCategory } from "services/categoriesService";
-import { ConstructorCategoryScheme } from "../yup-schemes/constructor-category-scheme";
+import { addCategory } from "services/categoriesService";
 import { theme } from "theme";
+import { ConstructorCategoryScheme } from "pages/back-office/menu-builder/yup-schemes/constructor-category-scheme";
 
-const EditCategoryPopup = ({
-  category,
-  categories,
-  restaurantId,
-  onToggleHidden,
-  translations,
-}) => {
+const AddCategoryPopup = ({ onToggleHidden, restaurantId, translations }) => {
   const [error, setError] = useState(null);
+
   const queryClient = useQueryClient();
-  const addCategoryMutation = useMutation(editCategory, {
+  const addCategoryMutation = useMutation(addCategory, {
     onSuccess: (data) => {
+      const dataInCache = queryClient.getQueryData([
+        "categories",
+        { restaurantId },
+      ]);
+
       queryClient.setQueryData(
         ["categories", { restaurantId }],
-        categories.map((currentCategory) =>
-          currentCategory._id === category._id ? data : currentCategory
-        )
+        [...dataInCache, data]
       );
     },
   });
 
   const initialValues = {
-    name: category.name,
+    name: "",
   };
 
   const formik = useFormik({
@@ -42,10 +40,9 @@ const EditCategoryPopup = ({
     validationSchema: ConstructorCategoryScheme(translations),
     onSubmit: useCallback(
       async (values) => {
-        ``;
         try {
           await addCategoryMutation.mutateAsync({
-            categoryId: category._id,
+            restaurantId,
             body: values,
           });
 
@@ -54,7 +51,7 @@ const EditCategoryPopup = ({
           setError(err);
         }
       },
-      [onToggleHidden, addCategoryMutation, category]
+      [onToggleHidden, addCategoryMutation, restaurantId]
     ),
   });
 
@@ -86,13 +83,13 @@ const EditCategoryPopup = ({
             fontSize={theme.fontSize(3)}
             mb={theme.spacing(4)}
           >
-            {translations["edit_category"]}
+            {translations["create_category"]}
           </Text>
           <Flex mb={theme.spacing(2)} width={1} direction="column">
             <Input
               name="name"
               type="string"
-              placeholder="Enter name"
+              placeholder={translations["enter_name"]}
               onChange={handleChange("name")}
               label={translations["category_name"]}
               value={formik.values["name"]}
@@ -118,7 +115,7 @@ const EditCategoryPopup = ({
             {translations["cancel"]}
           </Button>
           <Button width="auto" mb="0" type="submit">
-            {translations["save"]}
+            {translations["create"]}
           </Button>
         </Flex>
       </Flex>
@@ -126,12 +123,15 @@ const EditCategoryPopup = ({
   );
 };
 
-EditCategoryPopup.propTypes = {
-  category: PropTypes.object,
-  restaurantId: PropTypes.string,
-  categories: PropTypes.array,
+const Form = styled.form`
+  width: 100%;
+  height: 100%;
+`;
+
+AddCategoryPopup.propTypes = {
   onToggleHidden: PropTypes.func,
+  restaurantId: PropTypes.string,
   translations: PropTypes.object,
 };
 
-export default memo(EditCategoryPopup);
+export default memo(AddCategoryPopup);

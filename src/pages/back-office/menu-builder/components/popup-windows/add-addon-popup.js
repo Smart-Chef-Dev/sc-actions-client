@@ -14,7 +14,7 @@ import {
   addAddonIntoMenuItem,
   addAddonIntoRestaurant,
 } from "services/addonsService";
-import { ConstructorAddonScheme } from "../yup-schemes/constructor-addon-scheme";
+import { ConstructorAddonScheme } from "../../yup-schemes/constructor-addon-scheme";
 import { theme } from "theme";
 
 const initialValues = {

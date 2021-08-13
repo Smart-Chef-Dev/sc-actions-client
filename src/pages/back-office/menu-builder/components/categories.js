@@ -1,14 +1,19 @@
 import { Fragment, memo, useState } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
+import { useQuery } from "react-query";
 
 import { Flex } from "components/flex";
 import Category from "./category";
 import { Divider } from "components/divider";
+import { getAllCategories } from "services/categoriesService";
 
-const Categories = ({ categories, restaurantId, translations }) => {
+const Categories = ({ restaurantId, translations }) => {
   const [expandedCategoryId, setExpandedCategoryId] = useState("");
-  const { data, isLoading } = categories;
+  const { data, isLoading } = useQuery(
+    ["categories", { restaurantId }],
+    getAllCategories
+  );
 
   return (
     !isLoading && (
@@ -38,7 +43,6 @@ const CategoriesContainer = styled(Flex)`
 `;
 
 Categories.propTypes = {
-  categories: PropTypes.object,
   restaurantId: PropTypes.string,
   translations: PropTypes.object,
 };

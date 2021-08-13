@@ -1,17 +1,14 @@
-import { memo, useCallback } from "react";
+import { memo } from "react";
 import { useQuery } from "react-query";
 import { useLocation, useRoute } from "wouter";
 
 import { Flex } from "components/flex";
-import Button from "components/button";
 import Categories from "./components/categories";
 import { theme } from "theme";
 import { Routes } from "constants/routes";
-import { getAllCategories } from "services/categoriesService";
-import { useConfirmationPopup } from "hooks/useConfirmationPopup";
-import AddCategoryPopup from "./components/add-category-popup";
 import { checkingUserAccess } from "services/restaurantService";
-import { useTranslation } from "../../../contexts/translation-context";
+import { useTranslation } from "contexts/translation-context";
+import CreateCategoryButton from "./components/popup-windows/create-category-button";
 
 const MenuBuilder = () => {
   const [, { restaurantId }] = useRoute(Routes.MENU_BUILDER);
@@ -21,11 +18,7 @@ const MenuBuilder = () => {
     strings: { menuBuilder: translations },
   } = useTranslation();
 
-  const categories = useQuery(
-    ["categories", { restaurantId }],
-    getAllCategories
-  );
-  const { isLoading } = useQuery(
+  const checkingAccessToRestaurant = useQuery(
     ["verificationOfRights", { restaurantId }],
     checkingUserAccess,
     {
@@ -36,19 +29,8 @@ const MenuBuilder = () => {
     }
   );
 
-  const { renderNotification, showNotification } = useConfirmationPopup(
-    AddCategoryPopup,
-    "500px",
-    "380px",
-    { restaurantId, categories: categories.data, translations }
-  );
-
-  const createCategory = useCallback(() => {
-    showNotification();
-  }, [showNotification]);
-
   return (
-    !isLoading && (
+    !checkingAccessToRestaurant.isLoading && (
       <Flex
         width={1}
         height={1}
@@ -57,18 +39,14 @@ const MenuBuilder = () => {
         overflowY="auto"
         boxSizing="border-box"
       >
-        {renderNotification()}
         <Flex width={1} justifyContent="flex-end">
-          <Button onClick={createCategory} width="auto">
-            {translations["create_category_bold"]}
-          </Button>
-        </Flex>
-        <Flex width={1}>
-          <Categories
-            categories={categories}
+          <CreateCategoryButton
             restaurantId={restaurantId}
             translations={translations}
           />
+        </Flex>
+        <Flex width={1}>
+          <Categories restaurantId={restaurantId} translations={translations} />
         </Flex>
       </Flex>
     )

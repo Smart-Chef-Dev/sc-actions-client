@@ -46,9 +46,9 @@ export const editCategory = async ({ categoryId, body }) => {
   return res.json();
 };
 
-export const swapCategories = async ({ categoryId1, categoryId2 }) => {
+export const swapCategories = async ({ elementId1, elementId2 }) => {
   const res = await fetch(
-    `/api/category/${categoryId1}/swap/${categoryId2}`,
+    `/api/category/${elementId1}/swap/${elementId2}`,
     fetchOptions({ method: "POST" })
   );
 

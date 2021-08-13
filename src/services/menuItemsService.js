@@ -36,9 +36,9 @@ export const createMenuItem = async ({ categoryId, body }) => {
   return res.json();
 };
 
-export const swapMenuItems = async ({ menuItemId1, menuItemId2 }) => {
+export const swapMenuItems = async ({ elementId1, elementId2 }) => {
   const res = await fetch(
-    `/api/menu/${menuItemId1}/swap/${menuItemId2}`,
+    `/api/menu/${elementId1}/swap/${elementId2}`,
     fetchOptions({ method: "POST" })
   );
 

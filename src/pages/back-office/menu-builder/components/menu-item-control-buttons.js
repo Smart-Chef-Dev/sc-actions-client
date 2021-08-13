@@ -5,9 +5,9 @@ import { Flex } from "components/flex";
 import Basket from "assets/icons/back-office/basket.svg";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import EditIcon from "assets/icons/back-office/edit_icon.svg";
-import DeleteMenuItemPopup from "./delete-menu-item-popup";
+import DeleteMenuItemPopup from "./popup-windows/delete-menu-item-popup";
 import { theme } from "theme";
-import EditMenuItemPopup from "./edit-menu-item-popup";
+import EditMenuItemPopup from "./popup-windows/edit-menu-item-popup";
 
 const MenuItemControlButtons = ({
   menuItem,

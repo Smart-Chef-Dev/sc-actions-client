@@ -14,7 +14,7 @@ import Multiselect from "components/multiselect";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import AddAddonPopup from "./add-addon-popup";
 import { getRestaurantAddons } from "services/addonsService";
-import UploadPhotoComponent from "./upload-photo-component";
+import UploadPhotoComponent from "../upload-photo-component";
 import { FormikProvider } from "formik";
 
 const StyleEditMenuItem = ({
