@@ -49,6 +49,7 @@ export const selectStyles = {
       backgroundColor:
         !state.isSelected && "var(--red-color-for-selected-object)",
     },
+    ":active": {},
   }),
   menuList: (provided) => ({
     ...provided,
