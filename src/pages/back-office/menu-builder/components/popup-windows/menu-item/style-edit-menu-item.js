@@ -17,6 +17,7 @@ import { getRestaurantAddons } from "services/addonsService";
 import UploadPhotoComponent from "../../upload-photo-component";
 import PopupWindowControlButton from "../popup-window-control-button";
 import { Form } from "components/form";
+import { styled } from "@linaria/react";
 
 const StyleEditMenuItem = ({
   formik,
@@ -129,7 +130,7 @@ const StyleEditMenuItem = ({
             />
           </Flex>
 
-          <Flex height={1} width={1} mb={theme.spacing(3)}>
+          <Flex height={1} width={1} mb={theme.spacing(1)}>
             <Flex height={1} width={1} mr={theme.spacing(1)} direction="column">
               <Flex width={1} mb={theme.spacing(1)}>
                 <Input
@@ -155,7 +156,7 @@ const StyleEditMenuItem = ({
                 />
               </Flex>
 
-              <Flex direction="column" width={1} mb={theme.spacing(1)}>
+              <Flex direction="column" width={1}>
                 <Flex mb={theme.spacing(1)} alignItems="flex-end" width={1}>
                   <Flex mb={theme.spacing(1)} mr={theme.spacing(1)}>
                     <Checkbox type="checkbox" name="toggleTime" />
@@ -220,21 +221,25 @@ const StyleEditMenuItem = ({
                 />
               </Flex>
 
-              <Flex
-                direction="column"
-                width={1}
-                height={1}
-                mb={theme.spacing(1)}
-              >
+              <Flex direction="column" width={1} height={1}>
                 <Textarea
                   name="description"
                   label={translations["description"]}
-                  placeholder={translations["enter_name"]}
-                  error={
-                    formik.touched.description ? formik.errors.description : ""
-                  }
+                  placeholder={translations["enter_text"]}
+                  error={formik.errors.description ?? ""}
                 />
               </Flex>
+            </Flex>
+          </Flex>
+          <Flex width={1} mb={theme.spacing(2)}>
+            <Flex width={1} mr={theme.spacing(1)} />
+            <Flex width={1} ml={theme.spacing(1)} position="relative">
+              <DescriptionInformation
+                fontSize={theme.fontSize(0)}
+                color={formik.errors.description ? "var(--error)" : ""}
+              >
+                {translations["maximum_characters"]}
+              </DescriptionInformation>
             </Flex>
           </Flex>
           <PopupWindowControlButton
@@ -247,6 +252,11 @@ const StyleEditMenuItem = ({
     </FormikProvider>
   );
 };
+
+const DescriptionInformation = styled(Text)`
+  position: absolute;
+  bottom: 0;
+`;
 
 StyleEditMenuItem.propTypes = {
   formik: PropTypes.object,

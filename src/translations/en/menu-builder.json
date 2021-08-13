@@ -32,5 +32,6 @@
   "min_price": "The price cannot be less than 0",
   "max_price": "The price cannot be more than 999999",
   "category_with_the_same_name_already_exists": "A category with the same name already exists.",
-  "select": "Select"
+  "select": "Select",
+  "maximum_characters": "Maximum 200 characters"
 }
