@@ -1,6 +1,7 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
+import { Field } from "formik";
 
 import { Text } from "./text";
 
@@ -20,7 +21,7 @@ const Textarea = ({ name, label, error, placeholder, id }) => {
 };
 
 const s = {
-  StyledTextarea: styled.input`
+  StyledTextarea: styled(Field)`
     width: 100%;
     height: 100%;
     display: block;
