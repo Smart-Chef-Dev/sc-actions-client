@@ -2,11 +2,11 @@ import { memo, useCallback } from "react";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
-import Button from "components/button";
 import { theme } from "theme";
 import PropTypes from "prop-types";
 import { useMutation, useQueryClient } from "react-query";
 import { deleteCategory } from "services/categoriesService";
+import PopupWindowControlButton from "../popup-window-control-button";
 
 const DeleteCategoryPopup = ({
   category,
@@ -30,10 +30,6 @@ const DeleteCategoryPopup = ({
       );
     },
   });
-
-  const cancelRemovalCategory = useCallback(() => {
-    onToggleHidden(true);
-  }, [onToggleHidden]);
 
   const removeCategory = useCallback(async () => {
     try {
@@ -71,19 +67,13 @@ const DeleteCategoryPopup = ({
           {translations["deleted_data_cannot_be_recovered"]}
         </Text>
       </Flex>
-      <Flex width={1} justifyContent="space-between">
-        <Button
-          background="var(--text-grey)"
-          width="auto"
-          mb="0"
-          onClick={cancelRemovalCategory}
-        >
-          {translations["cancel"]}
-        </Button>
-        <Button width="auto" mb="0" onClick={removeCategory}>
-          {translations["delete"]}
-        </Button>
-      </Flex>
+      <PopupWindowControlButton
+        onToggleHidden={onToggleHidden}
+        translations={translations}
+        buttonName={translations["delete"]}
+        buttonAction={removeCategory}
+        buttonWidth="auto"
+      />
     </Flex>
   );
 };

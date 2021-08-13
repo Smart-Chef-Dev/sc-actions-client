@@ -6,7 +6,6 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import Input from "components/input";
-import Button from "components/button";
 import Multiselect from "components/multiselect";
 import ErrorText from "components/error-text";
 import { findAllMenuItems } from "services/menuItemsService";
@@ -14,8 +13,9 @@ import {
   addAddonIntoMenuItem,
   addAddonIntoRestaurant,
 } from "services/addonsService";
-import { ConstructorAddonScheme } from "../../../yup-schemes/constructor-addon-scheme";
+import { ConstructorAddonScheme } from "pages/back-office/menu-builder/yup-schemes/constructor-addon-scheme";
 import { theme } from "theme";
+import PopupWindowControlButton from "../popup-window-control-button";
 
 const initialValues = {
   name: "",
@@ -98,10 +98,6 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId, translations }) => {
     [formik]
   );
 
-  const cancelAddingCategory = useCallback(() => {
-    onToggleHidden(true);
-  }, [onToggleHidden]);
-
   return (
     <FormikProvider value={formik}>
       <Flex
@@ -174,16 +170,11 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId, translations }) => {
             </ErrorText>
           </Flex>
         )}
-        <Flex width={1} justifyContent="space-between">
-          <Button
-            type="button"
-            onClick={cancelAddingCategory}
-            background="var(--text-grey)"
-          >
-            {translations["cancel"]}
-          </Button>
-          <Button type="submit">{translations["create"]}</Button>
-        </Flex>
+        <PopupWindowControlButton
+          onToggleHidden={onToggleHidden}
+          translations={translations}
+          buttonName={translations["create"]}
+        />
       </Flex>
     </FormikProvider>
   );

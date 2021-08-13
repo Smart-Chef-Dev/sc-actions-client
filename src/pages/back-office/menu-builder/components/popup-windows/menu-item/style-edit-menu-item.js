@@ -1,13 +1,13 @@
 import { memo, useCallback, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useQuery } from "react-query";
+import { FormikProvider } from "formik";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import Input from "components/input";
 import { Checkbox } from "components/checkbox";
 import Textarea from "components/textarea";
-import Button from "components/button";
 import SelectComponent from "components/select-component";
 import { theme } from "theme";
 import Multiselect from "components/multiselect";
@@ -15,7 +15,7 @@ import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import AddAddonPopup from "../addon/add-addon-popup";
 import { getRestaurantAddons } from "services/addonsService";
 import UploadPhotoComponent from "../../upload-photo-component";
-import { FormikProvider } from "formik";
+import PopupWindowControlButton from "../popup-window-control-button";
 
 const StyleEditMenuItem = ({
   formik,
@@ -94,16 +94,10 @@ const StyleEditMenuItem = ({
 
   const handleChange = useCallback(
     (fieldName) => (e) => {
-      console.log(fieldName);
-      console.log(e);
       formik.setFieldValue(fieldName, e);
     },
     [formik]
   );
-
-  const cancelAddingCategory = useCallback(() => {
-    onToggleHidden(true);
-  }, [onToggleHidden]);
 
   return (
     <FormikProvider value={formik}>
@@ -236,17 +230,11 @@ const StyleEditMenuItem = ({
             </Flex>
           </Flex>
         </Flex>
-
-        <Flex width={1} justifyContent="space-between">
-          <Button
-            type="button"
-            onClick={cancelAddingCategory}
-            background="var(--text-grey)"
-          >
-            {translations["cancel"]}
-          </Button>
-          <Button type="submit">{translations["create"]}</Button>
-        </Flex>
+        <PopupWindowControlButton
+          onToggleHidden={onToggleHidden}
+          translations={translations}
+          buttonName={translations["create"]}
+        />
       </Flex>
     </FormikProvider>
   );

@@ -4,9 +4,9 @@ import { useMutation, useQueryClient } from "react-query";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
-import Button from "components/button";
 import { theme } from "theme";
 import { deleteMenuItem } from "services/menuItemsService";
+import PopupWindowControlButton from "../popup-window-control-button";
 
 const DeleteMenuItemPopup = ({
   menuItem,
@@ -25,10 +25,6 @@ const DeleteMenuItemPopup = ({
       );
     },
   });
-
-  const cancelRemovalMenuItem = useCallback(() => {
-    onToggleHidden(true);
-  }, [onToggleHidden]);
 
   const removeMenuItem = useCallback(async () => {
     try {
@@ -64,19 +60,13 @@ const DeleteMenuItemPopup = ({
           {translations["deleted_items_cannot_be_recovered"]}
         </Text>
       </Flex>
-      <Flex width={1} justifyContent="space-between">
-        <Button
-          background="var(--text-grey)"
-          width="auto"
-          mb="0"
-          onClick={cancelRemovalMenuItem}
-        >
-          {translations["cancel"]}
-        </Button>
-        <Button width="auto" mb="0" onClick={removeMenuItem}>
-          {translations["delete"]}
-        </Button>
-      </Flex>
+      <PopupWindowControlButton
+        onToggleHidden={onToggleHidden}
+        translations={translations}
+        buttonName={translations["create"]}
+        buttonAction={removeMenuItem}
+        buttonWidth="auto"
+      />
     </Flex>
   );
 };

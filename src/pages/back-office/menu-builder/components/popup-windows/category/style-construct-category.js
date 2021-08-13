@@ -5,9 +5,9 @@ import { Flex } from "components/flex";
 import { Text } from "components/text";
 import Input from "components/input";
 import ErrorText from "components/error-text";
-import Button from "components/button";
 import { Form } from "components/form";
 import { theme } from "theme";
+import PopupWindowControlButton from "../popup-window-control-button";
 
 const StyleConstructCategory = ({
   formik,
@@ -23,10 +23,6 @@ const StyleConstructCategory = ({
     },
     [formik]
   );
-
-  const cancelAddingCategory = useCallback(() => {
-    onToggleHidden(true);
-  }, [onToggleHidden]);
 
   return (
     <Form onSubmit={formik.handleSubmit}>
@@ -66,20 +62,12 @@ const StyleConstructCategory = ({
             </ErrorText>
           )}
         </Flex>
-        <Flex justifyContent="space-between" width={1}>
-          <Button
-            background="var(--text-grey)"
-            width="none"
-            mb="0"
-            onClick={cancelAddingCategory}
-            type="button"
-          >
-            {translations["cancel"]}
-          </Button>
-          <Button width="auto" mb="0" type="submit">
-            {buttonName}
-          </Button>
-        </Flex>
+        <PopupWindowControlButton
+          onToggleHidden={onToggleHidden}
+          translations={translations}
+          buttonName={buttonName}
+          buttonWidth="auto"
+        />
       </Flex>
     </Form>
   );
