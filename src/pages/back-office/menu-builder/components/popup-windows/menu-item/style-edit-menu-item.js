@@ -232,7 +232,7 @@ const StyleEditMenuItem = ({
               </Flex>
             </Flex>
           </Flex>
-          <Flex width={1} mb={theme.spacing(2)}>
+          <Flex width={1} mb={theme.spacing(4)}>
             <Flex width={1} mr={theme.spacing(1)} />
             <Flex width={1} ml={theme.spacing(1)} position="relative">
               <DescriptionInformation
