@@ -8,15 +8,15 @@ import { Text } from "components/text";
 import Input from "components/input";
 import Multiselect from "components/multiselect";
 import ErrorText from "components/error-text";
+import { Form } from "components/form";
 import { findAllMenuItems } from "services/menuItemsService";
 import {
   addAddonIntoMenuItem,
   addAddonIntoRestaurant,
 } from "services/addonsService";
 import { ConstructorAddonScheme } from "pages/back-office/menu-builder/yup-schemes/constructor-addon-scheme";
-import { theme } from "theme";
 import PopupWindowControlButton from "../popup-window-control-button";
-import { Form } from "components/form";
+import { theme } from "theme";
 
 const initialValues = {
   name: "",

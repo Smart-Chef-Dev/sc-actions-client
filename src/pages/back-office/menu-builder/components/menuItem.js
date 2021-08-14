@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import { Text } from "components/text";
 import { Flex } from "components/flex";
 import { swapMenuItems } from "services/menuItemsService";
-import { theme } from "theme";
 import MenuItemControlButtons from "./menu-item-control-buttons";
 import SwapElement from "./swap-element";
+import { theme } from "theme";
 
 const MenuItem = ({ menuItem, menuItems, index, categories, translations }) => {
   const [menuItemInFocus, setMenuItemInFocus] = useState(false);

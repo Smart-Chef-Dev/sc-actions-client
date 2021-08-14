@@ -4,11 +4,11 @@ import { useLocation, useRoute } from "wouter";
 
 import { Flex } from "components/flex";
 import Categories from "./components/categories";
-import { theme } from "theme";
 import { Routes } from "constants/routes";
+import CreateCategoryButton from "./components/create-category-button";
 import { checkingUserAccess } from "services/restaurantService";
 import { useTranslation } from "contexts/translation-context";
-import CreateCategoryButton from "./components/create-category-button";
+import { theme } from "theme";
 
 const MenuBuilder = () => {
   const [, { restaurantId }] = useRoute(Routes.MENU_BUILDER);
@@ -38,7 +38,6 @@ const MenuBuilder = () => {
         direction="column"
         overflowY="auto"
         boxSizing="border-box"
-        data-title="11111"
       >
         <Flex width={1} justifyContent="flex-end">
           <CreateCategoryButton

@@ -7,6 +7,10 @@ import { addCategory } from "services/categoriesService";
 import { ConstructorCategoryScheme } from "pages/back-office/menu-builder/yup-schemes/constructor-category-scheme";
 import StyleConstructCategory from "./style-construct-category";
 
+const initialValues = {
+  name: "",
+};
+
 const AddCategoryPopup = ({ onToggleHidden, restaurantId, translations }) => {
   const [error, setError] = useState(null);
 
@@ -24,10 +28,6 @@ const AddCategoryPopup = ({ onToggleHidden, restaurantId, translations }) => {
       );
     },
   });
-
-  const initialValues = {
-    name: "",
-  };
 
   const formik = useFormik({
     initialValues: initialValues,

@@ -14,6 +14,7 @@ const EditCategoryPopup = ({
   translations,
 }) => {
   const [error, setError] = useState(null);
+
   const queryClient = useQueryClient();
   const addCategoryMutation = useMutation(editCategory, {
     onSuccess: (data) => {

@@ -1,9 +1,9 @@
 import { memo, useCallback } from "react";
+import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import { theme } from "theme";
-import PropTypes from "prop-types";
 import { useMutation, useQueryClient } from "react-query";
 import { deleteCategory } from "services/categoriesService";
 import PopupWindowControlButton from "../popup-window-control-button";

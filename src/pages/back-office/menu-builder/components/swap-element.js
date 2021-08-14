@@ -23,6 +23,7 @@ const SwapElement = ({
       const element2 = allElement.find(
         (currentElement) => currentElement._id === requestData.elementId2
       );
+
       queryClient.setQueryData(
         queryKey,
         allElement.map((currentElement) => {
