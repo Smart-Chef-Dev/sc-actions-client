@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useFormik } from "formik";
 
 import StyleEditMenuItem from "./style-edit-menu-item";
-import { ConstructorMenuItemScheme } from "../../../yup-schemes/constructor-menu-item-scheme";
+import { ConstructorMenuItemScheme } from "pages/back-office/menu-builder/yup-schemes/constructor-menu-item-scheme";
 import { useMutation, useQueryClient } from "react-query";
 import { editMenuItem } from "services/menuItemsService";
 
@@ -11,7 +11,6 @@ const EditMenuItemPopup = ({
   onToggleHidden,
   menuItem,
   categories,
-  menuItems,
   translations,
 }) => {
   const queryClient = useQueryClient();
@@ -29,15 +28,52 @@ const EditMenuItemPopup = ({
 
   const editMenuItemMutation = useMutation(editMenuItem, {
     onSuccess: (data) => {
-      queryClient.setQueryData(
-        ["menuItems", { categoryId: menuItem.category._id }],
-        menuItems.map((currentMenuItem) => {
-          if (currentMenuItem._id === menuItem._id) {
-            return data;
-          }
+      const queryKeyOldMenuItem = [
+        "menuItems",
+        { categoryId: menuItem.category._id },
+      ];
+      const oldMenuItemInCache = queryClient.getQueryData(queryKeyOldMenuItem);
 
-          return currentMenuItem;
-        })
+      if (data.category._id === menuItem.category._id) {
+        queryClient.setQueryData(
+          queryKeyOldMenuItem,
+          oldMenuItemInCache.map((currentMenuItem) =>
+            currentMenuItem._id === menuItem._id ? data : currentMenuItem
+          )
+        );
+
+        return;
+      }
+
+      const queryKeyNewMenuItem = [
+        "menuItems",
+        { categoryId: data.category._id },
+      ];
+      const newMenuItemInCache = queryClient.getQueryData(queryKeyNewMenuItem);
+
+      if (!newMenuItemInCache) {
+        queryClient.setQueryData(
+          queryKeyOldMenuItem,
+          oldMenuItemInCache.filter(
+            (currentMenuItem) => currentMenuItem._id !== data._id
+          )
+        );
+
+        return;
+      }
+
+      queryClient.setQueryData(
+        queryKeyNewMenuItem,
+        newMenuItemInCache.map((currentMenuItem) =>
+          currentMenuItem._id === menuItem._id ? data : currentMenuItem
+        )
+      );
+
+      queryClient.setQueryData(
+        queryKeyOldMenuItem,
+        oldMenuItemInCache.filter(
+          (currentMenuItem) => currentMenuItem._id !== data._id
+        )
       );
     },
   });
@@ -64,7 +100,14 @@ const EditMenuItemPopup = ({
           const category = categories.find(
             (c) => c.name === values.category.value
           );
-          delete values.category;
+
+          if (!values.toggleWeight) {
+            values.weight = "";
+          }
+          if (!values.toggleTime) {
+            values.time = "";
+          }
+
           await editMenuItemMutation.mutateAsync({
             menuItemId: menuItem._id,
             body: { ...values, categoryId: category._id },
@@ -94,7 +137,6 @@ EditMenuItemPopup.propTypes = {
   onToggleHidden: PropTypes.func,
   categories: PropTypes.array,
   menuItem: PropTypes.object,
-  menuItems: PropTypes.array,
   translations: PropTypes.object,
 };
 

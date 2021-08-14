@@ -28,7 +28,7 @@ const MenuItemControlButtons = ({
     EditMenuItemPopup,
     "900px",
     "700px",
-    { menuItem, menuItems, categories, translations }
+    { menuItem, categories, translations }
   );
 
   const deleteMenuItem = useCallback(() => {
