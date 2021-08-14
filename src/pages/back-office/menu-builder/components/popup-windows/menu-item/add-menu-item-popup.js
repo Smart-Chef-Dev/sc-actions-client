@@ -72,6 +72,7 @@ const AddMenuItemPopup = ({
       categories={categories}
       onToggleHidden={onToggleHidden}
       translations={translations}
+      heading={translations["create_item"]}
     />
   );
 };

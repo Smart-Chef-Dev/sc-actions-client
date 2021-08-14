@@ -85,6 +85,7 @@ const EditMenuItemPopup = ({
       onToggleHidden={onToggleHidden}
       onPictureFile={setPictureFile}
       translations={translations}
+      heading={translations["edit_item"]}
     />
   );
 };

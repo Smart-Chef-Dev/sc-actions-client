@@ -24,6 +24,7 @@ const StyleEditMenuItem = ({
   onToggleHidden,
   categories,
   translations,
+  heading,
 }) => {
   const restaurantId = useMemo(
     () => categories[0].restaurant._id,
@@ -118,7 +119,7 @@ const StyleEditMenuItem = ({
             fontSize={theme.fontSize(2)}
             mb={theme.spacing(1)}
           >
-            {translations["create_item"]}
+            {heading}
           </Text>
           <Flex mb={theme.spacing(1)}>
             <UploadPhotoComponent
@@ -265,6 +266,7 @@ StyleEditMenuItem.propTypes = {
   categories: PropTypes.array,
   translations: PropTypes.object,
   isPreviewError: PropTypes.bool,
+  heading: PropTypes.string,
 };
 
 export default memo(StyleEditMenuItem);

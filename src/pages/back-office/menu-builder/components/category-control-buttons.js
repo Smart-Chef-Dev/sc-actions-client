@@ -59,16 +59,25 @@ const CategoryControlButtons = ({
       {deleteCategoryPopup.renderNotification()}
       {editCategoryPopup.renderNotification()}
       {addMenuItemPopup.renderNotification()}
-      <Flex alignItems="center" mr={theme.spacing(1)}>
+      <Flex alignItems="center" mr={theme.spacing(2)}>
         {category._id === expandedCategoryId ? (
           <>
             <Flex onClick={(e) => e.stopPropagation()} alignItems="flex-end">
-              <ControlButton Icon={CreateItemIcon} buttonAction={addMenuItem} />
-              <ControlButton Icon={EditIcon} buttonAction={editCategory} />
+              <ControlButton
+                Icon={CreateItemIcon}
+                buttonAction={addMenuItem}
+                title={translations["create_item"]}
+              />
+              <ControlButton
+                Icon={EditIcon}
+                buttonAction={editCategory}
+                title={translations["edit_category"]}
+              />
               <ControlButton
                 Icon={Basket}
                 buttonAction={removeCategory}
                 stroke="black"
+                title={translations["delete_category"]}
               />
             </Flex>
             <RedTriangle />

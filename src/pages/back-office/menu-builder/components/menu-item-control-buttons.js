@@ -8,6 +8,7 @@ import EditIcon from "assets/icons/back-office/edit_icon.svg";
 import DeleteMenuItemPopup from "./popup-windows/menu-item/delete-menu-item-popup";
 import EditMenuItemPopup from "./popup-windows/menu-item/edit-menu-item-popup";
 import ControlButton from "./control-button";
+import { theme } from "theme";
 
 const MenuItemControlButtons = ({
   menuItem,
@@ -43,12 +44,17 @@ const MenuItemControlButtons = ({
       {deleteMenuItemPopup.renderNotification()}
       {editMenuItemPopup.renderNotification()}
       {menuItemInFocus && (
-        <Flex>
-          <ControlButton Icon={EditIcon} buttonAction={editMenuItem} />
+        <Flex mr={theme.spacing(1)}>
+          <ControlButton
+            Icon={EditIcon}
+            buttonAction={editMenuItem}
+            title={translations["edit_item"]}
+          />
           <ControlButton
             Icon={Basket}
             buttonAction={deleteMenuItem}
             stroke="red"
+            title={translations["delete_item"]}
           />
         </Flex>
       )}
