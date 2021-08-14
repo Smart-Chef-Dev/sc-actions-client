@@ -11,12 +11,16 @@ export const ConstructorMenuItemScheme = (translations) => {
     toggleTime: Yup.boolean(),
     time: Yup.number().when("toggleTime", {
       is: true,
-      then: Yup.number().required(translations["required"]),
+      then: Yup.number()
+        .required(translations["required"])
+        .min(1, translations["min_time"]),
     }),
     toggleWeight: Yup.boolean(),
     weight: Yup.number().when("toggleWeight", {
       is: true,
-      then: Yup.number().required(translations["required"]),
+      then: Yup.number()
+        .required(translations["required"])
+        .min(1, translations["min_weight"]),
     }),
     pictureUrl: Yup.string().required(translations["required"]),
   });

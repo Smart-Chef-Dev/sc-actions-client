@@ -30,8 +30,10 @@
   "are_you_sure_you_want_to_delete": "Are you sure you want to delete",
   "deleted_items_cannot_be_recovered": "Deleted items cannot be recovered!",
   "required": "Required",
-  "min_price": "The price cannot be less than 0",
-  "max_price": "The price cannot be more than 999999",
+  "min_price": "The price must not be less than 0",
+  "min_time": "Time must not be less than 1",
+  "min_weight": "Weight must not be less than 1",
+  "max_price": "The price should not be more than 999999",
   "category_with_the_same_name_already_exists": "A category with the same name already exists.",
   "select": "Select",
   "maximum_characters": "Maximum 200 characters"
