@@ -3,11 +3,9 @@ import { useMutation } from "react-query";
 import PropTypes from "prop-types";
 
 import Button from "components/button";
-import {
-  createCheckoutSession,
-  deleteSubscriptions,
-} from "services/stripeService";
+import { createCheckoutSession } from "services/stripeService";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
+import CancellationOfSubscriptionPopup from "./cancellation-of-subscription-popup";
 
 const PaymentButton = ({
   price,
@@ -18,20 +16,12 @@ const PaymentButton = ({
 }) => {
   const { data, isLoading, isError } = subscription;
   const createCheckoutSessionMutation = useMutation(createCheckoutSession);
-  const deleteSubscriptionsMutation = useMutation(deleteSubscriptions);
-
-  const cancelSubscription = useCallback(() => {
-    onButtonsLocked(true);
-    deleteSubscriptionsMutation.mutateAsync().finally(() => {
-      subscription.remove();
-      subscription.refetch({ cancelRefetch: true });
-      onButtonsLocked(false);
-    });
-  }, [deleteSubscriptionsMutation, subscription, onButtonsLocked]);
 
   const { renderNotification, showNotification } = useConfirmationPopup(
-    translations["cancellation_of_subscription"],
-    cancelSubscription
+    CancellationOfSubscriptionPopup,
+    "250px",
+    "200px",
+    { subscription, translations, onButtonsLocked }
   );
 
   const subscriptionItems = useMemo(

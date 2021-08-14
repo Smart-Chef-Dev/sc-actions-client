@@ -4,5 +4,7 @@
   "current_subscription": "Unsubscribe",
   "not_subscribed": "Not subscribed",
   "subscribed_successfully": "Subscribed successfully",
-  "cancellation_of_subscription": "Are you sure you want to cancel your subscription?"
+  "cancellation_of_subscription": "Are you sure you want to cancel your subscription?",
+  "continue": "Continue",
+  "cancel": "Cancel"
 }
