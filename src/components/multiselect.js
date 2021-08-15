@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import Select, { components } from "react-select";
 
@@ -67,14 +67,15 @@ const Multiselect = ({
         isSearchable={false}
         placeholder={placeholder}
         options={options}
-        components={{ DropdownIndicatorSelect, Control, Option }}
+        components={useMemo(
+          () => ({ DropdownIndicatorSelect, Control, Option }),
+          []
+        )}
         name={name}
         translations={translations}
         styles={multiselectStyles}
         value={value}
-        onChange={(option) => {
-          onFieldValue(name, option);
-        }}
+        onChange={useCallback((option) => onFieldValue(name, option), [])}
       />
     </>
   );

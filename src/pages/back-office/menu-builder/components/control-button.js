@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import { theme } from "theme";
-import Title from "components/Title";
+import Title from "components/title";
 
 const ControlButton = ({ Icon, buttonAction, stroke, title }) => {
   const [isFocusButton, setFocusButton] = useState(false);

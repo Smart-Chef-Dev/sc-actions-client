@@ -23,7 +23,7 @@ const BackOfficeLayout = ({ children }) => {
         <MenuTabs
           selectedTab={selectedTab}
           onSelectedTab={setSelectedTab}
-          onLocation={setLocation}
+          onChangeLocation={setLocation}
           location={location}
           translations={translations}
         />

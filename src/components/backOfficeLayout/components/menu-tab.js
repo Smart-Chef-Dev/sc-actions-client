@@ -11,24 +11,24 @@ const MenuTab = ({
   menuTab,
   onSelectedTab,
   selectedTab,
-  onLocation,
+  onChangeLocation,
   location,
   isTabMenuExpanded,
   translations,
 }) => {
-  const [match] = useRoute(menuTab.route);
+  const [isMatch] = useRoute(menuTab.route);
 
   useEffect(
-    () => match && onSelectedTab(menuTab),
-    [match, menuTab, onSelectedTab]
+    () => isMatch && onSelectedTab(menuTab),
+    [isMatch, menuTab, onSelectedTab]
   );
 
   const selectTab = useCallback(() => {
-    const [path] = menuTab.route.split(":");
+    const path = menuTab.route;
     const restaurantId = location.split("/").pop();
 
-    onLocation(path + restaurantId);
-  }, [menuTab, onLocation, location]);
+    onChangeLocation(path + restaurantId);
+  }, [menuTab, onChangeLocation, location]);
 
   return isTabMenuExpanded ? (
     <Flex width={1} onClick={selectTab}>
@@ -82,7 +82,7 @@ MenuTab.propTypes = {
   menuTab: PropTypes.object,
   selectedTab: PropTypes.object,
   onSelectedTab: PropTypes.func,
-  onLocation: PropTypes.func,
+  onChangeLocation: PropTypes.func,
   location: PropTypes.string,
   isTabMenuExpanded: PropTypes.bool,
   translations: PropTypes.object,

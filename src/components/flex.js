@@ -48,7 +48,7 @@ export const Box = styled.div`
 
   position: ${(props) => props.position ?? "static"};
 
-  background: ${(props) => props.background ?? "00"};
+  background: ${(props) => props.background ?? "transparent"};
 `;
 
 export const Flex = styled(Box)`

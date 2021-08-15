@@ -1,10 +1,10 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
 
 const Notification = ({ children, background, width, height }) => {
   return (
-    <Container onClick={(e) => e.stopPropagation()}>
+    <Container onClick={useCallback((e) => e.stopPropagation, [])}>
       <Popup background={background} width={width} height={height}>
         {children}
       </Popup>
@@ -30,7 +30,7 @@ const Popup = styled.div`
   height: ${(props) => props.height ?? "200px"};
   border-radius: 25px;
   display: flex;
-  background: ${(props) => props.background ?? "00"};
+  background: ${(props) => props.background ?? "transparent"};
 `;
 
 Notification.propTypes = {

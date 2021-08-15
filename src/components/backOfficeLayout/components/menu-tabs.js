@@ -15,7 +15,7 @@ import ExitButton from "./exit-button";
 const MenuTabs = ({
   selectedTab,
   onSelectedTab,
-  onLocation,
+  onChangeLocation,
   location,
   translations,
 }) => {
@@ -49,7 +49,7 @@ const MenuTabs = ({
                 menuTab={menuTab}
                 selectedTab={selectedTab}
                 onSelectedTab={onSelectedTab}
-                onLocation={onLocation}
+                onChangeLocation={onChangeLocation}
                 location={location}
                 isTabMenuExpanded={isTabMenuExpanded}
                 translations={translations}
@@ -80,7 +80,7 @@ const s = {
 MenuTabs.propTypes = {
   selectedTab: PropTypes.object,
   onSelectedTab: PropTypes.func,
-  onLocation: PropTypes.func,
+  onChangeLocation: PropTypes.func,
   location: PropTypes.string,
   translations: PropTypes.object,
 };

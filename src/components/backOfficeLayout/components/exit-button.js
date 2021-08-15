@@ -1,35 +1,35 @@
 import { memo, useCallback } from "react";
 import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
+import { useRecoilState } from "recoil";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
-import LogOutIcon from "assets/icons/back-office/log_out_icon.svg";
+import LogoutIcon from "assets/icons/back-office/log_out_icon.svg";
+import UserDataState from "atoms/user";
 import { theme } from "theme";
-import { useRecoilState } from "recoil";
-import UserDataState from "../../../atoms/user";
 
 const ExitButton = ({ isTabMenuExpanded, translations }) => {
   const [, setUserDataAtoms] = useRecoilState(UserDataState);
 
-  const goOut = useCallback(() => {
+  const logout = useCallback(() => {
     setUserDataAtoms((oldValue) => ({ ...oldValue, jwt: null }));
   }, [setUserDataAtoms]);
 
   return (
-    <Flex onClick={goOut}>
+    <Flex onClick={logout} width={1}>
       {isTabMenuExpanded ? (
         <MenuTab width={1} py={theme.spacing(1)} alignItems="center">
           <Flex pl={theme.spacing(1)}>
-            <LogOutIcon />
+            <LogoutIcon />
           </Flex>
           <Text pl={theme.spacing(2)} color="var(--text-grey)">
-            {translations["log_out"]}
+            {translations["logout"]}
           </Text>
         </MenuTab>
       ) : (
         <MenuTab width={1} py={theme.spacing(1)} justifyContent="center">
-          <LogOutIcon />
+          <LogoutIcon />
         </MenuTab>
       )}
     </Flex>

@@ -62,7 +62,10 @@ const CategoryControlButtons = ({
       <Flex alignItems="center" mr={theme.spacing(2)}>
         {category._id === expandedCategoryId ? (
           <>
-            <Flex onClick={(e) => e.stopPropagation()} alignItems="flex-end">
+            <Flex
+              onClick={useCallback((e) => e.stopPropagation, [])}
+              alignItems="flex-end"
+            >
               <ControlButton
                 Icon={CreateItemIcon}
                 buttonAction={addMenuItem}
