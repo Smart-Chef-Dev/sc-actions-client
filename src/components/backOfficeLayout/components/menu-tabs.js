@@ -10,7 +10,7 @@ import { BackOfficeMenuTabs } from "constants/backOfficeMenuTabs";
 import { theme } from "theme";
 import SmallLogo from "assets/icons/logo/small_logo.svg";
 import MiddleLogo from "assets/icons/logo/middle_logo.svg";
-import LogOutIcon from "assets/icons/back-office/log_out_icon.svg";
+import ExitButton from "./exit-button";
 
 const MenuTabs = ({
   selectedTab,
@@ -57,20 +57,10 @@ const MenuTabs = ({
             </Fragment>
           ))}
         </Flex>
-        {isTabMenuExpanded ? (
-          <s.MenuTab width={1} py={theme.spacing(1)} alignItems="center">
-            <Flex pl={theme.spacing(1)}>
-              <LogOutIcon />
-            </Flex>
-            <Text pl={theme.spacing(2)} color="var(--text-grey)">
-              {translations["log_out"]}
-            </Text>
-          </s.MenuTab>
-        ) : (
-          <s.MenuTab width={1} py={theme.spacing(1)} justifyContent="center">
-            <LogOutIcon />
-          </s.MenuTab>
-        )}
+        <ExitButton
+          isTabMenuExpanded={isTabMenuExpanded}
+          translations={translations}
+        />
       </Flex>
     </s.MenuTabs>
   );
