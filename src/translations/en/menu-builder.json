@@ -37,5 +37,6 @@
   "category_with_the_same_name_already_exists": "A category with the same name already exists",
   "item_with_the_same_name_already_exists": "A item with the same name already exists",
   "select": "Select",
-  "maximum_characters": "Maximum 200 characters"
+  "maximum_characters": "Maximum 200 characters",
+  "no_options": "No options"
 }

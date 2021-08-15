@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import Input from "components/input";
-import Multiselect from "components/multiselect";
+import SelectComponent from "components/select";
 import ErrorText from "components/error-text";
 import { Form } from "components/form";
 import { findAllMenuItems } from "services/menuItemsService";
@@ -154,7 +154,7 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId, translations }) => {
             </Flex>
 
             <Flex width={1} height={1} ml={theme.spacing(1)} direction="column">
-              <Multiselect
+              <SelectComponent
                 placeholder=""
                 translations={translations}
                 options={menuItemOption}
@@ -162,6 +162,7 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId, translations }) => {
                 value={formik.values["menuItems"]}
                 onFieldValue={formik.setFieldValue}
                 label={translations["apply_add_ons_to_item"]}
+                isMultiSelect={true}
               />
             </Flex>
           </Flex>

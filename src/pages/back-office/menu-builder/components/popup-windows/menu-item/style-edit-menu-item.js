@@ -9,9 +9,7 @@ import { Text } from "components/text";
 import Input from "components/input";
 import { Checkbox } from "components/checkbox";
 import Textarea from "components/textarea";
-import SelectComponent from "components/select-component";
-import { theme } from "theme";
-import Multiselect from "components/multiselect";
+import SelectComponent from "components/select";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import AddAddonPopup from "../addon/add-addon-popup";
 import { getRestaurantAddons } from "services/addonsService";
@@ -19,6 +17,7 @@ import UploadPhotoComponent from "../../upload-photo-component";
 import PopupWindowControlButton from "../popup-window-control-button";
 import { Form } from "components/form";
 import ErrorText from "components/error-text";
+import { theme } from "theme";
 
 const StyleEditMenuItem = ({
   formik,
@@ -209,11 +208,12 @@ const StyleEditMenuItem = ({
                   value={formik.values["category"]}
                   onFieldValue={formik.setFieldValue}
                   label={translations["category"]}
+                  translations={translations}
                 />
               </Flex>
 
               <Flex direction="column" width={1} mb={theme.spacing(1)}>
-                <Multiselect
+                <SelectComponent
                   placeholder=""
                   options={addonOptions}
                   name="addons"
@@ -221,6 +221,7 @@ const StyleEditMenuItem = ({
                   onFieldValue={formik.setFieldValue}
                   label={translations["apply_add_ons"]}
                   translations={translations}
+                  isMultiSelect={true}
                 />
               </Flex>
 
