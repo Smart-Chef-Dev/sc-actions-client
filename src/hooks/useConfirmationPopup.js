@@ -6,7 +6,7 @@ export const useConfirmationPopup = (
   Component,
   width,
   height,
-  componentProps = null
+  componentProps = {}
 ) => {
   const [isHidden, toggleHidden] = useState(true);
 

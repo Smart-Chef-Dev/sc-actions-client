@@ -31,7 +31,7 @@ const BackOfficeLayout = ({ children }) => {
       <Flex width={1} height={1} direction="column">
         <Flex height={1} flex={1}>
           <s.TabTitle fontWeight="bold" p={theme.spacing(1)}>
-            {translations[selectedTab.key_translation]}
+            {translations[selectedTab.id]}
           </s.TabTitle>
         </Flex>
         <s.ChildrenContainer height={1} width={1} overflowY="hidden">

@@ -3,7 +3,7 @@ import { Routes } from "./routes";
 
 export const BackOfficeMenuTabs = [
   {
-    key_translation: "menu",
+    id: "menu",
     icon: menuIcon,
     route: Routes.MENU_BUILDER,
   },

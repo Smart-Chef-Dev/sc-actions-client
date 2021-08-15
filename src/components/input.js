@@ -1,10 +1,10 @@
 import { memo, useCallback } from "react";
+import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
+
 import ErrorText from "./error-text";
-import { StyledInput } from "./styled-input";
 import { InputLabel } from "./input-label";
 import { Flex } from "./flex";
-import { styled } from "@linaria/react";
 
 const Input = ({
   type = "text",
@@ -27,7 +27,7 @@ const Input = ({
   return (
     <Flex direction="column" width={1} height={1} position="relative">
       {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
-      <StyledInput
+      <s.Input
         type={type}
         name={name}
         value={value}
@@ -37,15 +37,47 @@ const Input = ({
         error={error}
         disabled={disabled}
       />
-      {error && <ErrorTextInput>{error}</ErrorTextInput>}
+      {error && <s.ErrorText>{error}</s.ErrorText>}
     </Flex>
   );
 };
 
-const ErrorTextInput = styled(ErrorText)`
-  position: absolute;
-  bottom: -13px;
-`;
+const s = {
+  ErrorText: styled(ErrorText)`
+    position: absolute;
+    bottom: -13px;
+  `,
+  Input: styled.input`
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: ${(props) => props.height ?? "48px"};
+    border: ${(props) =>
+      props.error ? "1px solid var(--error)" : "1px solid #ddd"};
+    background: ${(props) =>
+      props.disabled
+        ? "var(--grey-color-for-selected-object)"
+        : "var(--main-bg-color)"};
+    outline: none;
+    font: inherit;
+    padding: 1rem;
+    border-radius: 3px;
+    font-size: 13px;
+    color: var(--label-color);
+
+    ::placeholder {
+      color: var(--text-grey);
+      font-size: 13px;
+    }
+
+    :focus {
+      border: ${(props) =>
+        props.error
+          ? "1px solid var(--error)"
+          : "1px solid var(--label-color)"};
+    }
+  `,
+};
 
 Input.propTypes = {
   type: PropTypes.string,

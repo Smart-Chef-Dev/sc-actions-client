@@ -41,15 +41,13 @@ const MenuTab = ({
         >
           <menuTab.icon />
           <Text pl={theme.spacing(2)} color="var(--text-grey)">
-            {translations[menuTab.key_translation]}
+            {translations[menuTab.id]}
           </Text>
         </s.SelectedTab>
       ) : (
         <s.Tab width={1} py={theme.spacing(1)} alignItems="center">
           <menuTab.icon />
-          <Text pl={theme.spacing(2)}>
-            {translations[menuTab.key_translation]}
-          </Text>
+          <Text pl={theme.spacing(2)}>{translations[menuTab.id]}</Text>
         </s.Tab>
       )}
     </Flex>
