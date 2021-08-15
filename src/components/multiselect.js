@@ -75,7 +75,10 @@ const Multiselect = ({
         translations={translations}
         styles={multiselectStyles}
         value={value}
-        onChange={useCallback((option) => onFieldValue(name, option), [])}
+        onChange={useCallback(
+          (option) => onFieldValue(name, option),
+          [name, onFieldValue]
+        )}
       />
     </>
   );

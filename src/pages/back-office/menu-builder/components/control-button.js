@@ -12,7 +12,7 @@ const ControlButton = ({ Icon, buttonAction, stroke, title }) => {
   const focusIsGone = useCallback(() => setFocusButton(false), []);
 
   return (
-    <Flex>
+    <Flex onClick={useCallback((e) => e.stopPropagation, [])}>
       {isFocusButton && <Title title={title} />}
       <Flex
         onMouseEnter={focusAppeared}
