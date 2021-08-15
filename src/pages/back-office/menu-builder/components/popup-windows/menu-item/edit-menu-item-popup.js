@@ -14,6 +14,7 @@ const EditMenuItemPopup = ({
   translations,
 }) => {
   const queryClient = useQueryClient();
+  const [error, setError] = useState(null);
   const [, setPictureFile] = useState({});
 
   const addons = useMemo(
@@ -114,7 +115,7 @@ const EditMenuItemPopup = ({
           });
           onToggleHidden(true);
         } catch (err) {
-          console.log(err);
+          setError(err);
         }
       },
       [onToggleHidden, menuItem, editMenuItemMutation, categories]
@@ -129,6 +130,7 @@ const EditMenuItemPopup = ({
       onPictureFile={setPictureFile}
       translations={translations}
       heading={translations["edit_item"]}
+      error={error}
     />
   );
 };

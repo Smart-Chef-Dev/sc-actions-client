@@ -29,6 +29,7 @@
   "are_you_sure_you_want_to_delete": "Вы уверены, что хотите удалить",
   "deleted_items_cannot_be_recovered": "Удаленные элементы не могут быть восстановлены!",
   "category_with_the_same_name_already_exists": "Категория с таким именем уже существует",
+  "item_with_the_same_name_already_exists": "Элемент с таким именем уже существует",
   "required": "Обязательнно",
   "min_price": "Цена не должна быть меньше 0",
   "max_price": "Цена не должна быть больше 999999",

@@ -2,6 +2,7 @@ import { memo, useCallback, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useQuery } from "react-query";
 import { FormikProvider } from "formik";
+import { styled } from "@linaria/react";
 
 import { Flex } from "components/flex";
 import { Text } from "components/text";
@@ -17,7 +18,7 @@ import { getRestaurantAddons } from "services/addonsService";
 import UploadPhotoComponent from "../../upload-photo-component";
 import PopupWindowControlButton from "../popup-window-control-button";
 import { Form } from "components/form";
-import { styled } from "@linaria/react";
+import ErrorText from "components/error-text";
 
 const StyleEditMenuItem = ({
   formik,
@@ -25,6 +26,7 @@ const StyleEditMenuItem = ({
   categories,
   translations,
   heading,
+  error,
 }) => {
   const restaurantId = useMemo(
     () => categories[0].restaurant._id,
@@ -232,32 +234,46 @@ const StyleEditMenuItem = ({
               </Flex>
             </Flex>
           </Flex>
-          <Flex width={1} mb={theme.spacing(4)}>
+          <Flex width={1} mb={theme.spacing(1)}>
             <Flex width={1} mr={theme.spacing(1)} />
             <Flex width={1} ml={theme.spacing(1)} position="relative">
-              <DescriptionInformation
+              <s.DescriptionInformation
                 fontSize={theme.fontSize(0)}
                 color={formik.errors.description ? "var(--error)" : ""}
               >
                 {translations["maximum_characters"]}
-              </DescriptionInformation>
+              </s.DescriptionInformation>
             </Flex>
           </Flex>
-          <PopupWindowControlButton
-            onToggleHidden={onToggleHidden}
-            translations={translations}
-            buttonName={translations["create"]}
-          />
+          <Flex width={1} justifyContent="center">
+            {error?.status === 403 && (
+              <s.ErrorText>
+                {translations["item_with_the_same_name_already_exists"]}
+              </s.ErrorText>
+            )}
+          </Flex>
+          <Flex width={1} mt={theme.spacing(3)}>
+            <PopupWindowControlButton
+              onToggleHidden={onToggleHidden}
+              translations={translations}
+              buttonName={translations["create"]}
+            />
+          </Flex>
         </Flex>
       </Form>
     </FormikProvider>
   );
 };
 
-const DescriptionInformation = styled(Text)`
-  position: absolute;
-  bottom: 0;
-`;
+const s = {
+  DescriptionInformation: styled(Text)`
+    position: absolute;
+    bottom: 0;
+  `,
+  ErrorText: styled(ErrorText)`
+    position: absolute;
+  `,
+};
 
 StyleEditMenuItem.propTypes = {
   formik: PropTypes.object,
@@ -267,6 +283,7 @@ StyleEditMenuItem.propTypes = {
   translations: PropTypes.object,
   isPreviewError: PropTypes.bool,
   heading: PropTypes.string,
+  error: PropTypes.bool,
 };
 
 export default memo(StyleEditMenuItem);

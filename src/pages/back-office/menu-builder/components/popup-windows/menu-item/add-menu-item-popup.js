@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
@@ -15,6 +15,7 @@ const AddMenuItemPopup = ({
 }) => {
   const queryClient = useQueryClient();
   const categories = queryClient.getQueryData(["categories", { restaurantId }]);
+  const [error, setError] = useState(null);
 
   const createMenuItemMutation = useMutation(createMenuItem, {
     onSuccess: (data, queryVariables) => {
@@ -51,16 +52,20 @@ const AddMenuItemPopup = ({
     validationSchema: ConstructorMenuItemScheme(translations),
     onSubmit: useCallback(
       async (values) => {
-        const categoryTmp = categories.find(
-          (currentCategory) => currentCategory.name === values.category.value
-        );
+        try {
+          const categoryTmp = categories.find(
+            (currentCategory) => currentCategory.name === values.category.value
+          );
 
-        await createMenuItemMutation.mutateAsync({
-          categoryId: categoryTmp._id,
-          body: { ...values },
-        });
+          await createMenuItemMutation.mutateAsync({
+            categoryId: categoryTmp._id,
+            body: { ...values },
+          });
 
-        onToggleHidden(true);
+          onToggleHidden(true);
+        } catch (err) {
+          setError(err);
+        }
       },
       [onToggleHidden, createMenuItemMutation, categories]
     ),
@@ -73,6 +78,7 @@ const AddMenuItemPopup = ({
       onToggleHidden={onToggleHidden}
       translations={translations}
       heading={translations["create_item"]}
+      error={error}
     />
   );
 };

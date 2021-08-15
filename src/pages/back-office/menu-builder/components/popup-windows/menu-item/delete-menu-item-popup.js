@@ -72,7 +72,7 @@ const DeleteMenuItemPopup = ({
 };
 
 DeleteMenuItemPopup.propTypes = {
-  onToggleHidden: PropTypes.bool,
+  onToggleHidden: PropTypes.func,
   menuItem: PropTypes.object,
   menuItems: PropTypes.array,
   translations: PropTypes.object,
