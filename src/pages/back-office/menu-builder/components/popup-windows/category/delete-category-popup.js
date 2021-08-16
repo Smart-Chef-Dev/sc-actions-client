@@ -34,12 +34,10 @@ const DeleteCategoryPopup = ({
   const removeCategory = useCallback(async () => {
     try {
       await deleteCategoryMutation.mutateAsync({ categoryId: category._id });
-
-      onToggleHidden(true);
     } catch (err) {
       console.log(err);
     }
-  }, [category, deleteCategoryMutation, onToggleHidden]);
+  }, [category, deleteCategoryMutation]);
 
   return (
     <Flex

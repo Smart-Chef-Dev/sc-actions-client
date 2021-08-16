@@ -56,7 +56,7 @@ const ConstructMenuItemPopup = ({
             data,
           ]);
 
-          return;
+          return onToggleHidden(true);
         }
 
         const queryKeyOldMenuItem = [
@@ -74,7 +74,7 @@ const ConstructMenuItemPopup = ({
             )
           );
 
-          return;
+          return onToggleHidden(true);
         }
 
         if (!newMenuItemInCache) {
@@ -168,12 +168,11 @@ const ConstructMenuItemPopup = ({
           }
 
           await editMenuItemMutation.mutateAsync(requestData);
-          onToggleHidden(true);
         } catch (err) {
           console.log(err);
         }
       },
-      [onToggleHidden, menuItem, editMenuItemMutation, categories]
+      [menuItem, editMenuItemMutation, categories]
     ),
   });
 

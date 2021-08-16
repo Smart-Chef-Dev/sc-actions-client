@@ -29,12 +29,10 @@ const DeleteMenuItemPopup = ({
   const removeMenuItem = useCallback(async () => {
     try {
       await deleteMenuItemMutation.mutateAsync({ menuItemId: menuItem._id });
-
-      onToggleHidden(true);
     } catch (err) {
       console.log(err);
     }
-  }, [menuItem, deleteMenuItemMutation, onToggleHidden]);
+  }, [menuItem, deleteMenuItemMutation]);
 
   return (
     <Flex

@@ -140,7 +140,7 @@ FormComponent.propTypes = {
   translations: PropTypes.object,
   formik: PropTypes.object,
   restaurantId: PropTypes.string,
-  categories: PropTypes.object,
+  categories: PropTypes.array,
 };
 
 export default memo(FormComponent);
