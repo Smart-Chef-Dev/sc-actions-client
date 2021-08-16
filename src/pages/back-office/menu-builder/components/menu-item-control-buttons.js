@@ -6,7 +6,7 @@ import Basket from "assets/icons/back-office/basket.svg";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import EditIcon from "assets/icons/back-office/edit_icon.svg";
 import DeleteMenuItemPopup from "./popup-windows/menu-item/delete-menu-item-popup";
-import EditMenuItemPopup from "./popup-windows/menu-item/edit-menu-item-popup";
+import ConstructMenuItemPopup from "./popup-windows/menu-item/construct-menu-item-popup";
 import ControlButton from "./control-button";
 import { theme } from "theme";
 
@@ -25,7 +25,7 @@ const MenuItemControlButtons = ({
   );
 
   const editMenuItemPopup = useConfirmationPopup(
-    EditMenuItemPopup,
+    ConstructMenuItemPopup,
     "900px",
     "700px",
     { menuItem, categories, translations }

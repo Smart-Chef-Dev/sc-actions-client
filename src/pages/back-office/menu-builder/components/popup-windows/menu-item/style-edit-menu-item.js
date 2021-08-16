@@ -1,6 +1,5 @@
-import { memo, useCallback, useEffect, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
-import { useQuery } from "react-query";
 import { FormikProvider } from "formik";
 import { styled } from "@linaria/react";
 
@@ -9,15 +8,13 @@ import { Text } from "components/text";
 import Input from "components/input";
 import { Checkbox } from "components/checkbox";
 import Textarea from "components/textarea";
-import SelectComponent from "components/select";
-import { useConfirmationPopup } from "hooks/useConfirmationPopup";
-import AddAddonPopup from "../addon/add-addon-popup";
-import { getRestaurantAddons } from "services/addonsService";
 import UploadPhotoComponent from "../../upload-photo-component";
 import PopupWindowControlButton from "../popup-window-control-button";
 import { Form } from "components/form";
 import ErrorText from "components/error-text";
 import { theme } from "theme";
+import AddonsMultiselect from "./addons-multiselect";
+import CategoriesSelect from "./categories-select";
 
 const StyleEditMenuItem = ({
   formik,
@@ -32,70 +29,6 @@ const StyleEditMenuItem = ({
     [categories]
   );
 
-  const addons = useQuery(
-    ["addons", { restaurantId: restaurantId }],
-    getRestaurantAddons
-  );
-
-  const addAddonPopup = useConfirmationPopup(AddAddonPopup, "900px", "550px", {
-    restaurantId: restaurantId,
-    translations,
-  });
-
-  const categoryOptions = useMemo(
-    () =>
-      categories.map((currentCategory) => ({
-        value: currentCategory.name,
-        label: currentCategory.name,
-      })),
-    [categories]
-  );
-
-  const addonOptions = useMemo(() => {
-    if (addons.isLoading) {
-      return;
-    }
-
-    const addonOptionsTmp = addons.data.map((addon) => ({
-      ...addon,
-      value: addon.name,
-      label: addon.name,
-    }));
-
-    return [
-      ...addonOptionsTmp,
-      {
-        value: translations["add_new_addon"],
-        label: "add",
-        isButton: true,
-      },
-    ];
-  }, [addons, translations]);
-
-  useEffect(() => {
-    if (!addonOptions) {
-      return;
-    }
-
-    const valueOfButtonAdding = addonOptions[addonOptions.length - 1].label;
-
-    const isNewAddonRequested = formik.values["addons"].find(
-      (selectedValue) => selectedValue.label === valueOfButtonAdding
-    );
-
-    if (isNewAddonRequested) {
-      addAddonPopup.showNotification();
-      formik.resetForm({
-        values: {
-          ...formik.values,
-          addons: formik.values["addons"].filter(
-            (selectedValue) => selectedValue.label !== valueOfButtonAdding
-          ),
-        },
-      });
-    }
-  }, [formik, addonOptions, addAddonPopup]);
-
   const handleChange = useCallback(
     (fieldName) => (e) => {
       formik.setFieldValue(fieldName, e);
@@ -106,7 +39,6 @@ const StyleEditMenuItem = ({
   return (
     <FormikProvider value={formik}>
       <Form onSubmit={formik.handleSubmit}>
-        {addAddonPopup.renderNotification()}
         <Flex
           width={1}
           height={1}
@@ -201,27 +133,18 @@ const StyleEditMenuItem = ({
 
             <Flex width={1} height={1} ml={theme.spacing(1)} direction="column">
               <Flex direction="column" width={1} mb={theme.spacing(1)}>
-                <SelectComponent
-                  placeholder="Select"
-                  options={categoryOptions}
-                  name="category"
-                  value={formik.values["category"]}
-                  onFieldValue={formik.setFieldValue}
-                  label={translations["category"]}
+                <CategoriesSelect
+                  categories={categories}
+                  formik={formik}
                   translations={translations}
                 />
               </Flex>
 
               <Flex direction="column" width={1} mb={theme.spacing(1)}>
-                <SelectComponent
-                  placeholder=""
-                  options={addonOptions}
-                  name="addons"
-                  value={formik.values["addons"]}
-                  onFieldValue={formik.setFieldValue}
-                  label={translations["apply_add_ons"]}
+                <AddonsMultiselect
                   translations={translations}
-                  isMultiSelect={true}
+                  restaurantId={restaurantId}
+                  formik={formik}
                 />
               </Flex>
 
