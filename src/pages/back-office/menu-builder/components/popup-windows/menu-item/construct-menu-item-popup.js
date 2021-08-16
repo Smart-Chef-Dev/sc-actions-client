@@ -1,7 +1,6 @@
 import { memo, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { FormikProvider, useFormik } from "formik";
-import { styled } from "@linaria/react";
 
 import { ConstructorMenuItemScheme } from "pages/back-office/menu-builder/yup-schemes/constructor-menu-item-scheme";
 import { useMutation, useQueryClient } from "react-query";
@@ -10,13 +9,9 @@ import { Form } from "components/form";
 import { Flex } from "components/flex";
 import { theme } from "theme";
 import { Text } from "components/text";
-import UploadPhotoComponent from "../../upload-photo-component";
-import Input from "components/input";
-import { Checkbox } from "components/checkbox";
-import CategoriesSelect from "./categories-select";
-import AddonsMultiselect from "./addons-multiselect";
-import Textarea from "components/textarea";
+import UploadPhotoComponent from "./upload-photo-component";
 import PopupWindowControlButton from "../popup-window-control-button";
+import FormComponent from "./form-component";
 
 const ConstructMenuItemPopup = ({
   onToggleHidden,
@@ -182,13 +177,6 @@ const ConstructMenuItemPopup = ({
     ),
   });
 
-  const handleChange = useCallback(
-    (fieldName) => (e) => {
-      formik.setFieldValue(fieldName, e);
-    },
-    [formik]
-  );
-
   return (
     <FormikProvider value={formik}>
       <Form onSubmit={formik.handleSubmit}>
@@ -216,112 +204,12 @@ const ConstructMenuItemPopup = ({
               nameValue="pictureUrl"
             />
           </Flex>
-
-          <Flex height={1} width={1} mb={theme.spacing(1)}>
-            <Flex height={1} width={1} mr={theme.spacing(1)} direction="column">
-              <Flex width={1} mb={theme.spacing(1)}>
-                <Input
-                  name="name"
-                  placeholder={translations["enter_name"]}
-                  type="string"
-                  label={translations["name"]}
-                  value={formik.values["name"]}
-                  onChange={handleChange("name")}
-                  error={formik.touched.name ? formik.errors.name : ""}
-                />
-              </Flex>
-
-              <Flex direction="column" width={1} mb={theme.spacing(1)}>
-                <Input
-                  name="price"
-                  type="number"
-                  placeholder="0.00"
-                  label={translations["price"]}
-                  value={formik.values["price"]}
-                  onChange={handleChange("price")}
-                  error={formik.touched.price ? formik.errors.price : ""}
-                />
-              </Flex>
-
-              <Flex direction="column" width={1}>
-                <Flex mb={theme.spacing(1)} alignItems="flex-end" width={1}>
-                  <Flex mb={theme.spacing(1)} mr={theme.spacing(1)}>
-                    <Checkbox type="checkbox" name="toggleTime" />
-                  </Flex>
-                  <Flex width={1}>
-                    <Input
-                      name="time"
-                      label={translations["time"]}
-                      type="number"
-                      height="52px"
-                      placeholder="0.00"
-                      value={formik.values["time"]}
-                      onChange={handleChange("time")}
-                      disabled={!formik.values["toggleTime"]}
-                      error={formik.touched.time ? formik.errors.time : ""}
-                    />
-                  </Flex>
-                </Flex>
-
-                <Flex alignItems="flex-end" width={1}>
-                  <Flex mb={theme.spacing(1)} mr={theme.spacing(1)}>
-                    <Checkbox type="checkbox" name="toggleWeight" />
-                  </Flex>
-                  <Flex width={1}>
-                    <Input
-                      name="weight"
-                      label={translations["weight"]}
-                      type="number"
-                      height="52px"
-                      placeholder="0.00"
-                      value={formik.values["weight"]}
-                      onChange={handleChange("weight")}
-                      disabled={!formik.values["toggleWeight"]}
-                      error={formik.touched.weight ? formik.errors.weight : ""}
-                    />
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
-
-            <Flex width={1} height={1} ml={theme.spacing(1)} direction="column">
-              <Flex direction="column" width={1} mb={theme.spacing(1)}>
-                <CategoriesSelect
-                  categories={categories}
-                  formik={formik}
-                  translations={translations}
-                />
-              </Flex>
-
-              <Flex direction="column" width={1} mb={theme.spacing(1)}>
-                <AddonsMultiselect
-                  translations={translations}
-                  restaurantId={restaurantId}
-                  formik={formik}
-                />
-              </Flex>
-
-              <Flex direction="column" width={1} height={1}>
-                <Textarea
-                  name="description"
-                  label={translations["description"]}
-                  placeholder={translations["enter_text"]}
-                  error={formik.errors.description ?? ""}
-                />
-              </Flex>
-            </Flex>
-          </Flex>
-          <Flex width={1} mb={theme.spacing(1)}>
-            <Flex width={1} mr={theme.spacing(1)} />
-            <Flex width={1} ml={theme.spacing(1)} position="relative">
-              <s.DescriptionInformation
-                fontSize={theme.fontSize(0)}
-                color={formik.errors.description ? "var(--error)" : ""}
-              >
-                {translations["maximum_characters"]}
-              </s.DescriptionInformation>
-            </Flex>
-          </Flex>
+          <FormComponent
+            translations={translations}
+            formik={formik}
+            categories={categories}
+            restaurantId={restaurantId}
+          />
           <Flex width={1} mt={theme.spacing(3)}>
             <PopupWindowControlButton
               onToggleHidden={onToggleHidden}
@@ -333,13 +221,6 @@ const ConstructMenuItemPopup = ({
       </Form>
     </FormikProvider>
   );
-};
-
-const s = {
-  DescriptionInformation: styled(Text)`
-    position: absolute;
-    bottom: 0;
-  `,
 };
 
 ConstructMenuItemPopup.propTypes = {
