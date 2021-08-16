@@ -2,15 +2,20 @@ import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
 
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
-import AddCategoryPopup from "./popup-windows/category/add-category-popup";
 import Button from "components/button";
+import ConstructCategoryPopup from "./popup-windows/category/construct-category-popup";
 
 const CreateCategoryButton = ({ restaurantId, translations }) => {
   const { renderNotification, showNotification } = useConfirmationPopup(
-    AddCategoryPopup,
+    ConstructCategoryPopup,
     "500px",
     "380px",
-    { restaurantId, translations }
+    {
+      restaurantId,
+      translations,
+      buttonName: translations["create"],
+      heading: translations["create_category"],
+    }
   );
 
   const createCategory = useCallback(() => {
