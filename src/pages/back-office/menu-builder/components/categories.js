@@ -22,7 +22,6 @@ const Categories = ({ restaurantId, translations }) => {
           <Fragment key={category._id}>
             <Category
               category={category}
-              categories={data}
               restaurantId={restaurantId}
               onExpandedCategoryId={setExpandedCategoryId}
               expandedCategoryId={expandedCategoryId}

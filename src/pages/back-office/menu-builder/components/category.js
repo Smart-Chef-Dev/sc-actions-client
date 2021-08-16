@@ -13,7 +13,6 @@ const Category = ({
   category,
   onExpandedCategoryId,
   expandedCategoryId,
-  categories,
   restaurantId,
   index,
   translations,
@@ -49,18 +48,13 @@ const Category = ({
         </Flex>
         <CategoryControlButtons
           category={category}
-          categories={categories}
           translations={translations}
           restaurantId={restaurantId}
           expandedCategoryId={expandedCategoryId}
         />
       </Flex>
       {category._id === expandedCategoryId && (
-        <MenuItems
-          categoryId={category._id}
-          categories={categories}
-          translations={translations}
-        />
+        <MenuItems categoryId={category._id} translations={translations} />
       )}
     </Flex>
   );
@@ -68,7 +62,6 @@ const Category = ({
 
 Category.propTypes = {
   category: PropTypes.object,
-  categories: PropTypes.array,
   onExpandedCategoryId: PropTypes.func,
   expandedCategoryId: PropTypes.string,
   restaurantId: PropTypes.string,

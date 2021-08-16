@@ -5,7 +5,7 @@ import { Flex } from "components/flex";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import DeleteCategoryPopup from "./popup-windows/category/delete-category-popup";
 import ConstructCategoryPopup from "./popup-windows/category/construct-category-popup";
-import ConstructMenuItemPopup from "./popup-windows/menu-item/add-menu-item-popup";
+import ConstructMenuItemPopup from "./popup-windows/menu-item/construct-menu-item-popup";
 
 import CreateItemIcon from "assets/icons/back-office/create_item_icon.svg";
 import EditIcon from "assets/icons/back-office/edit_icon.svg";

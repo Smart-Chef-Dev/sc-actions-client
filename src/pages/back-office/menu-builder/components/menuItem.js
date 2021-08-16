@@ -8,7 +8,7 @@ import MenuItemControlButtons from "./menu-item-control-buttons";
 import SwapElement from "./swap-element";
 import { theme } from "theme";
 
-const MenuItem = ({ menuItem, menuItems, index, categories, translations }) => {
+const MenuItem = ({ menuItem, menuItems, index, translations }) => {
   const [menuItemInFocus, setMenuItemInFocus] = useState(false);
 
   const expandTabMenu = useCallback(() => setMenuItemInFocus(true), []);
@@ -44,7 +44,6 @@ const MenuItem = ({ menuItem, menuItems, index, categories, translations }) => {
         menuItem={menuItem}
         menuItems={menuItems}
         menuItemInFocus={menuItemInFocus}
-        categories={categories}
         translations={translations}
       />
     </Flex>
@@ -54,7 +53,6 @@ const MenuItem = ({ menuItem, menuItems, index, categories, translations }) => {
 MenuItem.propTypes = {
   menuItem: PropTypes.object,
   menuItems: PropTypes.array,
-  categories: PropTypes.array,
   translations: PropTypes.object,
   index: PropTypes.number,
 };
