@@ -6,7 +6,7 @@ import MenuItem from "./menuItem";
 import { Flex } from "components/flex";
 import { getMenuItemsByCategoryId } from "services/menuItemsService";
 
-const MenuItems = ({ categories, translations, categoryId }) => {
+const MenuItems = ({ categories, translations, categoryId, restaurantId }) => {
   const { isLoading, data } = useQuery(
     ["menuItems", { categoryId }],
     getMenuItemsByCategoryId
@@ -27,6 +27,7 @@ const MenuItems = ({ categories, translations, categoryId }) => {
               index={i}
               categories={categories}
               translations={translations}
+              restaurantId={restaurantId}
             />
           </Flex>
         ))}
@@ -40,6 +41,7 @@ MenuItems.propTypes = {
   categories: PropTypes.array,
   translations: PropTypes.object,
   categoryId: PropTypes.string,
+  restaurantId: PropTypes.string,
 };
 
 export default memo(MenuItems);

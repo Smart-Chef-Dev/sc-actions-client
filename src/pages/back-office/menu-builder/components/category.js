@@ -54,7 +54,11 @@ const Category = ({
         />
       </Flex>
       {category._id === expandedCategoryId && (
-        <MenuItems categoryId={category._id} translations={translations} />
+        <MenuItems
+          categoryId={category._id}
+          translations={translations}
+          restaurantId={restaurantId}
+        />
       )}
     </Flex>
   );

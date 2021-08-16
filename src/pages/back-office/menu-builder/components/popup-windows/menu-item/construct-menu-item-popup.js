@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { FormikProvider, useFormik } from "formik";
 import { styled } from "@linaria/react";
@@ -17,18 +17,16 @@ import CategoriesSelect from "./categories-select";
 import AddonsMultiselect from "./addons-multiselect";
 import Textarea from "components/textarea";
 import PopupWindowControlButton from "../popup-window-control-button";
-import ErrorText from "components/error-text";
 
 const ConstructMenuItemPopup = ({
   onToggleHidden,
   menuItem,
   translations,
   category,
+  restaurantId,
 }) => {
   const queryClient = useQueryClient();
-  const [error, setError] = useState(null);
 
-  const restaurantId = useMemo(() => category.restaurant._id, [category]);
   const categories = useMemo(
     () => queryClient.getQueryData(["categories", { restaurantId }]),
     [restaurantId, queryClient]
@@ -49,10 +47,6 @@ const ConstructMenuItemPopup = ({
     menuItem ? editMenuItem : createMenuItem,
     {
       onSuccess: (data) => {
-        const queryKeyOldMenuItem = [
-          "menuItems",
-          { categoryId: menuItem.category._id },
-        ];
         const queryKeyNewMenuItem = [
           "menuItems",
           { categoryId: data.category._id },
@@ -60,8 +54,6 @@ const ConstructMenuItemPopup = ({
 
         const newMenuItemInCache =
           queryClient.getQueryData(queryKeyNewMenuItem);
-        const oldMenuItemInCache =
-          queryClient.getQueryData(queryKeyOldMenuItem);
 
         if (!menuItem) {
           queryClient.setQueryData(queryKeyNewMenuItem, [
@@ -71,6 +63,13 @@ const ConstructMenuItemPopup = ({
 
           return;
         }
+
+        const queryKeyOldMenuItem = [
+          "menuItems",
+          { categoryId: menuItem.category._id },
+        ];
+        const oldMenuItemInCache =
+          queryClient.getQueryData(queryKeyOldMenuItem);
 
         if (data.category._id === menuItem.category._id) {
           queryClient.setQueryData(
@@ -176,7 +175,7 @@ const ConstructMenuItemPopup = ({
           await editMenuItemMutation.mutateAsync(requestData);
           onToggleHidden(true);
         } catch (err) {
-          setError(err);
+          console.log(err);
         }
       },
       [onToggleHidden, menuItem, editMenuItemMutation, categories]
@@ -323,13 +322,6 @@ const ConstructMenuItemPopup = ({
               </s.DescriptionInformation>
             </Flex>
           </Flex>
-          <Flex width={1} justifyContent="center">
-            {error?.status === 403 && (
-              <s.ErrorText>
-                {translations["item_with_the_same_name_already_exists"]}
-              </s.ErrorText>
-            )}
-          </Flex>
           <Flex width={1} mt={theme.spacing(3)}>
             <PopupWindowControlButton
               onToggleHidden={onToggleHidden}
@@ -348,9 +340,6 @@ const s = {
     position: absolute;
     bottom: 0;
   `,
-  ErrorText: styled(ErrorText)`
-    position: absolute;
-  `,
 };
 
 ConstructMenuItemPopup.propTypes = {
@@ -358,6 +347,7 @@ ConstructMenuItemPopup.propTypes = {
   menuItem: PropTypes.object,
   translations: PropTypes.object,
   category: PropTypes.object,
+  restaurantId: PropTypes.string,
 };
 
 export default memo(ConstructMenuItemPopup);

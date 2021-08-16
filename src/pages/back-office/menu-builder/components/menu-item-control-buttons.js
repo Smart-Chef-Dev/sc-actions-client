@@ -15,6 +15,7 @@ const MenuItemControlButtons = ({
   menuItems,
   menuItemInFocus,
   translations,
+  restaurantId,
 }) => {
   const deleteMenuItemPopup = useConfirmationPopup(
     DeleteMenuItemPopup,
@@ -27,7 +28,7 @@ const MenuItemControlButtons = ({
     ConstructMenuItemPopup,
     "900px",
     "700px",
-    { menuItem, translations }
+    { menuItem, translations, restaurantId }
   );
 
   const deleteMenuItem = useCallback(() => {
@@ -66,6 +67,7 @@ MenuItemControlButtons.propTypes = {
   menuItems: PropTypes.array,
   menuItemInFocus: PropTypes.bool,
   translations: PropTypes.object,
+  restaurantId: PropTypes.string,
 };
 
 export default memo(MenuItemControlButtons);

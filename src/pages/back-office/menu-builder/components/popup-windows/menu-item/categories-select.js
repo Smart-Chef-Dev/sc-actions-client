@@ -28,7 +28,7 @@ const CategoriesSelect = ({ categories, formik, translations }) => {
 
 CategoriesSelect.propTypes = {
   formik: PropTypes.object,
-  categories: PropTypes.object,
+  categories: PropTypes.array,
   translations: PropTypes.object,
 };
 
