@@ -19,8 +19,10 @@ const PaymentButton = ({
 
   const { renderNotification, showNotification } = useConfirmationPopup(
     CancellationOfSubscriptionPopup,
-    "250px",
-    "200px",
+    {
+      width: "250px",
+      height: "200px",
+    },
     { subscription, translations, onButtonsLocked }
   );
 

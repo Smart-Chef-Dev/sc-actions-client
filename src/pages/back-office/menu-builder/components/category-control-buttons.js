@@ -23,15 +23,19 @@ const CategoryControlButtons = ({
 }) => {
   const deleteCategoryPopup = useConfirmationPopup(
     DeletePopup,
-    "500px",
-    "380px",
+    {
+      width: "500px",
+      height: "380px",
+    },
     { category, restaurantId, translations }
   );
 
   const editCategoryPopup = useConfirmationPopup(
     ConstructCategoryPopup,
-    "500px",
-    "380px",
+    {
+      width: "500px",
+      height: "380px",
+    },
     {
       category,
       restaurantId,
@@ -43,8 +47,10 @@ const CategoryControlButtons = ({
 
   const addMenuItemPopup = useConfirmationPopup(
     ConstructMenuItemPopup,
-    "900px",
-    "700px",
+    {
+      width: "900px",
+      height: "700px",
+    },
     { category, restaurantId, translations }
   );
 

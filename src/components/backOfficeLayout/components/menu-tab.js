@@ -24,7 +24,7 @@ const MenuTab = ({
   );
 
   const selectTab = useCallback(() => {
-    const path = menuTab.route;
+    const [path] = menuTab.route;
     const restaurantId = location.split("/").pop();
 
     onChangeLocation(path + restaurantId);

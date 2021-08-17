@@ -8,8 +8,10 @@ import ConstructCategoryPopup from "./popup-windows/construct-category-popup";
 const CreateCategoryButton = ({ restaurantId, translations }) => {
   const { renderNotification, showNotification } = useConfirmationPopup(
     ConstructCategoryPopup,
-    "500px",
-    "380px",
+    {
+      width: "500px",
+      height: "380px",
+    },
     {
       restaurantId,
       translations,

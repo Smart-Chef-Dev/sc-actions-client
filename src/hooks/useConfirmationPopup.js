@@ -4,8 +4,7 @@ import Notification from "../components/notification";
 
 export const useConfirmationPopup = (
   Component,
-  width,
-  height,
+  { width, height },
   componentProps = {}
 ) => {
   const [isHidden, toggleHidden] = useState(true);
