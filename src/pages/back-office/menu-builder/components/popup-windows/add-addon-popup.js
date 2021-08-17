@@ -14,8 +14,8 @@ import {
   addAddonIntoMenuItem,
   addAddonIntoRestaurant,
 } from "services/addonsService";
-import { ConstructorAddonScheme } from "pages/back-office/menu-builder/yup-schemes/constructor-addon-scheme";
-import PopupWindowControlButton from "./popup-window-control-button";
+import { ConstructorAddonScheme } from "yup-schemes/constructor-addon-scheme";
+import ConfirmationPopupControlButton from "components/confirmationPopup/confirmation-popup-control-button";
 import { theme } from "theme";
 
 const initialValues = {
@@ -173,7 +173,7 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId, translations }) => {
               </ErrorText>
             </Flex>
           )}
-          <PopupWindowControlButton
+          <ConfirmationPopupControlButton
             onToggleHidden={onToggleHidden}
             nameContinueButton={translations["create"]}
             nameCancelButton={translations["cancel"]}

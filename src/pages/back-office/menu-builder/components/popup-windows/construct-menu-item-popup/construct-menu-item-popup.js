@@ -2,7 +2,7 @@ import { memo, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { FormikProvider, useFormik } from "formik";
 
-import { ConstructorMenuItemScheme } from "pages/back-office/menu-builder/yup-schemes/constructor-menu-item-scheme";
+import { ConstructorMenuItemScheme } from "yup-schemes/constructor-menu-item-scheme";
 import { useMutation, useQueryClient } from "react-query";
 import { createMenuItem, editMenuItem } from "services/menuItemsService";
 import { Form } from "components/form";
@@ -10,7 +10,7 @@ import { Flex } from "components/flex";
 import { theme } from "theme";
 import { Text } from "components/text";
 import UploadPhotoComponent from "./upload-photo-component";
-import PopupWindowControlButton from "../popup-window-control-button";
+import ConfirmationPopupControlButton from "components/confirmationPopup/confirmation-popup-control-button";
 import FormComponent from "./form-component";
 
 const ConstructMenuItemPopup = ({
@@ -210,7 +210,7 @@ const ConstructMenuItemPopup = ({
             restaurantId={restaurantId}
           />
           <Flex width={1} mt={theme.spacing(3)}>
-            <PopupWindowControlButton
+            <ConfirmationPopupControlButton
               onToggleHidden={onToggleHidden}
               nameContinueButton={translations["create"]}
               nameCancelButton={translations["cancel"]}

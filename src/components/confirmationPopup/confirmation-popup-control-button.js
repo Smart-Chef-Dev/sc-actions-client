@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Button from "components/button";
 import { Flex } from "components/flex";
 
-const PopupWindowControlButton = ({
+const ConfirmationPopupControlButton = ({
   onToggleHidden,
   nameContinueButton,
   nameCancelButton,
@@ -38,7 +38,7 @@ const PopupWindowControlButton = ({
   );
 };
 
-PopupWindowControlButton.propTypes = {
+ConfirmationPopupControlButton.propTypes = {
   translations: PropTypes.object,
   nameCancelButton: PropTypes.string,
   nameContinueButton: PropTypes.string,
@@ -48,4 +48,4 @@ PopupWindowControlButton.propTypes = {
   directionOfButtons: PropTypes.string,
 };
 
-export default memo(PopupWindowControlButton);
+export default memo(ConfirmationPopupControlButton);

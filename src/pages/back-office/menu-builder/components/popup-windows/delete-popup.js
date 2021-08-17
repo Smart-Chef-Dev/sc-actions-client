@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useMutation, useQueryClient } from "react-query";
 
 import { theme } from "theme";
-import ConfirmationPopup from "components/confirmationPopup";
+import ConfirmationPopup from "components/confirmationPopup/confirmationPopup";
 import { deleteMenuItem } from "services/menuItemsService";
 import { deleteCategory } from "services/categoriesService";
 import { Flex } from "../../../../../components/flex";

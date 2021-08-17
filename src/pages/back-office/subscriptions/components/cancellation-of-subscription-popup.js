@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useMutation } from "react-query";
 
 import { deleteSubscriptions } from "services/stripeService";
-import ConfirmationPopup from "components/confirmationPopup";
+import ConfirmationPopup from "components/confirmationPopup/confirmationPopup";
 import { Flex } from "components/flex";
 import { theme } from "theme";
 

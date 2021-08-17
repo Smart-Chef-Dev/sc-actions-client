@@ -4,13 +4,13 @@ import { useFormik } from "formik";
 import PropTypes from "prop-types";
 
 import { addCategory, editCategory } from "services/categoriesService";
-import { ConstructorCategoryScheme } from "pages/back-office/menu-builder/yup-schemes/constructor-category-scheme";
+import { ConstructorCategoryScheme } from "yup-schemes/constructor-category-scheme";
 import { Flex } from "components/flex";
 import { Text } from "components/text";
 import Input from "components/input";
 import ErrorText from "components/error-text";
 import { Form } from "components/form";
-import PopupWindowControlButton from "./popup-window-control-button";
+import ConfirmationPopupControlButton from "components/confirmationPopup/confirmation-popup-control-button";
 import { theme } from "theme";
 
 const ConstructCategoryPopup = ({
@@ -136,7 +136,7 @@ const ConstructCategoryPopup = ({
             </ErrorText>
           )}
         </Flex>
-        <PopupWindowControlButton
+        <ConfirmationPopupControlButton
           onToggleHidden={onToggleHidden}
           nameContinueButton={buttonName}
           nameCancelButton={translations["cancel"]}

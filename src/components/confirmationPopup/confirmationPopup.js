@@ -1,9 +1,9 @@
 import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import { Flex } from "./flex";
-import { Text } from "./text";
-import PopupWindowControlButton from "../pages/back-office/menu-builder/components/popup-windows/popup-window-control-button";
+import { Flex } from "../flex";
+import { Text } from "../text";
+import ConfirmationPopupControlButton from "./confirmation-popup-control-button";
 
 const ConfirmationPopup = ({
   texts,
@@ -40,7 +40,7 @@ const ConfirmationPopup = ({
         ))}
       </Flex>
 
-      <PopupWindowControlButton
+      <ConfirmationPopupControlButton
         onToggleHidden={onToggleHidden}
         nameContinueButton={nameContinueButton}
         nameCancelButton={nameCancelButton}
