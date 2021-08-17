@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
-import DeleteCategoryPopup from "./popup-windows/category/delete-category-popup";
-import ConstructCategoryPopup from "./popup-windows/category/construct-category-popup";
-import ConstructMenuItemPopup from "./popup-windows/menu-item/construct-menu-item-popup";
+import DeletePopup from "./popup-windows/delete-popup";
+import ConstructCategoryPopup from "./popup-windows/construct-category-popup";
+import ConstructMenuItemPopup from "./popup-windows/construct-menu-item-popup/construct-menu-item-popup";
 
 import CreateItemIcon from "assets/icons/back-office/create_item_icon.svg";
 import EditIcon from "assets/icons/back-office/edit_icon.svg";
@@ -22,7 +22,7 @@ const CategoryControlButtons = ({
   expandedCategoryId,
 }) => {
   const deleteCategoryPopup = useConfirmationPopup(
-    DeleteCategoryPopup,
+    DeletePopup,
     "500px",
     "380px",
     { category, restaurantId, translations }

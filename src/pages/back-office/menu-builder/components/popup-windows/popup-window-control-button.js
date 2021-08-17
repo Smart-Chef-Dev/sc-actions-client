@@ -6,9 +6,9 @@ import { Flex } from "components/flex";
 
 const PopupWindowControlButton = ({
   onToggleHidden,
-  translations,
-  buttonName,
-  buttonAction,
+  nameContinueButton,
+  nameCancelButton,
+  actionContinueButton,
   buttonWidth,
 }) => {
   const cancelAddingCategory = useCallback(() => {
@@ -24,10 +24,15 @@ const PopupWindowControlButton = ({
         onClick={cancelAddingCategory}
         type="button"
       >
-        {translations["cancel"]}
+        {nameCancelButton}
       </Button>
-      <Button width={buttonWidth} mb="0" type="submit" onClick={buttonAction}>
-        {buttonName}
+      <Button
+        width={buttonWidth}
+        mb="0"
+        type="submit"
+        onClick={actionContinueButton}
+      >
+        {nameContinueButton}
       </Button>
     </Flex>
   );
@@ -35,9 +40,10 @@ const PopupWindowControlButton = ({
 
 PopupWindowControlButton.propTypes = {
   translations: PropTypes.object,
-  buttonName: PropTypes.string,
+  nameCancelButton: PropTypes.string,
+  nameContinueButton: PropTypes.func,
   onToggleHidden: PropTypes.func,
-  buttonAction: PropTypes.func,
+  actionContinueButton: PropTypes.func,
   buttonWidth: PropTypes.string,
 };
 

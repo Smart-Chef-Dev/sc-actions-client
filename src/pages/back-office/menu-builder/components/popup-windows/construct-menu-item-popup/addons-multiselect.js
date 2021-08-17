@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import PropTypes from "prop-types";
 
 import SelectComponent from "components/select";
-import AddAddonPopup from "../addon/add-addon-popup";
+import AddAddonPopup from "../add-addon-popup";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import { getRestaurantAddons } from "services/addonsService";
 

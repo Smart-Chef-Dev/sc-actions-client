@@ -10,7 +10,7 @@ import { Text } from "components/text";
 import Input from "components/input";
 import ErrorText from "components/error-text";
 import { Form } from "components/form";
-import PopupWindowControlButton from "../popup-window-control-button";
+import PopupWindowControlButton from "./popup-window-control-button";
 import { theme } from "theme";
 
 const ConstructCategoryPopup = ({

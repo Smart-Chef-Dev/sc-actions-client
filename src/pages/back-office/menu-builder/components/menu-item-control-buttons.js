@@ -5,8 +5,8 @@ import { Flex } from "components/flex";
 import Basket from "assets/icons/back-office/basket.svg";
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import EditIcon from "assets/icons/back-office/edit_icon.svg";
-import DeleteMenuItemPopup from "./popup-windows/menu-item/delete-menu-item-popup";
-import ConstructMenuItemPopup from "./popup-windows/menu-item/construct-menu-item-popup";
+import DeletePopup from "./popup-windows/delete-popup";
+import ConstructMenuItemPopup from "./popup-windows/construct-menu-item-popup/construct-menu-item-popup";
 import ControlButton from "./control-button";
 import { theme } from "theme";
 
@@ -18,7 +18,7 @@ const MenuItemControlButtons = ({
   restaurantId,
 }) => {
   const deleteMenuItemPopup = useConfirmationPopup(
-    DeleteMenuItemPopup,
+    DeletePopup,
     "500px",
     "350px",
     { menuItem, menuItems, translations }

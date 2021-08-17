@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { useConfirmationPopup } from "hooks/useConfirmationPopup";
 import Button from "components/button";
-import ConstructCategoryPopup from "./popup-windows/category/construct-category-popup";
+import ConstructCategoryPopup from "./popup-windows/construct-category-popup";
 
 const CreateCategoryButton = ({ restaurantId, translations }) => {
   const { renderNotification, showNotification } = useConfirmationPopup(

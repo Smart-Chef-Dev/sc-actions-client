@@ -28,9 +28,6 @@ import subscriptionRu from "./ru/subscription.json";
 import addonsEn from "./en/addons.json";
 import addonsRu from "./ru/addons.json";
 
-import confirmationPopupEn from "./en/confirmation-popup.json";
-import confirmationPopupRu from "./ru/confirmation-popup.json";
-
 import menuBuilderEn from "./en/menu-builder.json";
 import menuBuilderRu from "./ru/menu-builder.json";
 
@@ -49,7 +46,6 @@ export const languages = {
     singIn: singInEn,
     singUp: singUpEn,
     subscription: subscriptionEn,
-    confirmationPopup: confirmationPopupEn,
     menuBuilder: menuBuilderEn,
     backOfficeLayout: backOfficeLayoutEn,
   },
@@ -64,7 +60,6 @@ export const languages = {
     basket: basketRu,
     subscription: subscriptionRu,
     addons: addonsRu,
-    confirmationPopup: confirmationPopupRu,
     menuBuilder: menuBuilderRu,
     backOfficeLayout: backOfficeLayoutRu,
   },
