@@ -6,7 +6,7 @@ import { theme } from "theme";
 import ConfirmationPopup from "components/confirmationPopup/confirmationPopup";
 import { deleteMenuItem } from "services/menuItemsService";
 import { deleteCategory } from "services/categoriesService";
-import { Flex } from "../../../../../components/flex";
+import { Flex } from "components/flex";
 
 const DeletePopup = ({ menuItem, category, onToggleHidden, translations }) => {
   const queryClient = useQueryClient();
