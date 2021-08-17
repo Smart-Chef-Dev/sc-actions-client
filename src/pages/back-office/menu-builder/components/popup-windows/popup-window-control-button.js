@@ -41,7 +41,7 @@ const PopupWindowControlButton = ({
 PopupWindowControlButton.propTypes = {
   translations: PropTypes.object,
   nameCancelButton: PropTypes.string,
-  nameContinueButton: PropTypes.func,
+  nameContinueButton: PropTypes.string,
   onToggleHidden: PropTypes.func,
   actionContinueButton: PropTypes.func,
   buttonWidth: PropTypes.string,

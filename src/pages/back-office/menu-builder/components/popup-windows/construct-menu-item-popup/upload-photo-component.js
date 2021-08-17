@@ -38,7 +38,9 @@ const UploadPhotoComponent = ({
     <>
       <label htmlFor="image">
         {pictureUrl ? (
-          <s.Preview src={pictureUrl} alt="preview" />
+          <s.Container alignItems="center">
+            <s.Preview src={pictureUrl} alt="preview" />
+          </s.Container>
         ) : (
           <s.Container
             p={theme.spacing(2)}
@@ -68,13 +70,15 @@ const s = {
   Container: styled(Flex)`
     border: ${(props) => `1px solid ${props.borderColor}`};
     border-radius: 3px;
+    min-height: 100px;
+    box-sizing: border-box;
   `,
   Input: styled.input`
     display: none;
   `,
   Preview: styled(Img)`
     object-fit: contain;
-    height: 100px;
+    max-height: 100px;
     width: 100px;
   `,
 };
