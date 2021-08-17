@@ -105,7 +105,7 @@ const ConstructCategoryPopup = ({
         width={1}
         height={1}
         p={theme.spacing(4)}
-        pt={theme.spacing(3)}
+        py={theme.spacing(3)}
         boxSizing="border-box"
         justifyContent="space-between"
       >

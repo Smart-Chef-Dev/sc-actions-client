@@ -10,10 +10,14 @@ import { getRestaurantAddons } from "services/addonsService";
 const AddonsMultiselect = ({ restaurantId, translations, formik }) => {
   const addons = useQuery(["addons", { restaurantId }], getRestaurantAddons);
 
-  const addAddonPopup = useConfirmationPopup(AddAddonPopup, "900px", "550px", {
-    restaurantId,
-    translations,
-  });
+  const addAddonPopup = useConfirmationPopup(
+    AddAddonPopup,
+    { width: "900px", height: "550px" },
+    {
+      restaurantId,
+      translations,
+    }
+  );
 
   const addonOptions = useMemo(() => {
     if (addons.isLoading) {
