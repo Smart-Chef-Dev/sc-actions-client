@@ -4,7 +4,7 @@ import { styled } from "@linaria/react";
 
 const Notification = ({ children, background, width, height }) => {
   return (
-    <Container onClick={useCallback((e) => e.stopPropagation, [])}>
+    <Container onClick={useCallback((e) => e.stopPropagation(), [])}>
       <Popup background={background} width={width} height={height}>
         {children}
       </Popup>
