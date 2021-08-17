@@ -44,9 +44,7 @@ const SingIn = lazy(() =>
   import("pages/back-office/sing-in" /* webpackChunkName: "sing-in" */)
 );
 const Dashboard = lazy(() =>
-  import(
-    "pages/back-office/dashboard/subscriptions" /* webpackChunkName: "dashboard" */
-  )
+  import("pages/back-office/subscriptions" /* webpackChunkName: "dashboard" */)
 );
 const MenuBuilder = lazy(() =>
   import(

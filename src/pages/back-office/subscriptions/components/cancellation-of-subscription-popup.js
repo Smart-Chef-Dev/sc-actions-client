@@ -1,11 +1,10 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useMutation } from "react-query";
 
-import { Flex } from "components/flex";
-import { Text } from "components/text";
-import Button from "components/button";
 import { deleteSubscriptions } from "services/stripeService";
+import ConfirmationPopup from "components/confirmationPopup";
+import { Flex } from "components/flex";
 import { theme } from "theme";
 
 const CancellationOfSubscriptionPopup = ({
@@ -15,6 +14,18 @@ const CancellationOfSubscriptionPopup = ({
   onToggleHidden,
 }) => {
   const deleteSubscriptionsMutation = useMutation(deleteSubscriptions);
+
+  const texts = useMemo(
+    () => [
+      {
+        text: translations["cancellation_of_subscription"],
+        property: {
+          mb: theme.spacing(1),
+        },
+      },
+    ],
+    [translations]
+  );
 
   const unsubscribe = useCallback(() => {
     onButtonsLocked(true);
@@ -31,25 +42,16 @@ const CancellationOfSubscriptionPopup = ({
     onToggleHidden,
   ]);
 
-  const cancelUnsubscribe = useCallback(
-    () => onToggleHidden(true),
-    [onToggleHidden]
-  );
-
   return (
-    <Flex
-      direction="column"
-      p={theme.spacing(1)}
-      boxSizing="border-box"
-      alignItems="center"
-    >
-      <Text textAlign="center" mb={theme.spacing(1)}>
-        {translations["cancellation_of_subscription"]}
-      </Text>
-      <Flex direction="column">
-        <Button onClick={unsubscribe}>{translations["continue"]}</Button>
-        <Button onClick={cancelUnsubscribe}>{translations["cancel"]}</Button>
-      </Flex>
+    <Flex p={theme.spacing(1)} boxSizing="border-box">
+      <ConfirmationPopup
+        texts={texts}
+        onToggleHidden={onToggleHidden}
+        actionButton={unsubscribe}
+        nameContinueButton={translations["continue"]}
+        nameCancelButton={translations["cancel"]}
+        directionOfButtons="column"
+      />
     </Flex>
   );
 };

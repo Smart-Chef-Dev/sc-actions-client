@@ -6,6 +6,7 @@ import { theme } from "theme";
 import ConfirmationPopup from "components/confirmationPopup";
 import { deleteMenuItem } from "services/menuItemsService";
 import { deleteCategory } from "services/categoriesService";
+import { Flex } from "../../../../../components/flex";
 
 const DeletePopup = ({ menuItem, category, onToggleHidden, translations }) => {
   const queryClient = useQueryClient();
@@ -112,13 +113,16 @@ const DeletePopup = ({ menuItem, category, onToggleHidden, translations }) => {
   }, [menuItem, category, mutation]);
 
   return (
-    <ConfirmationPopup
-      texts={texts}
-      onToggleHidden={onToggleHidden}
-      actionButton={removeMenuItem}
-      nameContinueButton={translations["delete"]}
-      nameCancelButton={translations["cancel"]}
-    />
+    <Flex width={1} height={1} p={theme.spacing(3)} boxSizing="border-box">
+      <ConfirmationPopup
+        texts={texts}
+        onToggleHidden={onToggleHidden}
+        actionButton={removeMenuItem}
+        nameContinueButton={translations["delete"]}
+        nameCancelButton={translations["cancel"]}
+        buttonWidth="auto"
+      />
+    </Flex>
   );
 };
 

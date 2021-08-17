@@ -1,9 +1,9 @@
 import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
+
 import { Flex } from "./flex";
 import { Text } from "./text";
 import PopupWindowControlButton from "../pages/back-office/menu-builder/components/popup-windows/popup-window-control-button";
-import { theme } from "../theme";
 
 const ConfirmationPopup = ({
   texts,
@@ -11,6 +11,8 @@ const ConfirmationPopup = ({
   nameContinueButton,
   nameCancelButton,
   actionButton,
+  directionOfButtons,
+  buttonWidth,
 }) => {
   const actionContinueButton = useCallback(() => {
     actionButton();
@@ -22,7 +24,7 @@ const ConfirmationPopup = ({
       direction="column"
       justifyContent="space-between"
       width={1}
-      p={theme.spacing(3)}
+      height={1}
     >
       <Flex direction="column" width={1}>
         {texts.map((t, i) => (
@@ -43,7 +45,8 @@ const ConfirmationPopup = ({
         nameContinueButton={nameContinueButton}
         nameCancelButton={nameCancelButton}
         actionContinueButton={actionContinueButton}
-        buttonWidth="auto"
+        directionOfButtons={directionOfButtons}
+        buttonWidth={buttonWidth}
       />
     </Flex>
   );
@@ -54,7 +57,9 @@ ConfirmationPopup.propTypes = {
   onToggleHidden: PropTypes.func,
   nameContinueButton: PropTypes.string,
   nameCancelButton: PropTypes.string,
+  buttonWidth: PropTypes.string,
   actionButton: PropTypes.func,
+  directionOfButtons: PropTypes.string,
 };
 
 export default memo(ConfirmationPopup);
