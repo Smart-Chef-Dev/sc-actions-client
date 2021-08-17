@@ -175,8 +175,8 @@ const AddAddonPopup = ({ onToggleHidden, restaurantId, translations }) => {
           )}
           <PopupWindowControlButton
             onToggleHidden={onToggleHidden}
-            translations={translations}
-            buttonName={translations["create"]}
+            nameContinueButton={translations["create"]}
+            nameCancelButton={translations["cancel"]}
           />
         </Flex>
       </Form>

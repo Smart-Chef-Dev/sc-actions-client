@@ -138,8 +138,8 @@ const ConstructCategoryPopup = ({
         </Flex>
         <PopupWindowControlButton
           onToggleHidden={onToggleHidden}
-          translations={translations}
-          buttonName={buttonName}
+          nameContinueButton={buttonName}
+          nameCancelButton={translations["cancel"]}
           buttonWidth="auto"
         />
       </Flex>

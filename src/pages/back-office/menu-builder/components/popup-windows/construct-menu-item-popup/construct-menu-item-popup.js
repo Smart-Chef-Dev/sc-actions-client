@@ -212,8 +212,8 @@ const ConstructMenuItemPopup = ({
           <Flex width={1} mt={theme.spacing(3)}>
             <PopupWindowControlButton
               onToggleHidden={onToggleHidden}
-              translations={translations}
-              buttonName={translations["create"]}
+              nameContinueButton={translations["create"]}
+              nameCancelButton={translations["cancel"]}
             />
           </Flex>
         </Flex>
