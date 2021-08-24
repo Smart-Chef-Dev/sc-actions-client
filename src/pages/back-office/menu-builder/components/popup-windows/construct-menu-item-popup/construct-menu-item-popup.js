@@ -119,9 +119,9 @@ const ConstructMenuItemPopup = ({
               label: menuItem.category.name,
             },
             toggleTime: !!menuItem.time,
-            time: menuItem.time,
+            time: menuItem.time ?? "",
             toggleWeight: !!menuItem.weight,
-            weight: menuItem.weight,
+            weight: menuItem.weight ?? "",
             addons: addons,
             picture: menuItem.pictureUrl,
           }
@@ -161,6 +161,13 @@ const ConstructMenuItemPopup = ({
             });
           }
 
+          if (!values.toggleWeight) {
+            values.weight = "";
+          }
+          if (!values.toggleTime) {
+            values.time = "";
+          }
+
           const requestData = menuItem
             ? {
                 menuItemId: menuItem._id,
@@ -174,13 +181,6 @@ const ConstructMenuItemPopup = ({
                 categoryId: menuItemCategory._id,
                 body: { ...values, pictureUrl },
               };
-
-          if (!values.toggleWeight) {
-            values.weight = "";
-          }
-          if (!values.toggleTime) {
-            values.time = "";
-          }
 
           await editMenuItemMutation.mutateAsync(requestData);
         } catch (err) {
