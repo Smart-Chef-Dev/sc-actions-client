@@ -22,6 +22,6 @@ export const ConstructorMenuItemScheme = (translations) => {
         .required(translations["required"])
         .min(1, translations["min_weight"]),
     }),
-    pictureUrl: Yup.string().required(translations["required"]),
+    picture: Yup.string().required(translations["required"]),
   });
 };

@@ -1,45 +1,45 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
 import { styled } from "@linaria/react";
-import { useMutation } from "react-query";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
 import { Img } from "components/img";
 import UploadPhoto from "assets/icons/upload-photo/upload_photo_icon.svg";
-import { uploadFileInRestaurant } from "services/restaurantService";
 import { theme } from "theme";
 
 const UploadPhotoComponent = ({
-  restaurantId,
-  pictureUrl,
   error,
   onFieldValue,
   nameValue,
+  pictureInFormikValue,
 }) => {
-  const uploadFileInRestaurantMutation = useMutation(uploadFileInRestaurant);
+  const [picture, setPicture] = useState(pictureInFormikValue);
 
   const onChange = useCallback(
     async (e) => {
-      const picture = e.target.files[0];
-      if (!picture) {
+      const pictureTmp = e.target.files[0];
+
+      if (!pictureTmp) {
         return;
       }
 
-      const pictureUrlTmp = await uploadFileInRestaurantMutation.mutateAsync({
-        restaurantId,
-        file: picture,
-      });
-      onFieldValue(nameValue, pictureUrlTmp);
+      const reader = new FileReader();
+
+      reader.readAsDataURL(pictureTmp);
+      reader.onload = function () {
+        setPicture(reader.result);
+        onFieldValue(nameValue, pictureTmp);
+      };
     },
-    [restaurantId, uploadFileInRestaurantMutation, onFieldValue, nameValue]
+    [onFieldValue, nameValue]
   );
 
   return (
     <>
       <label htmlFor="image">
-        {pictureUrl ? (
+        {picture ? (
           <s.Container alignItems="center">
-            <s.Preview src={pictureUrl} alt="preview" />
+            <s.Preview src={picture} alt="preview" />
           </s.Container>
         ) : (
           <s.Container
@@ -84,11 +84,13 @@ const s = {
 };
 
 UploadPhotoComponent.propTypes = {
-  restaurantId: PropTypes.string,
   error: PropTypes.bool,
   onFieldValue: PropTypes.func,
-  pictureUrl: PropTypes.string,
   nameValue: PropTypes.string,
+  pictureInFormikValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
 };
 
 export default memo(UploadPhotoComponent);

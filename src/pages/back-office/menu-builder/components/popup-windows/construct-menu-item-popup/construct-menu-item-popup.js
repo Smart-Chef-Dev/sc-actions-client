@@ -1,9 +1,9 @@
 import { memo, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { FormikProvider, useFormik } from "formik";
+import { useMutation, useQueryClient } from "react-query";
 
 import { ConstructorMenuItemScheme } from "yup-schemes/constructor-menu-item-scheme";
-import { useMutation, useQueryClient } from "react-query";
 import { createMenuItem, editMenuItem } from "services/menuItemsService";
 import { Form } from "components/form";
 import { Flex } from "components/flex";
@@ -12,6 +12,7 @@ import { Text } from "components/text";
 import UploadPhotoComponent from "./upload-photo-component";
 import ConfirmationPopupControlButton from "components/confirmationPopup/confirmation-popup-control-button";
 import FormComponent from "./form-component";
+import { uploadFileInRestaurant } from "services/restaurantService";
 
 const ConstructMenuItemPopup = ({
   onToggleHidden,
@@ -38,6 +39,7 @@ const ConstructMenuItemPopup = ({
     [menuItem]
   );
 
+  const uploadFileInRestaurantMutation = useMutation(uploadFileInRestaurant);
   const editMenuItemMutation = useMutation(
     menuItem ? editMenuItem : createMenuItem,
     {
@@ -121,7 +123,7 @@ const ConstructMenuItemPopup = ({
             toggleWeight: !!menuItem.weight,
             weight: menuItem.weight,
             addons: addons,
-            pictureUrl: menuItem.pictureUrl,
+            picture: menuItem.pictureUrl,
           }
         : {
             toggleTime: true,
@@ -136,7 +138,7 @@ const ConstructMenuItemPopup = ({
             time: "",
             weight: "",
             addons: [],
-            pictureUrl: "",
+            picture: "",
           },
     [category, menuItem, addons]
   );
@@ -150,14 +152,27 @@ const ConstructMenuItemPopup = ({
           const menuItemCategory = categories.find(
             (c) => c.name === values.category.value
           );
+
+          let pictureUrl = null;
+          if (typeof values.picture !== "string") {
+            pictureUrl = await uploadFileInRestaurantMutation.mutateAsync({
+              restaurantId,
+              file: values.picture,
+            });
+          }
+
           const requestData = menuItem
             ? {
                 menuItemId: menuItem._id,
-                body: { ...values, categoryId: menuItemCategory._id },
+                body: {
+                  ...values,
+                  categoryId: menuItemCategory._id,
+                  pictureUrl: pictureUrl ?? values.picture,
+                },
               }
             : {
                 categoryId: menuItemCategory._id,
-                body: { ...values },
+                body: { ...values, pictureUrl },
               };
 
           if (!values.toggleWeight) {
@@ -172,7 +187,13 @@ const ConstructMenuItemPopup = ({
           console.log(err);
         }
       },
-      [menuItem, editMenuItemMutation, categories]
+      [
+        menuItem,
+        editMenuItemMutation,
+        uploadFileInRestaurantMutation,
+        categories,
+        restaurantId,
+      ]
     ),
   });
 
@@ -196,11 +217,10 @@ const ConstructMenuItemPopup = ({
           </Text>
           <Flex mb={theme.spacing(1)}>
             <UploadPhotoComponent
-              error={formik.errors?.pictureUrl && formik.touched.pictureUrl}
-              restaurantId={restaurantId}
+              error={formik.errors?.picture && formik.touched.picture}
               onFieldValue={formik.setFieldValue}
-              pictureUrl={formik.values["pictureUrl"]}
-              nameValue="pictureUrl"
+              pictureInFormikValue={formik.values["picture"]}
+              nameValue="picture"
             />
           </Flex>
           <FormComponent
