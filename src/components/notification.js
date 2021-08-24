@@ -31,6 +31,7 @@ const Popup = styled.div`
   border-radius: 25px;
   display: flex;
   background: ${(props) => props.background ?? "transparent"};
+  justify-content: center;
 `;
 
 Notification.propTypes = {
