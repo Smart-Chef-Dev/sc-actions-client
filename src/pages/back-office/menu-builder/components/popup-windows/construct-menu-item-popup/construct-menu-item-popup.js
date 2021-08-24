@@ -20,6 +20,8 @@ const ConstructMenuItemPopup = ({
   translations,
   category,
   restaurantId,
+  nameButton,
+  heading,
 }) => {
   const queryClient = useQueryClient();
 
@@ -213,7 +215,7 @@ const ConstructMenuItemPopup = ({
             fontSize={theme.fontSize(2)}
             mb={theme.spacing(1)}
           >
-            {translations["edit_item"]}
+            {heading}
           </Text>
           <Flex mb={theme.spacing(1)}>
             <UploadPhotoComponent
@@ -232,7 +234,7 @@ const ConstructMenuItemPopup = ({
           <Flex width={1} mt={theme.spacing(3)}>
             <ConfirmationPopupControlButton
               onToggleHidden={onToggleHidden}
-              nameContinueButton={translations["create"]}
+              nameContinueButton={nameButton}
               nameCancelButton={translations["cancel"]}
             />
           </Flex>
@@ -248,6 +250,8 @@ ConstructMenuItemPopup.propTypes = {
   translations: PropTypes.object,
   category: PropTypes.object,
   restaurantId: PropTypes.string,
+  nameButton: PropTypes.string,
+  heading: PropTypes.string,
 };
 
 export default memo(ConstructMenuItemPopup);

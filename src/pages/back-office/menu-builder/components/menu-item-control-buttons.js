@@ -32,7 +32,13 @@ const MenuItemControlButtons = ({
       width: "900px",
       height: "700px",
     },
-    { menuItem, translations, restaurantId }
+    {
+      menuItem,
+      translations,
+      restaurantId,
+      nameButton: translations["edit"],
+      heading: translations["edit_item"],
+    }
   );
 
   const deleteMenuItem = useCallback(() => {

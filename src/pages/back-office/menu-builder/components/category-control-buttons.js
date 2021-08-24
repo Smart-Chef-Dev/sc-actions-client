@@ -40,7 +40,7 @@ const CategoryControlButtons = ({
       category,
       restaurantId,
       translations,
-      buttonName: translations["save"],
+      buttonName: translations["edit"],
       heading: translations["edit_category"],
     }
   );
@@ -51,7 +51,13 @@ const CategoryControlButtons = ({
       width: "900px",
       height: "700px",
     },
-    { category, restaurantId, translations }
+    {
+      category,
+      restaurantId,
+      translations,
+      nameButton: translations["create"],
+      heading: translations["create_item"],
+    }
   );
 
   const removeCategory = useCallback(() => {
