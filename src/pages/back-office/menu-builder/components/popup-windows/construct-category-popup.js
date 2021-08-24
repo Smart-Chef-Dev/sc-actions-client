@@ -64,8 +64,6 @@ const ConstructCategoryPopup = ({
     }
   );
 
-  console.log(buttonName);
-
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: ConstructorCategoryScheme(translations),

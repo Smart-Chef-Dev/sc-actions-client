@@ -83,7 +83,11 @@ const Option = ({ ...props }) => {
       <Flex alignItems="center" justifyContent="space-between" width={1}>
         <label>{props.value}</label>
         {!props.data.isButton && (
-          <Checkbox type="checkbox" checked={props.isSelected} />
+          <Checkbox
+            type="checkbox"
+            name={`${props.value}Checkbox`}
+            checked={props.isSelected}
+          />
         )}
       </Flex>
     </components.Option>
