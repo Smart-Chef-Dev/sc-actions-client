@@ -19,7 +19,10 @@ const Actions = () => {
   const { renderNotification, showNotification } = useNotifications(
     <DoneIcon />
   );
-  const { renderScreenBlock, attemptsWrapper } = useScreenBlock();
+
+  const { renderScreenBlock, attemptsWrapper } = useScreenBlock(
+    restaurant?.language
+  );
 
   const handleClick = useCallback(
     (id) => async () => {
