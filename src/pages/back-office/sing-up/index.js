@@ -1,7 +1,6 @@
-import { memo, useState, useCallback, useMemo } from "react";
+import { memo, useState, useCallback } from "react";
 import { useLocation } from "wouter";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 
 import Input from "components/input";
 import ErrorText from "components/error-text";
@@ -13,6 +12,13 @@ import { Routes } from "constants/routes";
 import { theme } from "theme";
 
 import { useTranslation } from "contexts/translation-context";
+import { SignUpSchema } from "yup-schemes/sign-up-schema";
+
+const initialValues = {
+  email: "",
+  password: "",
+  repeatPassword: "",
+};
 
 const SingUp = () => {
   const [, setLocation] = useLocation();
@@ -22,31 +28,9 @@ const SingUp = () => {
 
   const [isEmailExists, setIsEmailExists] = useState(false);
 
-  const initialValues = {
-    email: "",
-    password: "",
-    repeatPassword: "",
-  };
-
-  const SignUpSchema = Yup.object().shape({
-    password: Yup.string()
-      .min(8, translations["min_password"])
-      .max(25, translations["max_password"])
-      .required(translations["required"]),
-    email: Yup.string()
-      .email(translations["validation_email"])
-      .required(translations["required"]),
-    repeatPassword: Yup.string()
-      .oneOf(
-        [Yup.ref("password")],
-        translations["entered_password_does_not_match"]
-      )
-      .required(translations["required"]),
-  });
-
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: useMemo(() => SignUpSchema, [SignUpSchema]),
+    validationSchema: SignUpSchema(translations),
     onSubmit: useCallback(
       async (values) => {
         const response = await fetch("/api/users/sign-up", {

@@ -1,8 +1,7 @@
-import { memo, useCallback, useState, useMemo } from "react";
+import { memo, useCallback, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useLocation } from "wouter";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 
 import Input from "components/input";
 import ErrorText from "components/error-text";
@@ -16,6 +15,12 @@ import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
 
 import UserDataState from "atoms/user";
+import { SignInSchema } from "yup-schemes/sign-in-schema";
+
+const initialValues = {
+  email: "",
+  password: "",
+};
 
 const SingIn = () => {
   const [, setLocation] = useLocation();
@@ -27,24 +32,9 @@ const SingIn = () => {
 
   const [, setUserDataAtoms] = useRecoilState(UserDataState);
 
-  const initialValues = {
-    email: "",
-    password: "",
-  };
-
-  const SignupSchema = Yup.object().shape({
-    password: Yup.string()
-      .min(8, translations["min_password"])
-      .max(25, translations["max_password"])
-      .required(translations["required"]),
-    email: Yup.string()
-      .email(translations["validation_email"])
-      .required(translations["required"]),
-  });
-
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: useMemo(() => SignupSchema, [SignupSchema]),
+    validationSchema: SignInSchema(translations),
     onSubmit: useCallback(
       async (values) => {
         const response = await fetch("/api/users/sing-in", {
