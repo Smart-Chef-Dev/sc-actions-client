@@ -8,6 +8,7 @@ import { useScreenBlock } from "hooks/useScreenBlock";
 import { useRestaurant } from "hooks/useRestaurant";
 import ActionComponent from "./action-component";
 import DoneIcon from "./done-icon.svg";
+import { useUpdateLanguage } from "contexts/translation-context";
 
 const Actions = () => {
   const [, { restaurantId, tableId }] = useRoute(Routes.ACTIONS);
@@ -15,6 +16,7 @@ const Actions = () => {
   const actions = useMemo(() => {
     return restaurant?.actions ?? [];
   }, [restaurant?.actions]);
+  useUpdateLanguage(restaurant?.language);
 
   const { renderNotification, showNotification } = useNotifications(
     <DoneIcon />

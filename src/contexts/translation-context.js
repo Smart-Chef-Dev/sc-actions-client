@@ -9,7 +9,7 @@ import {
 } from "react";
 import LocalizedStrings from "react-localization";
 
-import { Keys, getOrDefault } from "utils/localStorage";
+import { Keys } from "utils/localStorage";
 import { languages } from "translations";
 
 const Context = createContext({});
@@ -29,6 +29,27 @@ export const useTranslation = () => {
   return context;
 };
 
+export const useUpdateLanguage = (language) => {
+  const context = useContext(Context);
+
+  if (!context) {
+    throw new Error(
+      "useUpdateLanguage must be used within a TranslationProvider"
+    );
+  }
+
+  if (!language || !Languages[language]) {
+    return;
+  }
+
+  if (localStorage.getItem(Keys.CURRENT_LANGUAGE) === Languages[language]) {
+    return;
+  }
+
+  localStorage.setItem(Keys.CURRENT_LANGUAGE, Languages[language]);
+  context.setLanguage(Languages[language]);
+};
+
 export const TranslationContext = (props) => {
   const strings = useRef(null);
   const [currentLanguage, setCurrentLanguage] = useState();
@@ -41,7 +62,8 @@ export const TranslationContext = (props) => {
   useEffect(() => {
     strings.current = new LocalizedStrings(languages);
 
-    const language = getOrDefault(Keys.CURRENT_LANGUAGE, DEFAULT_LANGUAGE);
+    const language =
+      localStorage.getItem(Keys.CURRENT_LANGUAGE) ?? DEFAULT_LANGUAGE;
 
     setLanguage(language);
     // eslint-disable-next-line react-hooks/exhaustive-deps
