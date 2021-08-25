@@ -12,7 +12,7 @@ import LocalizedStrings from "react-localization";
 import { Keys } from "utils/localStorage";
 import { languages } from "translations";
 
-const Context = createContext({});
+export const Context = createContext({});
 
 export const Languages = {
   EN: "en",

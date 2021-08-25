@@ -7,5 +7,6 @@
   "password": "Password:",
   "sing_in": "Sign in",
   "sing_up": "Sign up",
-  "incorrect_login_or_password": "Incorrect login or password"
+  "incorrect_login_or_password": "Incorrect login or password",
+  "change_language_to": "Change language to:"
 }

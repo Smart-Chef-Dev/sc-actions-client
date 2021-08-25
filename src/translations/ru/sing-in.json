@@ -7,5 +7,6 @@
   "password": "Пароль:",
   "sing_in": "Войти",
   "sing_up": "Зарегистрироваться",
-  "incorrect_login_or_password": "Неверный логин или пароль"
+  "incorrect_login_or_password": "Неверный логин или пароль",
+  "change_language_to": "Поменять язык на:"
 }

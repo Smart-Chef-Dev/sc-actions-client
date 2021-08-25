@@ -16,6 +16,7 @@ import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
 
 import UserDataState from "atoms/user";
+import LanguageSelection from "../../../components/language-selection";
 
 const SingIn = () => {
   const [, setLocation] = useLocation();
@@ -141,6 +142,8 @@ const SingIn = () => {
           {translations["sing_up"]}
         </Button>
       </Flex>
+
+      <LanguageSelection text={translations["change_language_to"]} />
     </Flex>
   );
 };

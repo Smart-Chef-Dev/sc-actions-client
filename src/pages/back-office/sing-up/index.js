@@ -13,6 +13,7 @@ import { Routes } from "constants/routes";
 import { theme } from "theme";
 
 import { useTranslation } from "contexts/translation-context";
+import LanguageSelection from "components/language-selection";
 
 const SingUp = () => {
   const [, setLocation] = useLocation();
@@ -149,6 +150,7 @@ const SingUp = () => {
           {translations["sing_in"]}
         </Button>
       </Flex>
+      <LanguageSelection text={translations["change_language_to"]} />
     </Flex>
   );
 };
