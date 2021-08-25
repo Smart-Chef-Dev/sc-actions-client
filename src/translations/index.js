@@ -1,6 +1,3 @@
-import actionsEn from "./en/actions.json";
-import actionsRu from "./ru/actions.json";
-
 import restaurantLoginEn from "./en/restaurant-login.json";
 import restaurantLoginRu from "./ru/restaurant-login.json";
 
@@ -33,7 +30,6 @@ import confirmationPopupRu from "./ru/confirmation-popup.json";
 
 export const languages = {
   en: {
-    actions: actionsEn,
     restaurantLogin: restaurantLoginEn,
     mainMenu: mainMenuEn,
     expandedMenu: expandedMenuEn,
@@ -46,7 +42,6 @@ export const languages = {
     confirmationPopup: confirmationPopupEn,
   },
   ru: {
-    actions: actionsRu,
     restaurantLogin: restaurantLoginRu,
     singIn: singInRu,
     singUp: singUpRu,

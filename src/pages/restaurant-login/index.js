@@ -2,7 +2,10 @@ import { memo, useCallback, useState } from "react";
 import { useLocation, useRoute } from "wouter";
 import { styled } from "@linaria/react";
 
-import { useTranslation } from "contexts/translation-context";
+import {
+  useTranslation,
+  useUpdateLanguage,
+} from "contexts/translation-context";
 import { useRestaurant } from "hooks/useRestaurant";
 import TableNumberInput from "components/table-number-input";
 import { Label } from "components/label";
@@ -18,6 +21,8 @@ const RestaurantLogin = () => {
   const [, { restaurantId }] = useRoute(Routes.RESTAURANT_LOGIN);
   const { restaurant } = useRestaurant(restaurantId);
   const [error, setError] = useState("");
+
+  useUpdateLanguage(restaurant?.language);
 
   const handleSubmit = useCallback(
     (tableNumber) => {
