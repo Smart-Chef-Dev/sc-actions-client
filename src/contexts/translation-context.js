@@ -17,6 +17,7 @@ export const Context = createContext({});
 export const Languages = {
   EN: "en",
   RU: "ru",
+  PL: "pl",
 };
 const DEFAULT_LANGUAGE = Languages.RU;
 
@@ -32,22 +33,24 @@ export const useTranslation = () => {
 export const useUpdateLanguage = (language) => {
   const context = useContext(Context);
 
-  if (!context) {
-    throw new Error(
-      "useUpdateLanguage must be used within a TranslationProvider"
-    );
-  }
+  useEffect(() => {
+    if (!context) {
+      throw new Error(
+        "useUpdateLanguage must be used within a TranslationProvider"
+      );
+    }
 
-  if (!language || !Languages[language]) {
-    return;
-  }
+    if (!language || !Languages[language]) {
+      return;
+    }
 
-  if (localStorage.getItem(Keys.CURRENT_LANGUAGE) === Languages[language]) {
-    return;
-  }
+    if (localStorage.getItem(Keys.CURRENT_LANGUAGE) === Languages[language]) {
+      return;
+    }
 
-  localStorage.setItem(Keys.CURRENT_LANGUAGE, Languages[language]);
-  context.setLanguage(Languages[language]);
+    localStorage.setItem(Keys.CURRENT_LANGUAGE, Languages[language]);
+    context.setLanguage(Languages[language]);
+  }, [context, language]);
 };
 
 export const TranslationContext = (props) => {
