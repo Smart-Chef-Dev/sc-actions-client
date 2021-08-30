@@ -11,6 +11,8 @@ import LocalizedStrings from "react-localization";
 
 import { Keys } from "utils/localStorage";
 import { languages } from "translations";
+import { useRouterParameters } from "../hooks/useRouterParameters";
+import { useRestaurant } from "../hooks/useRestaurant";
 
 const Context = createContext({});
 
@@ -29,54 +31,39 @@ export const useTranslation = () => {
   return context;
 };
 
-export const useUpdateLanguage = (language) => {
-  const context = useContext(Context);
-
-  if (!context) {
-    throw new Error(
-      "useUpdateLanguage must be used within a TranslationProvider"
-    );
-  }
-
-  if (!language || !Languages[language]) {
-    return;
-  }
-
-  if (localStorage.getItem(Keys.CURRENT_LANGUAGE) === Languages[language]) {
-    return;
-  }
-
-  localStorage.setItem(Keys.CURRENT_LANGUAGE, Languages[language]);
-  context.setLanguage(Languages[language]);
-};
-
 export const TranslationContext = (props) => {
   const strings = useRef(null);
   const [currentLanguage, setCurrentLanguage] = useState();
+  const parameters = useRouterParameters();
+  const { restaurant } = useRestaurant(parameters.restaurantId);
 
   const setLanguage = useCallback((language) => {
+    localStorage.setItem(Keys.CURRENT_LANGUAGE, language);
     setCurrentLanguage(language);
     strings.current.setLanguage(language);
   }, []);
 
   useEffect(() => {
-    strings.current = new LocalizedStrings(languages);
+    if (!restaurant) {
+      return;
+    }
 
+    setLanguage(Languages[restaurant.language]);
+  }, [restaurant, setLanguage]);
+
+  const value = useMemo(() => {
+    strings.current = new LocalizedStrings(languages);
     const language =
       localStorage.getItem(Keys.CURRENT_LANGUAGE) ?? DEFAULT_LANGUAGE;
 
     setLanguage(language);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  const value = useMemo(
-    () => ({
+    return {
       strings: strings.current,
       currentLanguage,
       setLanguage,
-    }),
-    [currentLanguage, setLanguage]
-  );
+    };
+  }, [currentLanguage, setLanguage]);
 
   return <Context.Provider value={value} {...props} />;
 };
