@@ -3,6 +3,8 @@ import { Routes } from "./routes";
 
 import MainLayout from "../components/MainLayout";
 import SimpleLayout from "../components/SimpleLayout";
+import MenuBuilder from "../pages/back-office/menu-builder";
+import BackOfficeLayout from "../components/backOfficeLayout";
 
 const SingUp = lazy(() =>
   import("pages/back-office/sing-up" /* webpackChunkName: "sing-up" */)
@@ -92,5 +94,10 @@ export const AppPages = [
     path: Routes.ACTIONS,
     component: Actions,
     layout: MainLayout,
+  },
+  {
+    path: Routes.MENU_BUILDER,
+    component: MenuBuilder,
+    layout: BackOfficeLayout,
   },
 ];
