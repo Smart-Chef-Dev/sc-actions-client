@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { Fragment, memo } from "react";
 import PropTypes from "prop-types";
 
 import { Flex } from "components/flex";
@@ -17,9 +17,8 @@ const Categories = ({ restaurantId, tableId, onLocation, categories }) => {
       overflowX="hidden"
     >
       {categories.data.map((currentCategory, index) => (
-        <>
+        <Fragment key={currentCategory._id}>
           <Category
-            key={currentCategory._id}
             restaurantId={restaurantId}
             tableId={tableId}
             category={currentCategory}
@@ -28,7 +27,7 @@ const Categories = ({ restaurantId, tableId, onLocation, categories }) => {
           {index !== categories.data.length - 1 && (
             <Divider ml={theme.spacing(1)} mb={theme.spacing(1)} />
           )}
-        </>
+        </Fragment>
       ))}
     </Flex>
   ) : (
