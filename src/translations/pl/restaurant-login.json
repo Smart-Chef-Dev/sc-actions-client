@@ -1,5 +1,5 @@
 {
-  "enter_table_name": "Enter table number:",
-  "enter_button": "Enter",
-  "table_not_found_error": "Table number not found"
+  "enter_table_name": "Liczba stołów:",
+  "enter_button": "Zapisz",
+  "table_not_found_error": "Nie znaleziono numeru stołu"
 }

@@ -1,8 +1,10 @@
 {
-  "subscriptions": "Subscriptions",
-  "arrange": "Arrange",
-  "current_subscription": "Unsubscribe",
-  "not_subscribed": "Not subscribed",
-  "subscribed_successfully": "Subscribed successfully",
-  "cancellation_of_subscription": "Are you sure you want to cancel your subscription?"
+  "subscriptions": "Subskrypcje",
+  "arrange": "Zaaranżować",
+  "current_subscription": "Anuluj subskrypcję",
+  "not_subscribed": "Nie subskrybowany",
+  "subscribed_successfully": "Zasubskrybowano pomyślnie",
+  "cancellation_of_subscription": "Czy na pewno chcesz anulować swoją subskrypcję?",
+  "continue": "Kontyntynuj",
+  "cancel": "Anuluj"
 }

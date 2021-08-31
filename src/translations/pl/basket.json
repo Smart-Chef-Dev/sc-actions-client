@@ -1,9 +1,9 @@
 {
-  "my_order": "My Order",
-  "count_of_persons": "Count of persons",
-  "total": "Total:",
-  "confirm_order": "Confirm order",
-  "extra_add_ons": "Extra Add-Ons to Choose from",
-  "order_is_confirmed": "The order is confirmed",
-  "chefs_started_preparing_order": "Our chefs have started preparing your order"
+  "my_order": "Moje Zamówienie",
+  "count_of_persons": "Liczba osób",
+  "total": "Całość:",
+  "confirm_order": "Potwierdzić",
+  "extra_add_ons": "Dodatki do wyboru",
+  "order_is_confirmed": "Zamówienie zostało potwierdzone",
+  "chefs_started_preparing_order": "Nasi kucharze rozpoczęli przygotowywanie zamówienia."
 }

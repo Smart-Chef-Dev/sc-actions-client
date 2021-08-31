@@ -1,12 +1,12 @@
 {
-  "min_password": "Must be at least 8 characters",
-  "max_password": "Must be 25 characters or less",
-  "required": "Required",
-  "validation_email": "Invalid email address",
+  "min_password": "Musi mieć co najmniej 8 znaków",
+  "max_password": "Musi mieć 25 znaków lub mniej",
+  "required": "Wymaganę",
+  "validation_email": "Niepoprawny adres email",
   "email": "Email:",
-  "password": "Password:",
-  "sing_in": "Sign in",
-  "sing_up": "Sign up",
-  "incorrect_login_or_password": "Incorrect login or password",
-  "change_language_to": "Change language to:"
+  "password": "Hasło:",
+  "sing_in": "Zaloguj",
+  "sing_up": "Zarejestruj",
+  "incorrect_login_or_password": "Nieprawidłowy login lub hasło",
+  "change_language_to": "Zmień język na"
 }
