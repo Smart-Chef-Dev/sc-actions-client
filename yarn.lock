@@ -1548,7 +1548,8 @@
   version "7.14.8"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.8.tgz#7119a56f421018852694290b9f9148097391b446"
   integrity sha512-twj3L8Og5SaCRCErB4x4ajbvBIVV77CGeFglHpeg5WC5FF8TZzBWXtTJ4MqaD9QszLYTtr+IsaAL2rEUevb+eg==
-
+  dependencies:
+    regenerator-runtime "^0.13.4"
 
 "@babel/template@>=7", "@babel/template@^7.10.4", "@babel/template@^7.12.13", "@babel/template@^7.3.3":
   version "7.12.13"
@@ -10870,15 +10871,15 @@ readdirp@~3.5.0:
   dependencies:
     picomatch "^2.2.1"
 
-recoil-persist@^2.5.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/recoil-persist/-/recoil-persist-2.9.0.tgz#de0e0c7d462173d046a3cce5fb722524f30bd64a"
-  integrity sha512-8D1uPXY9EN1TmtjmdGoX3Zr3PWCNax9v3bpSppEAhDPJflJfRYFRnxQqtKpkqYU6dnGeo5FJUULq9weH4ImXUw==
+recoil-persist@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/recoil-persist/-/recoil-persist-3.0.0.tgz#30f8fb5d62a4a0e3d660b07dcb75cbb4a0bcab24"
+  integrity sha512-ZQB/U26uLdm2bDPh9HR44WamHz30XUD0cqAUnqSDuIKRTHsyjqccJ3ThXfoFYnG9QpOUcPSve6ElHseVll2g+w==
 
-recoil@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/recoil/-/recoil-0.3.1.tgz#40ef544160d19d76e25de8929d7e512eace13b90"
-  integrity sha512-KNA3DRqgxX4rRC8E7fc6uIw7BACmMPuraIYy+ejhE8tsw7w32CetMm8w7AMZa34wzanKKkev3vl3H7Z4s0QSiA==
+recoil@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/recoil/-/recoil-0.4.0.tgz#2a933ba7c043cbf6f50f52da0828a879c7cd7d69"
+  integrity sha512-FZ2ljI4ldZU820V0APbKOtS4bPwPJHvpDBQEl+Cf47DMaM35wuLXl2u37E0TSgdvKAZBOUsIwcBnzE+ncODRxQ==
   dependencies:
     hamt_plus "1.0.2"
 
