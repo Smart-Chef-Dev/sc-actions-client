@@ -1,40 +1,22 @@
-import { memo, useCallback, useContext, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
 
 import { Text } from "./text";
-import { Context, Languages } from "../contexts/translation-context";
+import { Languages, useTranslation } from "../contexts/translation-context";
 import { theme } from "../theme";
 import { Flex } from "./flex";
-import { Keys } from "../utils/localStorage";
 
 const LanguageSelection = ({ text }) => {
-  const context = useContext(Context);
+  const { setLanguage } = useTranslation();
 
-  const languages = useMemo(() => {
-    const currentLanguage = localStorage.getItem(Keys.CURRENT_LANGUAGE);
-    let languagesTmp = [];
-
-    for (const key in Languages) {
-      if (currentLanguage === Languages[key]) {
-        continue;
-      }
-
-      languagesTmp = [...languagesTmp, Languages[key]];
-    }
-
-    return languagesTmp;
-
-    // should update when context changes
-    // eslint-disable-next-line
-  }, [context]);
+  const languages = useMemo(() => Object.values(Languages), []);
 
   const changeLanguage = useCallback(
     (lang) => () => {
-      localStorage.setItem(Keys.CURRENT_LANGUAGE, lang);
-      context.setLanguage(lang);
+      setLanguage(lang);
     },
-    [context]
+    [setLanguage]
   );
 
   return (
