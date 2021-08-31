@@ -1,4 +1,5 @@
 import { memo, useState, useCallback, useMemo } from "react";
+import { useMutation } from "react-query";
 import { useLocation } from "wouter";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -11,18 +12,17 @@ import { Label } from "components/label";
 
 import { Routes } from "constants/routes";
 import { theme } from "theme";
-
 import { useTranslation } from "contexts/translation-context";
 import LanguageSelection from "components/language-selection";
+import { signUpAccount } from "services/userService";
 
 const SingUp = () => {
   const [, setLocation] = useLocation();
   const {
     strings: { singUp: translations },
   } = useTranslation();
-
   const [isEmailExists, setIsEmailExists] = useState(false);
-
+  const signUpAccountMutation = useMutation(signUpAccount);
   const initialValues = {
     email: "",
     password: "",
@@ -50,36 +50,30 @@ const SingUp = () => {
     validationSchema: useMemo(() => SignUpSchema, [SignUpSchema]),
     onSubmit: useCallback(
       async (values) => {
-        const response = await fetch("/api/users/sign-up", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: values.email,
-            password: values.password,
-          }),
-        });
+        try {
+          await signUpAccountMutation.mutateAsync({
+            body: {
+              email: values.email,
+              password: values.password,
+            },
+          });
 
-        if (response.status === 403) {
+          setLocation(Routes.SING_IN);
+        } catch {
           setIsEmailExists(true);
-          return;
         }
-
-        setLocation(Routes.SING_IN);
       },
-      [setIsEmailExists, setLocation]
+      [setIsEmailExists, setLocation, signUpAccountMutation]
     ),
   });
 
-  const handleSignInButtonClick = useCallback(() => {
-    setLocation(Routes.SING_IN);
-  }, [setLocation]);
+  const handleSignInButtonClick = useCallback(
+    () => setLocation(Routes.SING_IN),
+    [setLocation]
+  );
 
   const handleChange = useCallback(
-    (fieldName) => (e) => {
-      formik.setFieldValue(fieldName, e);
-    },
+    (fieldName) => (e) => formik.setFieldValue(fieldName, e),
     [formik]
   );
 
