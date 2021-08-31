@@ -9,7 +9,7 @@ const SingUp = lazy(() =>
 );
 const Dashboard = lazy(() =>
   import(
-    "pages/back-office/dashboard/subscriptions" /* webpackChunkName: "dashboard" */
+    "pages/back-office/subscriptions" /* webpackChunkName: "dashboard" */
   )
 );
 const SingIn = lazy(() =>

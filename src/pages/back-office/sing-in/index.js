@@ -3,7 +3,6 @@ import { useRecoilState } from "recoil";
 import { useLocation } from "wouter";
 import { useFormik } from "formik";
 import { useMutation } from "react-query";
-import * as Yup from "yup";
 
 import Input from "components/input";
 import ErrorText from "components/error-text";
@@ -16,6 +15,7 @@ import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
 import UserDataState from "atoms/user";
 import { SignInSchema } from "yup-schemes/sign-in-schema";
+import {signInAccount} from "services/userService";
 
 const initialValues = {
   email: "",

@@ -5,10 +5,6 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 import ErrorBoundary from "pages/error-boundary";
 import Route from "components/Route";
-import PrivateRoute from "components/private-route";
-import MainLayout from "components/MainLayout";
-import BackOfficeLayout from "components/backOfficeLayout";
-import SimpleLayout from "components/SimpleLayout";
 import Loader from "components/loaders";
 import DarkModeContext from "contexts/dark-mode-context";
 import { TranslationContext } from "contexts/translation-context";
