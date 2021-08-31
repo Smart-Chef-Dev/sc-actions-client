@@ -6,9 +6,10 @@ import Arrow from "assets/icons/product/arrow.svg";
 import { Flex } from "components/flex";
 
 const BackButton = ({ onLocation, restaurantId, tableId }) => {
-  const handleArrowClick = useCallback(() => {
-    onLocation(`/restaurant/${restaurantId}/${tableId}`);
-  }, [onLocation, restaurantId, tableId]);
+  const handleArrowClick = useCallback(
+    () => onLocation(`/restaurant/${restaurantId}/${tableId}`),
+    [onLocation, restaurantId, tableId]
+  );
 
   return (
     <s.Arrow>
