@@ -17,11 +17,11 @@ const MenuItem = ({
   basketAtoms,
   itemId,
 }) => {
-  const inTheBasket = useMemo(() => {
-    return !!basketAtoms.order.find(
-      (currentValue) => currentValue._id === itemId
-    );
-  }, [itemId, basketAtoms]);
+  const inTheBasket = useMemo(
+    () =>
+      !!basketAtoms.order.find((currentValue) => currentValue._id === itemId),
+    [itemId, basketAtoms]
+  );
 
   return (
     <>

@@ -55,9 +55,8 @@ const MenuItem = ({
   }, [categoryId]);
 
   const handleItemClick = useCallback(
-    (itemId) => () => {
-      onLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
-    },
+    (itemId) => () =>
+      onLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`),
     [onLocation, restaurantId, tableId]
   );
 
@@ -72,24 +71,22 @@ const MenuItem = ({
       }
 
       showNotification();
-      onBasketAtoms((oldOrder) => {
-        return {
-          ...oldOrder,
-          order: [
-            ...oldOrder.order,
-            {
-              ...product,
-              count: 1,
-            },
-          ],
-        };
-      });
+      onBasketAtoms((oldOrder) => ({
+        ...oldOrder,
+        order: [
+          ...oldOrder.order,
+          {
+            ...product,
+            count: 1,
+          },
+        ],
+      }));
     },
     [onBasketAtoms, basketAtoms, showNotification]
   );
 
   return !menuItems.isLoading ? (
-    <Flex height={1} width={1} direction="column" mx={theme.spacing(1)}>
+    <Flex height={1} width={1} mx={theme.spacing(1)}>
       {renderNotification()}
       <InfiniteScroll
         dataLength={dataLength}

@@ -25,13 +25,7 @@ const ControlButtons = ({
   }, [itemId, basketAtoms]);
 
   const changeCount = useCallback(
-    (diff) => () => {
-      if (count + diff <= 0) {
-        return;
-      }
-
-      setCount((count) => count + diff);
-    },
+    (diff) => () => !(count + diff <= 0) && setCount((count) => count + diff),
     [count]
   );
 
@@ -46,27 +40,25 @@ const ControlButtons = ({
         }));
       }
 
-      onBasketAtoms((oldOrder) => {
-        return {
-          ...oldOrder,
-          order: oldOrder.order.map((currentValue) =>
-            currentValue._id === itemId
-              ? {
-                  ...currentValue,
-                  count: currentValue.count + diff,
-                }
-              : currentValue
-          ),
-        };
-      });
+      onBasketAtoms((oldOrder) => ({
+        ...oldOrder,
+        order: oldOrder.order.map((currentValue) =>
+          currentValue._id === itemId
+            ? {
+                ...currentValue,
+                count: currentValue.count + diff,
+              }
+            : currentValue
+        ),
+      }));
       setCount(1);
     },
     [onBasketAtoms, countInBasket, itemId]
   );
 
-  const addProductToOrder = useCallback(() => {
-    onBasketAtoms((oldBasket) => {
-      return {
+  const addProductToOrder = useCallback(
+    () =>
+      onBasketAtoms((oldBasket) => ({
         ...oldBasket,
         order: [
           ...oldBasket.order,
@@ -75,9 +67,9 @@ const ControlButtons = ({
             count: count,
           },
         ],
-      };
-    });
-  }, [menuItem, count, onBasketAtoms]);
+      })),
+    [menuItem, count, onBasketAtoms]
+  );
 
   return (
     <Flex width={1} flex={1} direction="column-reverse" mt={theme.spacing(1)}>

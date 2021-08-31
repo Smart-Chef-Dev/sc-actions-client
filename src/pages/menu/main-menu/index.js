@@ -36,12 +36,10 @@ const Menu = () => {
       !!basketAtoms.order.length &&
       basketAtoms.order[0].category.restaurant._id !== restaurantId
     ) {
-      setBasketAtoms((oldBasket) => {
-        return {
-          ...oldBasket,
-          order: [],
-        };
-      });
+      setBasketAtoms((oldBasket) => ({
+        ...oldBasket,
+        order: [],
+      }));
     }
     // should only be called when the page is refreshed
     // eslint-disable-next-line
