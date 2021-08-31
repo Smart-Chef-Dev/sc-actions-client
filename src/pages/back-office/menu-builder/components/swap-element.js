@@ -63,11 +63,15 @@ const SwapElement = ({
     });
   }, [index, allElement, element, swapElement]);
 
+  const stopPropagation = useCallback((e) => {
+    e.stopPropagation()
+  }, [])
+
   return (
     <Flex
       direction="column"
       mr={theme.spacing(1)}
-      onClick={useCallback((e) => e.stopPropagation(), [])}
+      onClick={stopPropagation}
     >
       {isButtonsDisplay ? (
         <Flex direction="column">

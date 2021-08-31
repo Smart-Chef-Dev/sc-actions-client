@@ -3,8 +3,12 @@ import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
 
 const Notification = ({ children, background, width, height }) => {
+  const stopPropagation = useCallback((e) => {
+    e.stopPropagation()
+  }, [])
+
   return (
-    <Container onClick={useCallback((e) => e.stopPropagation(), [])}>
+    <Container onClick={stopPropagation}>
       <Popup background={background} width={width} height={height}>
         {children}
       </Popup>
