@@ -29,13 +29,10 @@ const Basket = () => {
     return basketAtoms.order
       .reduce((previousOrder, currentOrder) => {
         const addons = currentOrder.addons.reduce(
-          (previousAddons, currentModifier) => {
-            if (currentModifier.isIncludedInOrder) {
-              return previousAddons + +currentModifier.price;
-            }
-
-            return previousAddons;
-          },
+          (previousAddons, currentModifier) =>
+            currentModifier.isIncludedInOrder
+              ? previousAddons + +currentModifier.price
+              : previousAddons,
           0
         );
 
