@@ -48,8 +48,6 @@ export const TranslationContext = (props) => {
       return;
     }
 
-    console.log(parameters);
-
     (async () => {
       const resp = await fetch(`/api/restaurant/${parameters.restaurantId}`);
       if (!resp.ok) {
