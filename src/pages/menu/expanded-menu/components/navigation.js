@@ -11,9 +11,7 @@ const Navigation = ({ categories, currentCategoryId, onLocation }) => {
   const { data, isLoading } = categories;
 
   const changeCategory = useCallback(
-    (categoryId) => () => {
-      onLocation(categoryId);
-    },
+    (categoryId) => () => onLocation(categoryId),
     [onLocation]
   );
 
