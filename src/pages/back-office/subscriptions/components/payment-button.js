@@ -34,11 +34,13 @@ const PaymentButton = ({
     [price, data, isLoading, isError]
   );
 
-  const createSession = useCallback(async () => {
-    document.location = await createCheckoutSessionMutation.mutateAsync({
-      priceId: price.id,
-    });
-  }, [price, createCheckoutSessionMutation]);
+  const createSession = useCallback(
+    async () =>
+      (document.location = await createCheckoutSessionMutation.mutateAsync({
+        priceId: price.id,
+      })),
+    [price, createCheckoutSessionMutation]
+  );
 
   return (
     <>
