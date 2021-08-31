@@ -12,7 +12,6 @@ import RedCheckMarkIcon from "../assets/icons/product/check_marks_in_red_box.svg
 
 import BasketState from "../atoms/basket";
 import { formatCurrency } from "../utils/formatCurrency";
-// import { formatCurrency } from "../utils/formatCurrency";
 
 const Addons = ({ order }) => {
   const [, setBasketAtoms] = useRecoilState(BasketState);
