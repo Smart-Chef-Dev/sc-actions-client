@@ -47,9 +47,8 @@ const MenuItem = ({ categoryId, restaurantId, tableId, onLocation }) => {
   );
 
   const handleItemClick = useCallback(
-    (itemId) => () => {
-      onLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`);
-    },
+    (itemId) => () =>
+      onLocation(`/restaurant/${restaurantId}/${tableId}/item/${itemId}`),
     [onLocation, restaurantId, tableId]
   );
 

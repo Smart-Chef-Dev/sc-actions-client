@@ -2,6 +2,7 @@ import { memo, useCallback, useState, useMemo } from "react";
 import { useRecoilState } from "recoil";
 import { useLocation } from "wouter";
 import { useFormik } from "formik";
+import { useMutation } from "react-query";
 import * as Yup from "yup";
 
 import Input from "components/input";
@@ -11,26 +12,23 @@ import { Flex } from "components/flex";
 import { Label } from "components/label";
 
 import { Routes } from "constants/routes";
-
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
-
 import UserDataState from "atoms/user";
+import { signInAccount } from "services/userService";
 
 const SingIn = () => {
-  const [, setLocation] = useLocation();
-  const {
-    strings: { singIn: translations },
-  } = useTranslation();
-
   const [hasLoginError, setHasLoginError] = useState(false);
-
   const [, setUserDataAtoms] = useRecoilState(UserDataState);
-
+  const signInAccountMutation = useMutation(signInAccount);
+  const [, setLocation] = useLocation();
   const initialValues = {
     email: "",
     password: "",
   };
+  const {
+    strings: { singIn: translations },
+  } = useTranslation();
 
   const SignupSchema = Yup.object().shape({
     password: Yup.string()
@@ -47,47 +45,39 @@ const SingIn = () => {
     validationSchema: useMemo(() => SignupSchema, [SignupSchema]),
     onSubmit: useCallback(
       async (values) => {
-        const response = await fetch("/api/users/sing-in", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: values.email,
-            password: values.password,
-          }),
-        });
+        try {
+          const jwt = await signInAccountMutation.mutateAsync({
+            body: {
+              email: values.email,
+              password: values.password,
+            },
+          });
 
-        if (response.status === 404) {
+          setUserDataAtoms((oldUserData) => {
+            return {
+              ...oldUserData,
+              jwt: jwt,
+            };
+          });
+
+          setLocation(Routes.DASHBOARD);
+        } catch {
           setHasLoginError(true);
-          return;
         }
-
-        const jwt = await response.text();
-
-        setUserDataAtoms((oldUserData) => {
-          return {
-            ...oldUserData,
-            jwt: jwt,
-          };
-        });
-
-        setLocation(Routes.DASHBOARD);
       },
-      [setLocation, setUserDataAtoms]
+      [setLocation, setUserDataAtoms, signInAccountMutation]
     ),
   });
 
   const handleChange = useCallback(
-    (fieldName) => (e) => {
-      formik.setFieldValue(fieldName, e);
-    },
+    (fieldName) => (e) => formik.setFieldValue(fieldName, e),
     [formik]
   );
 
-  const handleSignInButtonClick = useCallback(() => {
-    setLocation(Routes.SING_UP);
-  }, [setLocation]);
+  const handleSignInButtonClick = useCallback(
+    () => setLocation(Routes.SING_UP),
+    [setLocation]
+  );
 
   return (
     <Flex direction="column" alignItems="center">
