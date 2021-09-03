@@ -6,34 +6,51 @@ import { Routes } from "../constants/routes";
 export const useRouterParameters = () => {
   const [location] = useLocation();
 
+  const routes = useMemo(
+    () => Object.values(Routes).map((r) => r.split("/").splice(1)),
+    []
+  );
+
+  const url = useMemo(() => location.split("/").splice(1), [location]);
+
+  const routersAreSameSizeWithUrl = useMemo(
+    () => routes.filter((r) => r.length === url.length),
+    [url, routes]
+  );
+
   return useMemo(() => {
-    const url = location.split("/").splice(1);
+    let route = [];
+    let numberOfMatches = 0;
+    for (const routeTmp of routersAreSameSizeWithUrl) {
+      let numberOfMatchesOfCurrentIteration = 0;
 
-    let parameters = null;
-    for (const key in Routes) {
-      const currentParameters = Routes[key].split("/").splice(1);
+      for (const [i, word] of routeTmp.entries()) {
+        if (word === url[i]) {
+          numberOfMatchesOfCurrentIteration =
+            numberOfMatchesOfCurrentIteration + 1;
+        }
 
-      if (currentParameters.length !== url.length) {
+        if (word[0] === ":") {
+          numberOfMatchesOfCurrentIteration =
+            numberOfMatchesOfCurrentIteration + 0.5;
+        }
+      }
+
+      if (numberOfMatchesOfCurrentIteration < numberOfMatches) {
         continue;
       }
 
-      for (const [i, v] of currentParameters.entries()) {
-        if (v[0] === ":") {
-          parameters = { ...parameters, [v.substr(1)]: url[i] };
-          break;
-        }
+      route = routeTmp;
+      numberOfMatches = numberOfMatchesOfCurrentIteration;
+    }
 
-        if (v !== url[i]) {
-          parameters = null;
-          break;
-        }
-      }
-
-      if (parameters) {
-        break;
+    let parameters = {};
+    for (const [i, word] of route.entries()) {
+      if (word[0] === ":") {
+        parameters = { ...parameters, [word.substr(1)]: url[i] };
       }
     }
 
     return parameters;
-  }, [location]);
+  }, [url, routersAreSameSizeWithUrl]);
 };
