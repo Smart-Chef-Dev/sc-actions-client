@@ -38,6 +38,12 @@ import confirmationPopupEn from "./en/confirmation-popup.json";
 import confirmationPopupRu from "./ru/confirmation-popup.json";
 import confirmationPopupPl from "./pl/confirmation-popup.json";
 
+import menuBuilderEn from "./en/menu-builder.json";
+import menuBuilderRu from "./ru/menu-builder.json";
+
+import backOfficeLayoutEn from "./en/back-office-layout.json";
+import backOfficeLayoutRu from "./ru/back-office-layout.json";
+
 export const languages = {
   en: {
     restaurantLogin: restaurantLoginEn,
@@ -49,7 +55,8 @@ export const languages = {
     singIn: singInEn,
     singUp: singUpEn,
     subscription: subscriptionEn,
-    confirmationPopup: confirmationPopupEn,
+    menuBuilder: menuBuilderEn,
+    backOfficeLayout: backOfficeLayoutEn,
   },
   ru: {
     restaurantLogin: restaurantLoginRu,
@@ -61,7 +68,8 @@ export const languages = {
     basket: basketRu,
     subscription: subscriptionRu,
     addons: addonsRu,
-    confirmationPopup: confirmationPopupRu,
+    menuBuilder: menuBuilderRu,
+    backOfficeLayout: backOfficeLayoutRu,
   },
   pl: {
     restaurantLogin: restaurantLoginPl,

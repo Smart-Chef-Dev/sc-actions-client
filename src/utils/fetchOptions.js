@@ -1,4 +1,4 @@
-export const fetchOptions = ({ method, body }) => {
+export const fetchOptions = ({ method, body, file }) => {
   const options = { method: method };
 
   if (body) {
@@ -6,6 +6,10 @@ export const fetchOptions = ({ method, body }) => {
     options.headers = {
       "Content-Type": "application/json",
     };
+  }
+
+  if (file) {
+    options.body = file;
   }
 
   const recoilPersist = JSON.parse(

@@ -1,5 +1,4 @@
 import {
-  useEffect,
   useState,
   useCallback,
   useMemo,
@@ -70,7 +69,6 @@ export const TranslationContext = (props) => {
     strings.current = new LocalizedStrings(languages);
     const language =
       localStorage.getItem(Keys.CURRENT_LANGUAGE) ?? DEFAULT_LANGUAGE;
-
     setLanguage(language);
 
     return {

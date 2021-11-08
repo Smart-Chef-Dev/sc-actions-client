@@ -71,7 +71,7 @@ const Addons = ({ order }) => {
                   )}
                 >
                   <RedCheckMarkIcon />
-                  <Text color="var(--light-grey)" ml={theme.spacing(1)}>
+                  <Text color="var(--grey)" ml={theme.spacing(1)}>
                     {currentAddons.name}
                   </Text>
                 </Flex>
@@ -80,7 +80,7 @@ const Addons = ({ order }) => {
                   onClick={changeAddonState(currentAddons._id, order._id, true)}
                 >
                   <GraySquareIcon />
-                  <Text color="var(--light-grey)" ml={theme.spacing(1)}>
+                  <Text color="var(--grey)" ml={theme.spacing(1)}>
                     {currentAddons.name}
                   </Text>
                 </Flex>

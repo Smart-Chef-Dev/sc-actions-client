@@ -53,7 +53,7 @@ const MenuItem = ({
         </Text>
         <Flex justifyContent="space-between" width={1} pb={theme.spacing(1)}>
           {menuItem.weight && (
-            <Text color="var(--light-grey)" height={1} alignItems="center">
+            <Text color="var(--grey)" height={1} alignItems="center">
               {`${translations["weight"]} ${menuItem.weight} ${translations["g"]}`}
             </Text>
           )}
@@ -64,7 +64,7 @@ const MenuItem = ({
             )}
           </Text>
         </Flex>
-        <Text color="var(--light-grey)">{menuItem.description}</Text>
+        <Text color="var(--grey)">{menuItem.description}</Text>
         <AddonsProduct
           menuItem={menuItem}
           basketAtoms={basketAtoms}

@@ -1,11 +1,17 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
 
-const Notification = ({ children, background }) => {
+const Notification = ({ children, background, width, height }) => {
+  const stopPropagation = useCallback((e) => {
+    e.stopPropagation()
+  }, [])
+
   return (
-    <Container>
-      <Popup background={background}>{children}</Popup>
+    <Container onClick={stopPropagation}>
+      <Popup background={background} width={width} height={height}>
+        {children}
+      </Popup>
     </Container>
   );
 };
@@ -24,13 +30,12 @@ const Container = styled.div`
 `;
 
 const Popup = styled.div`
-  width: 250px;
-  height: 200px;
+  width: ${(props) => props.width ?? "250px"};
+  height: ${(props) => props.height ?? "200px"};
   border-radius: 25px;
   display: flex;
+  background: ${(props) => props.background ?? "transparent"};
   justify-content: center;
-  align-items: center;
-  background: ${(props) => props.background ?? "00"};
 `;
 
 Notification.propTypes = {
@@ -39,6 +44,8 @@ Notification.propTypes = {
     PropTypes.node,
   ]).isRequired,
   background: PropTypes.string,
+  width: PropTypes.string,
+  height: PropTypes.string,
 };
 
 export default memo(Notification);

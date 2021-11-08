@@ -1,9 +1,8 @@
-import { memo, useCallback, useState, useMemo } from "react";
+import { memo, useCallback, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useLocation } from "wouter";
 import { useFormik } from "formik";
 import { useMutation } from "react-query";
-import * as Yup from "yup";
 
 import Input from "components/input";
 import ErrorText from "components/error-text";
@@ -17,33 +16,26 @@ import { useTranslation } from "contexts/translation-context";
 import UserDataState from "atoms/user";
 import { signInAccount } from "services/userService";
 import LanguageSelection from "components/language-selection";
+import { SignInSchema } from "yup-schemes/sign-in-schema";
+import {signInAccount} from "services/userService";
+
+const initialValues = {
+  email: "",
+  password: "",
+};
 
 const SingIn = () => {
   const [hasLoginError, setHasLoginError] = useState(false);
   const [, setUserDataAtoms] = useRecoilState(UserDataState);
   const signInAccountMutation = useMutation(signInAccount);
   const [, setLocation] = useLocation();
-  const initialValues = {
-    email: "",
-    password: "",
-  };
   const {
     strings: { singIn: translations },
   } = useTranslation();
 
-  const SignupSchema = Yup.object().shape({
-    password: Yup.string()
-      .min(8, translations["min_password"])
-      .max(25, translations["max_password"])
-      .required(translations["required"]),
-    email: Yup.string()
-      .email(translations["validation_email"])
-      .required(translations["required"]),
-  });
-
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: useMemo(() => SignupSchema, [SignupSchema]),
+    validationSchema: SignInSchema(translations),
     onSubmit: useCallback(
       async (values) => {
         try {
@@ -91,7 +83,7 @@ const SingIn = () => {
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
               <Input
-                id="email"
+                name="email"
                 type="string"
                 label={translations["email"]}
                 value={formik.values["email"]}
@@ -106,7 +98,7 @@ const SingIn = () => {
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
               <Input
-                id="password"
+                name="password"
                 type="password"
                 label={translations["password"]}
                 value={formik.values["password"]}
