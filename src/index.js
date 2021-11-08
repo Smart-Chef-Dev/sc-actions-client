@@ -28,23 +28,26 @@ export const globals = css`
       --main-color: #ff2d55;
       --main-color-disabled: rgba(255, 45, 85, 0.5);
       --text: #fff;
-      --color-for-selected-object: #e5e5ea;
+      --grey-color-for-selected-object: #e5e5ea;
+      --red-color-for-selected-object: #f6ecf0;
       --text-grey: #c7c7cc;
-      --light-grey: #00000066;
+      --label-color: #434c5f;
+      --light-grey: #f5f5f8;
+      --grey: #00000066;
       --box-shadow: #0000003d;
       --loader-background-color: #ede8e8;
       --loader-foreground-color: #dfd7d7;
       --black-layout-color: rgba(0, 0, 0, 0.7);
-      --error: #f36c6c;
+      --error: #eb001b;
     }
 
     [data-theme="dark"] {
       --main-bg-color: #434c5f;
       --main-text-color: #fff;
-      --color-for-selected-object: #e5e5ea26;
+      --grey-color-for-selected-object: #e5e5ea26;
       --text: #000;
       --box-shadow: #ffffff3d;
-      --light-grey: #c7c7cc;
+      --grey: #c7c7cc;
       --loader-background-color: #686c87;
       --loader-foreground-color: #566586;
     }

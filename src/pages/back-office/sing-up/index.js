@@ -1,8 +1,7 @@
-import { memo, useState, useCallback, useMemo } from "react";
+import { memo, useState, useCallback } from "react";
 import { useMutation } from "react-query";
 import { useLocation } from "wouter";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 
 import Input from "components/input";
 import ErrorText from "components/error-text";
@@ -13,7 +12,14 @@ import { Label } from "components/label";
 import { Routes } from "constants/routes";
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
+import { SignUpSchema } from "yup-schemes/sign-up-schema";
 import { signUpAccount } from "services/userService";
+
+const initialValues = {
+  email: "",
+  password: "",
+  repeatPassword: "",
+};
 
 const SingUp = () => {
   const [, setLocation] = useLocation();
@@ -22,31 +28,10 @@ const SingUp = () => {
   } = useTranslation();
   const [isEmailExists, setIsEmailExists] = useState(false);
   const signUpAccountMutation = useMutation(signUpAccount);
-  const initialValues = {
-    email: "",
-    password: "",
-    repeatPassword: "",
-  };
-
-  const SignUpSchema = Yup.object().shape({
-    password: Yup.string()
-      .min(8, translations["min_password"])
-      .max(25, translations["max_password"])
-      .required(translations["required"]),
-    email: Yup.string()
-      .email(translations["validation_email"])
-      .required(translations["required"]),
-    repeatPassword: Yup.string()
-      .oneOf(
-        [Yup.ref("password")],
-        translations["entered_password_does_not_match"]
-      )
-      .required(translations["required"]),
-  });
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: useMemo(() => SignUpSchema, [SignUpSchema]),
+    validationSchema: SignUpSchema(translations),
     onSubmit: useCallback(
       async (values) => {
         try {
@@ -87,7 +72,7 @@ const SingUp = () => {
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
               <Input
-                id="email"
+                name="email"
                 type="string"
                 label={translations["email"]}
                 value={formik.values["email"]}
@@ -102,7 +87,7 @@ const SingUp = () => {
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
               <Input
-                id="password"
+                name="password"
                 type="password"
                 label={translations["password"]}
                 value={formik.values["password"]}
@@ -117,7 +102,7 @@ const SingUp = () => {
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
               <Input
-                id="repeatPassword"
+                name="repeatPassword"
                 type="password"
                 label={translations["repeat_password"]}
                 value={formik.values["repeatPassword"]}

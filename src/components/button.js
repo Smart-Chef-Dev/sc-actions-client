@@ -2,11 +2,13 @@ import { styled } from "@linaria/react";
 
 const Button = styled.button`
   background-color: ${(props) =>
-    props.disabled ? "var(--main-color-disabled)" : "var(--main-color)"};
+    props.disabled
+      ? "var(--main-color-disabled)"
+      : props.background ?? "var(--main-color)"};
   border: ${(props) =>
     props.disabled
       ? "1px solid var(--main-color-disabled)"
-      : "1px solid var(--main-color)"};
+      : props.background ?? "var(--main-color)"};
   color: #fff;
   width: ${(props) => (props.width ? `${100 * props.width}%` : "200px")};
   height: 40px;

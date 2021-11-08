@@ -47,6 +47,8 @@ export const Box = styled.div`
   box-sizing: ${(props) => props.boxSizing ?? "content-box"};
 
   position: ${(props) => props.position ?? "static"};
+
+  background: ${(props) => props.background ?? "transparent"};
 `;
 
 export const Flex = styled(Box)`

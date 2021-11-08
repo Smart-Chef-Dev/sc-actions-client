@@ -118,7 +118,7 @@ const s = {
     right: 0;
   `,
   RemoteComponent: styled(Flex)`
-    background: var(--color-for-selected-object);
+    background: var(--grey-color-for-selected-object);
 
     position: relative;
     right: 58px;
