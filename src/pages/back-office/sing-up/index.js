@@ -12,6 +12,7 @@ import { Label } from "components/label";
 import { Routes } from "constants/routes";
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
+import LanguageSelection from "components/language-selection";
 import { SignUpSchema } from "yup-schemes/sign-up-schema";
 import { signUpAccount } from "services/userService";
 
@@ -128,6 +129,7 @@ const SingUp = () => {
           {translations["sing_in"]}
         </Button>
       </Flex>
+      <LanguageSelection text={translations["change_language_to"]} />
     </Flex>
   );
 };

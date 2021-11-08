@@ -31,7 +31,10 @@ const Actions = () => {
   const { renderNotification, showNotification } = useNotifications(
     <DoneIcon />
   );
-  const { renderScreenBlock, attemptsWrapper } = useScreenBlock();
+
+  const { renderScreenBlock, attemptsWrapper } = useScreenBlock(
+    restaurant?.language
+  );
 
   const sendActionMutation = useMutation(sendAction);
 

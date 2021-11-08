@@ -11,5 +11,6 @@
   "registration": "Registration",
   "repeat_password": "Repeat password:",
   "creat_accounts": "Creat accounts",
-  "email_already_taken": "Email already taken"
+  "email_already_taken": "Email already taken",
+  "change_language_to": "Change language to:"
 }

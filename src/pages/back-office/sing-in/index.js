@@ -14,6 +14,8 @@ import { Routes } from "constants/routes";
 import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
 import UserDataState from "atoms/user";
+import { signInAccount } from "services/userService";
+import LanguageSelection from "components/language-selection";
 import { SignInSchema } from "yup-schemes/sign-in-schema";
 import {signInAccount} from "services/userService";
 
@@ -122,6 +124,8 @@ const SingIn = () => {
           {translations["sing_up"]}
         </Button>
       </Flex>
+
+      <LanguageSelection text={translations["change_language_to"]} />
     </Flex>
   );
 };
