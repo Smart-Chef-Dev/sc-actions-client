@@ -57,6 +57,7 @@ export const languages = {
     subscription: subscriptionEn,
     menuBuilder: menuBuilderEn,
     backOfficeLayout: backOfficeLayoutEn,
+    confirmationPopup: confirmationPopupEn,
   },
   ru: {
     restaurantLogin: restaurantLoginRu,
@@ -70,6 +71,7 @@ export const languages = {
     addons: addonsRu,
     menuBuilder: menuBuilderRu,
     backOfficeLayout: backOfficeLayoutRu,
+    confirmationPopup: confirmationPopupRu,
   },
   pl: {
     restaurantLogin: restaurantLoginPl,
