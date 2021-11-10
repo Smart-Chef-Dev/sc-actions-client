@@ -5,11 +5,8 @@ import { useLocation } from "wouter";
 import { Flex } from "components/flex";
 import NotificationWithIconAndText from "components/notificationWithTexts";
 import Product from "./components/product";
-import { Text } from "components/text";
-import { Divider } from "components/divider";
 import Loader from "components/loaders";
 
-import { theme } from "theme";
 import { useTranslation } from "contexts/translation-context";
 import { useNotifications } from "hooks/useNotifications";
 import {
@@ -18,6 +15,7 @@ import {
   getSubscriptions,
 } from "services/stripeService";
 import ForbiddenIcon from "assets/icons/actions/forbidden_icon.svg";
+import TopPanel from "./components/top-panel";
 
 const Dashboard = () => {
   const [location, setLocation] = useLocation();
@@ -67,23 +65,7 @@ const Dashboard = () => {
 
   return !products.isLoading && !prices.isLoading ? (
     <Flex direction="column" height={1} width={1}>
-      <Flex
-        height={1}
-        width={1}
-        flex={1}
-        direction="column"
-        pl={theme.spacing(1)}
-      >
-        <Text
-          p={theme.spacing(1)}
-          pl={0}
-          fontSize={theme.fontSize(3)}
-          fontWeight="bold"
-        >
-          {translations["subscriptions"]}
-        </Text>
-        <Divider />
-      </Flex>
+      <TopPanel translations={translations} />
       <Flex height={1} width={1} overflowY="auto">
         {sessionCanceled.renderNotification()}
         {sessionSuccess.renderNotification()}

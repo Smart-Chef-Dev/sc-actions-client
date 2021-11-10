@@ -4,7 +4,7 @@ import {
   useMemo,
   useRef,
   createContext,
-  useContext,
+  useContext, useEffect,
 } from "react";
 import LocalizedStrings from "react-localization";
 
