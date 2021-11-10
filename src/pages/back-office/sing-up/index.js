@@ -1,6 +1,6 @@
 import { memo, useState, useCallback } from "react";
 import { useMutation } from "react-query";
-import { useLocation } from "wouter";
+import { useLocation, useRoute } from "wouter";
 import { useFormik } from "formik";
 
 import Input from "components/input";
@@ -27,8 +27,9 @@ const SingUp = () => {
   const {
     strings: { singUp: translations },
   } = useTranslation();
-  const [isEmailExists, setIsEmailExists] = useState(false);
+  const [error, setError] = useState("");
   const signUpAccountMutation = useMutation(signUpAccount);
+  const [, { restId }] = useRoute(Routes.SING_UP);
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -40,15 +41,21 @@ const SingUp = () => {
             body: {
               email: values.email,
               password: values.password,
+              restaurantId: restId,
             },
           });
 
           setLocation(Routes.SING_IN);
-        } catch {
-          setIsEmailExists(true);
+        } catch (err) {
+          if (err.status === 403) {
+            setError(translations["email_already_taken"]);
+            return;
+          }
+
+          setError(translations["something_went_wrong"]);
         }
       },
-      [setIsEmailExists, setLocation, signUpAccountMutation]
+      [translations, restId, setLocation, signUpAccountMutation]
     ),
   });
 
@@ -69,7 +76,7 @@ const SingUp = () => {
       </Flex>
 
       <form onSubmit={formik.handleSubmit}>
-        <Flex direction="column">
+        <Flex direction="column" alignItems="center">
           <Flex mb={theme.spacing(1)} direction="column">
             <Flex direction="column">
               <Input
@@ -118,9 +125,7 @@ const SingUp = () => {
 
         <Flex direction="column" alignItems="center">
           <Button type="submit">{translations["creat_accounts"]}</Button>
-          {isEmailExists && (
-            <ErrorText>{translations["email_already_taken"]}</ErrorText>
-          )}
+          {error && <ErrorText>{error}</ErrorText>}
         </Flex>
       </form>
 
