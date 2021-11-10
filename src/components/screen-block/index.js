@@ -2,19 +2,22 @@ import { memo, useMemo } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@linaria/react";
 import { formatDistance } from "date-fns";
-import { ru, enUS } from "date-fns/esm/locale";
+/*eslint import/namespace: ['error', { allowComputed: true }]*/
+import * as dateFnsLocales from "date-fns/locale";
 
-import { useTranslation, Languages } from "contexts/translation-context";
+import { Languages } from "contexts/translation-context";
 import BlockIcon from "./block-icon.svg";
 
-const ScreenBlock = ({ remainingSeconds = 0 }) => {
-  const { currentLanguage } = useTranslation();
+const ScreenBlock = ({ remainingSeconds = 0, language }) => {
   const formattedTime = useMemo(() => {
     return formatDistance(0, remainingSeconds, {
       includeSeconds: true,
-      locale: currentLanguage === Languages.EN ? enUS : ru,
+      locale:
+        language === Languages.EN
+          ? dateFnsLocales["enUS"]
+          : dateFnsLocales[Languages[language]],
     });
-  }, [currentLanguage, remainingSeconds]);
+  }, [remainingSeconds, language]);
 
   return (
     <ScreenBlockContainer>
@@ -50,6 +53,7 @@ const Time = styled.div`
 
 ScreenBlock.propTypes = {
   remainingSeconds: PropTypes.number,
+  language: PropTypes.string,
 };
 
 export default memo(ScreenBlock);

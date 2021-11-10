@@ -11,7 +11,7 @@ const MAX_LOCK_TIME = 86400;
 const LOCK_TIMES = [30, 60, 120, 240, 360];
 const INTERVAL_TIMEOUT = 1000;
 
-export const useScreenBlock = () => {
+export const useScreenBlock = (language) => {
   const [state, dispatch] = useReducer(reducer, initialState, (initial) => {
     const { firstAttemptTime, lockAt, ...oldState } = getOrDefault(
       Keys.BLOCK_SCREEN,
@@ -92,11 +92,14 @@ export const useScreenBlock = () => {
   const renderScreenBlock = useCallback(() => {
     return needLock && remainingSeconds
       ? createPortal(
-          <ScreenBlock remainingSeconds={remainingSeconds} />,
+          <ScreenBlock
+            remainingSeconds={remainingSeconds}
+            language={language}
+          />,
           document.body
         )
       : null;
-  }, [needLock, remainingSeconds]);
+  }, [needLock, remainingSeconds, language]);
 
   return {
     renderScreenBlock,
