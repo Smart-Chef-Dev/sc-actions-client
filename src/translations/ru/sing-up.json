@@ -12,5 +12,6 @@
   "repeat_password": "Повторите пароль:",
   "creat_accounts": "Создать аккаунт",
   "email_already_taken": "E-mail уже занят",
-  "change_language_to": "Поменять язык на:"
+  "change_language_to": "Поменять язык на:",
+  "something_went_wrong": "Что-то пошло не так. Свяжитесь с Администратором"
 }

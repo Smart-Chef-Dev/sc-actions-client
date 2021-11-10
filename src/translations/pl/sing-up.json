@@ -12,5 +12,6 @@
   "repeat_password": "Powtórz hasło:",
   "creat_accounts": "Utwórz konto",
   "email_already_taken": "E-mail jest już zajęty",
-  "change_language_to": "Zmień język na:"
+  "change_language_to": "Zmień język na:",
+  "something_went_wrong": "Coś poszło nie tak. Skontaktuj się z Administratorem"
 }
