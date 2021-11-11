@@ -85,7 +85,4 @@ export const languages = {
     addons: addonsPl,
     confirmationPopup: confirmationPopupPl,
   },
-  pl: {
-    restaurantLogin: restaurantLoginPl,
-  },
 };
