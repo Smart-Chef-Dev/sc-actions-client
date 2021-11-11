@@ -1,0 +1,17 @@
+{
+  "min_password": "Musi mieć co najmniej 8 znaków",
+  "max_password": "Musi mieć 25 znaków lub mniej",
+  "required": "Wymaganę",
+  "validation_email": "Niepoprawny adres email",
+  "email": "Email:",
+  "password": "Hasło:",
+  "sing_in": "Zaloguj",
+  "incorrect_login_or_password": "Nieprawidłowy login lub hasło",
+  "entered_password_does_not_match": "Wprowadzone hasła nie pasują",
+  "registration": "Rejestracja",
+  "repeat_password": "Powtórz hasło:",
+  "creat_accounts": "Utwórz konto",
+  "email_already_taken": "E-mail jest już zajęty",
+  "change_language_to": "Zmień język na:",
+  "something_went_wrong": "Coś poszło nie tak. Skontaktuj się z Administratorem"
+}

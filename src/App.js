@@ -1,54 +1,37 @@
-import { lazy, Suspense } from "react";
+import { Fragment, Suspense } from "react";
 import { Switch } from "wouter";
 import { styled } from "@linaria/react";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import ErrorBoundary from "pages/error-boundary";
-import { Routes } from "constants/routes";
 import Route from "components/Route";
-import MainLayout from "components/MainLayout";
-import SimpleLayout from "components/SimpleLayout";
-import Loader from "components/loader";
+import Loader from "components/loaders";
 import DarkModeContext from "contexts/dark-mode-context";
 import { TranslationContext } from "contexts/translation-context";
+import { AppPages } from "./constants/appPages";
 
-const RestaurantLogin = lazy(() =>
-  import("pages/restaurant-login" /* webpackChunkName: "restaurant-login" */)
-);
-const Actions = lazy(() =>
-  import("pages/actions" /* webpackChunkName: "actions" */)
-);
-const QrCodeBuilder = lazy(() =>
-  import("pages/qr-code-builder" /* webpackChunkName: "qr-code-builder" */)
-);
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <s.Container>
-      <TranslationContext>
-        <DarkModeContext>
-          <Suspense fallback={<Loader />}>
-            <ErrorBoundary>
-              <Switch>
-                <Route
-                  path={Routes.QR_CODE_BUILDER}
-                  component={QrCodeBuilder}
-                  layout={SimpleLayout}
-                />
-                <Route
-                  path={Routes.RESTAURANT_LOGIN}
-                  component={RestaurantLogin}
-                  layout={MainLayout}
-                />
-                <Route
-                  path={Routes.ACTIONS}
-                  component={Actions}
-                  layout={MainLayout}
-                />
-              </Switch>
-            </ErrorBoundary>
-          </Suspense>
-        </DarkModeContext>
-      </TranslationContext>
+      <QueryClientProvider client={queryClient}>
+        <TranslationContext>
+          <DarkModeContext>
+            <Suspense fallback={<Loader />}>
+              <ErrorBoundary>
+                <Switch>
+                  {AppPages.map((appPage, i) => (
+                    <Fragment key={i}>
+                      <Route {...appPage} />
+                    </Fragment>
+                  ))}
+                </Switch>
+              </ErrorBoundary>
+            </Suspense>
+          </DarkModeContext>
+        </TranslationContext>
+      </QueryClientProvider>
     </s.Container>
   );
 }

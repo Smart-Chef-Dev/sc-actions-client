@@ -1,0 +1,12 @@
+{
+  "min_password": "Musi mieć co najmniej 8 znaków",
+  "max_password": "Musi mieć 25 znaków lub mniej",
+  "required": "Wymaganę",
+  "validation_email": "Niepoprawny adres email",
+  "email": "Email:",
+  "password": "Hasło:",
+  "sing_in": "Zaloguj",
+  "sing_up": "Zarejestruj",
+  "incorrect_login_or_password": "Nieprawidłowy login lub hasło",
+  "change_language_to": "Zmień język na:"
+}

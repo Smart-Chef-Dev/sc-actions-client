@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="150px"
+   height="150px"
+   viewBox="0 0 24 24"
+   id="d9090658-f907-4d85-8bc1-743b70378e93"
+   data-name="Livello 1"
+   version="1.1"
+   sodipodi:docname="done-icon.svg.2021_07_20_20_20_50.0.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata3769">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3767" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1055"
+     id="namedview3765"
+     showgrid="false"
+     inkscape:snap-midpoints="true"
+     inkscape:lockguides="true"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-global="false"
+     inkscape:zoom="3.7193817"
+     inkscape:cx="94.881609"
+     inkscape:cy="77.199815"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="d9090658-f907-4d85-8bc1-743b70378e93">
+    <sodipodi:guide
+       position="12.000625,11.991875"
+       orientation="1,0"
+       id="guide341"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="12.000625,12.000625"
+       orientation="0,1"
+       id="guide343"
+       inkscape:locked="true" />
+  </sodipodi:namedview>
+  <title
+     id="title3761">prime</title>
+  <path
+     style="fill:#ff0000;stroke-width:6.25"
+     d="M 75 0 C 8.1774894 0 -25.276173 80.786331 21.96875 128.03125 C 69.213671 175.27617 150 141.82251 150 75 C 150 33.578644 116.42136 0 75 0 z "
+     id="70fa6808-131f-4233-9c3a-fc089fd0c1c4"
+     transform="scale(0.16)" />
+  <rect
+     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.16432709"
+     id="rect3840-6"
+     width="1.94432"
+     height="12"
+     x="-0.94734412"
+     y="10.992034"
+     transform="rotate(-45)" />
+  <rect
+     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.16432709"
+     id="rect3840-6-5"
+     width="1.94432"
+     height="12"
+     x="-17.964231"
+     y="-5.9752321"
+     transform="rotate(-135)" />
+</svg>

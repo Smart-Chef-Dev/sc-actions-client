@@ -1,0 +1,10 @@
+{
+  "subscriptions": "Подписки",
+  "arrange": "Оформить",
+  "current_subscription": "Отменить подписку",
+  "not_subscribed": "Подписка не оформлена",
+  "subscribed_successfully": "Подписка оформлена успешно",
+  "cancellation_of_subscription": "Вы действительно хотите отменить подписку?",
+  "continue": "Продолжить",
+  "cancel": "Отмена"
+}
