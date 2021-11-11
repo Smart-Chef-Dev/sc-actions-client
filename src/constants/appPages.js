@@ -10,9 +10,7 @@ const SingUp = lazy(() =>
   import("pages/back-office/sing-up" /* webpackChunkName: "sing-up" */)
 );
 const Dashboard = lazy(() =>
-  import(
-    "pages/back-office/subscriptions" /* webpackChunkName: "dashboard" */
-  )
+  import("pages/back-office/subscriptions" /* webpackChunkName: "dashboard" */)
 );
 const SingIn = lazy(() =>
   import("pages/back-office/sing-in" /* webpackChunkName: "sing-in" */)

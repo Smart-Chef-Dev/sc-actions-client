@@ -73,19 +73,15 @@ const CategoryControlButtons = ({
   }, [addMenuItemPopup]);
 
   const stopPropagation = useCallback((e) => {
-    e.stopPropagation()
-  }, [])
+    e.stopPropagation();
+  }, []);
 
   return (
     <>
       {deleteCategoryPopup.renderNotification()}
       {editCategoryPopup.renderNotification()}
       {addMenuItemPopup.renderNotification()}
-      <Flex
-        alignItems="center"
-        mr={theme.spacing(2)}
-        onClick={stopPropagation}
-      >
+      <Flex alignItems="center" mr={theme.spacing(2)} onClick={stopPropagation}>
         {category._id === expandedCategoryId ? (
           <>
             <Flex alignItems="flex-end">

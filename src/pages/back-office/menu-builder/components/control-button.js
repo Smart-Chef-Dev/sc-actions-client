@@ -12,8 +12,8 @@ const ControlButton = ({ Icon, buttonAction, stroke, title }) => {
   const focusIsGone = useCallback(() => setFocusButton(false), []);
 
   const stopPropagation = useCallback((e) => {
-    e.stopPropagation()
-  }, [])
+    e.stopPropagation();
+  }, []);
 
   return (
     <Flex onClick={stopPropagation}>

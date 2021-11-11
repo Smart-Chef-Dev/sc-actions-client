@@ -4,8 +4,8 @@ import { styled } from "@linaria/react";
 
 const Notification = ({ children, background, width, height }) => {
   const stopPropagation = useCallback((e) => {
-    e.stopPropagation()
-  }, [])
+    e.stopPropagation();
+  }, []);
 
   return (
     <Container onClick={stopPropagation}>
