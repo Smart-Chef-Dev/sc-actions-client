@@ -75,6 +75,7 @@ export const useScreenBlock = (language) => {
 
         if (lockUntil <= currentTime) {
           dispatch({ type: actionTypes.RESET_ATTEMPT });
+          dispatch({ type: actionTypes.RESET_REMAINING_SECONDS });
           clearInterval(intervalId);
         } else {
           dispatch({
@@ -113,6 +114,7 @@ const actionTypes = {
   SET_ATTEMPT_TIME: "SET_ATTEMPT_TIME",
   INCREMENT_ATTEMPT: "INCREMENT_ATTEMPT",
   SET_REMAINING_SECONDS: "SET_REMAINING_SECONDS",
+  RESET_REMAINING_SECONDS: "RESET_REMAINING_SECONDS",
 };
 
 const initialState = {
@@ -155,6 +157,12 @@ const reducer = (state, action) => {
         ...state,
         remainingSeconds:
           action.payload <= INTERVAL_TIMEOUT ? 0 : action.payload,
+      };
+    }
+    case actionTypes.RESET_REMAINING_SECONDS: {
+      return {
+        ...state,
+        remainingSeconds: initialState.remainingSeconds,
       };
     }
     default: {
