@@ -9,7 +9,7 @@ COPY . ./
 RUN yarn build
 
 # production environment
-FROM ghcr.io/umputun/reproxy:master
+FROM ghcr.io/umputun/reproxy:master AS production
 COPY --from=development /app/build /www
 EXPOSE 8080
 ENTRYPOINT ["/srv/reproxy"]
