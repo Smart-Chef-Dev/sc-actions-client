@@ -38,9 +38,12 @@ export const TranslationContext = (props) => {
   const parameters = useRouterParameters();
 
   const setLanguage = useCallback((language) => {
-    localStorage.setItem(Keys.CURRENT_LANGUAGE, language);
-    setCurrentLanguage(language);
-    strings.current.setLanguage(language);
+    if (language === "undefined") language = undefined;
+    const currentLanguage = language || DEFAULT_LANGUAGE;
+
+    localStorage.setItem(Keys.CURRENT_LANGUAGE, currentLanguage);
+    setCurrentLanguage(currentLanguage);
+    strings.current.setLanguage(currentLanguage);
   }, []);
 
   useEffect(() => {
@@ -63,13 +66,12 @@ export const TranslationContext = (props) => {
       return;
     }
 
-    setLanguage(Languages[restaurant.language]);
+    setLanguage(Languages[restaurant?.language]);
   }, [restaurant, setLanguage]);
 
   const value = useMemo(() => {
     strings.current = new LocalizedStrings(languages);
-    const language =
-      localStorage.getItem(Keys.CURRENT_LANGUAGE) ?? DEFAULT_LANGUAGE;
+    const language = localStorage.getItem(Keys.CURRENT_LANGUAGE);
     setLanguage(language);
 
     return {
