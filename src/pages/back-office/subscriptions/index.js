@@ -10,8 +10,7 @@ import Loader from "components/loaders";
 import { useTranslation } from "contexts/translation-context";
 import { useNotifications } from "hooks/useNotifications";
 import {
-  getAllPrices,
-  getAllProducts,
+  getRestaurantProducts,
   getSubscriptions,
 } from "services/stripeService";
 import ForbiddenIcon from "assets/icons/actions/forbidden_icon.svg";
@@ -20,12 +19,13 @@ import TopPanel from "./components/top-panel";
 const Dashboard = () => {
   const [location, setLocation] = useLocation();
   const [isButtonsLocked, setButtonsLocked] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [prices, setPrices] = useState([]);
   const {
     strings: { subscription: translations },
   } = useTranslation();
 
-  const products = useQuery("productsStripe", getAllProducts);
-  const prices = useQuery("pricesStripe", getAllPrices);
+  const { data, isLoading } = useQuery("productsStripe", getRestaurantProducts);
   const subscription = useQuery("subscription", () => getSubscriptions());
 
   const sessionCanceled = useNotifications(
@@ -42,6 +42,15 @@ const Dashboard = () => {
     />,
     3000
   );
+
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    setProducts(data.products);
+    setPrices(data.prices);
+  }, [data, isLoading]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -63,7 +72,7 @@ const Dashboard = () => {
     // eslint-disable-next-line
   }, []);
 
-  return !products.isLoading && !prices.isLoading ? (
+  return !isLoading ? (
     <Flex direction="column" height={1} width={1}>
       <TopPanel translations={translations} />
       <Flex height={1} width={1} overflowY="auto">
@@ -76,18 +85,19 @@ const Dashboard = () => {
           height={1}
           width={1}
         >
-          {products.data.data.map((currentProduct) => (
-            <Fragment key={currentProduct.id}>
-              <Product
-                product={currentProduct}
-                prices={prices}
-                subscription={subscription}
-                translations={translations}
-                onButtonsLocked={setButtonsLocked}
-                isButtonsLocked={isButtonsLocked}
-              />
-            </Fragment>
-          ))}
+          {!!products.length &&
+            products.map((currentProduct) => (
+              <Fragment key={currentProduct.id}>
+                <Product
+                  product={currentProduct}
+                  prices={prices}
+                  subscription={subscription}
+                  translations={translations}
+                  onButtonsLocked={setButtonsLocked}
+                  isButtonsLocked={isButtonsLocked}
+                />
+              </Fragment>
+            ))}
         </Flex>
       </Flex>
     </Flex>

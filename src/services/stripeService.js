@@ -1,10 +1,9 @@
 import { fetchOptions } from "../utils/fetchOptions";
 
-export const getAllProducts = () =>
-  fetch(`/api/products-stripe`).then((res) => res.json());
-
-export const getAllPrices = () =>
-  fetch(`/api/products-stripe/price`).then((res) => res.json());
+export const getRestaurantProducts = () =>
+  fetch(`/api/products-stripe`, fetchOptions({ method: "GET" })).then((res) =>
+    res.json()
+  );
 
 export const getSubscriptions = async () => {
   const res = await fetch(

@@ -17,11 +17,9 @@ const Product = ({
   onButtonsLocked,
   isButtonsLocked,
 }) => {
-  const { data } = prices;
-
   const price = useMemo(
-    () => data.data.find((price) => price.product === product.id),
-    [data, product]
+    () => prices.find((price) => price.product === product.id),
+    [prices, product]
   );
 
   return (
@@ -61,7 +59,7 @@ const s = {
 
 Product.propTypes = {
   product: PropTypes.object,
-  prices: PropTypes.object,
+  prices: PropTypes.array,
   userDataAtoms: PropTypes.object,
   subscription: PropTypes.object,
   translations: PropTypes.object,
