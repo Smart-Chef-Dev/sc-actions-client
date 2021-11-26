@@ -19,8 +19,6 @@ import TopPanel from "./components/top-panel";
 const Dashboard = () => {
   const [location, setLocation] = useLocation();
   const [isButtonsLocked, setButtonsLocked] = useState(false);
-  const [products, setProducts] = useState([]);
-  const [prices, setPrices] = useState([]);
   const {
     strings: { subscription: translations },
   } = useTranslation();
@@ -42,15 +40,6 @@ const Dashboard = () => {
     />,
     3000
   );
-
-  useEffect(() => {
-    if (isLoading) {
-      return;
-    }
-
-    setProducts(data.products);
-    setPrices(data.prices);
-  }, [data, isLoading]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -85,19 +74,17 @@ const Dashboard = () => {
           height={1}
           width={1}
         >
-          {!!products.length &&
-            products.map((currentProduct) => (
-              <Fragment key={currentProduct.id}>
-                <Product
-                  product={currentProduct}
-                  prices={prices}
-                  subscription={subscription}
-                  translations={translations}
-                  onButtonsLocked={setButtonsLocked}
-                  isButtonsLocked={isButtonsLocked}
-                />
-              </Fragment>
-            ))}
+          {data.map((currentProduct) => (
+            <Fragment key={currentProduct.id}>
+              <Product
+                product={currentProduct}
+                subscription={subscription}
+                translations={translations}
+                onButtonsLocked={setButtonsLocked}
+                isButtonsLocked={isButtonsLocked}
+              />
+            </Fragment>
+          ))}
         </Flex>
       </Flex>
     </Flex>

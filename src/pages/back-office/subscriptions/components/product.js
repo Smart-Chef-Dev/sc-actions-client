@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { styled } from "@linaria/react";
 import PropTypes from "prop-types";
 
@@ -11,17 +11,11 @@ import { theme } from "theme";
 
 const Product = ({
   product,
-  prices,
   subscription,
   translations,
   onButtonsLocked,
   isButtonsLocked,
 }) => {
-  const price = useMemo(
-    () => prices.find((price) => price.product === product.id),
-    [prices, product]
-  );
-
   return (
     <Flex key={product.id} p={theme.spacing(1)}>
       <s.Container direction="column" alignItems="center" p={theme.spacing(1)}>
@@ -32,9 +26,9 @@ const Product = ({
         <Text pb={theme.spacing(1)} textAlign="center">
           {product.description}
         </Text>
-        <Price price={price} />
+        <Price price={product.price} />
         <PaymentButton
-          price={price}
+          price={product.price}
           subscription={subscription}
           translations={translations}
           onButtonsLocked={onButtonsLocked}
@@ -59,7 +53,6 @@ const s = {
 
 Product.propTypes = {
   product: PropTypes.object,
-  prices: PropTypes.array,
   userDataAtoms: PropTypes.object,
   subscription: PropTypes.object,
   translations: PropTypes.object,
