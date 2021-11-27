@@ -23,7 +23,10 @@ const Dashboard = () => {
     strings: { subscription: translations },
   } = useTranslation();
 
-  const { data, isLoading } = useQuery("productsStripe", getRestaurantProducts);
+  const { data: products, isLoading } = useQuery(
+    "productsStripe",
+    getRestaurantProducts
+  );
   const subscription = useQuery("subscription", () => getSubscriptions());
 
   const sessionCanceled = useNotifications(
@@ -74,7 +77,7 @@ const Dashboard = () => {
           height={1}
           width={1}
         >
-          {data.map((currentProduct) => (
+          {products.map((currentProduct) => (
             <Fragment key={currentProduct.id}>
               <Product
                 product={currentProduct}
