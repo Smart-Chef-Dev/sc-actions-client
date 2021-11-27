@@ -1,4 +1,4 @@
-import { Fragment, memo, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "wouter";
 
@@ -78,15 +78,14 @@ const Dashboard = () => {
           width={1}
         >
           {products.map((currentProduct) => (
-            <Fragment key={currentProduct.id}>
-              <Product
-                product={currentProduct}
-                subscription={subscription}
-                translations={translations}
-                onButtonsLocked={setButtonsLocked}
-                isButtonsLocked={isButtonsLocked}
-              />
-            </Fragment>
+            <Product
+              product={currentProduct}
+              subscription={subscription}
+              translations={translations}
+              onButtonsLocked={setButtonsLocked}
+              isButtonsLocked={isButtonsLocked}
+              key={currentProduct.id}
+            />
           ))}
         </Flex>
       </Flex>
