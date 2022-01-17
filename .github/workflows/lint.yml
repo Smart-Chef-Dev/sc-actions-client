@@ -1,0 +1,28 @@
+name: Lint
+
+on: [pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install yarn
+        run: npm install --global yarn
+
+      - name: Install modules
+        run: yarn
+
+      - name: Run ESLint
+        run: yarn lint:js
+
+      - name: Run styleLint
+        run: yarn lint:styles
+
+      - name: Run prettier
+        run: yarn format
+
+      - name: Run build
+        run: yarn build

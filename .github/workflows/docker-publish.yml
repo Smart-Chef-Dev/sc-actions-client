@@ -1,0 +1,73 @@
+name: Docker-publish
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+env:
+  IMAGE_NAME: sc-actions-client
+
+jobs:
+  # Push image to GitHub Packages.
+  # See also https://docs.docker.com/docker-hub/builds/
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME
+
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+      - name: Set the value
+        run: |
+          echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+
+      - name: Push image
+        run: |
+          IMAGE_ID=docker.pkg.github.com/${{ env.IMAGE_REPOSITORY }}/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          [[ ${GITHUB_REF##*/} = "master" ]] && VERSION=latest || VERSION=dev
+
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+    outputs:
+      job-status: ${{ job.status }}
+
+  notification:
+    if: ${{ always() }}
+    needs: [ push ]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Determination of status
+        run: |
+          if [[ '${{ needs.push.outputs.job-status }}' == 'failure' ]]; then
+            echo "status=🔴🔴🔴FAILURE🔴🔴🔴" >> $GITHUB_ENV
+          else
+            echo "status=🟢🟢🟢SUCCESS🟢🟢🟢" >> $GITHUB_ENV
+          fi
+
+      - uses: yanzay/notify-telegram@v0.1.0
+        with:
+          chat: ${{ secrets.TELEGRAM_CHANNEL }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          status: ${{env.status}}
